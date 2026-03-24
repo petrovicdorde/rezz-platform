@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16
+    container_name: rezz_postgres
+    environment:
+      POSTGRES_USER: rezz
+      POSTGRES_PASSWORD: rezz
+      POSTGRES_DB: rezz_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - rezz_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+volumes:
+  rezz_postgres_data:

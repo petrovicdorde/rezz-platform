@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Početna",
+    "venues": "Lokali",
+    "login": "Prijava",
+    "register": "Registracija",
+    "dashboard": "Kontrolna tabla",
+    "logout": "Odjava"
+  },
+  "common": {
+    "loading": "Učitavanje...",
+    "error": "Greška",
+    "save": "Sačuvaj",
+    "cancel": "Otkaži",
+    "confirm": "Potvrdi",
+    "back": "Nazad",
+    "search": "Pretraži"
+  }
+}
