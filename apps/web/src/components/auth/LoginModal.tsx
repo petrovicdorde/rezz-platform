@@ -15,7 +15,7 @@ export function LoginModal() {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
-      <DialogContent className="max-w-md w-full p-6">
+      <DialogContent className="max-w-md w-full rounded-xl p-6">
         <DialogHeader>
           <DialogTitle className="text-lg font-medium">
             {t('auth.welcomeBack')}
