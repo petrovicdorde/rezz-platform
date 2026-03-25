@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useLogin } from '@/hooks/useAuth';
 
 interface LoginFormValues {
   email: string;
@@ -11,14 +12,14 @@ interface LoginFormValues {
 }
 
 interface LoginFormProps {
-  onSubmit: (data: LoginFormValues) => void;
   onForgotPassword: () => void;
   onRegister: () => void;
 }
 
-export function LoginForm({ onSubmit, onForgotPassword, onRegister }: LoginFormProps) {
+export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps) {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
+  const loginMutation = useLogin();
 
   const {
     register,
@@ -27,7 +28,7 @@ export function LoginForm({ onSubmit, onForgotPassword, onRegister }: LoginFormP
   } = useForm<LoginFormValues>();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit((data) => loginMutation.mutate(data))} className="flex flex-col gap-4">
       <div>
         <label htmlFor="email" className="mb-1 block text-sm font-medium">
           {t('auth.emailLabel')}
@@ -80,9 +81,12 @@ export function LoginForm({ onSubmit, onForgotPassword, onRegister }: LoginFormP
 
       <Button
         type="submit"
-        className="w-full bg-primary-400 text-primary-900 hover:bg-primary-600"
+        disabled={loginMutation.isPending}
+        className={`w-full bg-primary-400 text-primary-900 hover:bg-primary-600 ${
+          loginMutation.isPending ? 'opacity-70 cursor-not-allowed' : ''
+        }`}
       >
-        {t('auth.loginButton')}
+        {loginMutation.isPending ? t('common.loading') : t('auth.loginButton')}
       </Button>
 
       <div className="flex items-center justify-between">

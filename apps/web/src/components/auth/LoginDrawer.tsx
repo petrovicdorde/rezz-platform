@@ -37,7 +37,6 @@ export function LoginDrawer() {
           </DrawerHeader>
 
           <LoginForm
-            onSubmit={(data) => console.log(data)}
             onForgotPassword={() => console.log('forgot')}
             onRegister={() => console.log('register')}
           />
