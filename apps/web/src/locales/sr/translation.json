@@ -15,5 +15,26 @@
     "confirm": "Potvrdi",
     "back": "Nazad",
     "search": "Pretraži"
+  },
+  "brand": {
+    "name": "rezz.ba"
+  },
+  "auth": {
+    "loginButton": "Uloguj se",
+    "welcomeBack": "Dobrodošli nazad",
+    "loginSubtitle": "Ulogujte se na vaš nalog",
+    "emailLabel": "Email adresa",
+    "passwordLabel": "Lozinka",
+    "emailRequired": "Email je obavezan",
+    "emailInvalid": "Unesite ispravnu email adresu",
+    "passwordRequired": "Lozinka je obavezna",
+    "passwordMinLength": "Lozinka mora imati najmanje 8 karaktera",
+    "forgotPassword": "Zaboravili ste lozinku?",
+    "noAccount": "Nemate nalog?",
+    "registerLink": "Registrujte se"
+  },
+  "home": {
+    "headline": "Rezervacija na klik",
+    "subtitle": "Pronađite i rezervišite savršen lokal za svaku priliku."
   }
 }

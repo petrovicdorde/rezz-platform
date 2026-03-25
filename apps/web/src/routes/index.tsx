@@ -7,5 +7,17 @@ export const Route = createFileRoute('/')({
 
 function HomePage() {
   const { t } = useTranslation();
-  return <div className="p-8"><h1 className="text-2xl font-bold">{t('nav.home')}</h1></div>;
+
+  return (
+    <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-tertiary-100">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold text-secondary-600">
+          {t('home.headline')}
+        </h1>
+        <p className="mt-4 text-tertiary-600">
+          {t('home.subtitle')}
+        </p>
+      </div>
+    </section>
+  );
 }

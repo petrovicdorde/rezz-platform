@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+@theme {
+  /* Primary — Warm Gold */
+  --color-primary-50: #FAF5E4;
+  --color-primary-100: #F0E0A8;
+  --color-primary-200: #DFC068;
+  --color-primary-400: #C9A84C;
+  --color-primary-600: #A07D2A;
+  --color-primary-800: #6B5018;
+  --color-primary-900: #3A2A08;
+
+  /* Secondary — Deep Plum */
+  --color-secondary-50: #F4EDF6;
+  --color-secondary-100: #D9BCE0;
+  --color-secondary-200: #A97DB8;
+  --color-secondary-400: #6B4578;
+  --color-secondary-600: #3D2645;
+  --color-secondary-800: #251630;
+  --color-secondary-900: #110A18;
+
+  /* Tertiary — Warm Cream */
+  --color-tertiary-50: #FDFCF9;
+  --color-tertiary-100: #F5F0E8;
+  --color-tertiary-200: #E8DFD0;
+  --color-tertiary-400: #C8BAA8;
+  --color-tertiary-600: #9A8C7C;
+  --color-tertiary-800: #5E5248;
+  --color-tertiary-900: #2E2620;
+
+  /* Default font */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--color-tertiary-50);
+    color: #1a1a1a;
+  }
+
+  button,
+  a,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  select,
+  summary {
+    cursor: pointer;
+  }
+}
