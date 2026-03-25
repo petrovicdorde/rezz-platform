@@ -11,7 +11,7 @@ import {
 import { useLoginStore } from '@/store/login-ui.store';
 import { LoginForm } from './LoginForm';
 
-export function LoginDrawer() {
+export function LoginDrawer(): React.JSX.Element {
   const { t } = useTranslation();
   const { isOpen, close } = useLoginStore();
 
@@ -29,10 +29,10 @@ export function LoginDrawer() {
 
           <DrawerHeader className="mb-6 p-0">
             <DrawerTitle className="text-lg font-medium">
-              {t('auth.welcomeBack')}
+              {t('auth.login_title')}
             </DrawerTitle>
             <DrawerDescription className="text-sm text-tertiary-600">
-              {t('auth.loginSubtitle')}
+              {t('auth.login_subtitle')}
             </DrawerDescription>
           </DrawerHeader>
 

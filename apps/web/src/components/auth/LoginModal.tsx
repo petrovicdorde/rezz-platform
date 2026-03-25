@@ -9,7 +9,7 @@ import {
 import { useLoginStore } from '@/store/login-ui.store';
 import { LoginForm } from './LoginForm';
 
-export function LoginModal() {
+export function LoginModal(): React.JSX.Element {
   const { t } = useTranslation();
   const { isOpen, close } = useLoginStore();
 
@@ -18,10 +18,10 @@ export function LoginModal() {
       <DialogContent className="max-w-md w-full rounded-xl p-6">
         <DialogHeader>
           <DialogTitle className="text-lg font-medium">
-            {t('auth.welcomeBack')}
+            {t('auth.login_title')}
           </DialogTitle>
           <DialogDescription className="text-sm text-tertiary-600">
-            {t('auth.loginSubtitle')}
+            {t('auth.login_subtitle')}
           </DialogDescription>
         </DialogHeader>
 

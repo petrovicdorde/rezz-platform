@@ -16,7 +16,7 @@ interface LoginFormProps {
   onRegister: () => void;
 }
 
-export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps) {
+export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps): React.JSX.Element {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const loginMutation = useLogin();
@@ -31,16 +31,17 @@ export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps) {
     <form onSubmit={handleSubmit((data) => loginMutation.mutate(data))} className="flex flex-col gap-4">
       <div>
         <label htmlFor="email" className="mb-1 block text-sm font-medium">
-          {t('auth.emailLabel')}
+          {t('auth.email_label')}
         </label>
         <Input
           id="email"
           type="email"
+          placeholder={t('auth.email_placeholder')}
           {...register('email', {
-            required: t('auth.emailRequired'),
+            required: t('auth.email_required'),
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: t('auth.emailInvalid'),
+              message: t('auth.email_invalid'),
             },
           })}
         />
@@ -51,24 +52,26 @@ export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps) {
 
       <div>
         <label htmlFor="password" className="mb-1 block text-sm font-medium">
-          {t('auth.passwordLabel')}
+          {t('auth.password_label')}
         </label>
         <div className="relative">
           <Input
             id="password"
             type={showPassword ? 'text' : 'password'}
+            placeholder={t('auth.password_placeholder')}
             className="pr-10"
             {...register('password', {
-              required: t('auth.passwordRequired'),
+              required: t('auth.password_required'),
               minLength: {
                 value: 8,
-                message: t('auth.passwordMinLength'),
+                message: t('auth.password_min_length'),
               },
             })}
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
+            aria-label={showPassword ? t('auth.hide_password') : t('auth.show_password')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-tertiary-600 hover:text-tertiary-800"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -86,7 +89,7 @@ export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps) {
           loginMutation.isPending ? 'opacity-70 cursor-not-allowed' : ''
         }`}
       >
-        {loginMutation.isPending ? t('common.loading') : t('auth.loginButton')}
+        {loginMutation.isPending ? t('common.loading') : t('auth.login_button')}
       </Button>
 
       <div className="flex items-center justify-between">
@@ -95,16 +98,16 @@ export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps) {
           onClick={onForgotPassword}
           className="text-sm text-primary-400 hover:underline"
         >
-          {t('auth.forgotPassword')}
+          {t('auth.forgot_password')}
         </button>
         <span className="text-sm text-tertiary-600">
-          {t('auth.noAccount')}{' '}
+          {t('auth.no_account')}{' '}
           <button
             type="button"
             onClick={onRegister}
             className="text-primary-400 hover:underline"
           >
-            {t('auth.registerLink')}
+            {t('auth.register_link')}
           </button>
         </span>
       </div>

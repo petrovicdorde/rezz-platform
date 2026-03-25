@@ -1,11 +1,15 @@
 {
+  "brand": {
+    "name": "rezz.ba"
+  },
   "nav": {
     "home": "Početna",
     "venues": "Lokali",
     "login": "Prijava",
     "register": "Registracija",
     "dashboard": "Kontrolna tabla",
-    "logout": "Odjava"
+    "logout": "Odjava",
+    "welcome": "Dobrodošli, {{name}}!"
   },
   "common": {
     "loading": "Učitavanje...",
@@ -14,27 +18,33 @@
     "cancel": "Otkaži",
     "confirm": "Potvrdi",
     "back": "Nazad",
-    "search": "Pretraži"
-  },
-  "brand": {
-    "name": "rezz.ba"
+    "search": "Pretraži",
+    "or": "ili"
   },
   "auth": {
-    "loginButton": "Uloguj se",
-    "welcomeBack": "Dobrodošli nazad",
-    "loginSubtitle": "Ulogujte se na vaš nalog",
-    "emailLabel": "Email adresa",
-    "passwordLabel": "Lozinka",
-    "emailRequired": "Email je obavezan",
-    "emailInvalid": "Unesite ispravnu email adresu",
-    "passwordRequired": "Lozinka je obavezna",
-    "passwordMinLength": "Lozinka mora imati najmanje 8 karaktera",
-    "forgotPassword": "Zaboravili ste lozinku?",
-    "noAccount": "Nemate nalog?",
-    "registerLink": "Registrujte se"
+    "login_title": "Dobrodošli nazad",
+    "login_subtitle": "Ulogujte se na vaš nalog",
+    "login_button": "Uloguj se",
+    "logout_button": "Odjava",
+    "email_label": "Email adresa",
+    "email_placeholder": "vas@email.com",
+    "password_label": "Lozinka",
+    "password_placeholder": "Unesite lozinku",
+    "show_password": "Prikaži lozinku",
+    "hide_password": "Sakrij lozinku",
+    "forgot_password": "Zaboravili ste lozinku?",
+    "no_account": "Nemate nalog?",
+    "register_link": "Registrujte se",
+    "login_success": "Dobrodošli, {{name}}!",
+    "logout_success": "Uspješno ste se odjavili.",
+    "email_required": "Email adresa je obavezna.",
+    "email_invalid": "Unesite ispravnu email adresu.",
+    "password_required": "Lozinka je obavezna.",
+    "password_min_length": "Lozinka mora imati najmanje 8 karaktera.",
+    "generic_error": "Došlo je do greške. Pokušajte ponovo."
   },
   "home": {
-    "headline": "Rezervacija na klik",
-    "subtitle": "Pronađite i rezervišite savršen lokal za svaku priliku."
+    "hero_title": "Rezervacija na klik!",
+    "hero_subtitle": "Pronađite i rezervišite savršen lokal za svaku priliku."
   }
 }

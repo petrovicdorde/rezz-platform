@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/auth.store';
 import { authApi } from '@/lib/api/auth.api';
 
@@ -6,7 +7,8 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
+  const { t } = useTranslation();
   const [isInitialized, setIsInitialized] = useState(false);
   const { accessToken, setUser, logout } = useAuthStore();
 

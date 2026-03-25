@@ -1,17 +1,21 @@
 import axios from 'axios';
 import { useAuthStore } from '@/store/auth.store';
+import i18n from '@/i18n';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000',
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Request interceptor — attach access token to every request
+// Request interceptor — attach access token and locale to every request
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accessToken;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  config.headers['Accept-Language'] = i18n.language ?? 'sr';
+
   return config;
 });
 

@@ -97,6 +97,13 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@CurrentUser() user: User): Promise<{ message: string }> {
+    return this.authService.logout(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('me')
   me(@CurrentUser() user: User): SafeUser {
     return this.authService.toSafeUser(user);

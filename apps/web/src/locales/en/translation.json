@@ -1,1 +1,50 @@
-{}
+{
+  "brand": {
+    "name": "rezz.ba"
+  },
+  "nav": {
+    "home": "Home",
+    "venues": "Venues",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Log out",
+    "welcome": "Welcome, {{name}}!"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "search": "Search",
+    "or": "or"
+  },
+  "auth": {
+    "login_title": "Welcome back",
+    "login_subtitle": "Log in to your account",
+    "login_button": "Log in",
+    "logout_button": "Log out",
+    "email_label": "Email address",
+    "email_placeholder": "your@email.com",
+    "password_label": "Password",
+    "password_placeholder": "Enter your password",
+    "show_password": "Show password",
+    "hide_password": "Hide password",
+    "forgot_password": "Forgot your password?",
+    "no_account": "Don't have an account?",
+    "register_link": "Register",
+    "login_success": "Welcome, {{name}}!",
+    "logout_success": "Successfully logged out.",
+    "email_required": "Email address is required.",
+    "email_invalid": "Please enter a valid email address.",
+    "password_required": "Password is required.",
+    "password_min_length": "Password must be at least 8 characters.",
+    "generic_error": "An error occurred. Please try again."
+  },
+  "home": {
+    "hero_title": "Book with a click!",
+    "hero_subtitle": "Find and reserve the perfect venue for any occasion."
+  }
+}

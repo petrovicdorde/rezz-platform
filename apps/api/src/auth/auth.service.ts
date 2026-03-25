@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { I18nService } from 'nestjs-i18n';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { UsersService } from '../users/users.service';
@@ -36,12 +37,13 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly emailService: EmailService,
+    private readonly i18n: I18nService,
   ) {}
 
   async register(dto: RegisterDto): Promise<{ message: string }> {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
-      throw new ConflictException('Email already in use');
+      throw new ConflictException(await this.i18n.t('auth.email_already_exists'));
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 12);
@@ -63,18 +65,18 @@ export class AuthService {
       emailVerificationToken,
     );
 
-    return { message: 'Registration successful. Please verify your email.' };
+    return { message: await this.i18n.t('auth.registration_success') };
   }
 
   async verifyEmail(token: string): Promise<{ message: string }> {
     const user = await this.findByVerificationToken(token);
 
     if (!user) {
-      throw new BadRequestException('Invalid or expired verification token');
+      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
     }
 
     if (user.emailVerificationTokenExpiresAt && user.emailVerificationTokenExpiresAt < new Date()) {
-      throw new BadRequestException('Invalid or expired verification token');
+      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
     }
 
     await this.usersService.update(user.id, {
@@ -83,7 +85,7 @@ export class AuthService {
       emailVerificationTokenExpiresAt: null,
     });
 
-    return { message: 'Email verified successfully.' };
+    return { message: await this.i18n.t('auth.email_verified') };
   }
 
   async login(dto: LoginDto): Promise<{
@@ -94,20 +96,20 @@ export class AuthService {
     const user = await this.usersService.findByEmail(dto.email);
 
     if (!user || !user.passwordHash) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
     }
 
     if (!user.isEmailVerified) {
-      throw new ForbiddenException('Please verify your email before logging in');
+      throw new ForbiddenException(await this.i18n.t('auth.email_not_verified'));
     }
 
     if (!user.isActive) {
-      throw new ForbiddenException('Account is deactivated');
+      throw new ForbiddenException(await this.i18n.t('auth.account_inactive'));
     }
 
     return this.generateAuthResponse(user);
@@ -120,12 +122,12 @@ export class AuthService {
     const user = await this.usersService.findById(userId);
 
     if (!user || !user.refreshTokenHash) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
     }
 
     const isRefreshTokenValid = await bcrypt.compare(refreshToken, user.refreshTokenHash);
     if (!isRefreshTokenValid) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
     }
 
     const accessToken = this.generateAccessToken(user);
@@ -151,18 +153,18 @@ export class AuthService {
       );
     }
 
-    return { message: 'If that email exists, a reset link has been sent.' };
+    return { message: await this.i18n.t('auth.reset_email_sent') };
   }
 
   async resetPassword(dto: ResetPasswordDto): Promise<{ message: string }> {
     const user = await this.findByResetToken(dto.token);
 
     if (!user) {
-      throw new BadRequestException('Invalid or expired reset token');
+      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
     }
 
     if (user.passwordResetTokenExpiresAt && user.passwordResetTokenExpiresAt < new Date()) {
-      throw new BadRequestException('Invalid or expired reset token');
+      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
     }
 
     const passwordHash = await bcrypt.hash(dto.newPassword, 12);
@@ -173,7 +175,7 @@ export class AuthService {
       passwordResetTokenExpiresAt: null,
     });
 
-    return { message: 'Password reset successful.' };
+    return { message: await this.i18n.t('auth.password_reset_success') };
   }
 
   async googleLogin(googleUser: GoogleOAuthUser): Promise<{
@@ -203,6 +205,11 @@ export class AuthService {
     }
 
     return this.generateAuthResponse(user);
+  }
+
+  async logout(userId: string): Promise<{ message: string }> {
+    await this.usersService.update(userId, { refreshTokenHash: null });
+    return { message: await this.i18n.t('auth.logout_success') };
   }
 
   toSafeUser(user: User): SafeUser {

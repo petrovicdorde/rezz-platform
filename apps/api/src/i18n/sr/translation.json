@@ -1,0 +1,29 @@
+{
+  "auth": {
+    "email_already_exists": "Korisnik sa ovom email adresom već postoji.",
+    "invalid_credentials": "Pogrešan email ili lozinka.",
+    "email_not_verified": "Email adresa nije potvrđena. Provjerite vaš inbox.",
+    "account_inactive": "Vaš nalog je deaktiviran. Kontaktirajte podršku.",
+    "invalid_or_expired_token": "Link je nevažeći ili je istekao.",
+    "logout_success": "Uspješno ste se odjavili.",
+    "registration_success": "Registracija uspješna. Provjerite vaš email.",
+    "email_verified": "Email adresa je potvrđena. Možete se prijaviti.",
+    "password_reset_success": "Lozinka je uspješno promijenjena.",
+    "reset_email_sent": "Ukoliko nalog postoji, link za reset je poslan na vaš email.",
+    "unauthorized": "Niste prijavljeni. Molimo prijavite se.",
+    "forbidden": "Nemate dozvolu za ovu akciju."
+  },
+  "validation": {
+    "required": "Ovo polje je obavezno.",
+    "invalid_email": "Unesite ispravnu email adresu.",
+    "password_too_short": "Lozinka mora imati najmanje 8 karaktera.",
+    "password_too_weak": "Lozinka mora sadržavati slova i brojeve.",
+    "first_name_too_short": "Ime mora imati najmanje 2 karaktera.",
+    "last_name_too_short": "Prezime mora imati najmanje 2 karaktera."
+  },
+  "general": {
+    "internal_error": "Došlo je do greške. Pokušajte ponovo.",
+    "not_found": "Traženi resurs nije pronađen.",
+    "too_many_requests": "Previše zahtjeva. Pokušajte ponovo za nekoliko minuta."
+  }
+}

@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { I18nModule, AcceptLanguageResolver, HeaderResolver } from 'nestjs-i18n';
+import * as path from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -24,6 +26,17 @@ import { User } from './users/entities/user.entity';
         entities: [User],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
+    }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'sr',
+      loaderOptions: {
+        path: path.join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      resolvers: [
+        { use: HeaderResolver, options: ['accept-language'] },
+        AcceptLanguageResolver,
+      ],
     }),
     UsersModule,
     AuthModule,

@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
 import { UserRole } from '@rezz/shared';
+import i18n from '@/i18n';
 import { authApi } from '@/lib/api/auth.api';
 import { useAuthStore } from '@/store/auth.store';
 import { useLoginStore } from '@/store/login-ui.store';
-import { ApiError } from '@/lib/types/auth.types';
+import { handleApiError } from '@/lib/handle-error';
 
 const ROLE_REDIRECT: Record<UserRole, string> = {
   SUPER_ADMIN: '/dashboard/venues',
@@ -14,6 +14,25 @@ const ROLE_REDIRECT: Record<UserRole, string> = {
   WORKER: '/dashboard/arrivals',
   GUEST: '/',
 };
+
+export function useLogout() {
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: authApi.logout,
+    onSuccess: () => {
+      logout();
+      navigate({ to: '/' });
+      toast.success(i18n.t('auth.logout_success'));
+    },
+    onError: (error) => {
+      handleApiError(error);
+      logout();
+      navigate({ to: '/' });
+    },
+  });
+}
 
 export function useLogin() {
   const { setAuth } = useAuthStore();
@@ -35,14 +54,12 @@ export function useLogin() {
         data.refreshToken,
       );
       close();
-      toast.success(`Dobrodošli, ${data.user.firstName}!`);
+      toast.success(i18n.t('auth.login_success', { name: data.user.firstName }));
       const redirect = ROLE_REDIRECT[data.user.role as UserRole] ?? '/';
       navigate({ to: redirect });
     },
-    onError: (error: AxiosError<ApiError>) => {
-      const message = error.response?.data?.message;
-      const text = Array.isArray(message) ? message[0] : message;
-      toast.error(text ?? 'Greška pri prijavi. Pokušajte ponovo.');
+    onError: (error) => {
+      handleApiError(error);
     },
   });
 }
