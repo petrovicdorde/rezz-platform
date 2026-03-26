@@ -40,15 +40,22 @@ export class AuthService {
     private readonly i18n: I18nService,
   ) {}
 
-  async register(dto: RegisterDto): Promise<{ message: string }> {
+  async register(
+    dto: RegisterDto,
+    lang: string = 'sr',
+  ): Promise<{ message: string }> {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
-      throw new ConflictException(await this.i18n.t('auth.email_already_exists'));
+      throw new ConflictException(
+        await this.i18n.t('auth.email_already_exists', { lang }),
+      );
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 12);
     const emailVerificationToken = crypto.randomBytes(32).toString('hex');
-    const emailVerificationTokenExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const emailVerificationTokenExpiresAt = new Date(
+      Date.now() + 24 * 60 * 60 * 1000,
+    );
 
     await this.usersService.create({
       firstName: dto.firstName,
@@ -57,35 +64,49 @@ export class AuthService {
       passwordHash,
       emailVerificationToken,
       emailVerificationTokenExpiresAt,
+      isEmailVerified: false,
+      isActive: false,
     });
 
     await this.emailService.sendVerificationEmail(
       dto.email,
       dto.firstName,
       emailVerificationToken,
+      lang,
     );
 
-    return { message: await this.i18n.t('auth.registration_success') };
+    return { message: await this.i18n.t('auth.registration_success', { lang }) };
   }
 
-  async verifyEmail(token: string): Promise<{ message: string }> {
+  async verifyEmail(
+    token: string,
+    lang: string = 'sr',
+  ): Promise<{ message: string }> {
     const user = await this.findByVerificationToken(token);
 
     if (!user) {
-      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
+      throw new BadRequestException(
+        await this.i18n.t('auth.invalid_or_expired_token', { lang }),
+      );
     }
 
-    if (user.emailVerificationTokenExpiresAt && user.emailVerificationTokenExpiresAt < new Date()) {
-      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
+    if (
+      user.emailVerificationTokenExpiresAt &&
+      user.emailVerificationTokenExpiresAt < new Date()
+    ) {
+      throw new BadRequestException(
+        await this.i18n.t('auth.invalid_or_expired_token', { lang }),
+      );
     }
 
     await this.usersService.update(user.id, {
       isEmailVerified: true,
+      isActive: true,
       emailVerificationToken: null,
       emailVerificationTokenExpiresAt: null,
     });
 
-    return { message: await this.i18n.t('auth.email_verified') };
+    return { message: await this.i18n.t('auth.email_verified', { lang }) };
   }
 
   async login(dto: LoginDto): Promise<{

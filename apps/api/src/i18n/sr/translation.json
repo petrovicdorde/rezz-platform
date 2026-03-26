@@ -17,9 +17,16 @@
     "required": "Ovo polje je obavezno.",
     "invalid_email": "Unesite ispravnu email adresu.",
     "password_too_short": "Lozinka mora imati najmanje 8 karaktera.",
-    "password_too_weak": "Lozinka mora sadržavati slova i brojeve.",
+    "password_too_weak": "Lozinka mora sadržavati velika slova, mala slova i brojeve.",
     "first_name_too_short": "Ime mora imati najmanje 2 karaktera.",
     "last_name_too_short": "Prezime mora imati najmanje 2 karaktera."
+  },
+  "email": {
+    "verification_subject": "Potvrdite vašu email adresu – Rezz.ba",
+    "greeting": "Zdravo, {firstName}!",
+    "verification_body": "Kliknite na dugme ispod da potvrdite vašu email adresu i aktivirate nalog.",
+    "verification_button": "Potvrdi email adresu",
+    "verification_footer": "Link je važeći 24 sata. Ako niste kreirali nalog na Rezz.ba, možete ignorisati ovaj email."
   },
   "general": {
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",

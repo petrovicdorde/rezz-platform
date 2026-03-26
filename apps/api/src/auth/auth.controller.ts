@@ -3,6 +3,7 @@ import {
   Post,
   Get,
   Body,
+  Query,
   UseGuards,
   Req,
   Res,
@@ -10,7 +11,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { Request, Response } from 'express';
+import { I18nLang } from 'nestjs-i18n';
+import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import type { SafeUser } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -32,14 +34,30 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  async register(@Body() dto: RegisterDto): Promise<{ message: string }> {
-    return this.authService.register(dto);
+  @HttpCode(HttpStatus.CREATED)
+  register(
+    @Body() dto: RegisterDto,
+    @I18nLang() lang: string,
+  ): Promise<{ message: string }> {
+    return this.authService.register(dto, lang);
   }
 
-  @Post('verify-email')
-  @HttpCode(HttpStatus.OK)
-  async verifyEmail(@Body('token') token: string): Promise<{ message: string }> {
-    return this.authService.verifyEmail(token);
+  @Get('verify-email')
+  async verifyEmail(
+    @Query('token') token: string,
+    @Res() res: Response,
+    @I18nLang() lang: string,
+  ): Promise<void> {
+    const frontendUrl = this.configService.get<string>(
+      'FRONTEND_URL',
+      'http://localhost:5173',
+    );
+    try {
+      await this.authService.verifyEmail(token, lang);
+      res.redirect(`${frontendUrl}/auth/verified`);
+    } catch {
+      res.redirect(`${frontendUrl}/auth/verify-error`);
+    }
   }
 
   @Post('login')
@@ -53,23 +71,26 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Req() req: any): Promise<{ accessToken: string }> {
-    const { userId, refreshToken } = req.user as {
-      userId: string;
-      refreshToken: string;
-    };
+  async refresh(
+    @Req() req: { user: { userId: string; refreshToken: string } },
+  ): Promise<{ accessToken: string }> {
+    const { userId, refreshToken } = req.user;
     return this.authService.refreshToken(userId, refreshToken);
   }
 
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
-  async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<{ message: string }> {
+  async forgotPassword(
+    @Body() dto: ForgotPasswordDto,
+  ): Promise<{ message: string }> {
     return this.authService.forgotPassword(dto.email);
   }
 
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
-  async resetPassword(@Body() dto: ResetPasswordDto): Promise<{ message: string }> {
+  async resetPassword(
+    @Body() dto: ResetPasswordDto,
+  ): Promise<{ message: string }> {
     return this.authService.resetPassword(dto);
   }
 
@@ -81,10 +102,11 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async googleCallback(@Req() req: any, @Res() res: any): Promise<void> {
-    const result = await this.authService.googleLogin(
-      req.user as GoogleOAuthUser,
-    );
+  async googleCallback(
+    @Req() req: { user: GoogleOAuthUser },
+    @Res() res: Response,
+  ): Promise<void> {
+    const result = await this.authService.googleLogin(req.user);
     const frontendUrl = this.configService.get<string>(
       'FRONTEND_URL',
       'http://localhost:5173',
