@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/auth.store';
 import { authApi } from '@/lib/api/auth.api';
@@ -10,9 +10,13 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
   const { t } = useTranslation();
   const [isInitialized, setIsInitialized] = useState(false);
+  const hasRun = useRef(false);
   const { accessToken, setUser, logout } = useAuthStore();
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const initialize = async () => {
       if (!accessToken) {
         setIsInitialized(true);

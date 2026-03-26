@@ -6,11 +6,19 @@ import { Resend } from 'resend';
 export class EmailService {
   private readonly resend: Resend;
   private readonly frontendUrl: string;
+  private readonly fromEmail: string;
   private readonly logger = new Logger(EmailService.name);
 
   constructor(private readonly configService: ConfigService) {
     this.resend = new Resend(this.configService.get<string>('RESEND_API_KEY'));
-    this.frontendUrl = this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173');
+    this.frontendUrl = this.configService.get<string>(
+      'FRONTEND_URL',
+      'http://localhost:5173',
+    );
+    this.fromEmail = this.configService.get<string>(
+      'RESEND_FROM_EMAIL',
+      'onboarding@resend.dev',
+    );
   }
 
   async sendVerificationEmail(
@@ -57,7 +65,10 @@ export class EmailService {
         `,
       });
     } catch (error) {
-      this.logger.error(`Failed to send password reset email to ${email}`, error);
+      this.logger.error(
+        `Failed to send password reset email to ${email}`,
+        error,
+      );
     }
   }
 }

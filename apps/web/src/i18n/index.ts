@@ -15,7 +15,7 @@ i18n
       en: { translation: enTranslation },
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
     },
     interpolation: { escapeValue: false },
