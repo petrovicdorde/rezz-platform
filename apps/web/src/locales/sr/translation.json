@@ -41,7 +41,9 @@
     "email_invalid": "Unesite ispravnu email adresu.",
     "password_required": "Lozinka je obavezna.",
     "password_min_length": "Lozinka mora imati najmanje 8 karaktera.",
-    "generic_error": "Došlo je do greške. Pokušajte ponovo."
+    "generic_error": "Došlo je do greške. Pokušajte ponovo.",
+    "google_button": "Nastavi sa Google",
+    "google_error": "Google prijava nije uspjela. Pokušajte ponovo."
   },
   "home": {
     "hero_title": "Rezervacija na klik!",

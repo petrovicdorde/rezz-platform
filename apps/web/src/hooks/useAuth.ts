@@ -8,7 +8,7 @@ import { useAuthStore } from '@/store/auth.store';
 import { useLoginStore } from '@/store/login-ui.store';
 import { handleApiError } from '@/lib/handle-error';
 
-const ROLE_REDIRECT: Record<UserRole, string> = {
+export const ROLE_REDIRECT: Record<UserRole, string> = {
   SUPER_ADMIN: '/dashboard/venues',
   MANAGER: '/dashboard/reservations',
   WORKER: '/dashboard/arrivals',

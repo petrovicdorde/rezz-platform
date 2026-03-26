@@ -14,7 +14,16 @@ function RootLayout() {
       <Navbar />
       <Outlet />
       {isMobile ? <LoginDrawer /> : <LoginModal />}
-      <ToastContainer position="top-right" />
+      <ToastContainer
+        position="top-right"
+        limit={1}
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable={false}
+      />
     </>
   );
 }

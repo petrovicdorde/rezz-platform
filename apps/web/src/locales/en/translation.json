@@ -41,7 +41,9 @@
     "email_invalid": "Please enter a valid email address.",
     "password_required": "Password is required.",
     "password_min_length": "Password must be at least 8 characters.",
-    "generic_error": "An error occurred. Please try again."
+    "generic_error": "An error occurred. Please try again.",
+    "google_button": "Continue with Google",
+    "google_error": "Google login failed. Please try again."
   },
   "home": {
     "hero_title": "Book with a click!",
