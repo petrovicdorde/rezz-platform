@@ -7,6 +7,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { useLoginStore } from '@/store/login-ui.store';
+import { useRegisterStore } from '@/store/register-ui.store';
 import { LoginForm } from './LoginForm';
 
 export function LoginModal(): React.JSX.Element {
@@ -27,7 +28,10 @@ export function LoginModal(): React.JSX.Element {
 
         <LoginForm
           onForgotPassword={() => console.log('forgot')}
-          onRegister={() => console.log('register')}
+          onRegister={() => {
+            close();
+            useRegisterStore.getState().open();
+          }}
         />
       </DialogContent>
     </Dialog>

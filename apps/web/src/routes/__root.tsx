@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Navbar } from '@/components/layout/Navbar';
 import { LoginDrawer } from '@/components/auth/LoginDrawer';
 import { LoginModal } from '@/components/auth/LoginModal';
+import { RegisterDrawer } from '@/components/auth/RegisterDrawer';
+import { RegisterModal } from '@/components/auth/RegisterModal';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 function RootLayout() {
@@ -14,6 +16,7 @@ function RootLayout() {
       <Navbar />
       <Outlet />
       {isMobile ? <LoginDrawer /> : <LoginModal />}
+      {isMobile ? <RegisterDrawer /> : <RegisterModal />}
       <ToastContainer
         position="top-right"
         limit={1}

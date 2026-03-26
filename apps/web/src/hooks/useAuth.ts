@@ -3,7 +3,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'react-toastify';
 import { UserRole } from '@rezz/shared';
 import i18n from '@/i18n';
-import { authApi } from '@/lib/api/auth.api';
+import { authApi, type RegisterRequest } from '@/lib/api/auth.api';
 import { useAuthStore } from '@/store/auth.store';
 import { useLoginStore } from '@/store/login-ui.store';
 import { handleApiError } from '@/lib/handle-error';
@@ -30,6 +30,15 @@ export function useLogout() {
       handleApiError(error);
       logout();
       navigate({ to: '/' });
+    },
+  });
+}
+
+export function useRegister() {
+  return useMutation({
+    mutationFn: (data: RegisterRequest) => authApi.register(data),
+    onError: (error) => {
+      handleApiError(error);
     },
   });
 }

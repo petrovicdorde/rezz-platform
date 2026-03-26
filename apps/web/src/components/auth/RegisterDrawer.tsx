@@ -8,13 +8,14 @@ import {
   DrawerDescription,
   DrawerClose,
 } from '@/components/ui/drawer';
-import { useLoginStore } from '@/store/login-ui.store';
 import { useRegisterStore } from '@/store/register-ui.store';
-import { LoginForm } from './LoginForm';
+import { useLoginStore } from '@/store/login-ui.store';
+import { RegisterForm } from './RegisterForm';
+import { CheckEmailView } from './CheckEmailView';
 
-export function LoginDrawer(): React.JSX.Element {
+export function RegisterDrawer(): React.JSX.Element {
   const { t } = useTranslation();
-  const { isOpen, close } = useLoginStore();
+  const { isOpen, close, view, email, showCheckEmail } = useRegisterStore();
 
   return (
     <Drawer open={isOpen} onOpenChange={(open) => !open && close()} direction="right">
@@ -30,20 +31,26 @@ export function LoginDrawer(): React.JSX.Element {
 
           <DrawerHeader className="mb-6 p-0">
             <DrawerTitle className="text-lg font-medium">
-              {t('auth.login_title')}
+              {view === 'form' ? t('auth.register_title') : t('auth.check_email_title')}
             </DrawerTitle>
-            <DrawerDescription className="text-sm text-tertiary-600">
-              {t('auth.login_subtitle')}
-            </DrawerDescription>
+            {view === 'form' && (
+              <DrawerDescription className="text-sm text-tertiary-600">
+                {t('auth.register_subtitle')}
+              </DrawerDescription>
+            )}
           </DrawerHeader>
 
-          <LoginForm
-            onForgotPassword={() => console.log('forgot')}
-            onRegister={() => {
-              close();
-              useRegisterStore.getState().open();
-            }}
-          />
+          {view === 'check-email' ? (
+            <CheckEmailView email={email} />
+          ) : (
+            <RegisterForm
+              onSuccess={(email) => showCheckEmail(email)}
+              onLogin={() => {
+                close();
+                useLoginStore.getState().open();
+              }}
+            />
+          )}
         </div>
       </DrawerContent>
     </Drawer>
