@@ -34,8 +34,15 @@ export const useAuthStore = create<AuthState>()(
       setRefreshToken: (refreshToken) => set({ refreshToken }),
       setAuth: (user, accessToken, refreshToken) =>
         set({ user, accessToken, refreshToken, isAuthenticated: true }),
-      logout: () =>
-        set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false }),
+      logout: () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        document.cookie.split(';').forEach((cookie) => {
+          const name = cookie.split('=')[0].trim();
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        });
+        set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+      },
     }),
     {
       name: 'rezz-auth',
