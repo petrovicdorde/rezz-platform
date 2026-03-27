@@ -149,6 +149,21 @@
     "venue_type_sports_bar": "Sports bar",
     "venue_type_wine_bar": "Wine bar",
     "venue_type_hookah_lounge": "Hookah lounge",
-    "venue_type_bakery": "Bakery"
+    "venue_type_bakery": "Bakery",
+    "view_details": "Venue details",
+    "edit_mode_label": "Edit",
+    "delete": "Delete venue",
+    "delete_confirm_yes": "Yes, delete",
+    "delete_confirm_no": "Cancel",
+    "updated": "Venue updated successfully.",
+    "deleted": "Venue deleted.",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "activated": "Venue activated.",
+    "deactivated": "Venue deactivated.",
+    "activate_confirm": "Activate venue?",
+    "deactivate_confirm": "Deactivate venue?",
+    "status_active": "Active",
+    "status_inactive": "Inactive"
   }
 }

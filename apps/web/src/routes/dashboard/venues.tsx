@@ -9,7 +9,10 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { VenueCard } from '@/components/venues/VenueCard';
 import { VenueFormModal } from '@/components/venues/VenueFormModal';
 import { VenueFormDrawer } from '@/components/venues/VenueFormDrawer';
+import { VenueDetailModal } from '@/components/venues/VenueDetailModal';
+import { VenueDetailDrawer } from '@/components/venues/VenueDetailDrawer';
 import { Button } from '@/components/ui/button';
+import type { AdminVenue } from '@/lib/types/venue.types';
 
 export const Route = createFileRoute('/dashboard/venues')({
   component: VenuesDashboardPage,
@@ -20,6 +23,7 @@ function VenuesDashboardPage(): React.JSX.Element {
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedVenue, setSelectedVenue] = useState<AdminVenue | null>(null);
   const { data: venues, isLoading, isError } = useVenues();
   const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -70,7 +74,11 @@ function VenuesDashboardPage(): React.JSX.Element {
       {!isLoading && !isError && venues && venues.length > 0 && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {venues.map((venue) => (
-            <VenueCard key={venue.id} venue={venue} />
+            <VenueCard
+              key={venue.id}
+              venue={venue}
+              onClick={() => setSelectedVenue(venue)}
+            />
           ))}
         </div>
       )}
@@ -83,7 +91,7 @@ function VenuesDashboardPage(): React.JSX.Element {
         <Plus className="h-6 w-6 text-primary-900" />
       </button>
 
-      {/* Form modal/drawer */}
+      {/* Form modal/drawer (create) */}
       {isMobile ? (
         <VenueFormDrawer
           isOpen={isFormOpen}
@@ -93,6 +101,19 @@ function VenuesDashboardPage(): React.JSX.Element {
         <VenueFormModal
           isOpen={isFormOpen}
           onClose={() => setIsFormOpen(false)}
+        />
+      )}
+
+      {/* Detail modal/drawer (view/edit/delete) */}
+      {isMobile ? (
+        <VenueDetailDrawer
+          venue={selectedVenue}
+          onClose={() => setSelectedVenue(null)}
+        />
+      ) : (
+        <VenueDetailModal
+          venue={selectedVenue}
+          onClose={() => setSelectedVenue(null)}
         />
       )}
     </DashboardLayout>

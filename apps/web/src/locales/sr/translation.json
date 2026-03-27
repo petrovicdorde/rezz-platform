@@ -149,6 +149,21 @@
     "venue_type_sports_bar": "Sports bar",
     "venue_type_wine_bar": "Wine bar",
     "venue_type_hookah_lounge": "Nargilana",
-    "venue_type_bakery": "Pekara"
+    "venue_type_bakery": "Pekara",
+    "view_details": "Detalji lokala",
+    "edit_mode_label": "Uredi",
+    "delete": "Obriši lokal",
+    "delete_confirm_yes": "Da, obriši",
+    "delete_confirm_no": "Otkaži",
+    "updated": "Lokal je uspješno ažuriran.",
+    "deleted": "Lokal je obrisan.",
+    "activate": "Aktiviraj",
+    "deactivate": "Deaktiviraj",
+    "activated": "Lokal je aktiviran.",
+    "deactivated": "Lokal je deaktiviran.",
+    "activate_confirm": "Aktiviraj lokal?",
+    "deactivate_confirm": "Deaktiviraj lokal?",
+    "status_active": "Aktivan",
+    "status_inactive": "Deaktiviran"
   }
 }

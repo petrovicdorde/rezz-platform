@@ -5,6 +5,7 @@ import type { AdminVenue } from '@/lib/types/venue.types';
 
 interface VenueCardProps {
   venue: AdminVenue;
+  onClick: () => void;
 }
 
 const VENUE_TYPE_KEYS: Record<VenueType, string> = {
@@ -34,13 +35,16 @@ const PAYMENT_KEYS: Record<PaymentMethod, string> = {
   MOBILE: 'venue.payment_mobile',
 };
 
-export function VenueCard({ venue }: VenueCardProps): React.JSX.Element {
+export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element {
   const { t } = useTranslation();
   const visibleTags = venue.tags.slice(0, 3);
   const extraTagCount = venue.tags.length - 3;
 
   return (
-    <div className="rounded-xl border bg-white p-4 shadow-sm">
+    <div
+      className="cursor-pointer rounded-xl border bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+      onClick={onClick}
+    >
       {/* Top row */}
       <div className="flex items-center justify-between">
         <span className="font-medium text-secondary-600">{venue.name}</span>
@@ -51,7 +55,7 @@ export function VenueCard({ venue }: VenueCardProps): React.JSX.Element {
               : 'bg-red-100 text-red-700'
           }`}
         >
-          {venue.isActive ? t('venue.working_hours_open') : t('venue.working_hours_closed')}
+          {venue.isActive ? t('venue.status_active') : t('venue.status_inactive')}
         </span>
       </div>
 

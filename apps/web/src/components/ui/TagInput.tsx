@@ -6,6 +6,7 @@ interface TagInputProps {
   onChange: (tags: string[]) => void;
   placeholder?: string;
   hint?: string;
+  disabled?: boolean;
 }
 
 export function TagInput({
@@ -13,6 +14,7 @@ export function TagInput({
   onChange,
   placeholder,
   hint,
+  disabled = false,
 }: TagInputProps): React.JSX.Element {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +43,7 @@ export function TagInput({
   return (
     <div>
       <div
-        className="flex min-h-[42px] flex-wrap gap-2 rounded-md border border-input bg-background p-2 focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-400"
+        className={`flex min-h-[42px] flex-wrap gap-2 rounded-md border border-input bg-background p-2 focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-400 ${disabled ? 'pointer-events-none opacity-60' : ''}`}
         onClick={() => inputRef.current?.focus()}
       >
         {value.map((tag, i) => (
@@ -50,29 +52,33 @@ export function TagInput({
             className="flex items-center gap-1 rounded-full bg-primary-50 px-2 py-1 text-sm text-primary-800"
           >
             {tag}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                removeTag(i);
-              }}
-              className="ml-1 hover:text-primary-600"
-            >
-              <X className="h-3 w-3" />
-            </button>
+            {!disabled && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeTag(i);
+                }}
+                className="ml-1 hover:text-primary-600"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
           </span>
         ))}
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={value.length === 0 ? placeholder : undefined}
-          className="min-w-[120px] flex-1 bg-transparent py-0.5 text-sm outline-none"
-        />
+        {!disabled && (
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={value.length === 0 ? placeholder : undefined}
+            className="min-w-[120px] flex-1 bg-transparent py-0.5 text-sm outline-none"
+          />
+        )}
       </div>
-      {hint && <p className="mt-1 text-xs text-tertiary-600">{hint}</p>}
+      {hint && <p className={`mt-1 text-xs text-tertiary-600 ${disabled ? 'invisible' : ''}`}>{hint}</p>}
     </div>
   );
 }

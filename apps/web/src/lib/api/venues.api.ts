@@ -25,6 +25,10 @@ export const venuesApi = {
     return response.data;
   },
 
+  remove: async (id: string): Promise<void> => {
+    await api.delete(`/venues/${id}`);
+  },
+
   setActive: async (
     id: string,
     isActive: boolean,

@@ -219,10 +219,11 @@ export class VenuesService {
       );
     }
 
-    venue.isActive = false;
-    await this.venueRepo.save(venue);
+    await this.tableRepo.delete({ venueId: id });
+    await this.invitationRepo.delete({ venueId: id });
+    await this.venueRepo.remove(venue);
 
-    return { message: await this.i18n.t('venue.deactivated', { lang }) };
+    return { message: await this.i18n.t('venue.deleted', { lang }) };
   }
 
   async setActive(

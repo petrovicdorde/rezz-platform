@@ -43,6 +43,7 @@
     "name_already_exists": "Lokal sa ovim nazivom već postoji.",
     "created": "Lokal je uspješno kreiran.",
     "updated": "Lokal je uspješno ažuriran.",
+    "deleted": "Lokal je obrisan.",
     "deactivated": "Lokal je deaktiviran.",
     "activated": "Lokal je aktiviran.",
     "invitation_sent": "Pozivnica je uspješno poslata na {{email}}.",

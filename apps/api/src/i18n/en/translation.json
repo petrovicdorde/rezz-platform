@@ -43,6 +43,7 @@
     "name_already_exists": "A venue with this name already exists.",
     "created": "Venue created successfully.",
     "updated": "Venue updated successfully.",
+    "deleted": "Venue has been deleted.",
     "deactivated": "Venue has been deactivated.",
     "activated": "Venue has been activated.",
     "invitation_sent": "Invitation successfully sent to {{email}}.",

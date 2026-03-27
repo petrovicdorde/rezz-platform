@@ -5,6 +5,7 @@ import type { WorkingHours, WorkingHourDay } from '@/lib/types/venue.types';
 interface WorkingHoursInputProps {
   value: WorkingHours;
   onChange: (hours: WorkingHours) => void;
+  disabled?: boolean;
 }
 
 const DAYS = [
@@ -26,6 +27,7 @@ const DEFAULT_DAY: WorkingHourDay = {
 export function WorkingHoursInput({
   value,
   onChange,
+  disabled = false,
 }: WorkingHoursInputProps): React.JSX.Element {
   const { t } = useTranslation();
 
@@ -50,7 +52,7 @@ export function WorkingHoursInput({
         return (
           <div
             key={day}
-            className="flex items-center justify-between gap-4 border-b border-tertiary-200 py-2 last:border-0"
+            className={`flex items-center justify-between gap-4 border-b border-tertiary-200 py-2 last:border-0 ${disabled ? 'opacity-60' : ''}`}
           >
             <span className="text-sm font-medium text-secondary-600 md:w-28">
               <span className="hidden md:inline">{t(`venue.day_${day}`)}</span>
@@ -63,6 +65,7 @@ export function WorkingHoursInput({
                 onCheckedChange={(checked) =>
                   updateDay(day, { isClosed: !checked })
                 }
+                disabled={disabled}
               />
               {dayValue.isClosed && (
                 <span className="text-sm text-tertiary-400">
@@ -77,6 +80,7 @@ export function WorkingHoursInput({
                   type="time"
                   value={dayValue.open}
                   onChange={(e) => updateDay(day, { open: e.target.value })}
+                  disabled={disabled}
                   className="w-28 rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
                 />
                 <span className="text-sm text-tertiary-400">–</span>
@@ -84,6 +88,7 @@ export function WorkingHoursInput({
                   type="time"
                   value={dayValue.close}
                   onChange={(e) => updateDay(day, { close: e.target.value })}
+                  disabled={disabled}
                   className="w-28 rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
                 />
               </div>
