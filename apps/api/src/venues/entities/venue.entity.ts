@@ -59,6 +59,9 @@ export class Venue {
   isActive: boolean;
 
   @Column({ type: 'varchar', nullable: true })
+  address: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
   imageUrl: string | null;
 
   @CreateDateColumn()

@@ -18,6 +18,6 @@ import { AuthModule } from '../auth/auth.module';
   ],
   controllers: [VenuesController, InvitationsController],
   providers: [VenuesService, InvitationsService],
-  exports: [VenuesService, InvitationsService],
+  exports: [VenuesService, InvitationsService, TypeOrmModule],
 })
 export class VenuesModule {}

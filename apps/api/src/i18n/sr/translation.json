@@ -53,6 +53,55 @@
     "invitation_already_declined": "Pozivnica je već odbijena.",
     "invitation_declined": "Pozivnica je odbijena."
   },
+  "reservation": {
+    "not_found": "Rezervacija nije pronađena.",
+    "already_confirmed": "Rezervacija je već potvrđena.",
+    "already_rejected": "Rezervacija je već odbijena.",
+    "already_cancelled": "Rezervacija je već otkazana.",
+    "already_completed": "Rezervacija je već završena.",
+    "cannot_reject": "Rezervacija se ne može odbiti u ovom statusu.",
+    "cannot_cancel": "Rezervacija se ne može otkazati u ovom statusu.",
+    "no_available_tables": "Nema slobodnih stolova za odabrani datum, vrijeme i tip stola.",
+    "confirmed": "Rezervacija je potvrđena.",
+    "rejected": "Rezervacija je odbijena.",
+    "cancelled": "Rezervacija je otkazana.",
+    "arrived": "Dolazak gosta je potvrđen.",
+    "no_show": "Gost nije došao.",
+    "created": "Rezervacija je uspješno kreirana.",
+    "venue_inactive": "Lokal nije aktivan i ne prima rezervacije.",
+    "invalid_date": "Datum rezervacije ne može biti u prošlosti.",
+    "table_type_not_available": "Odabrani tip stola nije dostupan u ovom lokalu.",
+    "already_rated": "Ova rezervacija je već ocjenjena.",
+    "not_completed": "Samo završene rezervacije se mogu ocijeniti."
+  },
+  "notification": {
+    "not_found": "Obavještenje nije pronađeno.",
+    "reservation_new": "Nova rezervacija od {{firstName}} {{lastName}} za {{date}} u {{time}}.",
+    "reservation_confirmed": "Rezervacija od {{firstName}} {{lastName}} je potvrđena.",
+    "reservation_rejected": "Rezervacija od {{firstName}} {{lastName}} je odbijena.",
+    "reservation_cancelled": "{{firstName}} {{lastName}} je otkazao/la rezervaciju za {{date}} u {{time}}.",
+    "reservation_reminder": "Podsjetnik: Rezervacija za {{firstName}} {{lastName}} je za {{time}}."
+  },
+  "employee": {
+    "not_found": "Zaposleni nije pronađen.",
+    "already_exists": "Korisnik sa ovom email adresom je već zaposleni u ovom lokalu.",
+    "invitation_pending": "Pozivnica za ovog korisnika je već poslata i čeka odgovor.",
+    "cannot_remove_self": "Ne možete ukloniti vlastiti nalog.",
+    "cannot_remove_owner": "Ne možete ukloniti vlasnika lokala.",
+    "removed": "Zaposleni je uspješno uklonjen.",
+    "role_updated": "Uloga zaposlenog je uspješno promijenjena.",
+    "cannot_change_own_role": "Ne možete promijeniti vlastitu ulogu."
+  },
+  "event": {
+    "not_found": "Dogadjaj nije pronađen.",
+    "already_past": "Ne možete kreirati dogadjaj u prošlosti.",
+    "promotion_not_found": "Promocija nije pronađena.",
+    "created": "Dogadjaj je uspješno kreiran.",
+    "updated": "Dogadjaj je uspješno ažuriran.",
+    "deleted": "Dogadjaj je obrisan.",
+    "promotion_created": "Promocija je uspješno dodana.",
+    "promotion_deleted": "Promocija je obrisana."
+  },
   "general": {
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",
     "not_found": "Traženi resurs nije pronađen.",

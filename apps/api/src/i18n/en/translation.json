@@ -53,6 +53,55 @@
     "invitation_already_declined": "This invitation has already been declined.",
     "invitation_declined": "Invitation declined."
   },
+  "reservation": {
+    "not_found": "Reservation not found.",
+    "already_confirmed": "Reservation is already confirmed.",
+    "already_rejected": "Reservation is already rejected.",
+    "already_cancelled": "Reservation is already cancelled.",
+    "already_completed": "Reservation is already completed.",
+    "cannot_reject": "Reservation cannot be rejected at this status.",
+    "cannot_cancel": "Reservation cannot be cancelled at this status.",
+    "no_available_tables": "No available tables for the selected date, time and table type.",
+    "confirmed": "Reservation confirmed.",
+    "rejected": "Reservation rejected.",
+    "cancelled": "Reservation cancelled.",
+    "arrived": "Guest arrival confirmed.",
+    "no_show": "Guest marked as no-show.",
+    "created": "Reservation created successfully.",
+    "venue_inactive": "This venue is not active and does not accept reservations.",
+    "invalid_date": "Reservation date cannot be in the past.",
+    "table_type_not_available": "Selected table type is not available at this venue.",
+    "already_rated": "This reservation has already been rated.",
+    "not_completed": "Only completed reservations can be rated."
+  },
+  "notification": {
+    "not_found": "Notification not found.",
+    "reservation_new": "New reservation from {{firstName}} {{lastName}} for {{date}} at {{time}}.",
+    "reservation_confirmed": "Reservation from {{firstName}} {{lastName}} has been confirmed.",
+    "reservation_rejected": "Reservation from {{firstName}} {{lastName}} has been rejected.",
+    "reservation_cancelled": "{{firstName}} {{lastName}} cancelled their reservation for {{date}} at {{time}}.",
+    "reservation_reminder": "Reminder: Reservation for {{firstName}} {{lastName}} is at {{time}}."
+  },
+  "employee": {
+    "not_found": "Employee not found.",
+    "already_exists": "A user with this email is already an employee at this venue.",
+    "invitation_pending": "An invitation for this user is already pending.",
+    "cannot_remove_self": "You cannot remove your own account.",
+    "cannot_remove_owner": "You cannot remove the venue owner.",
+    "removed": "Employee removed successfully.",
+    "role_updated": "Employee role updated successfully.",
+    "cannot_change_own_role": "You cannot change your own role."
+  },
+  "event": {
+    "not_found": "Event not found.",
+    "already_past": "You cannot create an event in the past.",
+    "promotion_not_found": "Promotion not found.",
+    "created": "Event created successfully.",
+    "updated": "Event updated successfully.",
+    "deleted": "Event deleted.",
+    "promotion_created": "Promotion added successfully.",
+    "promotion_deleted": "Promotion deleted."
+  },
   "general": {
     "internal_error": "An error occurred. Please try again.",
     "not_found": "The requested resource was not found.",

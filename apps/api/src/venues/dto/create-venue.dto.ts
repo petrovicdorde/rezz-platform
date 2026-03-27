@@ -143,6 +143,10 @@ export class CreateVenueDto {
   hasParking: boolean;
 
   @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   tags?: string[];

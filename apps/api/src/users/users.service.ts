@@ -40,6 +40,24 @@ export class UsersService {
     });
   }
 
+  async findManagersByVenueId(venueId: string): Promise<User[]> {
+    return this.usersRepository.find({
+      where: { venueId, role: UserRole.MANAGER, isActive: true },
+    });
+  }
+
+  async findByVenueId(venueId: string, roles?: UserRole[]): Promise<User[]> {
+    const qb = this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.venueId = :venueId', { venueId });
+
+    if (roles && roles.length > 0) {
+      qb.andWhere('user.role IN (:...roles)', { roles });
+    }
+
+    return qb.orderBy('user.role', 'ASC').addOrderBy('user.firstName', 'ASC').getMany();
+  }
+
   async create(data: DeepPartial<User>): Promise<User> {
     const user = this.usersRepository.create(data);
     return this.usersRepository.save(user);

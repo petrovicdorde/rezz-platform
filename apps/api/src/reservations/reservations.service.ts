@@ -1,0 +1,371 @@
+import {
+  Injectable,
+  Inject,
+  forwardRef,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, In } from 'typeorm';
+import { I18nService } from 'nestjs-i18n';
+import type {
+  TableType,
+  ReservationStatus,
+  ReservationSource,
+  NotificationType,
+} from '@rezz/shared';
+import { Reservation } from './entities/reservation.entity';
+import { GuestRating } from './entities/guest-rating.entity';
+import { Venue } from '../venues/entities/venue.entity';
+import { VenueTable } from '../venues/entities/venue-table.entity';
+import { CreateReservationDto } from './dto/create-reservation.dto';
+import { ArrivalDto } from './dto/arrival.dto';
+import { GuestRatingDto } from './dto/guest-rating.dto';
+import { NotificationsService } from '../notifications/notifications.service';
+import { UsersService } from '../users/users.service';
+
+@Injectable()
+export class ReservationsService {
+  constructor(
+    @InjectRepository(Reservation)
+    private reservationRepo: Repository<Reservation>,
+    @InjectRepository(GuestRating)
+    private ratingRepo: Repository<GuestRating>,
+    @InjectRepository(Venue)
+    private venueRepo: Repository<Venue>,
+    @InjectRepository(VenueTable)
+    private venueTableRepo: Repository<VenueTable>,
+    private i18n: I18nService,
+    private usersService: UsersService,
+    @Inject(forwardRef(() => NotificationsService))
+    private notificationsService: NotificationsService,
+  ) {}
+
+  private async notifyVenueManagers(
+    reservation: Reservation,
+    type: NotificationType,
+  ): Promise<void> {
+    const managers = await this.usersService.findManagersByVenueId(
+      reservation.venueId,
+    );
+
+    for (const manager of managers) {
+      await this.notificationsService.createForReservation({
+        userId: manager.id,
+        type,
+        reservation,
+      });
+    }
+  }
+
+  async getAvailableSlots(
+    venueId: string,
+    date: string,
+    tableType: TableType,
+    lang: string = 'sr',
+  ): Promise<{
+    tableType: TableType;
+    total: number;
+    reserved: number;
+    available: number;
+  }> {
+    const venue = await this.venueRepo.findOne({
+      where: { id: venueId },
+      relations: ['tables'],
+    });
+
+    if (!venue) {
+      throw new NotFoundException(
+        await this.i18n.t('venue.not_found', { lang }),
+      );
+    }
+
+    if (!venue.isActive) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.venue_inactive', { lang }),
+      );
+    }
+
+    const venueTable = await this.venueTableRepo.findOne({
+      where: { venueId, type: tableType },
+    });
+
+    if (!venueTable) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.table_type_not_available', { lang }),
+      );
+    }
+
+    const reserved = await this.reservationRepo.count({
+      where: {
+        venueId,
+        date,
+        tableType,
+        status: In(['PENDING', 'CONFIRMED']),
+      },
+    });
+
+    return {
+      tableType,
+      total: venueTable.count,
+      reserved,
+      available: venueTable.count - reserved,
+    };
+  }
+
+  async createByManager(
+    venueId: string,
+    dto: CreateReservationDto,
+    managerId: string,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const reservationDate = new Date(dto.date);
+
+    if (reservationDate < today) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.invalid_date', { lang }),
+      );
+    }
+
+    const slots = await this.getAvailableSlots(
+      venueId,
+      dto.date,
+      dto.tableType,
+      lang,
+    );
+
+    if (slots.available <= 0) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.no_available_tables', { lang }),
+      );
+    }
+
+    const reservation = this.reservationRepo.create({
+      venueId,
+      date: dto.date,
+      time: dto.time,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      phone: dto.phone,
+      numberOfGuests: dto.numberOfGuests,
+      tableType: dto.tableType,
+      specialRequest: dto.specialRequest ?? null,
+      status: 'CONFIRMED',
+      source: 'MANAGER',
+      createdByManagerId: managerId,
+    });
+
+    return this.reservationRepo.save(reservation);
+  }
+
+  async findAllByVenue(
+    venueId: string,
+    filters: {
+      status?: ReservationStatus[];
+      dateFrom?: string;
+      dateTo?: string;
+      source?: ReservationSource;
+    },
+    lang: string = 'sr',
+  ): Promise<Reservation[]> {
+    const qb = this.reservationRepo
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.createdByManager', 'createdByManager')
+      .leftJoinAndSelect('reservation.user', 'user')
+      .where('reservation.venueId = :venueId', { venueId });
+
+    if (filters.status && filters.status.length > 0) {
+      qb.andWhere('reservation.status IN (:...status)', {
+        status: filters.status,
+      });
+    }
+
+    if (filters.dateFrom) {
+      qb.andWhere('reservation.date >= :dateFrom', {
+        dateFrom: filters.dateFrom,
+      });
+    }
+
+    if (filters.dateTo) {
+      qb.andWhere('reservation.date <= :dateTo', {
+        dateTo: filters.dateTo,
+      });
+    }
+
+    if (filters.source) {
+      qb.andWhere('reservation.source = :source', {
+        source: filters.source,
+      });
+    }
+
+    qb.orderBy('reservation.date', 'ASC').addOrderBy(
+      'reservation.time',
+      'ASC',
+    );
+
+    return qb.getMany();
+  }
+
+  async findOne(
+    id: string,
+    venueId: string,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const reservation = await this.reservationRepo.findOne({
+      where: { id, venueId },
+      relations: ['createdByManager', 'user', 'guestRating'],
+    });
+
+    if (!reservation) {
+      throw new NotFoundException(
+        await this.i18n.t('reservation.not_found', { lang }),
+      );
+    }
+
+    return reservation;
+  }
+
+  async confirm(
+    id: string,
+    venueId: string,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const reservation = await this.findOne(id, venueId, lang);
+
+    if (reservation.status === 'CONFIRMED') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.already_confirmed', { lang }),
+      );
+    }
+
+    if (reservation.status !== 'PENDING') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.cannot_reject', { lang }),
+      );
+    }
+
+    reservation.status = 'CONFIRMED';
+    const saved = await this.reservationRepo.save(reservation);
+    await this.notifyVenueManagers(saved, 'RESERVATION_CONFIRMED');
+    return saved;
+  }
+
+  async reject(
+    id: string,
+    venueId: string,
+    note: string | undefined,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const reservation = await this.findOne(id, venueId, lang);
+
+    if (reservation.status !== 'PENDING') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.cannot_reject', { lang }),
+      );
+    }
+
+    reservation.status = 'REJECTED';
+    reservation.cancellationReason = note ?? null;
+    reservation.cancelledAt = new Date();
+    const saved = await this.reservationRepo.save(reservation);
+    await this.notifyVenueManagers(saved, 'RESERVATION_REJECTED');
+    return saved;
+  }
+
+  async recordArrival(
+    id: string,
+    venueId: string,
+    dto: ArrivalDto,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const reservation = await this.findOne(id, venueId, lang);
+
+    if (
+      reservation.status === 'COMPLETED' ||
+      reservation.status === 'NO_SHOW'
+    ) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.already_completed', { lang }),
+      );
+    }
+
+    if (reservation.status !== 'CONFIRMED') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.cannot_cancel', { lang }),
+      );
+    }
+
+    reservation.status = dto.outcome;
+    reservation.arrivedAt = dto.outcome === 'COMPLETED' ? new Date() : null;
+    reservation.arrivalNote = dto.note ?? null;
+    return this.reservationRepo.save(reservation);
+  }
+
+  async rateGuest(
+    reservationId: string,
+    venueId: string,
+    dto: GuestRatingDto,
+    ratedById: string,
+    lang: string = 'sr',
+  ): Promise<GuestRating> {
+    const reservation = await this.findOne(reservationId, venueId, lang);
+
+    if (reservation.status !== 'COMPLETED') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.not_completed', { lang }),
+      );
+    }
+
+    const existingRating = await this.ratingRepo.findOne({
+      where: { reservationId },
+    });
+
+    if (existingRating) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.already_rated', { lang }),
+      );
+    }
+
+    const rating = this.ratingRepo.create({
+      rating: dto.rating,
+      note: dto.note ?? null,
+      reservationId,
+      guestUserId: reservation.userId ?? null,
+      ratedById,
+      venueId,
+    });
+
+    return this.ratingRepo.save(rating);
+  }
+
+  async cancel(
+    id: string,
+    venueId: string,
+    reason: string | undefined,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const reservation = await this.findOne(id, venueId, lang);
+
+    const nonCancellable: string[] = [
+      'COMPLETED',
+      'NO_SHOW',
+      'CANCELLED',
+      'REJECTED',
+    ];
+
+    if (nonCancellable.includes(reservation.status)) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.cannot_cancel', { lang }),
+      );
+    }
+
+    reservation.status = 'CANCELLED';
+    reservation.cancellationReason = reason ?? null;
+    reservation.cancelledAt = new Date();
+    const saved = await this.reservationRepo.save(reservation);
+    await this.notifyVenueManagers(saved, 'RESERVATION_CANCELLED');
+    return saved;
+  }
+}

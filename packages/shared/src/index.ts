@@ -39,6 +39,17 @@ export type ReservationStatus =
   | 'COMPLETED'
   | 'NO_SHOW';
 
+export type ReservationSource =
+  | 'GUEST_APP'
+  | 'MANAGER';
+
+export type NotificationType =
+  | 'RESERVATION_NEW'
+  | 'RESERVATION_CONFIRMED'
+  | 'RESERVATION_REJECTED'
+  | 'RESERVATION_CANCELLED'
+  | 'RESERVATION_REMINDER';
+
 export interface BaseEntity {
   id: string;
   createdAt: Date;

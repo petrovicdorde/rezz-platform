@@ -13,6 +13,15 @@ import { Venue } from './venues/entities/venue.entity';
 import { VenueTable } from './venues/entities/venue-table.entity';
 import { VenueInvitation } from './venues/entities/venue-invitation.entity';
 import { VenuesModule } from './venues/venues.module';
+import { ReservationsModule } from './reservations/reservations.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { EmployeesModule } from './employees/employees.module';
+import { EventsModule } from './events/events.module';
+import { Event } from './events/entities/event.entity';
+import { EventPromotion } from './events/entities/event-promotion.entity';
+import { Reservation } from './reservations/entities/reservation.entity';
+import { GuestRating } from './reservations/entities/guest-rating.entity';
+import { Notification } from './notifications/entities/notification.entity';
 
 @Module({
   imports: [
@@ -27,7 +36,7 @@ import { VenuesModule } from './venues/venues.module';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Venue, VenueTable, VenueInvitation],
+        entities: [User, Venue, VenueTable, VenueInvitation, Reservation, GuestRating, Notification, Event, EventPromotion],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
@@ -46,6 +55,10 @@ import { VenuesModule } from './venues/venues.module';
     AuthModule,
     EmailModule,
     VenuesModule,
+    ReservationsModule,
+    NotificationsModule,
+    EmployeesModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
