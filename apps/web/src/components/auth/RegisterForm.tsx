@@ -178,7 +178,7 @@ export function RegisterForm({ onSuccess, onLogin }: RegisterFormProps): React.J
       <Button
         type="submit"
         disabled={registerMutation.isPending}
-        className={`w-full bg-primary-400 text-primary-900 hover:bg-primary-600 ${
+        className={`w-full bg-primary-400 text-white hover:bg-primary-600 ${
           registerMutation.isPending ? 'cursor-not-allowed opacity-70' : ''
         }`}
       >

@@ -130,7 +130,7 @@ export function ManagerForm({
         <Button
           type="submit"
           disabled={sendInvitation.isPending}
-          className="bg-primary-400 text-primary-900 hover:bg-primary-600"
+          className="bg-primary-400 text-white hover:bg-primary-600"
         >
           {sendInvitation.isPending
             ? t('common.loading')

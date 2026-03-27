@@ -42,12 +42,12 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
 
   return (
     <div
-      className="cursor-pointer rounded-xl border bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+      className="cursor-pointer rounded-xl border border-primary-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
       onClick={onClick}
     >
       {/* Top row */}
       <div className="flex items-center justify-between">
-        <span className="font-medium text-secondary-600">{venue.name}</span>
+        <span className="font-medium text-primary-400">{venue.name}</span>
         <span
           className={`rounded-full px-2 py-0.5 text-xs ${
             venue.isActive

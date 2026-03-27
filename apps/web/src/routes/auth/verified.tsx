@@ -22,7 +22,7 @@ function VerifiedPage(): React.JSX.Element {
         {t('auth.verified_subtitle')}
       </p>
       <Button
-        className="mt-6 bg-primary-400 text-primary-900 hover:bg-primary-600"
+        className="mt-6 bg-primary-400 text-white hover:bg-primary-600"
         onClick={open}
       >
         {t('auth.verified_login_button')}

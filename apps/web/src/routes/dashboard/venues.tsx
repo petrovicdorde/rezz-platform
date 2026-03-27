@@ -36,12 +36,12 @@ function VenuesDashboardPage(): React.JSX.Element {
     <DashboardLayout>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-secondary-600">
+        <h1 className="text-2xl font-bold text-primary-400">
           {t('dashboard.menu_venues')}
         </h1>
         <Button
           onClick={() => setIsFormOpen(true)}
-          className="hidden gap-2 bg-primary-400 text-primary-900 hover:bg-primary-600 md:inline-flex"
+          className="hidden gap-2 bg-primary-400 text-white hover:bg-primary-600 md:inline-flex"
         >
           <Plus className="h-4 w-4" />
           {t('venue.add_new')}
@@ -88,7 +88,7 @@ function VenuesDashboardPage(): React.JSX.Element {
         onClick={() => setIsFormOpen(true)}
         className="fixed right-4 bottom-20 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary-400 shadow-lg md:hidden"
       >
-        <Plus className="h-6 w-6 text-primary-900" />
+        <Plus className="h-6 w-6 text-white" />
       </button>
 
       {/* Form modal/drawer (create) */}

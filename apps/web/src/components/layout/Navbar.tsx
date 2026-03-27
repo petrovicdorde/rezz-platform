@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
+import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLoginStore } from '@/store/login-ui.store';
 import { useAuthStore } from '@/store/auth.store';
@@ -12,29 +13,27 @@ export function Navbar(): React.JSX.Element {
   const logoutMutation = useLogout();
 
   return (
-    <nav className="sticky top-0 z-50 flex h-16 items-center justify-between bg-secondary-600 px-4 md:px-8">
-      <Link to="/" className="text-xl font-bold text-primary-400">
-        {t('brand.name')}
+    <nav className="sticky top-0 z-50 flex h-16 items-center justify-between bg-primary-400 px-4 md:px-8">
+      <Link to="/">
+        <img src="/rezz_logo_green.webp" alt={t('brand.name')} className="h-8 brightness-0 invert" />
       </Link>
 
       {isAuthenticated && user ? (
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-tertiary-100">
-            {t('nav.welcome', { name: user.firstName })}
-          </span>
+        <div className="flex items-center">
           <button
             onClick={() => logoutMutation.mutate()}
             disabled={logoutMutation.isPending}
-            className="text-sm text-tertiary-300 hover:text-primary-400"
+            className="rounded-md p-1.5 text-white/60 hover:text-white"
+            title={t('auth.logout_button')}
           >
-            {t('auth.logout_button')}
+            <LogOut className="h-5 w-5" />
           </button>
         </div>
       ) : (
         <Button
           onClick={open}
           variant="outline"
-          className="border-primary-400 text-primary-400 hover:bg-primary-400 hover:text-primary-900"
+          className="border-white text-white hover:bg-white hover:text-primary-400"
         >
           {t('auth.login_button')}
         </Button>

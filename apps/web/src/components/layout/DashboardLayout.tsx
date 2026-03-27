@@ -55,10 +55,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
   return (
     <div className="min-h-screen bg-tertiary-50">
       {/* Sidebar — desktop */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-56 bg-secondary-600 md:block">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-56 bg-primary-400 md:block">
         <div className="px-6 pt-6 pb-8">
-          <Link to="/" className="text-xl font-bold text-primary-400">
-            {t('brand.name')}
+          <Link to="/">
+            <img src="/rezz_logo_green.webp" alt={t('brand.name')} className="h-8 brightness-0 invert" />
           </Link>
         </div>
         <nav className="flex flex-col gap-1">
@@ -70,8 +70,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
                 to={item.to}
                 className={`mx-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-secondary-400 text-primary-400'
-                    : 'text-tertiary-200 hover:bg-secondary-500'
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 <item.icon className="h-5 w-5" />
@@ -83,7 +83,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
       </aside>
 
       {/* Bottom nav — mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-secondary-500 bg-secondary-600 md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-primary-600 bg-primary-400 md:hidden">
         {navItems.slice(0, 4).map((item) => {
           const isActive = location.pathname === item.to;
           return (
@@ -91,7 +91,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
               key={item.to}
               to={item.to}
               className={`flex flex-1 flex-col items-center gap-1 py-2 text-xs transition-colors ${
-                isActive ? 'text-primary-400' : 'text-tertiary-400'
+                isActive ? 'text-white' : 'text-white/60'
               }`}
             >
               <item.icon className="h-5 w-5" />

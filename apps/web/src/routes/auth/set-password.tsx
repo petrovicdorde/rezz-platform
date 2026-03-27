@@ -103,7 +103,7 @@ function SetPasswordPage(): React.JSX.Element {
           <Button
             type="submit"
             disabled={setPasswordMutation.isPending}
-            className="w-full bg-primary-400 text-primary-900 hover:bg-primary-600"
+            className="w-full bg-primary-400 text-white hover:bg-primary-600"
           >
             {setPasswordMutation.isPending
               ? t('common.loading')

@@ -37,7 +37,7 @@ export function VenueDetailContent({
     <div>
       {/* Top bar */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-medium text-secondary-600">{venue.name}</h2>
+        <h2 className="text-lg font-medium text-primary-400">{venue.name}</h2>
         <div className="flex items-center gap-2">
           {activeTab === 'details' && (
             <button
@@ -52,7 +52,7 @@ export function VenueDetailContent({
               }}
               className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
                 isEditMode
-                  ? 'bg-primary-400 text-primary-900'
+                  ? 'bg-primary-400 text-white'
                   : 'text-tertiary-600'
               }`}
             >
@@ -78,7 +78,7 @@ export function VenueDetailContent({
           onClick={() => handleTabChange('details')}
           className={`rounded-lg py-2 text-sm font-medium transition-colors ${
             activeTab === 'details'
-              ? 'bg-secondary-600 text-white'
+              ? 'bg-primary-400 text-white'
               : 'border border-tertiary-300 text-tertiary-600'
           }`}
         >
@@ -89,7 +89,7 @@ export function VenueDetailContent({
           onClick={() => handleTabChange('manager')}
           className={`rounded-lg py-2 text-sm font-medium transition-colors ${
             activeTab === 'manager'
-              ? 'bg-secondary-600 text-white'
+              ? 'bg-primary-400 text-white'
               : 'border border-tertiary-300 text-tertiary-600'
           }`}
         >

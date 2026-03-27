@@ -85,7 +85,7 @@ export function LoginForm({ onForgotPassword, onRegister }: LoginFormProps): Rea
       <Button
         type="submit"
         disabled={loginMutation.isPending}
-        className={`w-full bg-primary-400 text-primary-900 hover:bg-primary-600 ${
+        className={`w-full bg-primary-400 text-white hover:bg-primary-600 ${
           loginMutation.isPending ? 'opacity-70 cursor-not-allowed' : ''
         }`}
       >

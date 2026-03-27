@@ -67,7 +67,7 @@ export function ManagerTab({ venue }: ManagerTabProps): React.JSX.Element {
           </p>
           <Button
             type="button"
-            className="mt-4 w-full bg-primary-400 text-primary-900 hover:bg-primary-600"
+            className="mt-4 w-full bg-primary-400 text-white hover:bg-primary-600"
             onClick={() => setIsReplacing(true)}
           >
             {t('venue.manager_add')}

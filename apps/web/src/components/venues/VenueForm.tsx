@@ -272,7 +272,7 @@ export function VenueForm({
             <span
               className={`rounded-full px-3 py-0.5 text-xs font-bold ${
                 field.value
-                  ? "bg-primary-400 text-primary-900"
+                  ? "bg-primary-400 text-white"
                   : "bg-secondary-400 text-white"
               }`}
             >
@@ -317,7 +317,7 @@ export function VenueForm({
                     }}
                     className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                       selected
-                        ? "bg-primary-400 text-primary-900"
+                        ? "bg-primary-400 text-white"
                         : "border border-tertiary-400 text-tertiary-600"
                     }`}
                   >
@@ -552,7 +552,7 @@ export function VenueForm({
           <Button
             type="submit"
             disabled={mutation.isPending}
-            className="bg-primary-400 text-primary-900 hover:bg-primary-600"
+            className="bg-primary-400 text-white hover:bg-primary-600"
           >
             {mutation.isPending
               ? t("common.loading")
