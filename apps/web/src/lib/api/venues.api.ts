@@ -1,6 +1,14 @@
 import { api } from '@/lib/api';
 import type { AdminVenue, CreateVenueRequest } from '@/lib/types/venue.types';
 
+export interface SendInvitationRequest {
+  email: string;
+  phone: string;
+  firstName?: string;
+  lastName?: string;
+  role: 'MANAGER' | 'WORKER';
+}
+
 export const venuesApi = {
   getAll: async (): Promise<AdminVenue[]> => {
     const response = await api.get<AdminVenue[]>('/venues');
@@ -36,6 +44,17 @@ export const venuesApi = {
     const response = await api.patch<AdminVenue>(`/venues/${id}/status`, {
       isActive,
     });
+    return response.data;
+  },
+
+  sendInvitation: async (
+    venueId: string,
+    data: SendInvitationRequest,
+  ): Promise<{ message: string }> => {
+    const response = await api.post<{ message: string }>(
+      `/venues/${venueId}/invitations`,
+      data,
+    );
     return response.data;
   },
 };

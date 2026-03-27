@@ -36,13 +36,18 @@ export class VenuesService {
     private invitationsService: InvitationsService,
   ) {}
 
+  private async toAdminDto(venue: Venue): Promise<AdminVenueDto> {
+    const manager = await this.usersService.findManagerByVenueId(venue.id);
+    return VenueMapper.toAdmin(venue, manager);
+  }
+
   async findAllAdmin(lang: string = 'sr'): Promise<AdminVenueDto[]> {
     const venues = await this.venueRepo.find({
       relations: ['tables'],
       order: { createdAt: 'DESC' },
     });
 
-    return venues.map((v) => VenueMapper.toAdmin(v));
+    return Promise.all(venues.map((v) => this.toAdminDto(v)));
   }
 
   async findAllPublic(): Promise<PublicVenueDto[]> {
@@ -70,7 +75,7 @@ export class VenuesService {
       );
     }
 
-    return VenueMapper.toAdmin(venue);
+    return this.toAdminDto(venue);
   }
 
   async findOnePublic(
@@ -245,6 +250,6 @@ export class VenuesService {
     venue.isActive = isActive;
     await this.venueRepo.save(venue);
 
-    return VenueMapper.toAdmin(venue);
+    return this.toAdminDto(venue);
   }
 }

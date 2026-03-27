@@ -164,6 +164,14 @@
     "activate_confirm": "Aktiviraj lokal?",
     "deactivate_confirm": "Deaktiviraj lokal?",
     "status_active": "Aktivan",
-    "status_inactive": "Deaktiviran"
+    "status_inactive": "Deaktiviran",
+    "tab_details": "Detalji",
+    "tab_manager": "Menadžer",
+    "manager_current": "Trenutni menadžer",
+    "manager_none": "Nije dodan menadžer.",
+    "manager_replace": "Zamijeni menadžera",
+    "manager_add": "Dodaj menadžera",
+    "manager_invite_sent": "Pozivnica je poslata na {{email}}.",
+    "manager_replace_hint": "Novi menadžer će dobiti pozivnicu na email. Trenutni menadžer gubi pristup."
   }
 }

@@ -1,6 +1,7 @@
 import type { VenueType, PaymentMethod, TableType } from '@rezz/shared';
 import type { WorkingHours } from '../entities/venue.entity';
 import { Venue } from '../entities/venue.entity';
+import type { User } from '../../users/entities/user.entity';
 
 export class PublicVenueTableDto {
   id: string;
@@ -23,8 +24,17 @@ export class PublicVenueDto {
   isActive: boolean;
 }
 
+export class AdminVenueManagerDto {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
+}
+
 export class AdminVenueDto extends PublicVenueDto {
   reservationEmail: string | null;
+  manager: AdminVenueManagerDto | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,10 +62,19 @@ export class VenueMapper {
     };
   }
 
-  static toAdmin(venue: Venue): AdminVenueDto {
+  static toAdmin(venue: Venue, manager?: User | null): AdminVenueDto {
     return {
       ...VenueMapper.toPublic(venue),
       reservationEmail: venue.reservationEmail,
+      manager: manager
+        ? {
+            id: manager.id,
+            email: manager.email,
+            firstName: manager.firstName || null,
+            lastName: manager.lastName || null,
+            phone: null,
+          }
+        : null,
       createdAt: venue.createdAt,
       updatedAt: venue.updatedAt,
     };

@@ -164,6 +164,14 @@
     "activate_confirm": "Activate venue?",
     "deactivate_confirm": "Deactivate venue?",
     "status_active": "Active",
-    "status_inactive": "Inactive"
+    "status_inactive": "Inactive",
+    "tab_details": "Details",
+    "tab_manager": "Manager",
+    "manager_current": "Current manager",
+    "manager_none": "No manager assigned.",
+    "manager_replace": "Replace manager",
+    "manager_add": "Add manager",
+    "manager_invite_sent": "Invitation sent to {{email}}.",
+    "manager_replace_hint": "The new manager will receive an email invitation. The current manager will lose access."
   }
 }

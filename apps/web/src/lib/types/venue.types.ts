@@ -60,6 +60,13 @@ export interface AdminVenue {
     count: number;
     note: string | null;
   }[];
+  manager?: {
+    id: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    phone?: string | null;
+  } | null;
   createdAt: string;
   updatedAt: string;
 }
