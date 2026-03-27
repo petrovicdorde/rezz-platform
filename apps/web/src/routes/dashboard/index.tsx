@@ -1,11 +1,26 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useAuthStore } from '@/store/auth.store';
 
 export const Route = createFileRoute('/dashboard/')({
-  component: DashboardPage,
+  component: DashboardRedirect,
 });
 
-function DashboardPage() {
-  const { t } = useTranslation();
-  return <div className="p-8"><h1 className="text-2xl font-bold">{t('nav.dashboard')}</h1></div>;
+function DashboardRedirect(): React.JSX.Element {
+  const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
+
+  useEffect(() => {
+    if (user?.role === 'SUPER_ADMIN') {
+      navigate({ to: '/dashboard/venues', replace: true });
+    } else if (user?.role === 'MANAGER') {
+      navigate({ to: '/dashboard/reservations', replace: true });
+    } else if (user?.role === 'WORKER') {
+      navigate({ to: '/dashboard/arrivals', replace: true });
+    } else {
+      navigate({ to: '/', replace: true });
+    }
+  }, [user, navigate]);
+
+  return <></>;
 }

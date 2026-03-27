@@ -1,0 +1,107 @@
+import { useTranslation } from 'react-i18next';
+import { Car, CreditCard, Banknote, Smartphone } from 'lucide-react';
+import type { PaymentMethod, VenueType } from '@rezz/shared';
+import type { AdminVenue } from '@/lib/types/venue.types';
+
+interface VenueCardProps {
+  venue: AdminVenue;
+}
+
+const VENUE_TYPE_KEYS: Record<VenueType, string> = {
+  RESTAURANT: 'venue.venue_type_restaurant',
+  CAFE: 'venue.venue_type_cafe',
+  CAFFE_BAR: 'venue.venue_type_caffe_bar',
+  LOUNGE: 'venue.venue_type_lounge',
+  CLUB: 'venue.venue_type_club',
+  FAST_FOOD: 'venue.venue_type_fast_food',
+  PIZZERIA: 'venue.venue_type_pizzeria',
+  ROOFTOP: 'venue.venue_type_rooftop',
+  SPORTS_BAR: 'venue.venue_type_sports_bar',
+  WINE_BAR: 'venue.venue_type_wine_bar',
+  HOOKAH_LOUNGE: 'venue.venue_type_hookah_lounge',
+  BAKERY: 'venue.venue_type_bakery',
+};
+
+const PAYMENT_ICONS: Record<PaymentMethod, React.ElementType> = {
+  CASH: Banknote,
+  CARD: CreditCard,
+  MOBILE: Smartphone,
+};
+
+const PAYMENT_KEYS: Record<PaymentMethod, string> = {
+  CASH: 'venue.payment_cash',
+  CARD: 'venue.payment_card',
+  MOBILE: 'venue.payment_mobile',
+};
+
+export function VenueCard({ venue }: VenueCardProps): React.JSX.Element {
+  const { t } = useTranslation();
+  const visibleTags = venue.tags.slice(0, 3);
+  const extraTagCount = venue.tags.length - 3;
+
+  return (
+    <div className="rounded-xl border bg-white p-4 shadow-sm">
+      {/* Top row */}
+      <div className="flex items-center justify-between">
+        <span className="font-medium text-secondary-600">{venue.name}</span>
+        <span
+          className={`rounded-full px-2 py-0.5 text-xs ${
+            venue.isActive
+              ? 'bg-green-100 text-green-700'
+              : 'bg-red-100 text-red-700'
+          }`}
+        >
+          {venue.isActive ? t('venue.working_hours_open') : t('venue.working_hours_closed')}
+        </span>
+      </div>
+
+      {/* Type + phone */}
+      <div className="mt-1 flex items-center gap-2 text-sm text-tertiary-600">
+        <span>{t(VENUE_TYPE_KEYS[venue.type])}</span>
+        <span>·</span>
+        <span>{venue.reservationPhone}</span>
+      </div>
+
+      {/* Tags */}
+      {venue.tags.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {visibleTags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-primary-50 px-2 py-0.5 text-xs text-primary-800"
+            >
+              {tag}
+            </span>
+          ))}
+          {extraTagCount > 0 && (
+            <span className="rounded-full bg-tertiary-100 px-2 py-0.5 text-xs text-tertiary-600">
+              +{extraTagCount} {t('venue.tags_more')}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Bottom row */}
+      <div className="mt-3 flex items-center justify-between text-sm text-tertiary-600">
+        <div className="flex items-center gap-3">
+          {venue.hasParking && (
+            <span className="flex items-center gap-1">
+              <Car className="h-4 w-4" />
+            </span>
+          )}
+          {venue.paymentMethods.map((pm) => {
+            const Icon = PAYMENT_ICONS[pm];
+            return (
+              <span key={pm} className="flex items-center gap-1" title={t(PAYMENT_KEYS[pm])}>
+                <Icon className="h-4 w-4" />
+              </span>
+            );
+          })}
+        </div>
+        <span className="text-xs text-tertiary-400">
+          {venue.tables.length} {t('venue.tables_label').toLowerCase()}
+        </span>
+      </div>
+    </div>
+  );
+}

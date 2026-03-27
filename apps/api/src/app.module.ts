@@ -9,6 +9,10 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { User } from './users/entities/user.entity';
+import { Venue } from './venues/entities/venue.entity';
+import { VenueTable } from './venues/entities/venue-table.entity';
+import { VenueInvitation } from './venues/entities/venue-invitation.entity';
+import { VenuesModule } from './venues/venues.module';
 
 @Module({
   imports: [
@@ -23,7 +27,7 @@ import { User } from './users/entities/user.entity';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User],
+        entities: [User, Venue, VenueTable, VenueInvitation],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
@@ -41,6 +45,7 @@ import { User } from './users/entities/user.entity';
     UsersModule,
     AuthModule,
     EmailModule,
+    VenuesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

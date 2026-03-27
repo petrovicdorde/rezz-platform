@@ -11,7 +11,8 @@
     "password_reset_success": "Lozinka je uspješno promijenjena.",
     "reset_email_sent": "Ukoliko nalog postoji, link za reset je poslan na vaš email.",
     "unauthorized": "Niste prijavljeni. Molimo prijavite se.",
-    "forbidden": "Nemate dozvolu za ovu akciju."
+    "forbidden": "Nemate dozvolu za ovu akciju.",
+    "invitation_set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!"
   },
   "validation": {
     "required": "Ovo polje je obavezno.",
@@ -26,7 +27,30 @@
     "greeting": "Zdravo, {firstName}!",
     "verification_body": "Kliknite na dugme ispod da potvrdite vašu email adresu i aktivirate nalog.",
     "verification_button": "Potvrdi email adresu",
-    "verification_footer": "Link je važeći 24 sata. Ako niste kreirali nalog na Rezz.ba, možete ignorisati ovaj email."
+    "verification_footer": "Link je važeći 24 sata. Ako niste kreirali nalog na Rezz.ba, možete ignorisati ovaj email.",
+    "manager_invitation_subject": "Pozvani ste kao menadžer – {{venueName}}",
+    "manager_invitation_body": "Pozvani ste da postanete menadžer lokala <strong>{{venueName}}</strong> na Rezz.ba platformi.",
+    "manager_invitation_button": "Prihvati pozivnicu",
+    "manager_invitation_decline_button": "Odbij pozivnicu",
+    "manager_invitation_footer": "Pozivnica je važeća 7 dana. Ako niste očekivali ovaj email, možete ga ignorisati.",
+    "worker_invitation_subject": "Pozvani ste kao radnik – {{venueName}}",
+    "worker_invitation_body": "Pozvani ste da postanete radnik lokala <strong>{{venueName}}</strong> na Rezz.ba platformi.",
+    "worker_invitation_button": "Prihvati pozivnicu",
+    "worker_invitation_footer": "Pozivnica je važeća 7 dana."
+  },
+  "venue": {
+    "not_found": "Lokal nije pronađen.",
+    "name_already_exists": "Lokal sa ovim nazivom već postoji.",
+    "created": "Lokal je uspješno kreiran.",
+    "updated": "Lokal je uspješno ažuriran.",
+    "deactivated": "Lokal je deaktiviran.",
+    "activated": "Lokal je aktiviran.",
+    "invitation_sent": "Pozivnica je uspješno poslata na {{email}}.",
+    "invitation_not_found": "Pozivnica nije pronađena.",
+    "invitation_expired": "Pozivnica je istekla.",
+    "invitation_already_accepted": "Pozivnica je već prihvaćena.",
+    "invitation_already_declined": "Pozivnica je već odbijena.",
+    "invitation_declined": "Pozivnica je odbijena."
   },
   "general": {
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",

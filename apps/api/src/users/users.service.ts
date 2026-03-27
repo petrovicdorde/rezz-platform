@@ -30,6 +30,10 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { passwordResetToken: token } });
   }
 
+  async findByInvitationToken(token: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { invitationToken: token } });
+  }
+
   async create(data: DeepPartial<User>): Promise<User> {
     const user = this.usersRepository.create(data);
     return this.usersRepository.save(user);

@@ -11,7 +11,8 @@
     "password_reset_success": "Password has been successfully changed.",
     "reset_email_sent": "If the account exists, a reset link has been sent to your email.",
     "unauthorized": "You are not logged in. Please log in.",
-    "forbidden": "You do not have permission to perform this action."
+    "forbidden": "You do not have permission to perform this action.",
+    "invitation_set_password_success": "Password set. Welcome to Rezz.ba!"
   },
   "validation": {
     "required": "This field is required.",
@@ -26,7 +27,30 @@
     "greeting": "Hello, {firstName}!",
     "verification_body": "Click the button below to verify your email address and activate your account.",
     "verification_button": "Verify email address",
-    "verification_footer": "This link is valid for 24 hours. If you did not create an account on Rezz.ba, you can ignore this email."
+    "verification_footer": "This link is valid for 24 hours. If you did not create an account on Rezz.ba, you can ignore this email.",
+    "manager_invitation_subject": "You've been invited as a manager – {{venueName}}",
+    "manager_invitation_body": "You have been invited to become a manager of <strong>{{venueName}}</strong> on the Rezz.ba platform.",
+    "manager_invitation_button": "Accept invitation",
+    "manager_invitation_decline_button": "Decline invitation",
+    "manager_invitation_footer": "This invitation is valid for 7 days. If you were not expecting this email, you can ignore it.",
+    "worker_invitation_subject": "You've been invited as a worker – {{venueName}}",
+    "worker_invitation_body": "You have been invited to become a worker at <strong>{{venueName}}</strong> on the Rezz.ba platform.",
+    "worker_invitation_button": "Accept invitation",
+    "worker_invitation_footer": "This invitation is valid for 7 days."
+  },
+  "venue": {
+    "not_found": "Venue not found.",
+    "name_already_exists": "A venue with this name already exists.",
+    "created": "Venue created successfully.",
+    "updated": "Venue updated successfully.",
+    "deactivated": "Venue has been deactivated.",
+    "activated": "Venue has been activated.",
+    "invitation_sent": "Invitation successfully sent to {{email}}.",
+    "invitation_not_found": "Invitation not found.",
+    "invitation_expired": "This invitation has expired.",
+    "invitation_already_accepted": "This invitation has already been accepted.",
+    "invitation_already_declined": "This invitation has already been declined.",
+    "invitation_declined": "Invitation declined."
   },
   "general": {
     "internal_error": "An error occurred. Please try again.",

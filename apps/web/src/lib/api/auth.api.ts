@@ -28,4 +28,15 @@ export const authApi = {
     const response = await api.get<AuthUser>('/auth/me');
     return response.data;
   },
+
+  setPassword: async (data: {
+    token: string;
+    password: string;
+  }): Promise<LoginResponse> => {
+    const response = await api.post<LoginResponse>(
+      '/auth/set-password',
+      data,
+    );
+    return response.data;
+  },
 };

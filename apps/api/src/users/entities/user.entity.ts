@@ -54,6 +54,15 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   refreshTokenHash: string | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  invitationToken: string | null;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  invitationTokenExpiresAt: Date | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  venueId: string | null;
+
   @Column({ default: true })
   isActive: boolean;
 

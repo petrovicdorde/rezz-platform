@@ -43,6 +43,34 @@ export function useRegister() {
   });
 }
 
+export function useSetPassword() {
+  const { setAuth } = useAuthStore();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: authApi.setPassword,
+    onSuccess: (data) => {
+      setAuth(
+        {
+          id: data.user.id,
+          email: data.user.email,
+          firstName: data.user.firstName,
+          lastName: data.user.lastName,
+          role: data.user.role as UserRole,
+        },
+        data.accessToken,
+        data.refreshToken,
+      );
+      toast.success(i18n.t('auth.set_password_success'));
+      const redirect = ROLE_REDIRECT[data.user.role as UserRole] ?? '/';
+      navigate({ to: redirect });
+    },
+    onError: (error: unknown) => {
+      handleApiError(error);
+    },
+  });
+}
+
 export function useLogin() {
   const { setAuth } = useAuthStore();
   const { close } = useLoginStore();

@@ -101,4 +101,129 @@ export class EmailService {
       );
     }
   }
+
+  async sendManagerInvitationEmail(
+    email: string,
+    venueName: string,
+    token: string,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const backendUrl = this.configService.get<string>(
+      'BACKEND_URL',
+      'http://localhost:3000',
+    );
+    const acceptLink = `${backendUrl}/venues/invitations/${token}/accept`;
+    const declineLink = `${backendUrl}/venues/invitations/${token}/decline`;
+
+    const subject = this.i18n.t('email.manager_invitation_subject', {
+      lang,
+      args: { venueName },
+    });
+    const body = this.i18n.t('email.manager_invitation_body', {
+      lang,
+      args: { venueName },
+    });
+    const acceptButton = this.i18n.t('email.manager_invitation_button', {
+      lang,
+    });
+    const declineButton = this.i18n.t(
+      'email.manager_invitation_decline_button',
+      { lang },
+    );
+    const footer = this.i18n.t('email.manager_invitation_footer', { lang });
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
+      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <p>${body}</p>
+      <a href="${acceptLink}"
+         style="display:inline-block;background:#C9A84C;color:#3A2A08;
+                padding:12px 24px;border-radius:8px;text-decoration:none;
+                font-weight:bold;margin:16px 8px 0 0;">
+        ${acceptButton}
+      </a>
+      <a href="${declineLink}"
+         style="display:inline-block;background:#E8DFD0;color:#5E5248;
+                padding:12px 24px;border-radius:8px;text-decoration:none;
+                font-weight:bold;margin:16px 0 0 0;">
+        ${declineButton}
+      </a>
+      <p style="color:#9A8C7C;font-size:13px;margin-top:24px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send manager invitation email to ${email}`,
+        error,
+      );
+    }
+  }
+
+  async sendWorkerInvitationEmail(
+    email: string,
+    venueName: string,
+    token: string,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const backendUrl = this.configService.get<string>(
+      'BACKEND_URL',
+      'http://localhost:3000',
+    );
+    const acceptLink = `${backendUrl}/venues/invitations/${token}/accept`;
+
+    const subject = this.i18n.t('email.worker_invitation_subject', {
+      lang,
+      args: { venueName },
+    });
+    const body = this.i18n.t('email.worker_invitation_body', {
+      lang,
+      args: { venueName },
+    });
+    const acceptButton = this.i18n.t('email.worker_invitation_button', {
+      lang,
+    });
+    const footer = this.i18n.t('email.worker_invitation_footer', { lang });
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
+      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <p>${body}</p>
+      <a href="${acceptLink}"
+         style="display:inline-block;background:#C9A84C;color:#3A2A08;
+                padding:12px 24px;border-radius:8px;text-decoration:none;
+                font-weight:bold;margin:16px 8px 0 0;">
+        ${acceptButton}
+      </a>
+      <p style="color:#9A8C7C;font-size:13px;margin-top:24px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send worker invitation email to ${email}`,
+        error,
+      );
+    }
+  }
 }

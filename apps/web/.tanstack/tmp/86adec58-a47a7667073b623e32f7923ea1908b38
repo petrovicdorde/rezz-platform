@@ -21,6 +21,7 @@ import { Route as DashboardArrivalsRouteImport } from './routes/dashboard/arriva
 import { Route as AuthVerifyErrorRouteImport } from './routes/auth/verify-error'
 import { Route as AuthVerifyEmailRouteImport } from './routes/auth/verify-email'
 import { Route as AuthVerifiedRouteImport } from './routes/auth/verified'
+import { Route as AuthSetPasswordRouteImport } from './routes/auth/set-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
@@ -86,6 +87,11 @@ const AuthVerifiedRoute = AuthVerifiedRouteImport.update({
   path: '/auth/verified',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSetPasswordRoute = AuthSetPasswordRouteImport.update({
+  id: '/auth/set-password',
+  path: '/auth/set-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/auth/register',
   path: '/auth/register',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/set-password': typeof AuthSetPasswordRoute
   '/auth/verified': typeof AuthVerifiedRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/auth/verify-error': typeof AuthVerifyErrorRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/set-password': typeof AuthSetPasswordRoute
   '/auth/verified': typeof AuthVerifiedRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/auth/verify-error': typeof AuthVerifyErrorRoute
@@ -149,6 +157,7 @@ export interface FileRoutesById {
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/auth/set-password': typeof AuthSetPasswordRoute
   '/auth/verified': typeof AuthVerifiedRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/auth/verify-error': typeof AuthVerifyErrorRoute
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/set-password'
     | '/auth/verified'
     | '/auth/verify-email'
     | '/auth/verify-error'
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/set-password'
     | '/auth/verified'
     | '/auth/verify-email'
     | '/auth/verify-error'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
+    | '/auth/set-password'
     | '/auth/verified'
     | '/auth/verify-email'
     | '/auth/verify-error'
@@ -224,6 +236,7 @@ export interface RootRouteChildren {
   AuthCallbackRoute: typeof AuthCallbackRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthSetPasswordRoute: typeof AuthSetPasswordRoute
   AuthVerifiedRoute: typeof AuthVerifiedRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthVerifyErrorRoute: typeof AuthVerifyErrorRoute
@@ -323,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifiedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/set-password': {
+      id: '/auth/set-password'
+      path: '/auth/set-password'
+      fullPath: '/auth/set-password'
+      preLoaderRoute: typeof AuthSetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/auth/register'
@@ -371,6 +391,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthCallbackRoute: AuthCallbackRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
+  AuthSetPasswordRoute: AuthSetPasswordRoute,
   AuthVerifiedRoute: AuthVerifiedRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthVerifyErrorRoute: AuthVerifyErrorRoute,

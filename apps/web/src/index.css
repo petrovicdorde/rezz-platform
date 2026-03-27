@@ -49,3 +49,26 @@
     cursor: pointer;
   }
 }
+
+.venue-modal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.venue-modal-scroll::-webkit-scrollbar-track {
+  background: var(--color-tertiary-100);
+  border-radius: 999px;
+}
+
+.venue-modal-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-secondary-200);
+  border-radius: 999px;
+}
+
+.venue-modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary-400);
+}
+
+.venue-modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secondary-200) var(--color-tertiary-100);
+}
