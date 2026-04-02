@@ -47,6 +47,9 @@ export class GuestRating {
   @Column()
   venueId: string;
 
+  @Column({ default: false })
+  isAutomatic: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 }

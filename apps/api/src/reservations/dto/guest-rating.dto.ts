@@ -2,7 +2,7 @@ import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class GuestRatingDto {
   @IsInt()
-  @Min(1)
+  @Min(0)
   @Max(5)
   rating: number;
 

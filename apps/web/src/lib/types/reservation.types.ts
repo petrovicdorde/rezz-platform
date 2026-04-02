@@ -30,6 +30,7 @@ export interface GuestRating {
   note: string | null;
   reservationId: string;
   ratedById: string;
+  isAutomatic: boolean;
   createdAt: string;
 }
 

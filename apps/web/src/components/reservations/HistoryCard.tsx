@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, MessageSquare, Star as StarIcon } from 'lucide-react';
+import { Phone, MessageSquare, Star as StarIcon, AlertTriangle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import type { TableType } from '@rezz/shared';
 import { Button } from '@/components/ui/button';
@@ -86,7 +86,22 @@ export function HistoryCard({
         </div>
       )}
 
-      {/* Guest score + Rating section — only for COMPLETED */}
+      {/* Rating section — NO_SHOW: auto rating only */}
+      {reservation.status === 'NO_SHOW' && reservation.guestRating && (
+        <div className="mt-3">
+          <GuestScoreBadge phone={reservation.phone} />
+          <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2">
+            <div className="flex items-center gap-1.5">
+              <AlertTriangle className="h-3.5 w-3.5 text-amber-700" />
+              <span className="text-xs text-amber-700">
+                {t('history.auto_rating_note')}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rating section — COMPLETED: full rating logic */}
       {reservation.status === 'COMPLETED' && (
         <div className="mt-3">
           <GuestScoreBadge phone={reservation.phone} />

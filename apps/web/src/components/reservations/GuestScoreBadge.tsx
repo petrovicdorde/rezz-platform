@@ -17,7 +17,7 @@ export function GuestScoreBadge({
 
   if (isLoading || !data) return null;
 
-  if (data.totalRatings === 0) {
+  if (data.totalRatings === 0 && data.totalIncludingAutomatic === 0) {
     if (inline) return null;
     return (
       <p className="text-xs text-tertiary-400">
@@ -41,8 +41,8 @@ export function GuestScoreBadge({
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-xs text-tertiary-500">
+    <div className="mt-2 mb-3 flex flex-col gap-1 rounded-lg border border-tertiary-200 bg-tertiary-50 p-3">
+      <span className="text-xs uppercase tracking-wide text-tertiary-500">
         {t('history.guest_score_label')}
       </span>
       <div className="flex items-center gap-2">

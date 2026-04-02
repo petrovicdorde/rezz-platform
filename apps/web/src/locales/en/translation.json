@@ -263,7 +263,9 @@
     "guest_score_label": "Guest average rating",
     "guest_score_based_on": "Based on {{count}} ratings",
     "guest_score_no_ratings": "Guest has not been rated yet",
-    "edit_rating": "Edit rating"
+    "edit_rating": "Edit rating",
+    "auto_rating_note": "Automatic rating — guest did not show up",
+    "rate_anyway": "Rate guest"
   },
   "notifications": {
     "title": "Notifications",

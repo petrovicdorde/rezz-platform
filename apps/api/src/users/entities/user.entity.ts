@@ -66,6 +66,15 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: false })
+  isBlacklisted: boolean;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  blacklistedAt: Date | null;
+
+  @Column({ nullable: true, type: 'text' })
+  blacklistReason: string | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

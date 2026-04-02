@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,7 @@ export function GuestRatingForm({
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RatingFormValues>({
     defaultValues: {
@@ -41,6 +43,12 @@ export function GuestRatingForm({
       note: existingRating?.note ?? '',
     },
   });
+
+  useEffect(() => {
+    if (existingRating) {
+      reset({ rating: existingRating.rating, note: existingRating.note ?? '' });
+    }
+  }, [existingRating, reset]);
 
   function onSubmit(data: RatingFormValues): void {
     mutation.mutate(

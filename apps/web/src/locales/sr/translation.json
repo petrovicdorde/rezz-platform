@@ -263,7 +263,9 @@
     "guest_score_label": "Prosječna ocjena gosta",
     "guest_score_based_on": "Na osnovu {{count}} ocjena",
     "guest_score_no_ratings": "Gost još nije ocijenjen",
-    "edit_rating": "Izmijeni ocjenu"
+    "edit_rating": "Izmijeni ocjenu",
+    "auto_rating_note": "Automatska ocjena — gost nije došao",
+    "rate_anyway": "Ocijeni gosta"
   },
   "notifications": {
     "title": "Obavještenja",

@@ -131,10 +131,16 @@ export const reservationsApi = {
   getGuestScore: async (
     venueId: string,
     phone: string,
-  ): Promise<{ averageRating: number | null; totalRatings: number; phone: string }> => {
+  ): Promise<{
+    averageRating: number | null;
+    totalRatings: number;
+    totalIncludingAutomatic: number;
+    phone: string;
+  }> => {
     const response = await api.get<{
       averageRating: number | null;
       totalRatings: number;
+      totalIncludingAutomatic: number;
       phone: string;
     }>(`/venues/${venueId}/reservations/guest-score/${encodeURIComponent(phone)}`);
     return response.data;

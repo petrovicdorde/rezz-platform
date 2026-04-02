@@ -138,6 +138,12 @@ export class AuthService {
       throw new ForbiddenException(await this.i18n.t('auth.account_inactive', { lang }));
     }
 
+    if (user.isBlacklisted) {
+      throw new ForbiddenException(
+        await this.i18n.t('auth.blacklisted', { lang }),
+      );
+    }
+
     if (
       (user.role === UserRole.MANAGER || user.role === UserRole.WORKER) &&
       user.venueId

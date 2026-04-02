@@ -280,6 +280,7 @@ export class ReservationsService {
     id: string,
     venueId: string,
     dto: ArrivalDto,
+    userId: string,
     lang: string = 'sr',
   ): Promise<Reservation> {
     const reservation = await this.findOne(id, venueId, lang);
@@ -302,7 +303,39 @@ export class ReservationsService {
     reservation.status = dto.outcome;
     reservation.arrivedAt = dto.outcome === 'COMPLETED' ? new Date() : null;
     reservation.arrivalNote = dto.note ?? null;
-    return this.reservationRepo.save(reservation);
+    const saved = await this.reservationRepo.save(reservation);
+
+    if (dto.outcome === 'NO_SHOW') {
+      const autoRating = this.ratingRepo.create({
+        rating: 0,
+        note: null,
+        isAutomatic: true,
+        reservationId: reservation.id,
+        guestUserId: reservation.userId ?? null,
+        ratedById: userId,
+        venueId: reservation.venueId,
+      });
+      await this.ratingRepo.save(autoRating);
+
+      if (reservation.userId) {
+        const noShowCount = await this.reservationRepo.count({
+          where: { phone: reservation.phone, status: 'NO_SHOW' as const },
+        });
+
+        if (noShowCount >= 3) {
+          const guest = await this.usersService.findById(reservation.userId);
+          if (guest && !guest.isBlacklisted) {
+            await this.usersService.update(guest.id, {
+              isBlacklisted: true,
+              blacklistedAt: new Date(),
+              blacklistReason: 'Automatski: 3 nepojavljivanja na rezervacijama',
+            });
+          }
+        }
+      }
+    }
+
+    return saved;
   }
 
   async rateGuest(
@@ -314,7 +347,7 @@ export class ReservationsService {
   ): Promise<GuestRating> {
     const reservation = await this.findOne(reservationId, venueId, lang);
 
-    if (reservation.status !== 'COMPLETED') {
+    if (reservation.status !== 'COMPLETED' && reservation.status !== 'NO_SHOW') {
       throw new BadRequestException(
         await this.i18n.t('reservation.not_completed', { lang }),
       );
@@ -351,7 +384,7 @@ export class ReservationsService {
   ): Promise<GuestRating> {
     const reservation = await this.findOne(reservationId, venueId, lang);
 
-    if (reservation.status !== 'COMPLETED') {
+    if (reservation.status !== 'COMPLETED' && reservation.status !== 'NO_SHOW') {
       throw new BadRequestException(
         await this.i18n.t('reservation.rating_only_completed', { lang }),
       );
@@ -369,20 +402,34 @@ export class ReservationsService {
 
     existingRating.rating = dto.rating;
     existingRating.note = dto.note ?? null;
+    existingRating.isAutomatic = false;
     return this.ratingRepo.save(existingRating);
   }
 
   async getGuestScore(
     guestPhone: string,
     venueId: string,
-  ): Promise<{ averageRating: number | null; totalRatings: number; phone: string }> {
+  ): Promise<{
+    averageRating: number | null;
+    totalRatings: number;
+    totalIncludingAutomatic: number;
+    phone: string;
+  }> {
     const reservations = await this.reservationRepo.find({
-      where: { venueId, phone: guestPhone, status: 'COMPLETED' as const },
+      where: {
+        phone: guestPhone,
+        status: In(['COMPLETED', 'NO_SHOW'] as const),
+      },
       select: ['id'],
     });
 
     if (reservations.length === 0) {
-      return { averageRating: null, totalRatings: 0, phone: guestPhone };
+      return {
+        averageRating: null,
+        totalRatings: 0,
+        totalIncludingAutomatic: 0,
+        phone: guestPhone,
+      };
     }
 
     const reservationIds = reservations.map((r) => r.id);
@@ -391,13 +438,24 @@ export class ReservationsService {
     });
 
     if (ratings.length === 0) {
-      return { averageRating: null, totalRatings: 0, phone: guestPhone };
+      return {
+        averageRating: null,
+        totalRatings: 0,
+        totalIncludingAutomatic: 0,
+        phone: guestPhone,
+      };
     }
 
     const sum = ratings.reduce((acc, r) => acc + r.rating, 0);
     const avg = Math.round((sum / ratings.length) * 10) / 10;
+    const manualCount = ratings.filter((r) => !r.isAutomatic).length;
 
-    return { averageRating: avg, totalRatings: ratings.length, phone: guestPhone };
+    return {
+      averageRating: avg,
+      totalRatings: manualCount,
+      totalIncludingAutomatic: ratings.length,
+      phone: guestPhone,
+    };
   }
 
   async cancel(

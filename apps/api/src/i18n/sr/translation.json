@@ -13,7 +13,8 @@
     "unauthorized": "Niste prijavljeni. Molimo prijavite se.",
     "forbidden": "Nemate dozvolu za ovu akciju.",
     "invitation_set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!",
-    "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora."
+    "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora.",
+    "blacklisted": "Vaš nalog je na crnoj listi. Kontaktirajte podršku."
   },
   "validation": {
     "required": "Ovo polje je obavezno.",
@@ -84,7 +85,9 @@
     "rating_updated": "Ocjena je ažurirana.",
     "rating_required": "Ocjena je obavezna.",
     "rating_not_found": "Ocjena nije pronađena.",
-    "rating_only_completed": "Možete ocijeniti samo završene rezervacije."
+    "rating_only_completed": "Možete ocijeniti samo završene rezervacije.",
+    "no_show_auto_rated": "Gostu je automatski dodijeljena ocjena 0 zbog nepojavljivanja.",
+    "blacklisted_after_no_shows": "Gost je stavljen na crnu listu nakon 3 nepojavljivanja."
   },
   "notification": {
     "not_found": "Obavještenje nije pronađeno.",

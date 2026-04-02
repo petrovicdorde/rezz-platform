@@ -68,7 +68,7 @@ export class ReservationsController {
 
   @Get('guest-score/:phone')
   @UseGuards(RolesGuard)
-  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN, UserRole.WORKER)
   getGuestScore(
     @Param('venueId') venueId: string,
     @Param('phone') phone: string,
@@ -135,9 +135,10 @@ export class ReservationsController {
     @Param('venueId') venueId: string,
     @Param('id') id: string,
     @Body() dto: ArrivalDto,
+    @CurrentUser() user: User,
     @I18nLang() lang: string,
   ) {
-    return this.reservationsService.recordArrival(id, venueId, dto, lang);
+    return this.reservationsService.recordArrival(id, venueId, dto, user.id, lang);
   }
 
   @Patch(':id/cancel')

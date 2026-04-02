@@ -13,7 +13,8 @@
     "unauthorized": "You are not logged in. Please log in.",
     "forbidden": "You do not have permission to perform this action.",
     "invitation_set_password_success": "Password set. Welcome to Rezz.ba!",
-    "venue_blocked": "Your venue has been deactivated. Please contact the platform administrator."
+    "venue_blocked": "Your venue has been deactivated. Please contact the platform administrator.",
+    "blacklisted": "Your account is blacklisted. Please contact support."
   },
   "validation": {
     "required": "This field is required.",
@@ -84,7 +85,9 @@
     "rating_updated": "Rating updated.",
     "rating_required": "Rating is required.",
     "rating_not_found": "Rating not found.",
-    "rating_only_completed": "You can only rate completed reservations."
+    "rating_only_completed": "You can only rate completed reservations.",
+    "no_show_auto_rated": "Guest was automatically rated 0 for not showing up.",
+    "blacklisted_after_no_shows": "Guest has been blacklisted after 3 no-shows."
   },
   "notification": {
     "not_found": "Notification not found.",
