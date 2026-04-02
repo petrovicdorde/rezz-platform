@@ -12,6 +12,7 @@ export interface LoginResponse {
     firstName: string;
     lastName: string;
     role: string;
+    venueId: string | null;
   };
 }
 
