@@ -24,6 +24,8 @@ import { GuestRating } from './reservations/entities/guest-rating.entity';
 import { Notification } from './notifications/entities/notification.entity';
 import { SettingsModule } from './settings/settings.module';
 import { Setting } from './settings/entities/setting.entity';
+import { LandingModule } from './landing/landing.module';
+import { LandingConfig } from './landing/entities/landing-config.entity';
 
 @Module({
   imports: [
@@ -38,7 +40,7 @@ import { Setting } from './settings/entities/setting.entity';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Venue, VenueTable, VenueInvitation, Reservation, GuestRating, Notification, Event, EventPromotion, Setting],
+        entities: [User, Venue, VenueTable, VenueInvitation, Reservation, GuestRating, Notification, Event, EventPromotion, Setting, LandingConfig],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
@@ -62,6 +64,7 @@ import { Setting } from './settings/entities/setting.entity';
     EmployeesModule,
     EventsModule,
     SettingsModule,
+    LandingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

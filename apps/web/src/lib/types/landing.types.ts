@@ -33,3 +33,19 @@ export interface PublicEvent {
     imageUrl: string | null;
   }[];
 }
+
+export interface LandingConfig {
+  id: string;
+  featuredVenueIds: string[];
+  featuredEventIds: string[];
+  showFeaturedVenues: boolean;
+  showFeaturedEvents: boolean;
+  updatedAt: string;
+}
+
+export interface UpdateLandingConfigRequest {
+  featuredVenueIds?: string[];
+  featuredEventIds?: string[];
+  showFeaturedVenues?: boolean;
+  showFeaturedEvents?: boolean;
+}

@@ -135,6 +135,9 @@
     "updated": "Setting updated successfully.",
     "deleted": "Setting deleted."
   },
+  "landing": {
+    "config_updated": "Landing page updated successfully."
+  },
   "general": {
     "internal_error": "An error occurred. Please try again.",
     "not_found": "The requested resource was not found.",

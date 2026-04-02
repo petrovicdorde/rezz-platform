@@ -1,5 +1,10 @@
 import { api } from '@/lib/api';
-import type { PublicVenue } from '@/lib/types/landing.types';
+import type {
+  PublicVenue,
+  LandingConfig,
+  UpdateLandingConfigRequest,
+} from '@/lib/types/landing.types';
+import type { VenueEvent } from '@/lib/types/event.types';
 
 export interface SearchFilters {
   type?: string;
@@ -9,8 +14,16 @@ export interface SearchFilters {
 }
 
 export const landingApi = {
-  getFeaturedVenues: async (): Promise<PublicVenue[]> => {
-    const response = await api.get<PublicVenue[]>('/venues/public');
+  getLandingData: async (): Promise<{
+    config: LandingConfig;
+    featuredVenues: PublicVenue[];
+    featuredEvents: VenueEvent[];
+  }> => {
+    const response = await api.get<{
+      config: LandingConfig;
+      featuredVenues: PublicVenue[];
+      featuredEvents: VenueEvent[];
+    }>('/landing');
     return response.data;
   },
 
@@ -23,6 +36,21 @@ export const landingApi = {
     const response = await api.get<PublicVenue[]>(
       `/venues/public?${params.toString()}`,
     );
+    return response.data;
+  },
+
+  getAdminConfig: async (): Promise<LandingConfig> => {
+    const response = await api.get<LandingConfig>('/landing/config');
+    return response.data;
+  },
+
+  updateConfig: async (
+    data: UpdateLandingConfigRequest,
+  ): Promise<{ message: string; config: LandingConfig }> => {
+    const response = await api.patch<{
+      message: string;
+      config: LandingConfig;
+    }>('/landing/config', data);
     return response.data;
   },
 };

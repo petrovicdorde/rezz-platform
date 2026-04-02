@@ -107,7 +107,8 @@
     "menu_events": "Dogadjaji",
     "menu_arrivals": "Dolasci",
     "menu_users": "Korisnici",
-    "menu_settings": "Postavke"
+    "menu_settings": "Postavke",
+    "menu_landing": "Landing stranica"
   },
   "venue": {
     "created": "Lokal je uspješno kreiran.",
@@ -430,5 +431,24 @@
     "deleted": "Postavka je obrisana.",
     "value_required": "Vrijednost je obavezna.",
     "label_required": "Naziv je obavezan."
+  },
+  "landing_admin": {
+    "title": "Landing stranica",
+    "featured_venues_section": "Izdvojeni lokali",
+    "featured_events_section": "Izdvojeni dogadjaji",
+    "show_section": "Prikaži sekciju",
+    "hide_section": "Sakrij sekciju",
+    "select_venues_label": "Odaberi lokale za prikaz",
+    "select_events_label": "Odaberi dogadjaje za prikaz",
+    "venues_hint": "Odaberi do 8 lokala. Ako nema odabira — prikazuje se 6 najnovijih.",
+    "events_hint": "Odaberi predstojeće dogadjaje za prikaz.",
+    "save_config": "Sačuvaj izmjene",
+    "config_saved": "Konfiguracija je sačuvana.",
+    "preview": "Pogledaj stranicu",
+    "selected_count": "{{count}} odabrano",
+    "slider_preview": "Pregled slajdera",
+    "no_venues_available": "Nema dostupnih lokala.",
+    "no_events_available": "Nema dostupnih dogadjaja.",
+    "section_hidden": "Ova sekcija je sakrivena na landing stranici."
   }
 }

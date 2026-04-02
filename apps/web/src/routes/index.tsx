@@ -1,10 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { SearchFilterWidget } from '@/components/public/SearchFilterWidget';
 import { VenueSlider } from '@/components/public/VenueSlider';
-import { landingApi, type SearchFilters } from '@/lib/api/landing.api';
+import { useLandingData } from '@/hooks/useLanding';
+import type { SearchFilters } from '@/lib/api/landing.api';
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -13,11 +13,10 @@ export const Route = createFileRoute('/')({
 function HomePage(): React.JSX.Element {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { data: landingData, isLoading } = useLandingData();
 
-  const { data: venues, isLoading } = useQuery({
-    queryKey: ['public-venues'],
-    queryFn: landingApi.getFeaturedVenues,
-  });
+  const featuredVenues = landingData?.featuredVenues ?? [];
+  const showVenues = landingData?.config.showFeaturedVenues ?? true;
 
   function handleSearch(filters: SearchFilters): void {
     const params: Record<string, string> = {};
@@ -52,46 +51,45 @@ function HomePage(): React.JSX.Element {
             className="block w-full"
             preserveAspectRatio="none"
           >
-            <path
-              d="M0 80V40C360 0 1080 0 1440 40V80H0Z"
-              fill="white"
-            />
+            <path d="M0 80V40C360 0 1080 0 1440 40V80H0Z" fill="white" />
           </svg>
         </div>
       </section>
 
       {/* Featured venues */}
-      <section className="bg-white px-4 py-16">
-        <h2 className="text-center text-3xl font-bold text-secondary-600">
-          {t('home.featured_venues_title')}
-        </h2>
-        <p className="mt-2 text-center text-tertiary-500">
-          {t('home.featured_venues_subtitle')}
-        </p>
+      {showVenues && (
+        <section className="bg-white px-4 py-16">
+          <h2 className="text-center text-3xl font-bold text-secondary-600">
+            {t('home.featured_venues_title')}
+          </h2>
+          <p className="mt-2 text-center text-tertiary-500">
+            {t('home.featured_venues_subtitle')}
+          </p>
 
-        <div className="mt-10">
-          {isLoading && (
-            <div className="flex gap-4 overflow-hidden pl-4 md:pl-0">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="aspect-[3/4] min-w-[220px] animate-pulse rounded-2xl bg-tertiary-200 md:min-w-[260px]"
-                />
-              ))}
-            </div>
-          )}
+          <div className="mt-10">
+            {isLoading && (
+              <div className="flex gap-4 overflow-hidden pl-4 md:pl-0">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="aspect-[3/4] min-w-[220px] animate-pulse rounded-2xl bg-tertiary-200 md:min-w-[260px]"
+                  />
+                ))}
+              </div>
+            )}
 
-          {!isLoading && venues && venues.length > 0 && (
-            <VenueSlider venues={venues} />
-          )}
+            {!isLoading && featuredVenues.length > 0 && (
+              <VenueSlider venues={featuredVenues} />
+            )}
 
-          {!isLoading && (!venues || venues.length === 0) && (
-            <p className="text-center text-tertiary-500">
-              {t('home.no_featured_venues')}
-            </p>
-          )}
-        </div>
-      </section>
+            {!isLoading && featuredVenues.length === 0 && (
+              <p className="text-center text-tertiary-500">
+                {t('home.no_featured_venues')}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
     </PublicLayout>
   );
 }

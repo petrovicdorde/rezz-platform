@@ -9,10 +9,13 @@ import {
   UsersRound,
   PartyPopper,
   SlidersHorizontal,
+  LayoutDashboard,
+  LogOut,
 } from 'lucide-react';
 import type { UserRole } from '@rezz/shared';
 import { useAuthStore } from '@/store/auth.store';
 import { useUnreadCount } from '@/hooks/useNotifications';
+import { useLogout } from '@/hooks/useAuth';
 
 interface NavItem {
   to: string;
@@ -31,6 +34,7 @@ function useNavItems(): NavItem[] {
       { to: '/dashboard/venues', label: t('dashboard.menu_venues'), icon: Building2 },
       { to: '/dashboard/users', label: t('dashboard.menu_users'), icon: UsersRound },
       { to: '/dashboard/settings', label: t('dashboard.menu_settings'), icon: SlidersHorizontal },
+      { to: '/dashboard/landing', label: t('dashboard.menu_landing'), icon: LayoutDashboard },
     ],
     MANAGER: [
       { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },
@@ -69,6 +73,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
   const location = useLocation();
   const user = useAuthStore((s) => s.user);
   const { data: unreadCount = 0 } = useUnreadCount();
+  const logoutMutation = useLogout();
 
   return (
     <div className="min-h-screen bg-tertiary-50">
@@ -126,6 +131,24 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
 
       {/* Main content */}
       <main className="pb-16 md:ml-56 md:pb-0">
+        {/* Top bar */}
+        <div className="flex h-14 items-center justify-end border-b border-tertiary-200 bg-white px-4 md:px-8">
+          {user && (
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-secondary-600">
+                {t('nav.welcome', { name: user.firstName })}
+              </span>
+              <button
+                onClick={() => logoutMutation.mutate()}
+                disabled={logoutMutation.isPending}
+                className="rounded-md p-1.5 text-tertiary-400 transition-colors hover:bg-tertiary-100 hover:text-red-500"
+                title={t('auth.logout_button')}
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
         <div className="p-4 md:p-8">{children}</div>
       </main>
     </div>

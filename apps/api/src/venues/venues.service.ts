@@ -50,13 +50,24 @@ export class VenuesService {
     return Promise.all(venues.map((v) => this.toAdminDto(v)));
   }
 
-  async findAllPublic(): Promise<PublicVenueDto[]> {
-    const venues = await this.venueRepo.find({
-      where: { isActive: true },
-      relations: ['tables'],
-      order: { name: 'ASC' },
-    });
+  async findAllPublic(filters?: {
+    type?: string;
+    city?: string;
+  }): Promise<PublicVenueDto[]> {
+    const qb = this.venueRepo
+      .createQueryBuilder('venue')
+      .leftJoinAndSelect('venue.tables', 'tables')
+      .where('venue.isActive = true');
 
+    if (filters?.type) {
+      qb.andWhere('venue.type = :type', { type: filters.type });
+    }
+    if (filters?.city) {
+      qb.andWhere('LOWER(venue.city) = LOWER(:city)', { city: filters.city });
+    }
+
+    qb.orderBy('venue.name', 'ASC');
+    const venues = await qb.getMany();
     return venues.map((v) => VenueMapper.toPublic(v));
   }
 

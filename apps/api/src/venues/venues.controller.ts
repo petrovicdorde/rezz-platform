@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   HttpCode,
   HttpStatus,
   UseGuards,
@@ -25,8 +26,14 @@ export class VenuesController {
   constructor(private readonly venuesService: VenuesService) {}
 
   @Get('public')
-  findAllPublic(): Promise<PublicVenueDto[]> {
-    return this.venuesService.findAllPublic();
+  findAllPublic(
+    @Query('type') type: string,
+    @Query('city') city: string,
+  ): Promise<PublicVenueDto[]> {
+    return this.venuesService.findAllPublic({
+      type: type || undefined,
+      city: city || undefined,
+    });
   }
 
   @Get('public/:id')

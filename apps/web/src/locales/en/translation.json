@@ -107,7 +107,8 @@
     "menu_events": "Events",
     "menu_arrivals": "Arrivals",
     "menu_users": "Users",
-    "menu_settings": "Settings"
+    "menu_settings": "Settings",
+    "menu_landing": "Landing page"
   },
   "venue": {
     "created": "Venue created successfully.",
@@ -430,5 +431,24 @@
     "deleted": "Setting deleted.",
     "value_required": "Value is required.",
     "label_required": "Name is required."
+  },
+  "landing_admin": {
+    "title": "Landing page",
+    "featured_venues_section": "Featured venues",
+    "featured_events_section": "Featured events",
+    "show_section": "Show section",
+    "hide_section": "Hide section",
+    "select_venues_label": "Select venues to display",
+    "select_events_label": "Select events to display",
+    "venues_hint": "Select up to 8 venues. If none selected — 6 newest are shown.",
+    "events_hint": "Select upcoming events to display.",
+    "save_config": "Save changes",
+    "config_saved": "Configuration saved.",
+    "preview": "Preview page",
+    "selected_count": "{{count}} selected",
+    "slider_preview": "Slider preview",
+    "no_venues_available": "No venues available.",
+    "no_events_available": "No events available.",
+    "section_hidden": "This section is hidden on the landing page."
   }
 }

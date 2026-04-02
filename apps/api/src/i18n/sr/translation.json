@@ -135,6 +135,9 @@
     "updated": "Postavka je uspješno ažurirana.",
     "deleted": "Postavka je obrisana."
   },
+  "landing": {
+    "config_updated": "Landing stranica je ažurirana."
+  },
   "general": {
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",
     "not_found": "Traženi resurs nije pronađen.",
