@@ -18,7 +18,7 @@ export function VenueDetailModal({
     <Dialog open={venue !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-2xl p-0" showCloseButton={false}>
         <DialogTitle className="sr-only">{t('venue.view_details')}</DialogTitle>
-        <div className="max-h-[85vh] overflow-y-auto p-6">
+        <div className="venue-modal-scroll max-h-[85vh] overflow-y-auto p-6">
           {venue && <VenueDetailContent venue={venue} onClose={onClose} />}
         </div>
       </DialogContent>
