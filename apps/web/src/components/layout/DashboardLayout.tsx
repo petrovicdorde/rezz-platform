@@ -2,17 +2,21 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from '@tanstack/react-router';
 import {
   Building2,
+  Bell,
   CalendarCheck,
-  CalendarDays,
+  Clock,
   Users,
-  UserCheck,
+  PartyPopper,
 } from 'lucide-react';
+import type { UserRole } from '@rezz/shared';
 import { useAuthStore } from '@/store/auth.store';
+import { useUnreadCount } from '@/hooks/useNotifications';
 
 interface NavItem {
   to: string;
   label: string;
   icon: React.ElementType;
+  showBadge?: boolean;
 }
 
 function useNavItems(): NavItem[] {
@@ -20,37 +24,47 @@ function useNavItems(): NavItem[] {
   const user = useAuthStore((s) => s.user);
   const role = user?.role;
 
-  if (role === 'SUPER_ADMIN') {
-    return [
+  const items: Record<UserRole, NavItem[]> = {
+    SUPER_ADMIN: [
       { to: '/dashboard/venues', label: t('dashboard.menu_venues'), icon: Building2 },
-    ];
-  }
-
-  if (role === 'MANAGER') {
-    return [
+    ],
+    MANAGER: [
+      { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },
       { to: '/dashboard/reservations', label: t('dashboard.menu_reservations'), icon: CalendarCheck },
-      { to: '/dashboard/events', label: t('dashboard.menu_events'), icon: CalendarDays },
+      { to: '/dashboard/history', label: t('dashboard.menu_history'), icon: Clock },
       { to: '/dashboard/employees', label: t('dashboard.menu_employees'), icon: Users },
-    ];
-  }
+      { to: '/dashboard/events', label: t('dashboard.menu_events'), icon: PartyPopper },
+    ],
+    WORKER: [
+      { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },
+      { to: '/dashboard/reservations', label: t('dashboard.menu_reservations'), icon: CalendarCheck },
+    ],
+    GUEST: [],
+  };
 
-  if (role === 'WORKER') {
-    return [
-      { to: '/dashboard/arrivals', label: t('dashboard.menu_arrivals'), icon: UserCheck },
-    ];
-  }
-
-  return [];
+  return role ? items[role] : [];
 }
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
+function NavBadge({ count }: { count: number }): React.JSX.Element | null {
+  if (count <= 0) return null;
+  const display = count > 99 ? '99+' : String(count);
+  return (
+    <span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+      {display}
+    </span>
+  );
+}
+
 export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.Element {
   const { t } = useTranslation();
   const navItems = useNavItems();
   const location = useLocation();
+  const user = useAuthStore((s) => s.user);
+  const { data: unreadCount = 0 } = useUnreadCount();
 
   return (
     <div className="min-h-screen bg-tertiary-50">
@@ -68,13 +82,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
               <Link
                 key={item.to}
                 to={item.to}
-                className={`mx-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                className={`relative mx-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-white/20 text-white'
                     : 'text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                <item.icon className="h-5 w-5" />
+                <span className="relative">
+                  <item.icon className="h-5 w-5" />
+                  {item.showBadge && <NavBadge count={unreadCount} />}
+                </span>
                 {item.label}
               </Link>
             );
@@ -84,18 +101,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
 
       {/* Bottom nav — mobile */}
       <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-primary-600 bg-primary-400 md:hidden">
-        {navItems.slice(0, 4).map((item) => {
+        {navItems.slice(0, 5).map((item) => {
           const isActive = location.pathname === item.to;
           return (
             <Link
               key={item.to}
               to={item.to}
-              className={`flex flex-1 flex-col items-center gap-1 py-2 text-xs transition-colors ${
+              className={`flex flex-1 flex-col items-center py-3 text-xs transition-colors ${
                 isActive ? 'text-white' : 'text-white/60'
               }`}
             >
-              <item.icon className="h-5 w-5" />
-              {item.label}
+              <span className="relative">
+                <item.icon className="h-6 w-6" />
+                {item.showBadge && <NavBadge count={unreadCount} />}
+              </span>
             </Link>
           );
         })}

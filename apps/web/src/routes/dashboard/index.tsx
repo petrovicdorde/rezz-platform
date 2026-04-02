@@ -11,14 +11,19 @@ function DashboardRedirect(): React.JSX.Element {
   const user = useAuthStore((s) => s.user);
 
   useEffect(() => {
-    if (user?.role === 'SUPER_ADMIN') {
-      navigate({ to: '/dashboard/venues', replace: true });
-    } else if (user?.role === 'MANAGER') {
-      navigate({ to: '/dashboard/reservations', replace: true });
-    } else if (user?.role === 'WORKER') {
-      navigate({ to: '/dashboard/arrivals', replace: true });
-    } else {
-      navigate({ to: '/', replace: true });
+    if (!user) return;
+    switch (user.role) {
+      case 'SUPER_ADMIN':
+        navigate({ to: '/dashboard/venues', replace: true });
+        break;
+      case 'MANAGER':
+        navigate({ to: '/dashboard/notifications', replace: true });
+        break;
+      case 'WORKER':
+        navigate({ to: '/dashboard/notifications', replace: true });
+        break;
+      default:
+        navigate({ to: '/', replace: true });
     }
   }, [user, navigate]);
 

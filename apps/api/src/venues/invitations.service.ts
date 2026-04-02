@@ -28,6 +28,7 @@ interface SafeUser {
   role: string;
   isEmailVerified: boolean;
   isActive: boolean;
+  venueId: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -308,6 +309,7 @@ export class InvitationsService {
       role: user.role,
       isEmailVerified: user.isEmailVerified,
       isActive: user.isActive,
+      venueId: user.venueId ?? null,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };

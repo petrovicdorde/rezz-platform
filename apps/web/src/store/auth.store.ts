@@ -8,6 +8,7 @@ export interface AuthUser {
   role: UserRole;
   firstName: string;
   lastName: string;
+  venueId: string | null;
 }
 
 interface AuthState {

@@ -10,8 +10,8 @@ import { handleApiError } from '@/lib/handle-error';
 
 export const ROLE_REDIRECT: Record<UserRole, string> = {
   SUPER_ADMIN: '/dashboard/venues',
-  MANAGER: '/dashboard/reservations',
-  WORKER: '/dashboard/arrivals',
+  MANAGER: '/dashboard/notifications',
+  WORKER: '/dashboard/notifications',
   GUEST: '/',
 };
 
