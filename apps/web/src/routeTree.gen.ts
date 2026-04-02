@@ -14,6 +14,7 @@ import { Route as VenuesIndexRouteImport } from './routes/venues/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as VenuesSlugRouteImport } from './routes/venues/$slug'
 import { Route as DashboardVenuesRouteImport } from './routes/dashboard/venues'
+import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
 import { Route as DashboardReservationsRouteImport } from './routes/dashboard/reservations'
 import { Route as DashboardNotificationsRouteImport } from './routes/dashboard/notifications'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
@@ -52,6 +53,11 @@ const VenuesSlugRoute = VenuesSlugRouteImport.update({
 const DashboardVenuesRoute = DashboardVenuesRouteImport.update({
   id: '/dashboard/venues',
   path: '/dashboard/venues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardUsersRoute = DashboardUsersRouteImport.update({
+  id: '/dashboard/users',
+  path: '/dashboard/users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardReservationsRoute = DashboardReservationsRouteImport.update({
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/reservations': typeof DashboardReservationsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/reservations': typeof DashboardReservationsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/notifications': typeof DashboardNotificationsRoute
   '/dashboard/reservations': typeof DashboardReservationsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/notifications'
     | '/dashboard/reservations'
+    | '/dashboard/users'
     | '/dashboard/venues'
     | '/venues/$slug'
     | '/dashboard/'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/notifications'
     | '/dashboard/reservations'
+    | '/dashboard/users'
     | '/dashboard/venues'
     | '/venues/$slug'
     | '/dashboard'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/notifications'
     | '/dashboard/reservations'
+    | '/dashboard/users'
     | '/dashboard/venues'
     | '/venues/$slug'
     | '/dashboard/'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   DashboardHistoryRoute: typeof DashboardHistoryRoute
   DashboardNotificationsRoute: typeof DashboardNotificationsRoute
   DashboardReservationsRoute: typeof DashboardReservationsRoute
+  DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardVenuesRoute: typeof DashboardVenuesRoute
   VenuesSlugRoute: typeof VenuesSlugRouteWithChildren
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -311,6 +324,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/venues'
       fullPath: '/dashboard/venues'
       preLoaderRoute: typeof DashboardVenuesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/users': {
+      id: '/dashboard/users'
+      path: '/dashboard/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof DashboardUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/reservations': {
@@ -441,6 +461,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardHistoryRoute: DashboardHistoryRoute,
   DashboardNotificationsRoute: DashboardNotificationsRoute,
   DashboardReservationsRoute: DashboardReservationsRoute,
+  DashboardUsersRoute: DashboardUsersRoute,
   DashboardVenuesRoute: DashboardVenuesRoute,
   VenuesSlugRoute: VenuesSlugRouteWithChildren,
   DashboardIndexRoute: DashboardIndexRoute,

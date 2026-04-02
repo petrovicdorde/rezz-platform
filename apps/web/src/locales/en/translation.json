@@ -87,7 +87,8 @@
     "menu_history": "History",
     "menu_employees": "Employees",
     "menu_events": "Events",
-    "menu_arrivals": "Arrivals"
+    "menu_arrivals": "Arrivals",
+    "menu_users": "Users"
   },
   "venue": {
     "created": "Venue created successfully.",
@@ -343,5 +344,38 @@
     "starts_at_required": "Start date is required.",
     "starts_at_past": "Date cannot be in the past.",
     "price_min": "Price must be 0 or more."
+  },
+  "users": {
+    "title": "Users",
+    "search_placeholder": "Search by name or email...",
+    "filter_all": "All",
+    "filter_guests": "Guests",
+    "filter_managers": "Managers",
+    "filter_workers": "Workers",
+    "filter_blacklisted": "Blacklisted",
+    "filter_inactive": "Inactive",
+    "no_users": "No users found.",
+    "details_title": "User details",
+    "role_label": "Role",
+    "status_label": "Status",
+    "venue_label": "Venue",
+    "registered_label": "Registered",
+    "blacklist_reason_label": "Block reason",
+    "activate": "Activate account",
+    "deactivate": "Deactivate account",
+    "blacklist": "Add to blacklist",
+    "unblacklist": "Remove from blacklist",
+    "blacklist_reason_placeholder": "Block reason (optional)...",
+    "blacklist_confirm": "Are you sure you want to blacklist this user?",
+    "unblacklist_confirm": "Are you sure you want to remove this user from the blacklist?",
+    "deactivate_confirm": "Are you sure you want to deactivate this user?",
+    "confirm_yes": "Yes, confirm",
+    "status_active": "Active",
+    "status_inactive": "Inactive",
+    "status_blacklisted": "Blacklisted",
+    "google_account": "Google account",
+    "email_verified": "Email verified",
+    "email_not_verified": "Email not verified",
+    "no_name": "No name"
   }
 }

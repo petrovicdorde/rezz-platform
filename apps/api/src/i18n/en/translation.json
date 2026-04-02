@@ -107,6 +107,15 @@
     "role_updated": "Employee role updated successfully.",
     "cannot_change_own_role": "You cannot change your own role."
   },
+  "user": {
+    "not_found": "User not found.",
+    "updated": "User updated successfully.",
+    "activated": "User activated.",
+    "deactivated": "User deactivated.",
+    "blacklisted": "User has been blacklisted.",
+    "unblacklisted": "User has been removed from the blacklist.",
+    "cannot_modify_self": "You cannot modify your own account."
+  },
   "event": {
     "not_found": "Event not found.",
     "already_past": "You cannot create an event in the past.",

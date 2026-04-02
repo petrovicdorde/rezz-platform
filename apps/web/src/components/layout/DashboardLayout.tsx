@@ -6,6 +6,7 @@ import {
   CalendarCheck,
   Clock,
   Users,
+  UsersRound,
   PartyPopper,
 } from 'lucide-react';
 import type { UserRole } from '@rezz/shared';
@@ -27,6 +28,7 @@ function useNavItems(): NavItem[] {
   const items: Record<UserRole, NavItem[]> = {
     SUPER_ADMIN: [
       { to: '/dashboard/venues', label: t('dashboard.menu_venues'), icon: Building2 },
+      { to: '/dashboard/users', label: t('dashboard.menu_users'), icon: UsersRound },
     ],
     MANAGER: [
       { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },

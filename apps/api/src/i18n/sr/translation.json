@@ -107,6 +107,15 @@
     "role_updated": "Uloga zaposlenog je uspješno promijenjena.",
     "cannot_change_own_role": "Ne možete promijeniti vlastitu ulogu."
   },
+  "user": {
+    "not_found": "Korisnik nije pronađen.",
+    "updated": "Korisnik je uspješno ažuriran.",
+    "activated": "Korisnik je aktiviran.",
+    "deactivated": "Korisnik je deaktiviran.",
+    "blacklisted": "Korisnik je stavljen na crnu listu.",
+    "unblacklisted": "Korisnik je uklonjen sa crne liste.",
+    "cannot_modify_self": "Ne možete mijenjati vlastiti nalog."
+  },
   "event": {
     "not_found": "Dogadjaj nije pronađen.",
     "already_past": "Ne možete kreirati dogadjaj u prošlosti.",

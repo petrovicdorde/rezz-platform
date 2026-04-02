@@ -87,7 +87,8 @@
     "menu_history": "Istorija",
     "menu_employees": "Zaposleni",
     "menu_events": "Dogadjaji",
-    "menu_arrivals": "Dolasci"
+    "menu_arrivals": "Dolasci",
+    "menu_users": "Korisnici"
   },
   "venue": {
     "created": "Lokal je uspješno kreiran.",
@@ -343,5 +344,38 @@
     "starts_at_required": "Datum početka je obavezan.",
     "starts_at_past": "Datum ne može biti u prošlosti.",
     "price_min": "Cijena mora biti 0 ili više."
+  },
+  "users": {
+    "title": "Korisnici",
+    "search_placeholder": "Pretraži po imenu ili emailu...",
+    "filter_all": "Svi",
+    "filter_guests": "Gosti",
+    "filter_managers": "Menadžeri",
+    "filter_workers": "Radnici",
+    "filter_blacklisted": "Crna lista",
+    "filter_inactive": "Neaktivni",
+    "no_users": "Nema korisnika.",
+    "details_title": "Detalji korisnika",
+    "role_label": "Uloga",
+    "status_label": "Status",
+    "venue_label": "Lokal",
+    "registered_label": "Registrovan",
+    "blacklist_reason_label": "Razlog blokiranja",
+    "activate": "Aktiviraj nalog",
+    "deactivate": "Deaktiviraj nalog",
+    "blacklist": "Stavi na crnu listu",
+    "unblacklist": "Ukloni sa crne liste",
+    "blacklist_reason_placeholder": "Razlog blokiranja (opciono)...",
+    "blacklist_confirm": "Da li ste sigurni da želite staviti ovog korisnika na crnu listu?",
+    "unblacklist_confirm": "Da li ste sigurni da želite ukloniti ovog korisnika sa crne liste?",
+    "deactivate_confirm": "Da li ste sigurni da želite deaktivirati ovog korisnika?",
+    "confirm_yes": "Da, potvrdi",
+    "status_active": "Aktivan",
+    "status_inactive": "Neaktivan",
+    "status_blacklisted": "Crna lista",
+    "google_account": "Google nalog",
+    "email_verified": "Email potvrđen",
+    "email_not_verified": "Email nije potvrđen",
+    "no_name": "Bez imena"
   }
 }
