@@ -73,7 +73,8 @@
     "set_password_title": "Postavite lozinku",
     "set_password_subtitle": "Kreirajte lozinku za pristup vašem nalogu.",
     "set_password_button": "Postavi lozinku",
-    "set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!"
+    "set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!",
+    "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora."
   },
   "home": {
     "hero_title": "Rezervacija na klik!",

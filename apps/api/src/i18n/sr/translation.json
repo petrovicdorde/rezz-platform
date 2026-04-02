@@ -12,7 +12,8 @@
     "reset_email_sent": "Ukoliko nalog postoji, link za reset je poslan na vaš email.",
     "unauthorized": "Niste prijavljeni. Molimo prijavite se.",
     "forbidden": "Nemate dozvolu za ovu akciju.",
-    "invitation_set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!"
+    "invitation_set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!",
+    "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora."
   },
   "validation": {
     "required": "Ovo polje je obavezno.",

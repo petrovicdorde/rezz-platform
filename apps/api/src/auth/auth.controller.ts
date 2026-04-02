@@ -64,8 +64,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(
     @Body() dto: LoginDto,
+    @I18nLang() lang: string,
   ): Promise<{ accessToken: string; refreshToken: string; user: SafeUser }> {
-    return this.authService.login(dto);
+    return this.authService.login(dto, lang);
   }
 
   @UseGuards(JwtRefreshGuard)

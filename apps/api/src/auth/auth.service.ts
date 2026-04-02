@@ -10,9 +10,12 @@ import { ConfigService } from '@nestjs/config';
 import { I18nService } from 'nestjs-i18n';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { EmailService } from '../email/email.service';
-import { User } from '../users/entities/user.entity';
+import { User, UserRole } from '../users/entities/user.entity';
+import { Venue } from '../venues/entities/venue.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -39,6 +42,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly emailService: EmailService,
     private readonly i18n: I18nService,
+    @InjectRepository(Venue) private readonly venueRepo: Repository<Venue>,
   ) {}
 
   async register(
@@ -110,7 +114,7 @@ export class AuthService {
     return { message: await this.i18n.t('auth.email_verified', { lang }) };
   }
 
-  async login(dto: LoginDto): Promise<{
+  async login(dto: LoginDto, lang: string = 'sr'): Promise<{
     accessToken: string;
     refreshToken: string;
     user: SafeUser;
@@ -118,20 +122,32 @@ export class AuthService {
     const user = await this.usersService.findByEmail(dto.email);
 
     if (!user || !user.passwordHash) {
-      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
+      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials', { lang }));
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
+      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials', { lang }));
     }
 
     if (!user.isEmailVerified) {
-      throw new ForbiddenException(await this.i18n.t('auth.email_not_verified'));
+      throw new ForbiddenException(await this.i18n.t('auth.email_not_verified', { lang }));
     }
 
     if (!user.isActive) {
-      throw new ForbiddenException(await this.i18n.t('auth.account_inactive'));
+      throw new ForbiddenException(await this.i18n.t('auth.account_inactive', { lang }));
+    }
+
+    if (
+      (user.role === UserRole.MANAGER || user.role === UserRole.WORKER) &&
+      user.venueId
+    ) {
+      const venue = await this.venueRepo.findOne({ where: { id: user.venueId } });
+      if (venue && !venue.isActive) {
+        throw new ForbiddenException(
+          await this.i18n.t('auth.venue_blocked', { lang }),
+        );
+      }
     }
 
     return this.generateAuthResponse(user);

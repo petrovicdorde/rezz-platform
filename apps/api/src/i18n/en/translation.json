@@ -12,7 +12,8 @@
     "reset_email_sent": "If the account exists, a reset link has been sent to your email.",
     "unauthorized": "You are not logged in. Please log in.",
     "forbidden": "You do not have permission to perform this action.",
-    "invitation_set_password_success": "Password set. Welcome to Rezz.ba!"
+    "invitation_set_password_success": "Password set. Welcome to Rezz.ba!",
+    "venue_blocked": "Your venue has been deactivated. Please contact the platform administrator."
   },
   "validation": {
     "required": "This field is required.",

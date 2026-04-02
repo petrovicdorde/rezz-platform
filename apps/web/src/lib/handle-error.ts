@@ -21,7 +21,8 @@ export function handleApiError(
     }
 
     if (typeof message === 'string') {
-      toast.error(message);
+      const translated = i18n.t(message, { defaultValue: message });
+      toast.error(translated);
       return;
     }
   }
