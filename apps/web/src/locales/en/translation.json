@@ -78,7 +78,25 @@
   },
   "home": {
     "hero_title": "Book with a click!",
-    "hero_subtitle": "Find and reserve the perfect venue for any occasion."
+    "hero_subtitle": "Book quickly and easily, anytime and anywhere.",
+    "filter_title": "Find the perfect venue",
+    "filter_type_label": "Venue type",
+    "filter_type_placeholder": "All types",
+    "filter_city_label": "Location",
+    "filter_city_placeholder": "All locations",
+    "filter_date_label": "Date",
+    "filter_time_label": "Time",
+    "filter_search_button": "Search",
+    "featured_venues_title": "Featured for you",
+    "featured_venues_subtitle": "The best on our platform",
+    "no_featured_venues": "No featured venues."
+  },
+  "search": {
+    "title": "Search venues",
+    "results_count": "{{count}} results",
+    "no_results": "No venues match your criteria.",
+    "no_results_subtitle": "Try different filters.",
+    "loading": "Searching..."
   },
   "dashboard": {
     "menu_venues": "Venues",

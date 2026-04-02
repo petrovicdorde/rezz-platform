@@ -78,7 +78,25 @@
   },
   "home": {
     "hero_title": "Rezervacija na klik!",
-    "hero_subtitle": "Pronađite i rezervišite savršen lokal za svaku priliku."
+    "hero_subtitle": "Rezervišite brzo i jednostavno, bilo kada i bilo gdje.",
+    "filter_title": "Pronađite savršen lokal",
+    "filter_type_label": "Tip lokala",
+    "filter_type_placeholder": "Svi tipovi",
+    "filter_city_label": "Lokacija",
+    "filter_city_placeholder": "Sve lokacije",
+    "filter_date_label": "Datum",
+    "filter_time_label": "Vrijeme",
+    "filter_search_button": "Pretraži",
+    "featured_venues_title": "Za vas izdvajamo",
+    "featured_venues_subtitle": "Najbolje na našoj platformi",
+    "no_featured_venues": "Nema izdvojenih lokala."
+  },
+  "search": {
+    "title": "Pretraga lokala",
+    "results_count": "{{count}} rezultata",
+    "no_results": "Nema lokala za zadane kriterije.",
+    "no_results_subtitle": "Pokušajte sa drugačijim filterima.",
+    "loading": "Pretraživanje..."
   },
   "dashboard": {
     "menu_venues": "Lokali",
