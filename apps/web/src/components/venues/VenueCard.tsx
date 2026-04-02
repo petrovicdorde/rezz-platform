@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Car, CreditCard, Banknote, Smartphone } from 'lucide-react';
+import { Car, CreditCard, Banknote, Smartphone, MapPin } from 'lucide-react';
 import type { PaymentMethod, VenueType } from '@rezz/shared';
 import type { AdminVenue } from '@/lib/types/venue.types';
 
@@ -64,6 +64,12 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
         <span>{t(VENUE_TYPE_KEYS[venue.type])}</span>
         <span>·</span>
         <span>{venue.reservationPhone}</span>
+      </div>
+
+      {/* City + Address */}
+      <div className="mt-1 flex items-center gap-1 text-sm text-tertiary-500">
+        <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-tertiary-400" />
+        <span>{venue.city}</span>
       </div>
 
       {/* Tags */}

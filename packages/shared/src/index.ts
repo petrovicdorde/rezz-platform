@@ -50,6 +50,8 @@ export type NotificationType =
   | 'RESERVATION_CANCELLED'
   | 'RESERVATION_REMINDER';
 
+export type SettingType = 'CITY' | 'VENUE_TYPE' | 'TABLE_TYPE';
+
 export interface BaseEntity {
   id: string;
   createdAt: Date;

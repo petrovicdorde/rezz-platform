@@ -34,6 +34,8 @@ export interface CreateVenueRequest {
   type: VenueType;
   reservationPhone: string;
   reservationEmail?: string;
+  city: string;
+  address: string;
   workingHours?: WorkingHours;
   paymentMethods: PaymentMethod[];
   hasParking: boolean;
@@ -48,6 +50,8 @@ export interface AdminVenue {
   type: VenueType;
   reservationPhone: string;
   reservationEmail: string | null;
+  city: string;
+  address: string;
   workingHours: WorkingHours;
   paymentMethods: PaymentMethod[];
   hasParking: boolean;

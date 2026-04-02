@@ -57,7 +57,9 @@
     "invitation_expired": "This invitation has expired.",
     "invitation_already_accepted": "This invitation has already been accepted.",
     "invitation_already_declined": "This invitation has already been declined.",
-    "invitation_declined": "Invitation declined."
+    "invitation_declined": "Invitation declined.",
+    "city_required": "City is required.",
+    "address_required": "Address is required."
   },
   "reservation": {
     "not_found": "Reservation not found.",
@@ -125,6 +127,13 @@
     "deleted": "Event deleted.",
     "promotion_created": "Promotion added successfully.",
     "promotion_deleted": "Promotion deleted."
+  },
+  "settings": {
+    "not_found": "Setting not found.",
+    "already_exists": "A setting with this value already exists.",
+    "created": "Setting created successfully.",
+    "updated": "Setting updated successfully.",
+    "deleted": "Setting deleted."
   },
   "general": {
     "internal_error": "An error occurred. Please try again.",

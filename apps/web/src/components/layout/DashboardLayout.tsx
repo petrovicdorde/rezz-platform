@@ -8,6 +8,7 @@ import {
   Users,
   UsersRound,
   PartyPopper,
+  SlidersHorizontal,
 } from 'lucide-react';
 import type { UserRole } from '@rezz/shared';
 import { useAuthStore } from '@/store/auth.store';
@@ -29,6 +30,7 @@ function useNavItems(): NavItem[] {
     SUPER_ADMIN: [
       { to: '/dashboard/venues', label: t('dashboard.menu_venues'), icon: Building2 },
       { to: '/dashboard/users', label: t('dashboard.menu_users'), icon: UsersRound },
+      { to: '/dashboard/settings', label: t('dashboard.menu_settings'), icon: SlidersHorizontal },
     ],
     MANAGER: [
       { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },

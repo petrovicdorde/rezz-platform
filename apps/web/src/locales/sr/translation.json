@@ -88,7 +88,8 @@
     "menu_employees": "Zaposleni",
     "menu_events": "Dogadjaji",
     "menu_arrivals": "Dolasci",
-    "menu_users": "Korisnici"
+    "menu_users": "Korisnici",
+    "menu_settings": "Postavke"
   },
   "venue": {
     "created": "Lokal je uspješno kreiran.",
@@ -176,7 +177,13 @@
     "manager_replace": "Zamijeni menadžera",
     "manager_add": "Dodaj menadžera",
     "manager_invite_sent": "Pozivnica je poslata na {{email}}.",
-    "manager_replace_hint": "Novi menadžer će dobiti pozivnicu na email. Trenutni menadžer gubi pristup."
+    "manager_replace_hint": "Novi menadžer će dobiti pozivnicu na email. Trenutni menadžer gubi pristup.",
+    "city_label": "Grad",
+    "city_placeholder": "Odaberite grad",
+    "city_required": "Grad je obavezan.",
+    "address_label": "Adresa",
+    "address_placeholder": "npr. Ulica bb, broj",
+    "address_required": "Adresa je obavezna."
   },
   "reservation": {
     "created": "Rezervacija je uspješno kreirana.",
@@ -377,5 +384,33 @@
     "email_verified": "Email potvrđen",
     "email_not_verified": "Email nije potvrđen",
     "no_name": "Bez imena"
+  },
+  "settings": {
+    "title": "Postavke",
+    "tab_cities": "Gradovi",
+    "tab_venue_types": "Tipovi lokala",
+    "tab_table_types": "Tipovi stolova",
+    "add_city": "Dodaj grad",
+    "add_venue_type": "Dodaj tip lokala",
+    "add_table_type": "Dodaj tip stola",
+    "value_label": "Vrijednost (interni kod)",
+    "label_label": "Naziv (prikazuje se korisnicima)",
+    "value_placeholder": "npr. NOVI_GRAD",
+    "label_placeholder": "npr. Novi Grad",
+    "order_label": "Redoslijed",
+    "active_label": "Aktivan",
+    "inactive_label": "Neaktivan",
+    "no_settings": "Nema postavki. Dodajte prvu.",
+    "add_new": "Dodaj novu",
+    "save": "Sačuvaj",
+    "cancel_add": "Otkaži",
+    "toggle_active": "Promijeni status",
+    "delete_confirm": "Da li ste sigurni da želite obrisati ovu postavku?",
+    "delete_confirm_yes": "Da, obriši",
+    "created": "Postavka je kreirana.",
+    "updated": "Postavka je ažurirana.",
+    "deleted": "Postavka je obrisana.",
+    "value_required": "Vrijednost je obavezna.",
+    "label_required": "Naziv je obavezan."
   }
 }

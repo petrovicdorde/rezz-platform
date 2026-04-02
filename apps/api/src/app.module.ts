@@ -22,6 +22,8 @@ import { EventPromotion } from './events/entities/event-promotion.entity';
 import { Reservation } from './reservations/entities/reservation.entity';
 import { GuestRating } from './reservations/entities/guest-rating.entity';
 import { Notification } from './notifications/entities/notification.entity';
+import { SettingsModule } from './settings/settings.module';
+import { Setting } from './settings/entities/setting.entity';
 
 @Module({
   imports: [
@@ -36,7 +38,7 @@ import { Notification } from './notifications/entities/notification.entity';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Venue, VenueTable, VenueInvitation, Reservation, GuestRating, Notification, Event, EventPromotion],
+        entities: [User, Venue, VenueTable, VenueInvitation, Reservation, GuestRating, Notification, Event, EventPromotion, Setting],
         synchronize: configService.get('NODE_ENV') !== 'production',
       }),
     }),
@@ -59,6 +61,7 @@ import { Notification } from './notifications/entities/notification.entity';
     NotificationsModule,
     EmployeesModule,
     EventsModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

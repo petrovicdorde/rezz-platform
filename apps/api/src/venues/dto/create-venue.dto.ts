@@ -142,9 +142,15 @@ export class CreateVenueDto {
   @IsBoolean()
   hasParking: boolean;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  address?: string;
+  @MinLength(2)
+  city: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  address: string;
 
   @IsOptional()
   @IsArray()

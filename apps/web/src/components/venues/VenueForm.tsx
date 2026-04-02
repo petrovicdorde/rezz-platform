@@ -14,6 +14,7 @@ import {
 import { TagInput } from "@/components/ui/TagInput";
 import { WorkingHoursInput } from "@/components/ui/WorkingHoursInput";
 import { useCreateVenue, useUpdateVenue } from "@/hooks/useVenues";
+import { usePublicSettings } from "@/hooks/useSettings";
 import type { AdminVenue, CreateVenueRequest } from "@/lib/types/venue.types";
 
 interface VenueFormProps {
@@ -90,6 +91,7 @@ export function VenueForm({
   const { t } = useTranslation();
   const createVenue = useCreateVenue();
   const updateVenue = useUpdateVenue();
+  const { data: cities } = usePublicSettings("CITY");
   const isEdit = !!venueId;
   const mutation = isEdit ? updateVenue : createVenue;
 
@@ -105,6 +107,8 @@ export function VenueForm({
           type: initialData.type,
           reservationPhone: initialData.reservationPhone,
           reservationEmail: initialData.reservationEmail ?? "",
+          city: initialData.city ?? "",
+          address: initialData.address ?? "",
           hasParking: initialData.hasParking,
           paymentMethods: initialData.paymentMethods,
           tags: initialData.tags,
@@ -121,6 +125,8 @@ export function VenueForm({
           type: undefined,
           reservationPhone: "",
           reservationEmail: "",
+          city: "",
+          address: "",
           hasParking: false,
           paymentMethods: [],
           tags: [],
@@ -246,6 +252,59 @@ export function VenueForm({
           )}
         </div>
       )}
+
+      {/* City + Address */}
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label className="mb-1 block text-sm font-medium">
+            {t("venue.city_label")}
+          </label>
+          <Controller
+            control={control}
+            name="city"
+            rules={{ required: t("venue.city_required") }}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={field.onChange}
+                disabled={isReadOnly}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("venue.city_placeholder")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {cities?.map((c) => (
+                    <SelectItem key={c.value} value={c.label}>
+                      {c.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.city && (
+            <p className="mt-1 text-xs text-red-500">{errors.city.message}</p>
+          )}
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium">
+            {t("venue.address_label")}
+          </label>
+          <Input
+            {...register("address", {
+              required: t("venue.address_required"),
+              minLength: { value: 3, message: t("venue.address_required") },
+            })}
+            placeholder={t("venue.address_placeholder")}
+            disabled={isReadOnly}
+          />
+          {errors.address && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.address.message}
+            </p>
+          )}
+        </div>
+      </div>
 
       {/* Section 2 — Details */}
       <div className="mb-1 mt-6">

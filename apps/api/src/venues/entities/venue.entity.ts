@@ -58,8 +58,11 @@ export class Venue {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ type: 'varchar', nullable: true })
-  address: string | null;
+  @Column()
+  city: string;
+
+  @Column()
+  address: string;
 
   @Column({ type: 'varchar', nullable: true })
   imageUrl: string | null;

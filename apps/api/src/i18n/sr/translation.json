@@ -57,7 +57,9 @@
     "invitation_expired": "Pozivnica je istekla.",
     "invitation_already_accepted": "Pozivnica je već prihvaćena.",
     "invitation_already_declined": "Pozivnica je već odbijena.",
-    "invitation_declined": "Pozivnica je odbijena."
+    "invitation_declined": "Pozivnica je odbijena.",
+    "city_required": "Grad je obavezan.",
+    "address_required": "Adresa je obavezna."
   },
   "reservation": {
     "not_found": "Rezervacija nije pronađena.",
@@ -125,6 +127,13 @@
     "deleted": "Dogadjaj je obrisan.",
     "promotion_created": "Promocija je uspješno dodana.",
     "promotion_deleted": "Promocija je obrisana."
+  },
+  "settings": {
+    "not_found": "Postavka nije pronađena.",
+    "already_exists": "Postavka sa ovom vrijednošću već postoji.",
+    "created": "Postavka je uspješno kreirana.",
+    "updated": "Postavka je uspješno ažurirana.",
+    "deleted": "Postavka je obrisana."
   },
   "general": {
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",
