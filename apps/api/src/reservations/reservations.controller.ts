@@ -136,7 +136,7 @@ export class ReservationsController {
   cancel(
     @Param('venueId') venueId: string,
     @Param('id') id: string,
-    @Body('reason') reason: string | undefined,
+    @Body('reason') reason: string,
     @I18nLang() lang: string,
   ) {
     return this.reservationsService.cancel(id, venueId, reason, lang);

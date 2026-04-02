@@ -226,7 +226,14 @@
     "phone_required": "Phone is required.",
     "date_required": "Date is required.",
     "time_required": "Time is required.",
-    "table_type_required": "Table type is required."
+    "table_type_required": "Table type is required.",
+    "cancel_title": "Cancel reservation",
+    "cancel_reason_label": "Cancellation reason",
+    "cancel_reason_placeholder": "Enter cancellation reason...",
+    "cancel_reason_required": "Cancellation reason is required.",
+    "cancel_confirm": "Cancel reservation",
+    "cancel_button": "Cancel",
+    "cancel_success": "Reservation cancelled."
   },
   "event": {
     "created": "Event created successfully.",

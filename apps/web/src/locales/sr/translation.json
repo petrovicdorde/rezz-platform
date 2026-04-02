@@ -226,7 +226,14 @@
     "phone_required": "Telefon je obavezan.",
     "date_required": "Datum je obavezan.",
     "time_required": "Vrijeme je obavezno.",
-    "table_type_required": "Tip stola je obavezan."
+    "table_type_required": "Tip stola je obavezan.",
+    "cancel_title": "Otkaži rezervaciju",
+    "cancel_reason_label": "Razlog otkazivanja",
+    "cancel_reason_placeholder": "Unesite razlog otkazivanja...",
+    "cancel_reason_required": "Razlog otkazivanja je obavezan.",
+    "cancel_confirm": "Otkaži rezervaciju",
+    "cancel_button": "Otkaži",
+    "cancel_success": "Rezervacija je otkazana."
   },
   "event": {
     "created": "Dogadjaj je uspješno kreiran.",

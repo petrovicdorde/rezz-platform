@@ -37,7 +37,11 @@
     "worker_invitation_subject": "Pozvani ste kao radnik – {{venueName}}",
     "worker_invitation_body": "Pozvani ste da postanete radnik lokala <strong>{{venueName}}</strong> na Rezz.ba platformi.",
     "worker_invitation_button": "Prihvati pozivnicu",
-    "worker_invitation_footer": "Pozivnica je važeća 7 dana."
+    "worker_invitation_footer": "Pozivnica je važeća 7 dana.",
+    "reservation_cancelled_subject": "Vaša rezervacija je otkazana – Rezz.ba",
+    "reservation_cancelled_body": "Nažalost, vaša rezervacija u lokalu <strong>{{venueName}}</strong> za <strong>{{date}}</strong> u <strong>{{time}}</strong> je otkazana.",
+    "reservation_cancelled_reason": "Razlog: {{reason}}",
+    "reservation_cancelled_footer": "Ukoliko imate pitanja, kontaktirajte lokal direktno."
   },
   "venue": {
     "not_found": "Lokal nije pronađen.",
@@ -73,7 +77,9 @@
     "invalid_date": "Datum rezervacije ne može biti u prošlosti.",
     "table_type_not_available": "Odabrani tip stola nije dostupan u ovom lokalu.",
     "already_rated": "Ova rezervacija je već ocjenjena.",
-    "not_completed": "Samo završene rezervacije se mogu ocijeniti."
+    "not_completed": "Samo završene rezervacije se mogu ocijeniti.",
+    "cancel_reason_required": "Razlog otkazivanja je obavezan.",
+    "manager_cancelled": "Rezervacija je otkazana od strane menadžera."
   },
   "notification": {
     "not_found": "Obavještenje nije pronađeno.",

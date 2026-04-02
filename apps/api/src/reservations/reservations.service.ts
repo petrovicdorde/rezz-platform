@@ -23,6 +23,7 @@ import { ArrivalDto } from './dto/arrival.dto';
 import { GuestRatingDto } from './dto/guest-rating.dto';
 import { NotificationsService } from '../notifications/notifications.service';
 import { UsersService } from '../users/users.service';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class ReservationsService {
@@ -37,6 +38,7 @@ export class ReservationsService {
     private venueTableRepo: Repository<VenueTable>,
     private i18n: I18nService,
     private usersService: UsersService,
+    private emailService: EmailService,
     @Inject(forwardRef(() => NotificationsService))
     private notificationsService: NotificationsService,
   ) {}
@@ -343,9 +345,15 @@ export class ReservationsService {
   async cancel(
     id: string,
     venueId: string,
-    reason: string | undefined,
+    reason: string,
     lang: string = 'sr',
   ): Promise<Reservation> {
+    if (!reason || reason.trim() === '') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.cancel_reason_required', { lang }),
+      );
+    }
+
     const reservation = await this.findOne(id, venueId, lang);
 
     const nonCancellable: string[] = [
@@ -362,10 +370,30 @@ export class ReservationsService {
     }
 
     reservation.status = 'CANCELLED';
-    reservation.cancellationReason = reason ?? null;
+    reservation.cancellationReason = reason;
     reservation.cancelledAt = new Date();
     const saved = await this.reservationRepo.save(reservation);
     await this.notifyVenueManagers(saved, 'RESERVATION_CANCELLED');
+
+    if (reservation.userId) {
+      try {
+        const guest = await this.usersService.findById(reservation.userId);
+        if (guest) {
+          const venue = await this.venueRepo.findOne({ where: { id: venueId } });
+          await this.emailService.sendReservationCancelledEmail(
+            guest.email,
+            venue?.name ?? '',
+            reservation.date,
+            reservation.time,
+            reason,
+            lang,
+          );
+        }
+      } catch {
+        // Silent fail — don't block cancellation if email fails
+      }
+    }
+
     return saved;
   }
 }

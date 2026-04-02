@@ -10,6 +10,8 @@ import { ReservationCard } from '@/components/reservations/ReservationCard';
 import { ReservationFormModal } from '@/components/reservations/ReservationFormModal';
 import { ReservationFormDrawer } from '@/components/reservations/ReservationFormDrawer';
 import { ReservationNoteModal } from '@/components/reservations/ReservationNoteModal';
+import { CancelReservationModal } from '@/components/reservations/CancelReservationModal';
+import { CancelReservationDrawer } from '@/components/reservations/CancelReservationDrawer';
 import {
   useReservations,
   useConfirmReservation,
@@ -30,6 +32,7 @@ function ReservationsPage(): React.JSX.Element {
   const [activeFilter, setActiveFilter] = useState<FilterType>('today');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [rejectTarget, setRejectTarget] = useState<string | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<{ id: string; name: string } | null>(null);
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   const today = format(new Date(), 'yyyy-MM-dd');
@@ -127,6 +130,15 @@ function ReservationsPage(): React.JSX.Element {
                 onNoShow={(id) =>
                   arrivalMutation.mutate({ id, outcome: 'NO_SHOW' })
                 }
+                onClick={(id) => {
+                  const res = reservations?.find((r) => r.id === id);
+                  if (res && (res.status === 'PENDING' || res.status === 'CONFIRMED')) {
+                    setCancelTarget({
+                      id,
+                      name: `${res.firstName} ${res.lastName}`,
+                    });
+                  }
+                }}
                 isConfirming={confirmMutation.isPending}
                 isRejecting={rejectMutation.isPending}
                 isRecordingArrival={arrivalMutation.isPending}
@@ -173,6 +185,23 @@ function ReservationsPage(): React.JSX.Element {
           );
         }}
       />
+
+      {/* Cancel modal/drawer */}
+      {isMobile ? (
+        <CancelReservationDrawer
+          isOpen={cancelTarget !== null}
+          onClose={() => setCancelTarget(null)}
+          reservationId={cancelTarget?.id ?? null}
+          guestName={cancelTarget?.name ?? ''}
+        />
+      ) : (
+        <CancelReservationModal
+          isOpen={cancelTarget !== null}
+          onClose={() => setCancelTarget(null)}
+          reservationId={cancelTarget?.id ?? null}
+          guestName={cancelTarget?.name ?? ''}
+        />
+      )}
     </DashboardLayout>
   );
 }

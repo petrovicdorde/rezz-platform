@@ -95,7 +95,7 @@ export const reservationsApi = {
   cancel: async (
     venueId: string,
     id: string,
-    reason?: string,
+    reason: string,
   ): Promise<Reservation> => {
     const response = await api.patch<Reservation>(
       `/venues/${venueId}/reservations/${id}/cancel`,

@@ -170,6 +170,54 @@ export class EmailService {
     }
   }
 
+  async sendReservationCancelledEmail(
+    email: string,
+    venueName: string,
+    date: string,
+    time: string,
+    reason: string,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const subject = this.i18n.t('email.reservation_cancelled_subject', { lang });
+    const body = this.i18n.t('email.reservation_cancelled_body', {
+      lang,
+      args: { venueName, date, time },
+    });
+    const reasonText = this.i18n.t('email.reservation_cancelled_reason', {
+      lang,
+      args: { reason },
+    });
+    const footer = this.i18n.t('email.reservation_cancelled_footer', { lang });
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
+      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <p>${body}</p>
+      <p style="background:#FEF3C7;border-left:4px solid #F59E0B;padding:12px;border-radius:4px;margin:16px 0;">
+        ${reasonText}
+      </p>
+      <p style="color:#9A8C7C;font-size:13px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send reservation cancelled email to ${email}`,
+        error,
+      );
+    }
+  }
+
   async sendWorkerInvitationEmail(
     email: string,
     venueName: string,

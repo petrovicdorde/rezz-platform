@@ -22,6 +22,7 @@ interface ReservationCardProps {
   onReject?: (id: string) => void;
   onArrival?: (id: string) => void;
   onNoShow?: (id: string) => void;
+  onClick?: (id: string) => void;
   isConfirming?: boolean;
   isRejecting?: boolean;
   isRecordingArrival?: boolean;
@@ -33,6 +34,7 @@ export function ReservationCard({
   onReject,
   onArrival,
   onNoShow,
+  onClick,
   isConfirming,
   isRejecting,
   isRecordingArrival,
@@ -43,9 +45,10 @@ export function ReservationCard({
 
   return (
     <div
-      className={`rounded-xl border border-tertiary-200 bg-white p-4 shadow-sm ${
+      onClick={() => onClick?.(reservation.id)}
+      className={`rounded-xl border border-tertiary-200 bg-white p-4 shadow-sm transition-colors ${
         reservation.source === 'MANAGER' ? 'border-l-4 border-l-primary-400' : ''
-      }`}
+      } ${onClick ? 'cursor-pointer hover:bg-tertiary-50' : ''}`}
     >
       {/* Top row */}
       <div className="flex items-center justify-between">

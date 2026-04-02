@@ -37,7 +37,11 @@
     "worker_invitation_subject": "You've been invited as a worker – {{venueName}}",
     "worker_invitation_body": "You have been invited to become a worker at <strong>{{venueName}}</strong> on the Rezz.ba platform.",
     "worker_invitation_button": "Accept invitation",
-    "worker_invitation_footer": "This invitation is valid for 7 days."
+    "worker_invitation_footer": "This invitation is valid for 7 days.",
+    "reservation_cancelled_subject": "Your reservation has been cancelled – Rezz.ba",
+    "reservation_cancelled_body": "Unfortunately, your reservation at <strong>{{venueName}}</strong> for <strong>{{date}}</strong> at <strong>{{time}}</strong> has been cancelled.",
+    "reservation_cancelled_reason": "Reason: {{reason}}",
+    "reservation_cancelled_footer": "If you have any questions, please contact the venue directly."
   },
   "venue": {
     "not_found": "Venue not found.",
@@ -73,7 +77,9 @@
     "invalid_date": "Reservation date cannot be in the past.",
     "table_type_not_available": "Selected table type is not available at this venue.",
     "already_rated": "This reservation has already been rated.",
-    "not_completed": "Only completed reservations can be rated."
+    "not_completed": "Only completed reservations can be rated.",
+    "cancel_reason_required": "Cancellation reason is required.",
+    "manager_cancelled": "Reservation was cancelled by the manager."
   },
   "notification": {
     "not_found": "Notification not found.",

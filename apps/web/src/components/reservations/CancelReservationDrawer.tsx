@@ -1,0 +1,110 @@
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { useCancelReservation } from '@/hooks/useReservations';
+
+interface CancelReservationDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  reservationId: string | null;
+  guestName: string;
+}
+
+interface CancelFormValues {
+  reason: string;
+}
+
+export function CancelReservationDrawer({
+  isOpen,
+  onClose,
+  reservationId,
+  guestName,
+}: CancelReservationDrawerProps): React.JSX.Element {
+  const { t } = useTranslation();
+  const cancelMutation = useCancelReservation();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CancelFormValues>();
+
+  useEffect(() => {
+    if (!isOpen) reset();
+  }, [isOpen, reset]);
+
+  function onSubmit(data: CancelFormValues): void {
+    if (!reservationId) return;
+    cancelMutation.mutate(
+      { id: reservationId, reason: data.reason },
+      {
+        onSuccess: () => {
+          onClose();
+          reset();
+        },
+      },
+    );
+  }
+
+  function handleClose(): void {
+    onClose();
+    reset();
+  }
+
+  return (
+    <Sheet open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+      <SheetContent side="right" className="w-full max-w-sm p-6">
+        <SheetHeader>
+          <SheetTitle>{t('reservation.cancel_title')}</SheetTitle>
+          <p className="mt-1 text-sm text-tertiary-500">{guestName}</p>
+        </SheetHeader>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <div>
+            <label className="mb-1 block text-sm font-medium">
+              {t('reservation.cancel_reason_label')}
+            </label>
+            <textarea
+              rows={4}
+              placeholder={t('reservation.cancel_reason_placeholder')}
+              className="w-full rounded-lg border border-input p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400"
+              {...register('reason', {
+                required: t('reservation.cancel_reason_required'),
+                minLength: {
+                  value: 5,
+                  message: t('reservation.cancel_reason_required'),
+                },
+              })}
+            />
+            {errors.reason && (
+              <p className="mt-1 text-xs text-red-500">
+                {errors.reason.message}
+              </p>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Button type="button" variant="outline" onClick={handleClose}>
+              {t('common.cancel')}
+            </Button>
+            <Button
+              type="submit"
+              disabled={cancelMutation.isPending}
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              {cancelMutation.isPending
+                ? t('common.loading')
+                : t('reservation.cancel_confirm')}
+            </Button>
+          </div>
+        </form>
+      </SheetContent>
+    </Sheet>
+  );
+}

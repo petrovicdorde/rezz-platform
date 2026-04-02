@@ -105,11 +105,11 @@ export function useCancelReservation() {
   const venueId = useAuthStore((s) => s.user?.venueId ?? '');
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
+    mutationFn: ({ id, reason }: { id: string; reason: string }) =>
       reservationsApi.cancel(venueId, id, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RESERVATIONS_KEY(venueId) });
-      toast.success(i18n.t('reservation.cancelled'));
+      toast.success(i18n.t('reservation.cancel_success'));
     },
     onError: (error: unknown) => handleApiError(error),
   });
