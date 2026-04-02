@@ -1,14 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
-import { toast } from 'react-toastify';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { StarRating } from '@/components/ui/StarRating';
-import { useRateGuest } from '@/hooks/useReservations';
-import i18n from '@/i18n';
+import { useRateGuest, useUpdateRating } from '@/hooks/useReservations';
+import type { GuestRating } from '@/lib/types/reservation.types';
 
 interface GuestRatingFormProps {
   reservationId: string;
+  existingRating?: GuestRating | null;
   onSuccess: () => void;
   onCancel: () => void;
 }
@@ -20,11 +20,15 @@ interface RatingFormValues {
 
 export function GuestRatingForm({
   reservationId,
+  existingRating,
   onSuccess,
   onCancel,
 }: GuestRatingFormProps): React.JSX.Element {
   const { t } = useTranslation();
   const rateGuest = useRateGuest();
+  const updateRating = useUpdateRating();
+  const isEdit = !!existingRating;
+  const mutation = isEdit ? updateRating : rateGuest;
 
   const {
     control,
@@ -32,21 +36,19 @@ export function GuestRatingForm({
     handleSubmit,
     formState: { errors },
   } = useForm<RatingFormValues>({
-    defaultValues: { rating: 0, note: '' },
+    defaultValues: {
+      rating: existingRating?.rating ?? 0,
+      note: existingRating?.note ?? '',
+    },
   });
 
   function onSubmit(data: RatingFormValues): void {
-    rateGuest.mutate(
+    mutation.mutate(
       {
         reservationId,
         data: { rating: data.rating, note: data.note || undefined },
       },
-      {
-        onSuccess: () => {
-          toast.success(i18n.t('history.rating_saved'));
-          onSuccess();
-        },
-      },
+      { onSuccess },
     );
   }
 
@@ -86,10 +88,10 @@ export function GuestRatingForm({
         </Button>
         <Button
           type="submit"
-          disabled={rateGuest.isPending}
+          disabled={mutation.isPending}
           className="bg-primary-400 text-white hover:bg-primary-600"
         >
-          {rateGuest.isPending ? t('common.loading') : t('history.rating_save')}
+          {mutation.isPending ? t('common.loading') : t('history.rating_save')}
         </Button>
       </div>
     </form>

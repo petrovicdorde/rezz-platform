@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { StarRating } from '@/components/ui/StarRating';
 import { ReservationStatusBadge } from './ReservationStatusBadge';
 import { GuestRatingForm } from './GuestRatingForm';
+import { GuestScoreBadge } from './GuestScoreBadge';
 import type { Reservation } from '@/lib/types/reservation.types';
 
 const TABLE_TYPE_KEYS: Record<TableType, string> = {
@@ -85,40 +86,41 @@ export function HistoryCard({
         </div>
       )}
 
-      {/* Rating section — only for COMPLETED */}
+      {/* Guest score + Rating section — only for COMPLETED */}
       {reservation.status === 'COMPLETED' && (
         <div className="mt-3">
-          {reservation.guestRating ? (
-            <div className="flex items-center gap-2">
-              <StarRating
-                value={reservation.guestRating.rating}
-                readonly
-                size={16}
-              />
-              {reservation.guestRating.note && (
-                <span className="text-xs italic text-tertiary-500">
-                  {reservation.guestRating.note}
+          <GuestScoreBadge phone={reservation.phone} />
+
+          {reservation.guestRating && !showRatingForm ? (
+            <div className="mt-2">
+              <div className="flex items-center gap-2">
+                <StarRating
+                  value={reservation.guestRating.rating}
+                  readonly
+                  size={16}
+                />
+                {reservation.guestRating.note && (
+                  <span className="text-xs italic text-tertiary-500">
+                    {reservation.guestRating.note}
+                  </span>
+                )}
+                <span className="text-xs text-tertiary-400">
+                  {t('history.rated')}
                 </span>
-              )}
-              <span className="text-xs text-tertiary-400">
-                {t('history.rated')}
-              </span>
+              </div>
+              <button
+                onClick={() => setShowRatingForm(true)}
+                className="mt-1 text-xs text-tertiary-500 underline hover:text-primary-600"
+              >
+                {t('history.edit_rating')}
+              </button>
             </div>
-          ) : !showRatingForm ? (
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-1 w-full"
-              onClick={() => setShowRatingForm(true)}
-            >
-              <StarIcon className="mr-1.5 h-4 w-4" />
-              {t('history.rate_guest')}
-            </Button>
-          ) : (
+          ) : showRatingForm ? (
             <>
               <Separator className="my-3" />
               <GuestRatingForm
                 reservationId={reservation.id}
+                existingRating={reservation.guestRating}
                 onSuccess={() => {
                   setShowRatingForm(false);
                   onRatingSuccess();
@@ -126,6 +128,16 @@ export function HistoryCard({
                 onCancel={() => setShowRatingForm(false)}
               />
             </>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2 w-full"
+              onClick={() => setShowRatingForm(true)}
+            >
+              <StarIcon className="mr-1.5 h-4 w-4" />
+              {t('history.rate_guest')}
+            </Button>
           )}
         </div>
       )}

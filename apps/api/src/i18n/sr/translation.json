@@ -79,7 +79,12 @@
     "already_rated": "Ova rezervacija je već ocjenjena.",
     "not_completed": "Samo završene rezervacije se mogu ocijeniti.",
     "cancel_reason_required": "Razlog otkazivanja je obavezan.",
-    "manager_cancelled": "Rezervacija je otkazana od strane menadžera."
+    "manager_cancelled": "Rezervacija je otkazana od strane menadžera.",
+    "rating_saved": "Ocjena je sačuvana.",
+    "rating_updated": "Ocjena je ažurirana.",
+    "rating_required": "Ocjena je obavezna.",
+    "rating_not_found": "Ocjena nije pronađena.",
+    "rating_only_completed": "Možete ocijeniti samo završene rezervacije."
   },
   "notification": {
     "not_found": "Obavještenje nije pronađeno.",

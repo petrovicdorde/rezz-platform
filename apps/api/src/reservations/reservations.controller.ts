@@ -66,6 +66,16 @@ export class ReservationsController {
     );
   }
 
+  @Get('guest-score/:phone')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  getGuestScore(
+    @Param('venueId') venueId: string,
+    @Param('phone') phone: string,
+  ) {
+    return this.reservationsService.getGuestScore(phone, venueId);
+  }
+
   @Get(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
@@ -161,4 +171,25 @@ export class ReservationsController {
       lang,
     );
   }
+
+  @Patch(':id/rate')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  updateRating(
+    @Param('venueId') venueId: string,
+    @Param('id') id: string,
+    @Body() dto: GuestRatingDto,
+    @CurrentUser() user: User,
+    @I18nLang() lang: string,
+  ) {
+    return this.reservationsService.updateRating(
+      id,
+      venueId,
+      dto,
+      user.id,
+      lang,
+    );
+  }
+
 }

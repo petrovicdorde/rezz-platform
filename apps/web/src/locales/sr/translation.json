@@ -257,7 +257,13 @@
     "rating_note_placeholder": "Napišite utisak o gostu...",
     "rating_save": "Sačuvaj ocjenu",
     "rating_saved": "Ocjena je sačuvana.",
-    "rated": "Ocijenjeno"
+    "rated": "Ocijenjeno",
+    "rating_saved": "Potvrđeno",
+    "rating_updated": "Potvrđeno",
+    "guest_score_label": "Prosječna ocjena gosta",
+    "guest_score_based_on": "Na osnovu {{count}} ocjena",
+    "guest_score_no_ratings": "Gost još nije ocijenjen",
+    "edit_rating": "Izmijeni ocjenu"
   },
   "notifications": {
     "title": "Obavještenja",

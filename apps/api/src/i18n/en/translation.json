@@ -79,7 +79,12 @@
     "already_rated": "This reservation has already been rated.",
     "not_completed": "Only completed reservations can be rated.",
     "cancel_reason_required": "Cancellation reason is required.",
-    "manager_cancelled": "Reservation was cancelled by the manager."
+    "manager_cancelled": "Reservation was cancelled by the manager.",
+    "rating_saved": "Rating saved.",
+    "rating_updated": "Rating updated.",
+    "rating_required": "Rating is required.",
+    "rating_not_found": "Rating not found.",
+    "rating_only_completed": "You can only rate completed reservations."
   },
   "notification": {
     "not_found": "Notification not found.",

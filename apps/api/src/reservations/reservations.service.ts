@@ -342,6 +342,64 @@ export class ReservationsService {
     return this.ratingRepo.save(rating);
   }
 
+  async updateRating(
+    reservationId: string,
+    venueId: string,
+    dto: GuestRatingDto,
+    ratedById: string,
+    lang: string = 'sr',
+  ): Promise<GuestRating> {
+    const reservation = await this.findOne(reservationId, venueId, lang);
+
+    if (reservation.status !== 'COMPLETED') {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.rating_only_completed', { lang }),
+      );
+    }
+
+    const existingRating = await this.ratingRepo.findOne({
+      where: { reservationId },
+    });
+
+    if (!existingRating) {
+      throw new NotFoundException(
+        await this.i18n.t('reservation.rating_not_found', { lang }),
+      );
+    }
+
+    existingRating.rating = dto.rating;
+    existingRating.note = dto.note ?? null;
+    return this.ratingRepo.save(existingRating);
+  }
+
+  async getGuestScore(
+    guestPhone: string,
+    venueId: string,
+  ): Promise<{ averageRating: number | null; totalRatings: number; phone: string }> {
+    const reservations = await this.reservationRepo.find({
+      where: { venueId, phone: guestPhone, status: 'COMPLETED' as const },
+      select: ['id'],
+    });
+
+    if (reservations.length === 0) {
+      return { averageRating: null, totalRatings: 0, phone: guestPhone };
+    }
+
+    const reservationIds = reservations.map((r) => r.id);
+    const ratings = await this.ratingRepo.find({
+      where: { reservationId: In(reservationIds) },
+    });
+
+    if (ratings.length === 0) {
+      return { averageRating: null, totalRatings: 0, phone: guestPhone };
+    }
+
+    const sum = ratings.reduce((acc, r) => acc + r.rating, 0);
+    const avg = Math.round((sum / ratings.length) * 10) / 10;
+
+    return { averageRating: avg, totalRatings: ratings.length, phone: guestPhone };
+  }
+
   async cancel(
     id: string,
     venueId: string,

@@ -4,6 +4,7 @@ import { format, parseISO, isToday, isPast } from 'date-fns';
 import type { TableType } from '@rezz/shared';
 import { Button } from '@/components/ui/button';
 import { ReservationStatusBadge } from './ReservationStatusBadge';
+import { GuestScoreBadge } from './GuestScoreBadge';
 import type { Reservation } from '@/lib/types/reservation.types';
 
 const TABLE_TYPE_KEYS: Record<TableType, string> = {
@@ -69,6 +70,7 @@ export function ReservationCard({
           <Phone className="h-3.5 w-3.5" />
           {reservation.phone}
         </span>
+        <GuestScoreBadge phone={reservation.phone} inline />
       </div>
 
       {/* Details row */}

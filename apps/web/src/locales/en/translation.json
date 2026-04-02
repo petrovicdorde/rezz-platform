@@ -257,7 +257,13 @@
     "rating_note_placeholder": "Write your impression of the guest...",
     "rating_save": "Save rating",
     "rating_saved": "Rating saved.",
-    "rated": "Rated"
+    "rated": "Rated",
+    "rating_saved": "Confirmed",
+    "rating_updated": "Confirmed",
+    "guest_score_label": "Guest average rating",
+    "guest_score_based_on": "Based on {{count}} ratings",
+    "guest_score_no_ratings": "Guest has not been rated yet",
+    "edit_rating": "Edit rating"
   },
   "notifications": {
     "title": "Notifications",

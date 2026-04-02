@@ -128,7 +128,37 @@ export function useRateGuest() {
     }) => reservationsApi.rateGuest(venueId, reservationId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RESERVATIONS_KEY(venueId) });
+      toast.success(i18n.t('history.rating_saved'));
     },
     onError: (error: unknown) => handleApiError(error),
+  });
+}
+
+export function useUpdateRating() {
+  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      reservationId,
+      data,
+    }: {
+      reservationId: string;
+      data: GuestRatingRequest;
+    }) => reservationsApi.updateRating(venueId, reservationId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: RESERVATIONS_KEY(venueId) });
+      toast.success(i18n.t('history.rating_updated'));
+    },
+    onError: (error: unknown) => handleApiError(error),
+  });
+}
+
+export function useGuestScore(phone: string) {
+  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+  return useQuery({
+    queryKey: ['guest-score', venueId, phone],
+    queryFn: () => reservationsApi.getGuestScore(venueId, phone),
+    enabled: !!venueId && !!phone,
+    staleTime: 1000 * 60 * 5,
   });
 }

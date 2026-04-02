@@ -115,4 +115,28 @@ export const reservationsApi = {
     );
     return response.data;
   },
+
+  updateRating: async (
+    venueId: string,
+    reservationId: string,
+    data: GuestRatingRequest,
+  ): Promise<GuestRating> => {
+    const response = await api.patch<GuestRating>(
+      `/venues/${venueId}/reservations/${reservationId}/rate`,
+      data,
+    );
+    return response.data;
+  },
+
+  getGuestScore: async (
+    venueId: string,
+    phone: string,
+  ): Promise<{ averageRating: number | null; totalRatings: number; phone: string }> => {
+    const response = await api.get<{
+      averageRating: number | null;
+      totalRatings: number;
+      phone: string;
+    }>(`/venues/${venueId}/reservations/guest-score/${encodeURIComponent(phone)}`);
+    return response.data;
+  },
 };
