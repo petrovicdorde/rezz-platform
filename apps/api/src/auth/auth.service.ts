@@ -52,7 +52,7 @@ export class AuthService {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
       throw new ConflictException(
-        await this.i18n.t('auth.email_already_exists', { lang }),
+        await this.i18n.t('auth.registration_failed', { lang }),
       );
     }
 

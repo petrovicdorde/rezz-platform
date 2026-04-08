@@ -1,6 +1,7 @@
 {
   "auth": {
     "email_already_exists": "Korisnik sa ovom email adresom već postoji.",
+    "registration_failed": "Nešto nije u redu. Pokušajte ponovo.",
     "invalid_credentials": "Pogrešan email ili lozinka.",
     "email_not_verified": "Email adresa nije potvrđena. Provjerite vaš inbox.",
     "account_inactive": "Vaš nalog je deaktiviran. Kontaktirajte podršku.",
@@ -102,6 +103,7 @@
   "employee": {
     "not_found": "Zaposleni nije pronađen.",
     "already_exists": "Korisnik sa ovom email adresom je već zaposleni u ovom lokalu.",
+    "email_taken": "Koristite drugu email adresu.",
     "invitation_pending": "Pozivnica za ovog korisnika je već poslata i čeka odgovor.",
     "cannot_remove_self": "Ne možete ukloniti vlastiti nalog.",
     "cannot_remove_owner": "Ne možete ukloniti vlasnika lokala.",

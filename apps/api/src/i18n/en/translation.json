@@ -1,6 +1,7 @@
 {
   "auth": {
     "email_already_exists": "A user with this email already exists.",
+    "registration_failed": "Something went wrong. Please try again.",
     "invalid_credentials": "Invalid email or password.",
     "email_not_verified": "Email address is not verified. Please check your inbox.",
     "account_inactive": "Your account is deactivated. Please contact support.",
@@ -102,6 +103,7 @@
   "employee": {
     "not_found": "Employee not found.",
     "already_exists": "A user with this email is already an employee at this venue.",
+    "email_taken": "Use a different email.",
     "invitation_pending": "An invitation for this user is already pending.",
     "cannot_remove_self": "You cannot remove your own account.",
     "cannot_remove_owner": "You cannot remove the venue owner.",

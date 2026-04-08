@@ -90,9 +90,14 @@ export class EmployeesService {
     lang: string = 'sr',
   ): Promise<{ message: string }> {
     const existingUser = await this.usersService.findByEmail(dto.email);
-    if (existingUser && existingUser.venueId === venueId) {
+    if (existingUser) {
+      if (existingUser.venueId === venueId) {
+        throw new ConflictException(
+          await this.i18n.t('employee.already_exists', { lang }),
+        );
+      }
       throw new ConflictException(
-        await this.i18n.t('employee.already_exists', { lang }),
+        await this.i18n.t('employee.email_taken', { lang }),
       );
     }
 
