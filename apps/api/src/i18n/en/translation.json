@@ -106,6 +106,7 @@
     "cannot_remove_self": "You cannot remove your own account.",
     "cannot_remove_owner": "You cannot remove the venue owner.",
     "removed": "Employee removed successfully.",
+    "invitation_cancelled": "Invitation cancelled",
     "role_updated": "Employee role updated successfully.",
     "cannot_change_own_role": "You cannot change your own role."
   },

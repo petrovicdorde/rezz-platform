@@ -106,6 +106,7 @@
     "cannot_remove_self": "Ne možete ukloniti vlastiti nalog.",
     "cannot_remove_owner": "Ne možete ukloniti vlasnika lokala.",
     "removed": "Zaposleni je uspješno uklonjen.",
+    "invitation_cancelled": "Pozivnica otkazana",
     "role_updated": "Uloga zaposlenog je uspješno promijenjena.",
     "cannot_change_own_role": "Ne možete promijeniti vlastitu ulogu."
   },

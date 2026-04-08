@@ -234,6 +234,8 @@ export class EmployeesService {
     invitation.status = 'EXPIRED' as const;
     await this.invitationRepo.save(invitation);
 
-    return { message: await this.i18n.t('employee.removed', { lang }) };
+    return {
+      message: await this.i18n.t('employee.invitation_cancelled', { lang }),
+    };
   }
 }
