@@ -446,7 +446,11 @@
     "updated": "Postavka je ažurirana.",
     "deleted": "Postavka je obrisana.",
     "value_required": "Vrijednost je obavezna.",
-    "label_required": "Naziv je obavezan."
+    "label_required": "Naziv je obavezan.",
+    "already_exists": "Postavka sa ovim nazivom već postoji.",
+    "already_exists_CITY": "Grad već postoji.",
+    "already_exists_VENUE_TYPE": "Tip lokala već postoji.",
+    "already_exists_TABLE_TYPE": "Tip stola već postoji."
   },
   "landing_admin": {
     "title": "Landing stranica",

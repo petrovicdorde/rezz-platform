@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { I18nService } from 'nestjs-i18n';
 import type { SettingType } from '@rezz/shared';
 import { Setting } from './entities/setting.entity';
@@ -50,16 +50,35 @@ export class SettingsService {
     return setting;
   }
 
+  private normalizeValue(value: string): string {
+    return value
+      .trim()
+      .toUpperCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^A-Z0-9_]/g, '');
+  }
+
+  private isUniqueViolation(error: unknown): boolean {
+    return (
+      error instanceof QueryFailedError &&
+      (error as QueryFailedError & { code?: string }).code === '23505'
+    );
+  }
+
   async create(
     dto: CreateSettingDto,
     lang: string = 'sr',
   ): Promise<Setting> {
+    const value = this.normalizeValue(dto.value);
+    const label = dto.label.trim();
+
     const duplicate = await this.settingRepo
       .createQueryBuilder('setting')
       .where('setting.type = :type', { type: dto.type })
-      .andWhere('LOWER(setting.value) = LOWER(:value)', {
-        value: dto.value.trim(),
-      })
+      .andWhere(
+        '(setting.value = :value OR LOWER(setting.label) = LOWER(:label))',
+        { value, label },
+      )
       .getOne();
 
     if (duplicate) {
@@ -70,13 +89,22 @@ export class SettingsService {
 
     const setting = this.settingRepo.create({
       type: dto.type,
-      value: dto.value.trim(),
-      label: dto.label.trim(),
+      value,
+      label,
       isActive: dto.isActive ?? true,
       order: dto.order ?? 0,
     });
 
-    return this.settingRepo.save(setting);
+    try {
+      return await this.settingRepo.save(setting);
+    } catch (error) {
+      if (this.isUniqueViolation(error)) {
+        throw new ConflictException(
+          await this.i18n.t('settings.already_exists', { lang }),
+        );
+      }
+      throw error;
+    }
   }
 
   async update(
@@ -87,12 +115,12 @@ export class SettingsService {
     const setting = await this.findOne(id, lang);
 
     if (dto.value !== undefined) {
+      const value = this.normalizeValue(dto.value);
+
       const duplicate = await this.settingRepo
         .createQueryBuilder('setting')
         .where('setting.type = :type', { type: setting.type })
-        .andWhere('LOWER(setting.value) = LOWER(:value)', {
-          value: dto.value.trim(),
-        })
+        .andWhere('setting.value = :value', { value })
         .andWhere('setting.id != :id', { id })
         .getOne();
 
@@ -102,14 +130,39 @@ export class SettingsService {
         );
       }
 
-      setting.value = dto.value.trim();
+      setting.value = value;
     }
 
-    if (dto.label !== undefined) setting.label = dto.label.trim();
+    if (dto.label !== undefined) {
+      const label = dto.label.trim();
+      const labelDuplicate = await this.settingRepo
+        .createQueryBuilder('setting')
+        .where('setting.type = :type', { type: setting.type })
+        .andWhere('LOWER(setting.label) = LOWER(:label)', { label })
+        .andWhere('setting.id != :id', { id })
+        .getOne();
+
+      if (labelDuplicate) {
+        throw new ConflictException(
+          await this.i18n.t('settings.already_exists', { lang }),
+        );
+      }
+
+      setting.label = label;
+    }
     if (dto.isActive !== undefined) setting.isActive = dto.isActive;
     if (dto.order !== undefined) setting.order = dto.order;
 
-    return this.settingRepo.save(setting);
+    try {
+      return await this.settingRepo.save(setting);
+    } catch (error) {
+      if (this.isUniqueViolation(error)) {
+        throw new ConflictException(
+          await this.i18n.t('settings.already_exists', { lang }),
+        );
+      }
+      throw error;
+    }
   }
 
   async remove(

@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  Unique,
 } from 'typeorm';
 import type { SettingType } from '@rezz/shared';
 
 @Entity('settings')
+@Unique('UQ_settings_type_value', ['type', 'value'])
 export class Setting {
   @PrimaryGeneratedColumn('uuid')
   id: string;

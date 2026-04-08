@@ -446,7 +446,11 @@
     "updated": "Setting updated.",
     "deleted": "Setting deleted.",
     "value_required": "Value is required.",
-    "label_required": "Name is required."
+    "label_required": "Name is required.",
+    "already_exists": "A setting with this name already exists.",
+    "already_exists_CITY": "City already exists.",
+    "already_exists_VENUE_TYPE": "Venue type already exists.",
+    "already_exists_TABLE_TYPE": "Table type already exists."
   },
   "landing_admin": {
     "title": "Landing page",
