@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Phone, MessageSquare, Loader2 } from 'lucide-react';
 import { format, parseISO, isToday, isPast } from 'date-fns';
@@ -43,6 +44,7 @@ export function ReservationCard({
   const { t } = useTranslation();
   const dateObj = parseISO(reservation.date);
   const canRecordArrival = isToday(dateObj) || isPast(dateObj);
+  const [confirmAction, setConfirmAction] = useState<'arrival' | 'noShow' | null>(null);
 
   return (
     <div
@@ -101,7 +103,10 @@ export function ReservationCard({
             size="sm"
             className="bg-green-600 text-white hover:bg-green-700"
             disabled={isConfirming}
-            onClick={() => onConfirm?.(reservation.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onConfirm?.(reservation.id);
+            }}
           >
             {isConfirming && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
             {t('reservation.confirm_action')}
@@ -111,7 +116,10 @@ export function ReservationCard({
             variant="outline"
             className="border-red-300 text-red-500 hover:bg-red-50"
             disabled={isRejecting}
-            onClick={() => onReject?.(reservation.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onReject?.(reservation.id);
+            }}
           >
             {t('reservation.reject_action')}
           </Button>
@@ -119,26 +127,83 @@ export function ReservationCard({
       )}
 
       {reservation.status === 'CONFIRMED' && canRecordArrival && (
-        <div className="mt-3 flex gap-2">
-          <Button
-            size="sm"
-            className="bg-blue-600 text-white hover:bg-blue-700"
-            disabled={isRecordingArrival}
-            onClick={() => onArrival?.(reservation.id)}
-          >
-            {isRecordingArrival && (
-              <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-            )}
-            {t('reservation.arrival_action')}
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="border-orange-300 text-orange-500 hover:bg-orange-50"
-            onClick={() => onNoShow?.(reservation.id)}
-          >
-            {t('reservation.no_show_action')}
-          </Button>
+        <div className="mt-3">
+          {confirmAction === null && (
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                className="bg-blue-600 text-white hover:bg-blue-700"
+                disabled={isRecordingArrival}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setConfirmAction('arrival');
+                }}
+              >
+                {isRecordingArrival && (
+                  <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                )}
+                {t('reservation.arrival_action')}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-orange-300 text-orange-500 hover:bg-orange-50"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setConfirmAction('noShow');
+                }}
+              >
+                {t('reservation.no_show_action')}
+              </Button>
+            </div>
+          )}
+          {confirmAction !== null && (
+            <div
+              className="rounded-lg border border-tertiary-200 bg-tertiary-50 p-3"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mb-2 text-sm text-secondary-600">
+                {confirmAction === 'arrival'
+                  ? t('reservation.arrival_confirm_question')
+                  : t('reservation.no_show_confirm_question')}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  className={
+                    confirmAction === 'arrival'
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-orange-500 text-white hover:bg-orange-600'
+                  }
+                  disabled={isRecordingArrival}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirmAction === 'arrival') {
+                      onArrival?.(reservation.id);
+                    } else {
+                      onNoShow?.(reservation.id);
+                    }
+                    setConfirmAction(null);
+                  }}
+                >
+                  {isRecordingArrival && (
+                    <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                  )}
+                  {t('reservation.yes')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setConfirmAction(null);
+                  }}
+                >
+                  {t('reservation.no')}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
