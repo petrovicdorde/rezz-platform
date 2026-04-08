@@ -66,7 +66,7 @@ export function AddSettingForm({
             {t('settings.label_label')}
           </label>
           <Input
-            placeholder={t('settings.label_placeholder')}
+            placeholder={t(`settings.label_placeholder_${type}`)}
             {...register('label', {
               required: t('settings.label_required'),
               minLength: { value: 2, message: t('settings.label_required') },
@@ -87,7 +87,7 @@ export function AddSettingForm({
           </label>
           <Input
             className="font-mono text-sm"
-            placeholder={t('settings.value_placeholder')}
+            placeholder={t(`settings.value_placeholder_${type}`)}
             {...register('value', {
               required: t('settings.value_required'),
               minLength: { value: 1, message: t('settings.value_required') },

@@ -30,12 +30,6 @@ export function SettingRow({
         <span className="text-sm font-medium text-secondary-600">
           {setting.label}
         </span>
-        <span className="ml-1 font-mono text-xs text-tertiary-400">
-          ({setting.value})
-        </span>
-        <span className="ml-2 rounded bg-tertiary-100 px-1.5 py-0.5 text-xs text-tertiary-500">
-          {setting.order}
-        </span>
       </div>
       <div className="flex items-center gap-2">
         <button

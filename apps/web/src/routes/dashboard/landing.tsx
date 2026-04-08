@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useQueries } from "@tanstack/react-query";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { SelectableVenueCard } from "@/components/landing-admin/SelectableVenueCard";
@@ -82,6 +82,25 @@ function LandingAdminPage(): React.JSX.Element {
     );
   }
 
+  const isDirty = useMemo(() => {
+    if (!config) return false;
+    if (showVenues !== config.showFeaturedVenues) return true;
+    if (showEvents !== config.showFeaturedEvents) return true;
+    const sameIds = (a: string[], b: string[]): boolean =>
+      a.length === b.length && a.every((id) => b.includes(id));
+    if (!sameIds(selectedVenueIds, config.featuredVenueIds)) return true;
+    if (!sameIds(selectedEventIds, config.featuredEventIds)) return true;
+    return false;
+  }, [config, showVenues, showEvents, selectedVenueIds, selectedEventIds]);
+
+  function handleCancel(): void {
+    if (!config) return;
+    setShowVenues(config.showFeaturedVenues);
+    setShowEvents(config.showFeaturedEvents);
+    setSelectedVenueIds(config.featuredVenueIds);
+    setSelectedEventIds(config.featuredEventIds);
+  }
+
   function handleSave(): void {
     updateConfig.mutate({
       featuredVenueIds: selectedVenueIds,
@@ -112,11 +131,11 @@ function LandingAdminPage(): React.JSX.Element {
   return (
     <DashboardLayout>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-secondary-600">
           {t("landing_admin.title")}
         </h1>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -125,16 +144,33 @@ function LandingAdminPage(): React.JSX.Element {
             <ExternalLink className="mr-1.5 h-4 w-4" />
             {t("landing_admin.preview")}
           </Button>
+          <div className="ml-auto flex gap-2">
+          {isDirty && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCancel}
+              disabled={updateConfig.isPending}
+              className="h-10 px-4 sm:h-9 sm:px-3"
+            >
+              <X className="h-5 w-5 sm:h-4 sm:w-4 sm:mr-1.5" />
+              <span className="hidden sm:inline">{t("common.cancel")}</span>
+            </Button>
+          )}
           <Button
             size="sm"
-            disabled={updateConfig.isPending}
+            disabled={updateConfig.isPending || !isDirty}
             onClick={handleSave}
-            className="bg-primary-400 text-white hover:bg-primary-600"
+            className="h-10 px-4 bg-primary-400 text-white hover:bg-primary-600 sm:h-9 sm:px-3"
           >
-            {updateConfig.isPending
-              ? t("common.loading")
-              : t("landing_admin.save_config")}
+            <Check className="h-5 w-5 sm:h-4 sm:w-4 sm:mr-1.5" />
+            <span className="hidden sm:inline">
+              {updateConfig.isPending
+                ? t("common.loading")
+                : t("landing_admin.save_config")}
+            </span>
           </Button>
+          </div>
         </div>
       </div>
 
@@ -152,7 +188,7 @@ function LandingAdminPage(): React.JSX.Element {
           <button
             type="button"
             onClick={() => setShowVenues(!showVenues)}
-            className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none ${
+            className={`relative inline-flex h-7 w-14 shrink-0 items-center rounded-full transition-colors focus:outline-none ${
               showVenues ? "bg-primary-400" : "bg-tertiary-600"
             }`}
           >
@@ -202,7 +238,7 @@ function LandingAdminPage(): React.JSX.Element {
           <button
             type="button"
             onClick={() => setShowEvents(!showEvents)}
-            className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none ${
+            className={`relative inline-flex h-7 w-14 shrink-0 items-center rounded-full transition-colors focus:outline-none ${
               showEvents ? "bg-primary-400" : "bg-tertiary-600"
             }`}
           >

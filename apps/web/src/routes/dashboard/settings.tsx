@@ -19,13 +19,13 @@ function SettingsPage(): React.JSX.Element {
 
       <Tabs defaultValue="cities" className="mt-6">
         <TabsList className="w-full md:w-auto">
-          <TabsTrigger value="cities" className="flex-1 md:flex-none">
+          <TabsTrigger value="cities" className="flex-1 md:flex-none data-[state=active]:bg-primary-400 data-[state=active]:text-white data-[state=active]:shadow-sm">
             {t('settings.tab_cities')}
           </TabsTrigger>
-          <TabsTrigger value="venue_types" className="flex-1 md:flex-none">
+          <TabsTrigger value="venue_types" className="flex-1 md:flex-none data-[state=active]:bg-primary-400 data-[state=active]:text-white data-[state=active]:shadow-sm">
             {t('settings.tab_venue_types')}
           </TabsTrigger>
-          <TabsTrigger value="table_types" className="flex-1 md:flex-none">
+          <TabsTrigger value="table_types" className="flex-1 md:flex-none data-[state=active]:bg-primary-400 data-[state=active]:text-white data-[state=active]:shadow-sm">
             {t('settings.tab_table_types')}
           </TabsTrigger>
         </TabsList>

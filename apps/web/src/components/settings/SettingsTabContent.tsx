@@ -28,7 +28,15 @@ export function SettingsTabContent({
 }: SettingsTabContentProps): React.JSX.Element {
   const { t } = useTranslation();
   const [isAdding, setIsAdding] = useState(false);
-  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{
+    id: string;
+    label: string;
+  } | null>(null);
+  const [confirmToggle, setConfirmToggle] = useState<{
+    id: string;
+    label: string;
+    nextActive: boolean;
+  } | null>(null);
 
   const { data: settings, isLoading } = useAdminSettings(type);
   const updateSetting = useUpdateSetting();
@@ -89,9 +97,9 @@ export function SettingsTabContent({
               key={setting.id}
               setting={setting}
               onToggleActive={(id, isActive) =>
-                updateSetting.mutate({ id, data: { isActive } })
+                setConfirmToggle({ id, label: setting.label, nextActive: isActive })
               }
-              onDelete={(id) => setConfirmDeleteId(id)}
+              onDelete={(id) => setConfirmDelete({ id, label: setting.label })}
               isUpdating={updateSetting.isPending}
               isDeleting={deleteSetting.isPending}
             />
@@ -101,33 +109,74 @@ export function SettingsTabContent({
 
       {/* Delete confirmation dialog */}
       <Dialog
-        open={confirmDeleteId !== null}
-        onOpenChange={(open) => !open && setConfirmDeleteId(null)}
+        open={confirmDelete !== null}
+        onOpenChange={(open) => !open && setConfirmDelete(null)}
       >
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>{t('settings.delete_confirm')}</DialogTitle>
+            <DialogTitle>
+              {t('settings.delete_confirm', { title: confirmDelete?.label ?? '' })}
+            </DialogTitle>
           </DialogHeader>
           <div className="flex justify-end gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setConfirmDeleteId(null)}
-            >
-              {t('common.cancel')}
+            <Button variant="outline" onClick={() => setConfirmDelete(null)}>
+              {t('settings.confirm_no')}
             </Button>
             <Button
               className="bg-red-600 text-white hover:bg-red-700"
               disabled={deleteSetting.isPending}
               onClick={() => {
-                if (!confirmDeleteId) return;
-                deleteSetting.mutate(confirmDeleteId, {
-                  onSuccess: () => setConfirmDeleteId(null),
+                if (!confirmDelete) return;
+                deleteSetting.mutate(confirmDelete.id, {
+                  onSuccess: () => setConfirmDelete(null),
                 });
               }}
             >
               {deleteSetting.isPending
                 ? t('common.loading')
-                : t('settings.delete_confirm_yes')}
+                : t('settings.confirm_yes')}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Toggle active confirmation dialog */}
+      <Dialog
+        open={confirmToggle !== null}
+        onOpenChange={(open) => !open && setConfirmToggle(null)}
+      >
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>
+              {t(
+                confirmToggle?.nextActive
+                  ? 'settings.activate_confirm'
+                  : 'settings.deactivate_confirm',
+                { title: confirmToggle?.label ?? '' },
+              )}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setConfirmToggle(null)}>
+              {t('settings.confirm_no')}
+            </Button>
+            <Button
+              className="bg-primary-400 text-white hover:bg-primary-600"
+              disabled={updateSetting.isPending}
+              onClick={() => {
+                if (!confirmToggle) return;
+                updateSetting.mutate(
+                  {
+                    id: confirmToggle.id,
+                    data: { isActive: confirmToggle.nextActive },
+                  },
+                  { onSuccess: () => setConfirmToggle(null) },
+                );
+              }}
+            >
+              {updateSetting.isPending
+                ? t('common.loading')
+                : t('settings.confirm_yes')}
             </Button>
           </div>
         </DialogContent>

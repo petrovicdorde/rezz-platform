@@ -17,6 +17,8 @@ function HomePage(): React.JSX.Element {
 
   const featuredVenues = landingData?.featuredVenues ?? [];
   const showVenues = landingData?.config.showFeaturedVenues ?? true;
+  const featuredEvents = landingData?.featuredEvents ?? [];
+  const showEvents = landingData?.config.showFeaturedEvents ?? false;
 
   function handleSearch(filters: SearchFilters): void {
     const params: Record<string, string> = {};
@@ -85,6 +87,59 @@ function HomePage(): React.JSX.Element {
             {!isLoading && featuredVenues.length === 0 && (
               <p className="text-center text-tertiary-500">
                 {t('home.no_featured_venues')}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Featured events */}
+      {showEvents && (
+        <section className="bg-white px-4 py-16">
+          <h2 className="text-center text-3xl font-bold text-secondary-600">
+            {t('home.featured_events_title')}
+          </h2>
+          <p className="mt-2 text-center text-tertiary-500">
+            {t('home.featured_events_subtitle')}
+          </p>
+
+          <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {isLoading &&
+              [0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="aspect-[3/4] animate-pulse rounded-2xl bg-tertiary-200"
+                />
+              ))}
+
+            {!isLoading &&
+              featuredEvents.map((event) => (
+                <button
+                  key={event.id}
+                  type="button"
+                  onClick={() => navigate({ to: '/lokal/$venueId', params: { venueId: event.venueId } })}
+                  className="group relative flex aspect-[3/4] flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-b from-secondary-400 to-secondary-700 text-left"
+                >
+                  {event.imageUrl && (
+                    <img
+                      src={event.imageUrl}
+                      alt={event.name}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="relative p-4 text-white">
+                    <h3 className="text-lg font-bold">{event.name}</h3>
+                    <p className="text-sm text-white/80">
+                      {new Date(event.startsAt).toLocaleString()}
+                    </p>
+                  </div>
+                </button>
+              ))}
+
+            {!isLoading && featuredEvents.length === 0 && (
+              <p className="col-span-full text-center text-tertiary-500">
+                {t('home.no_featured_events')}
               </p>
             )}
           </div>
