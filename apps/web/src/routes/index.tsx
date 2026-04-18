@@ -1,15 +1,16 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
-import { PublicLayout } from '@/components/layout/PublicLayout';
-import { SearchFilterWidget } from '@/components/public/SearchFilterWidget';
-import { VenueSlider } from '@/components/public/VenueSlider';
-import { useLandingData } from '@/hooks/useLanding';
-import type { SearchFilters } from '@/lib/api/landing.api';
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { PublicLayout } from "@/components/layout/PublicLayout";
+import { SearchFilterWidget } from "@/components/public/SearchFilterWidget";
+import { VenueSlider } from "@/components/public/VenueSlider";
+import { useLandingData } from "@/hooks/useLanding";
+import type { SearchFilters } from "@/lib/api/landing.api";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 function HomePage(): React.JSX.Element {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -21,23 +22,26 @@ function HomePage(): React.JSX.Element {
   const showEvents = landingData?.config.showFeaturedEvents ?? false;
 
   function handleSearch(filters: SearchFilters): void {
-    const params: Record<string, string> = {};
-    if (filters.type) params.tip = filters.type;
-    if (filters.city) params.grad = filters.city;
-    if (filters.date) params.datum = filters.date;
-    if (filters.time) params.vrijeme = filters.time;
-    navigate({ to: '/pretraga', search: params });
+    navigate({
+      to: "/pretraga",
+      search: {
+        tip: filters.type,
+        grad: filters.city,
+        datum: filters.date,
+        vrijeme: filters.time,
+      },
+    });
   }
 
   return (
     <PublicLayout>
       {/* Hero section */}
-      <section className="relative flex min-h-[100dvh] flex-col items-center justify-center bg-secondary-600 px-4 pt-20 pb-32">
+      <section className="relative flex min-h-dvh flex-col items-center justify-center bg-secondary-600 px-4 pt-20 pb-32">
         <h1 className="text-center text-4xl font-bold text-white md:text-6xl">
-          {t('home.hero_title')}
+          {t("home.hero_title")}
         </h1>
         <p className="mt-4 max-w-md text-center text-lg text-white/70">
-          {t('home.hero_subtitle')}
+          {t("home.hero_subtitle")}
         </p>
 
         <div className="mt-12 w-full">
@@ -62,10 +66,10 @@ function HomePage(): React.JSX.Element {
       {showVenues && (
         <section className="bg-white px-4 py-16">
           <h2 className="text-center text-3xl font-bold text-secondary-600">
-            {t('home.featured_venues_title')}
+            {t("home.featured_venues_title")}
           </h2>
           <p className="mt-2 text-center text-tertiary-500">
-            {t('home.featured_venues_subtitle')}
+            {t("home.featured_venues_subtitle")}
           </p>
 
           <div className="mt-10">
@@ -74,7 +78,7 @@ function HomePage(): React.JSX.Element {
                 {[0, 1, 2].map((i) => (
                   <div
                     key={i}
-                    className="aspect-[3/4] min-w-[220px] animate-pulse rounded-2xl bg-tertiary-200 md:min-w-[260px]"
+                    className="aspect-3/4 min-w-55 animate-pulse rounded-2xl bg-tertiary-200 md:min-w-65"
                   />
                 ))}
               </div>
@@ -86,7 +90,7 @@ function HomePage(): React.JSX.Element {
 
             {!isLoading && featuredVenues.length === 0 && (
               <p className="text-center text-tertiary-500">
-                {t('home.no_featured_venues')}
+                {t("home.no_featured_venues")}
               </p>
             )}
           </div>
@@ -97,10 +101,10 @@ function HomePage(): React.JSX.Element {
       {showEvents && (
         <section className="bg-white px-4 py-16">
           <h2 className="text-center text-3xl font-bold text-secondary-600">
-            {t('home.featured_events_title')}
+            {t("home.featured_events_title")}
           </h2>
           <p className="mt-2 text-center text-tertiary-500">
-            {t('home.featured_events_subtitle')}
+            {t("home.featured_events_subtitle")}
           </p>
 
           <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -108,7 +112,7 @@ function HomePage(): React.JSX.Element {
               [0, 1, 2].map((i) => (
                 <div
                   key={i}
-                  className="aspect-[3/4] animate-pulse rounded-2xl bg-tertiary-200"
+                  className="aspect-3/4 animate-pulse rounded-2xl bg-tertiary-200"
                 />
               ))}
 
@@ -117,8 +121,8 @@ function HomePage(): React.JSX.Element {
                 <button
                   key={event.id}
                   type="button"
-                  onClick={() => navigate({ to: '/lokal/$venueId', params: { venueId: event.venueId } })}
-                  className="group relative flex aspect-[3/4] flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-b from-secondary-400 to-secondary-700 text-left"
+                  onClick={() => navigate({ to: `/lokali/${event.venueId}` })}
+                  className="group relative flex aspect-3/4 flex-col justify-end overflow-hidden rounded-2xl bg-linear-to-b from-secondary-400 to-secondary-700 text-left"
                 >
                   {event.imageUrl && (
                     <img
@@ -127,7 +131,7 @@ function HomePage(): React.JSX.Element {
                       className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="relative p-4 text-white">
                     <h3 className="text-lg font-bold">{event.name}</h3>
                     <p className="text-sm text-white/80">
@@ -139,7 +143,7 @@ function HomePage(): React.JSX.Element {
 
             {!isLoading && featuredEvents.length === 0 && (
               <p className="col-span-full text-center text-tertiary-500">
-                {t('home.no_featured_events')}
+                {t("home.no_featured_events")}
               </p>
             )}
           </div>
