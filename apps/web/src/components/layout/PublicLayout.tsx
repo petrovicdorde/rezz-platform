@@ -24,8 +24,12 @@ export function PublicLayout({
       {/* Navbar */}
       <nav className="sticky top-0 z-50 flex h-16 items-center justify-between bg-secondary-600 px-4 md:px-8">
         <div className="flex-1" />
-        <Link to="/" className="text-xl font-bold text-primary-400">
-          rezz.ba
+        <Link to="/">
+          <img
+            src="/rezz_logo_green.webp"
+            alt={t('brand.name')}
+            className="h-8 brightness-0 invert"
+          />
         </Link>
         <div className="flex flex-1 items-center justify-end gap-2">
           {isAuthenticated && user ? (
