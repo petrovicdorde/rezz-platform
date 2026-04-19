@@ -26,7 +26,7 @@ export class EventPromotion {
   @JoinColumn({ name: 'event_id' })
   event: Event;
 
-  @Column()
+  @Column({ name: 'event_id', type: 'uuid' })
   eventId: string;
 
   @CreateDateColumn()

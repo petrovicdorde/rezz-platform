@@ -36,6 +36,7 @@ export class RolesGuard implements CanActivate {
     if (
       venueIdParam &&
       user.role !== UserRole.SUPER_ADMIN &&
+      user.role !== UserRole.GUEST &&
       user.venueId !== venueIdParam
     ) {
       throw new ForbiddenException('Insufficient permissions');

@@ -1,4 +1,9 @@
-import type { VenueType, TableType, PaymentMethod } from '@rezz/shared';
+import type {
+  VenueType,
+  TableType,
+  PaymentMethod,
+  SocialLink,
+} from '@rezz/shared';
 
 export interface WorkingHourDay {
   open: string;
@@ -41,7 +46,27 @@ export interface CreateVenueRequest {
   hasParking: boolean;
   tags?: string[];
   tables?: VenueTableItem[];
+  socialLinks?: string[];
   manager: VenueManager;
+}
+
+export interface PublicVenue {
+  id: string;
+  name: string;
+  type: VenueType;
+  city: string;
+  address: string;
+  reservationPhone: string;
+  tags: string[];
+  imageUrl: string | null;
+  isActive: boolean;
+  tables: { id: string; type: TableType; count: number; note: string | null }[];
+  workingHours: WorkingHours;
+  paymentMethods: PaymentMethod[];
+  hasParking: boolean;
+  socialLinks: SocialLink[];
+  description?: string | null;
+  images?: string[];
 }
 
 export interface AdminVenue {
@@ -71,6 +96,7 @@ export interface AdminVenue {
     lastName: string | null;
     phone?: string | null;
   } | null;
+  socialLinkUrls?: string[];
   createdAt: string;
   updatedAt: string;
 }

@@ -52,6 +52,18 @@ export type NotificationType =
 
 export type SettingType = 'CITY' | 'VENUE_TYPE' | 'TABLE_TYPE';
 
+export type SocialPlatform =
+  | 'INSTAGRAM'
+  | 'FACEBOOK'
+  | 'TIKTOK'
+  | 'YOUTUBE'
+  | 'DEFAULT';
+
+export interface SocialLink {
+  url: string;
+  platform: SocialPlatform;
+}
+
 export interface BaseEntity {
   id: string;
   createdAt: Date;

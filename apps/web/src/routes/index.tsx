@@ -23,7 +23,7 @@ function HomePage(): React.JSX.Element {
 
   function handleSearch(filters: SearchFilters): void {
     navigate({
-      to: "/pretraga",
+      to: "/lokali",
       search: {
         tip: filters.type,
         grad: filters.city,

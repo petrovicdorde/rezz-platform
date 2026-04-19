@@ -49,7 +49,7 @@ export class VenueInvitation {
   @JoinColumn({ name: 'venue_id' })
   venue: Venue;
 
-  @Column()
+  @Column({ name: 'venue_id', type: 'uuid' })
   venueId: string;
 
   @Column({ type: 'timestamptz', nullable: true })

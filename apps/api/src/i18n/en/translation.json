@@ -60,7 +60,8 @@
     "invitation_already_declined": "This invitation has already been declined.",
     "invitation_declined": "Invitation declined.",
     "city_required": "City is required.",
-    "address_required": "Address is required."
+    "address_required": "Address is required.",
+    "social_links_max": "You can add a maximum of 5 social media links."
   },
   "reservation": {
     "not_found": "Reservation not found.",
@@ -90,7 +91,10 @@
     "rating_not_found": "Rating not found.",
     "rating_only_completed": "You can only rate completed reservations.",
     "no_show_auto_rated": "Guest was automatically rated 0 for not showing up.",
-    "blacklisted_after_no_shows": "Guest has been blacklisted after 3 no-shows."
+    "blacklisted_after_no_shows": "Guest has been blacklisted after 3 no-shows.",
+    "guest_created": "Reservation sent successfully. Please wait for venue confirmation.",
+    "phone_required_for_reservation": "Phone number is required for reservation.",
+    "blacklisted_cannot_reserve": "Your account is blocked. You cannot make reservations."
   },
   "notification": {
     "not_found": "Notification not found.",

@@ -42,7 +42,7 @@ export class VenueTable {
   @JoinColumn({ name: 'venue_id' })
   venue: Venue;
 
-  @Column()
+  @Column({ name: 'venue_id', type: 'uuid' })
   venueId: string;
 
   @CreateDateColumn()

@@ -22,7 +22,7 @@ export class Reservation {
   @JoinColumn({ name: 'venue_id' })
   venue: Venue;
 
-  @Column()
+  @Column({ name: 'venue_id', type: 'uuid' })
   venueId: string;
 
   @Column({ type: 'date' })
@@ -85,14 +85,14 @@ export class Reservation {
   @JoinColumn({ name: 'created_by_manager_id' })
   createdByManager: User | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'created_by_manager_id', type: 'uuid', nullable: true })
   createdByManagerId: string | null;
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'user_id' })
   user: User | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'user_id', type: 'uuid', nullable: true })
   userId: string | null;
 
   @Column({ type: 'timestamptz', nullable: true })

@@ -1,7 +1,7 @@
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { VenueSliderCard } from './VenueSliderCard';
-import type { PublicVenue } from '@/lib/types/landing.types';
+import type { PublicVenue } from '@/lib/types/venue.types';
 
 interface VenueSliderProps {
   venues: PublicVenue[];

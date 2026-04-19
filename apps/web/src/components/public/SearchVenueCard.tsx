@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Building2, MapPin, Car, Banknote, CreditCard, Smartphone } from 'lucide-react';
-import type { PublicVenue } from '@/lib/types/landing.types';
+import type { PublicVenue } from '@/lib/types/venue.types';
 
 interface SearchVenueCardProps {
   venue: PublicVenue;

@@ -20,7 +20,7 @@ export function PublicLayout({
   const logoutMutation = useLogout();
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 flex h-16 items-center justify-between bg-secondary-600 px-4 md:px-8">
         <div className="flex-1" />
@@ -63,7 +63,7 @@ export function PublicLayout({
       </nav>
 
       {/* Main */}
-      <main>{children}</main>
+      <main className="flex-1">{children}</main>
 
       {/* Footer */}
       <footer className="bg-secondary-600 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">

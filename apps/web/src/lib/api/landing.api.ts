@@ -1,9 +1,9 @@
 import { api } from '@/lib/api';
 import type {
-  PublicVenue,
   LandingConfig,
   UpdateLandingConfigRequest,
 } from '@/lib/types/landing.types';
+import type { PublicVenue } from '@/lib/types/venue.types';
 import type { VenueEvent } from '@/lib/types/event.types';
 
 export interface SearchFilters {

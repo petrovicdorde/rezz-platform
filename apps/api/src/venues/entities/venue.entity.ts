@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import type { VenueType, PaymentMethod } from '@rezz/shared';
+import type { VenueType, PaymentMethod, SocialLink } from '@rezz/shared';
 import { VenueTable } from './venue-table.entity';
 import { VenueInvitation } from './venue-invitation.entity';
 
@@ -66,6 +66,9 @@ export class Venue {
 
   @Column({ type: 'varchar', nullable: true })
   imageUrl: string | null;
+
+  @Column({ type: 'jsonb', default: '[]' })
+  socialLinks: SocialLink[];
 
   @CreateDateColumn()
   createdAt: Date;

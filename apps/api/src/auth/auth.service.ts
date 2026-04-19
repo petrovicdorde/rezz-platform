@@ -26,6 +26,7 @@ export interface SafeUser {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string | null;
   role: string;
   isEmailVerified: boolean;
   isActive: boolean;
@@ -262,6 +263,7 @@ export class AuthService {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      phone: user.phone ?? null,
       role: user.role,
       isEmailVerified: user.isEmailVerified,
       isActive: user.isActive,

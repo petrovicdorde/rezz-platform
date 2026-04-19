@@ -27,21 +27,21 @@ export class GuestRating {
   @JoinColumn({ name: 'reservation_id' })
   reservation: Reservation;
 
-  @Column()
+  @Column({ name: 'reservation_id', type: 'uuid' })
   reservationId: string;
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'guest_user_id' })
   guestUser: User | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'guest_user_id', type: 'uuid', nullable: true })
   guestUserId: string | null;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'rated_by_id' })
   ratedBy: User;
 
-  @Column()
+  @Column({ name: 'rated_by_id', type: 'uuid' })
   ratedById: string;
 
   @Column()

@@ -10,6 +10,8 @@ import {
   IsInt,
   Min,
   MinLength,
+  IsUrl,
+  ArrayMaxSize,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import type { VenueType, PaymentMethod, TableType } from '@rezz/shared';
@@ -162,6 +164,13 @@ export class CreateVenueDto {
   @ValidateNested({ each: true })
   @Type(() => CreateVenueTableDto)
   tables?: CreateVenueTableDto[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(5)
+  @IsString({ each: true })
+  @IsUrl({}, { each: true })
+  socialLinks?: string[];
 
   @ValidateNested()
   @Type(() => CreateManagerDto)

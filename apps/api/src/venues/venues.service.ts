@@ -8,6 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { I18nService } from 'nestjs-i18n';
+import type { SocialLink } from '@rezz/shared';
 import { Venue } from './entities/venue.entity';
 import { VenueTable } from './entities/venue-table.entity';
 import { VenueInvitation } from './entities/venue-invitation.entity';
@@ -20,6 +21,7 @@ import {
   PublicVenueDto,
   VenueMapper,
 } from './dto/venue-response.dto';
+import { detectSocialPlatform } from '../common/utils/social-platform.util';
 
 @Injectable()
 export class VenuesService {
@@ -35,6 +37,16 @@ export class VenuesService {
     @Inject(forwardRef(() => InvitationsService))
     private invitationsService: InvitationsService,
   ) {}
+
+  private mapSocialLinks(urls: string[] | undefined): SocialLink[] {
+    return (urls ?? [])
+      .filter((url) => url && url.trim() !== '')
+      .slice(0, 5)
+      .map((url) => {
+        const trimmed = url.trim();
+        return { url: trimmed, platform: detectSocialPlatform(trimmed) };
+      });
+  }
 
   private async toAdminDto(venue: Venue): Promise<AdminVenueDto> {
     const manager = await this.usersService.findManagerByVenueId(venue.id);
@@ -130,6 +142,7 @@ export class VenuesService {
       paymentMethods: dto.paymentMethods,
       hasParking: dto.hasParking,
       tags: dto.tags ?? [],
+      socialLinks: this.mapSocialLinks(dto.socialLinks),
     });
 
     const savedVenue = await this.venueRepo.save(venue);
@@ -201,6 +214,10 @@ export class VenuesService {
       hasParking: dto.hasParking,
       tags: dto.tags,
     });
+
+    if (dto.socialLinks !== undefined) {
+      venue.socialLinks = this.mapSocialLinks(dto.socialLinks);
+    }
 
     await this.venueRepo.save(venue);
 

@@ -1,5 +1,9 @@
 import { api } from '@/lib/api';
-import type { AdminVenue, CreateVenueRequest } from '@/lib/types/venue.types';
+import type {
+  AdminVenue,
+  CreateVenueRequest,
+  PublicVenue,
+} from '@/lib/types/venue.types';
 
 export interface SendInvitationRequest {
   email: string;
@@ -55,6 +59,24 @@ export const venuesApi = {
       `/venues/${venueId}/invitations`,
       data,
     );
+    return response.data;
+  },
+
+  searchPublic: async (filters?: {
+    type?: string;
+    city?: string;
+  }): Promise<PublicVenue[]> => {
+    const params = new URLSearchParams();
+    if (filters?.type) params.set('type', filters.type);
+    if (filters?.city) params.set('city', filters.city);
+    const response = await api.get<PublicVenue[]>(
+      `/venues/public?${params.toString()}`,
+    );
+    return response.data;
+  },
+
+  getPublicOne: async (id: string): Promise<PublicVenue> => {
+    const response = await api.get<PublicVenue>(`/venues/public/${id}`);
     return response.data;
   },
 };

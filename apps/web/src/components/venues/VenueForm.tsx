@@ -15,7 +15,12 @@ import { TagInput } from "@/components/ui/TagInput";
 import { WorkingHoursInput } from "@/components/ui/WorkingHoursInput";
 import { useCreateVenue, useUpdateVenue } from "@/hooks/useVenues";
 import { usePublicSettings } from "@/hooks/useSettings";
-import type { AdminVenue, CreateVenueRequest } from "@/lib/types/venue.types";
+import type {
+  AdminVenue,
+  CreateVenueRequest,
+  WorkingHours,
+  WorkingHourDay,
+} from "@/lib/types/venue.types";
 
 interface VenueFormProps {
   onSuccess: () => void;
@@ -81,6 +86,37 @@ const PAYMENT_METHODS: { value: PaymentMethod; key: string }[] = [
   { value: "MOBILE", key: "venue.payment_mobile" },
 ];
 
+const WEEK_DAYS = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+] as const;
+
+const DEFAULT_DAY_HOURS: WorkingHourDay = {
+  open: "08:00",
+  close: "23:00",
+  isClosed: false,
+};
+
+function buildDefaultWorkingHours(): WorkingHours {
+  return WEEK_DAYS.reduce<WorkingHours>((acc, day) => {
+    acc[day] = { ...DEFAULT_DAY_HOURS };
+    return acc;
+  }, {});
+}
+
+function fillMissingDays(hours: WorkingHours | undefined): WorkingHours {
+  const filled: WorkingHours = { ...(hours ?? {}) };
+  for (const day of WEEK_DAYS) {
+    if (!filled[day]) filled[day] = { ...DEFAULT_DAY_HOURS };
+  }
+  return filled;
+}
+
 export function VenueForm({
   onSuccess,
   onCancel,
@@ -99,6 +135,8 @@ export function VenueForm({
     register,
     handleSubmit,
     control,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<CreateVenueRequest>({
     defaultValues: initialData
@@ -112,12 +150,13 @@ export function VenueForm({
           hasParking: initialData.hasParking,
           paymentMethods: initialData.paymentMethods,
           tags: initialData.tags,
-          workingHours: initialData.workingHours,
+          workingHours: fillMissingDays(initialData.workingHours),
           tables: initialData.tables.map((t) => ({
             type: t.type,
             count: t.count,
             note: t.note ?? "",
           })),
+          socialLinks: initialData.socialLinkUrls ?? [],
           manager: { email: "", phone: "", firstName: "", lastName: "" },
         }
       : {
@@ -130,8 +169,9 @@ export function VenueForm({
           hasParking: false,
           paymentMethods: [],
           tags: [],
-          workingHours: {},
+          workingHours: buildDefaultWorkingHours(),
           tables: [],
+          socialLinks: [],
           manager: { email: "", phone: "", firstName: "", lastName: "" },
         },
   });
@@ -141,10 +181,30 @@ export function VenueForm({
     name: "tables",
   });
 
+  const socialLinks = watch("socialLinks") ?? [];
+
+  function addSocialLink(): void {
+    if (socialLinks.length >= 5) return;
+    setValue("socialLinks", [...socialLinks, ""]);
+  }
+
+  function removeSocialLink(index: number): void {
+    setValue(
+      "socialLinks",
+      socialLinks.filter((_, i) => i !== index),
+    );
+  }
+
   function onSubmit(data: CreateVenueRequest): void {
+    const cleanedSocialLinks = (data.socialLinks ?? [])
+      .map((url) => url.trim())
+      .filter((url) => url !== "");
+
     const payload = {
       ...data,
       reservationEmail: data.reservationEmail || undefined,
+      socialLinks: cleanedSocialLinks,
+      workingHours: fillMissingDays(data.workingHours),
     };
 
     if (isEdit) {
@@ -532,7 +592,49 @@ export function VenueForm({
         )}
       </div>
 
-      {/* Section 5 — Manager (create mode only) */}
+      {/* Section 5 — Social links */}
+      {!(isReadOnly && socialLinks.length === 0) && (
+        <>
+          <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+            {t("venue.social_links_label")}
+          </h3>
+
+          <div className="space-y-2">
+            {socialLinks.map((_, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Input
+                  type="url"
+                  {...register(`socialLinks.${index}` as const)}
+                  placeholder={t("venue.social_links_placeholder")}
+                  disabled={isReadOnly}
+                />
+                {!isReadOnly && (
+                  <button
+                    type="button"
+                    onClick={() => removeSocialLink(index)}
+                    className="text-red-400 hover:text-red-600"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+            ))}
+
+            {!isReadOnly && socialLinks.length < 5 && (
+              <button
+                type="button"
+                onClick={addSocialLink}
+                className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-800"
+              >
+                <Plus className="h-4 w-4" />
+                {t("venue.add_link")}
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Section 6 — Manager (create mode only) */}
       {!initialData && (
         <>
           <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">

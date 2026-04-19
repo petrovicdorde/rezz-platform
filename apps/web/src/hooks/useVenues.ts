@@ -88,3 +88,20 @@ export function useSendInvitation(venueId: string) {
     },
   });
 }
+
+export function usePublicVenues(filters?: { type?: string; city?: string }) {
+  return useQuery({
+    queryKey: ['public-venues', filters],
+    queryFn: () => venuesApi.searchPublic(filters),
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
+export function usePublicVenue(id: string) {
+  return useQuery({
+    queryKey: ['public-venue', id],
+    queryFn: () => venuesApi.getPublicOne(id),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  });
+}

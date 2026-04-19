@@ -1,22 +1,3 @@
-export interface PublicVenue {
-  id: string;
-  name: string;
-  type: string;
-  city: string;
-  address: string;
-  reservationPhone: string;
-  tags: string[];
-  imageUrl: string | null;
-  isActive: boolean;
-  tables: { id: string; type: string; count: number; note: string | null }[];
-  workingHours: Record<
-    string,
-    { open: string; close: string; isClosed: boolean }
-  >;
-  paymentMethods: string[];
-  hasParking: boolean;
-}
-
 export interface PublicEvent {
   id: string;
   name: string;

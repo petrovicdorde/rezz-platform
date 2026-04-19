@@ -19,8 +19,10 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UserRole, User } from '../users/entities/user.entity';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
+import { CreateGuestReservationDto } from './dto/create-guest-reservation.dto';
 import { ArrivalDto } from './dto/arrival.dto';
 import { GuestRatingDto } from './dto/guest-rating.dto';
+import { Reservation } from './entities/reservation.entity';
 
 @Controller('venues/:venueId/reservations')
 @UseGuards(JwtAuthGuard)
@@ -85,6 +87,19 @@ export class ReservationsController {
     @I18nLang() lang: string,
   ) {
     return this.reservationsService.findOne(id, venueId, lang);
+  }
+
+  @Post('guest')
+  @HttpCode(HttpStatus.CREATED)
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.GUEST)
+  createByGuest(
+    @Param('venueId') venueId: string,
+    @Body() dto: CreateGuestReservationDto,
+    @CurrentUser() user: User,
+    @I18nLang() lang: string,
+  ): Promise<Reservation> {
+    return this.reservationsService.createByGuest(venueId, dto, user.id, lang);
   }
 
   @Post()

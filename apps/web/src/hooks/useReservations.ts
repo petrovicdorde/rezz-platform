@@ -153,6 +153,27 @@ export function useUpdateRating() {
   });
 }
 
+export function usePublicAvailableSlots(
+  venueId: string,
+  date: string,
+  tableType: TableType | '',
+) {
+  return useQuery({
+    queryKey: ['public-available-slots', venueId, date, tableType],
+    queryFn: () =>
+      reservationsApi.getAvailableSlots(venueId, date, tableType as TableType),
+    enabled: !!venueId && !!date && !!tableType,
+  });
+}
+
+export function useCreateGuestReservation(venueId: string) {
+  return useMutation({
+    mutationFn: (data: CreateReservationRequest) =>
+      reservationsApi.createByGuest(venueId, data),
+    onError: (error: unknown) => handleApiError(error),
+  });
+}
+
 export function useGuestScore(phone: string) {
   const venueId = useAuthStore((s) => s.user?.venueId ?? '');
   return useQuery({

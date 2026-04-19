@@ -67,4 +67,8 @@ export class UsersService {
     await this.usersRepository.update(id, data);
     return this.usersRepository.findOneOrFail({ where: { id } });
   }
+
+  async updatePhone(userId: string, phone: string): Promise<void> {
+    await this.usersRepository.update(userId, { phone });
+  }
 }

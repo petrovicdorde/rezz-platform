@@ -60,7 +60,8 @@
     "invitation_already_declined": "Pozivnica je već odbijena.",
     "invitation_declined": "Pozivnica je odbijena.",
     "city_required": "Grad je obavezan.",
-    "address_required": "Adresa je obavezna."
+    "address_required": "Adresa je obavezna.",
+    "social_links_max": "Možete dodati najviše 5 društvenih mreža."
   },
   "reservation": {
     "not_found": "Rezervacija nije pronađena.",
@@ -90,7 +91,10 @@
     "rating_not_found": "Ocjena nije pronađena.",
     "rating_only_completed": "Možete ocijeniti samo završene rezervacije.",
     "no_show_auto_rated": "Gostu je automatski dodijeljena ocjena 0 zbog nepojavljivanja.",
-    "blacklisted_after_no_shows": "Gost je stavljen na crnu listu nakon 3 nepojavljivanja."
+    "blacklisted_after_no_shows": "Gost je stavljen na crnu listu nakon 3 nepojavljivanja.",
+    "guest_created": "Rezervacija je uspješno poslata. Čekajte potvrdu lokala.",
+    "phone_required_for_reservation": "Broj telefona je obavezan za rezervaciju.",
+    "blacklisted_cannot_reserve": "Vaš nalog je blokiran. Ne možete slati rezervacije."
   },
   "notification": {
     "not_found": "Obavještenje nije pronađeno.",

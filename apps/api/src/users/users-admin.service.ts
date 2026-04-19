@@ -14,6 +14,7 @@ export interface SafeAdminUser {
   email: string;
   firstName: string | null;
   lastName: string | null;
+  phone: string | null;
   role: UserRole;
   isActive: boolean;
   isEmailVerified: boolean;
@@ -39,6 +40,7 @@ export class UsersAdminService {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      phone: user.phone ?? null,
       role: user.role,
       isActive: user.isActive,
       isEmailVerified: user.isEmailVerified,

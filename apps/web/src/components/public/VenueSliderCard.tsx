@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
-import type { PublicVenue } from '@/lib/types/landing.types';
+import type { PublicVenue } from '@/lib/types/venue.types';
 
 interface VenueSliderCardProps {
   venue: PublicVenue;

@@ -1,4 +1,9 @@
-import type { VenueType, PaymentMethod, TableType } from '@rezz/shared';
+import type {
+  VenueType,
+  PaymentMethod,
+  TableType,
+  SocialLink,
+} from '@rezz/shared';
 import type { WorkingHours } from '../entities/venue.entity';
 import { Venue } from '../entities/venue.entity';
 import type { User } from '../../users/entities/user.entity';
@@ -24,6 +29,7 @@ export class PublicVenueDto {
   address: string;
   tables: PublicVenueTableDto[];
   isActive: boolean;
+  socialLinks: SocialLink[];
 }
 
 export class AdminVenueManagerDto {
@@ -37,6 +43,7 @@ export class AdminVenueManagerDto {
 export class AdminVenueDto extends PublicVenueDto {
   reservationEmail: string | null;
   manager: AdminVenueManagerDto | null;
+  socialLinkUrls: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -56,6 +63,7 @@ export class VenueMapper {
       city: venue.city,
       address: venue.address,
       isActive: venue.isActive,
+      socialLinks: venue.socialLinks ?? [],
       tables:
         venue.tables?.map((t) => ({
           id: t.id,
@@ -76,9 +84,10 @@ export class VenueMapper {
             email: manager.email,
             firstName: manager.firstName || null,
             lastName: manager.lastName || null,
-            phone: null,
+            phone: manager.phone ?? null,
           }
         : null,
+      socialLinkUrls: (venue.socialLinks ?? []).map((s) => s.url),
       createdAt: venue.createdAt,
       updatedAt: venue.updatedAt,
     };

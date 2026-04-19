@@ -60,6 +60,17 @@ export const reservationsApi = {
     return response.data;
   },
 
+  createByGuest: async (
+    venueId: string,
+    data: CreateReservationRequest,
+  ): Promise<Reservation> => {
+    const response = await api.post<Reservation>(
+      `/venues/${venueId}/reservations/guest`,
+      data,
+    );
+    return response.data;
+  },
+
   confirm: async (venueId: string, id: string): Promise<Reservation> => {
     const response = await api.patch<Reservation>(
       `/venues/${venueId}/reservations/${id}/confirm`,

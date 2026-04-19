@@ -4,6 +4,8 @@ import {
   forwardRef,
   NotFoundException,
   BadRequestException,
+  ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
@@ -19,6 +21,7 @@ import { GuestRating } from './entities/guest-rating.entity';
 import { Venue } from '../venues/entities/venue.entity';
 import { VenueTable } from '../venues/entities/venue-table.entity';
 import { CreateReservationDto } from './dto/create-reservation.dto';
+import { CreateGuestReservationDto } from './dto/create-guest-reservation.dto';
 import { ArrivalDto } from './dto/arrival.dto';
 import { GuestRatingDto } from './dto/guest-rating.dto';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -160,6 +163,74 @@ export class ReservationsService {
     });
 
     return this.reservationRepo.save(reservation);
+  }
+
+  async createByGuest(
+    venueId: string,
+    dto: CreateGuestReservationDto,
+    userId: string,
+    lang: string = 'sr',
+  ): Promise<Reservation> {
+    const user = await this.usersService.findById(userId);
+
+    if (!user) {
+      throw new UnauthorizedException(
+        await this.i18n.t('auth.unauthorized', { lang }),
+      );
+    }
+
+    if (user.isBlacklisted) {
+      throw new ForbiddenException(
+        await this.i18n.t('reservation.blacklisted_cannot_reserve', { lang }),
+      );
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const reservationDate = new Date(dto.date);
+
+    if (reservationDate < today) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.invalid_date', { lang }),
+      );
+    }
+
+    const slots = await this.getAvailableSlots(
+      venueId,
+      dto.date,
+      dto.tableType,
+      lang,
+    );
+
+    if (slots.available <= 0) {
+      throw new BadRequestException(
+        await this.i18n.t('reservation.no_available_tables', { lang }),
+      );
+    }
+
+    if (!user.phone || user.phone.trim() === '') {
+      await this.usersService.updatePhone(userId, dto.phone);
+    }
+
+    const reservation = this.reservationRepo.create({
+      venueId,
+      date: dto.date,
+      time: dto.time,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      phone: dto.phone,
+      numberOfGuests: dto.numberOfGuests,
+      tableType: dto.tableType,
+      specialRequest: dto.specialRequest ?? null,
+      status: 'PENDING',
+      source: 'GUEST_APP',
+      createdByManagerId: null,
+      userId,
+    });
+
+    const saved = await this.reservationRepo.save(reservation);
+    await this.notifyVenueManagers(saved, 'RESERVATION_NEW');
+    return saved;
   }
 
   async findAllByVenue(

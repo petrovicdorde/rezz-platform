@@ -19,7 +19,7 @@ export class Notification {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
+  @Column({ name: 'user_id', type: 'uuid' })
   userId: string;
 
   @Column({ type: 'varchar' })
@@ -32,7 +32,7 @@ export class Notification {
   @JoinColumn({ name: 'reservation_id' })
   reservation: Reservation | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'reservation_id', type: 'uuid', nullable: true })
   reservationId: string | null;
 
   @Column({ type: 'jsonb', nullable: true })

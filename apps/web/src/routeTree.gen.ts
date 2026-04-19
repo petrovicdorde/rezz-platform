@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PretragaRouteImport } from './routes/pretraga'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenuesIndexRouteImport } from './routes/venues/index'
+import { Route as LokaliIndexRouteImport } from './routes/lokali/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as VenuesSlugRouteImport } from './routes/venues/$slug'
+import { Route as LokaliIdRouteImport } from './routes/lokali/$id'
 import { Route as DashboardVenuesRouteImport } from './routes/dashboard/venues'
 import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
@@ -48,6 +50,11 @@ const VenuesIndexRoute = VenuesIndexRouteImport.update({
   path: '/venues/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LokaliIndexRoute = LokaliIndexRouteImport.update({
+  id: '/lokali/',
+  path: '/lokali/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
@@ -56,6 +63,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
 const VenuesSlugRoute = VenuesSlugRouteImport.update({
   id: '/venues/$slug',
   path: '/venues/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LokaliIdRoute = LokaliIdRouteImport.update({
+  id: '/lokali/$id',
+  path: '/lokali/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardVenuesRoute = DashboardVenuesRouteImport.update({
@@ -169,8 +181,10 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
+  '/lokali/$id': typeof LokaliIdRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
+  '/lokali/': typeof LokaliIndexRoute
   '/venues/': typeof VenuesIndexRoute
   '/venues/$slug/reservation': typeof VenuesSlugReservationRoute
 }
@@ -194,8 +208,10 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
+  '/lokali/$id': typeof LokaliIdRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
+  '/lokali': typeof LokaliIndexRoute
   '/venues': typeof VenuesIndexRoute
   '/venues/$slug/reservation': typeof VenuesSlugReservationRoute
 }
@@ -220,8 +236,10 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
+  '/lokali/$id': typeof LokaliIdRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
+  '/lokali/': typeof LokaliIndexRoute
   '/venues/': typeof VenuesIndexRoute
   '/venues/$slug/reservation': typeof VenuesSlugReservationRoute
 }
@@ -247,8 +265,10 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/users'
     | '/dashboard/venues'
+    | '/lokali/$id'
     | '/venues/$slug'
     | '/dashboard/'
+    | '/lokali/'
     | '/venues/'
     | '/venues/$slug/reservation'
   fileRoutesByTo: FileRoutesByTo
@@ -272,8 +292,10 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/users'
     | '/dashboard/venues'
+    | '/lokali/$id'
     | '/venues/$slug'
     | '/dashboard'
+    | '/lokali'
     | '/venues'
     | '/venues/$slug/reservation'
   id:
@@ -297,8 +319,10 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/users'
     | '/dashboard/venues'
+    | '/lokali/$id'
     | '/venues/$slug'
     | '/dashboard/'
+    | '/lokali/'
     | '/venues/'
     | '/venues/$slug/reservation'
   fileRoutesById: FileRoutesById
@@ -323,8 +347,10 @@ export interface RootRouteChildren {
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardVenuesRoute: typeof DashboardVenuesRoute
+  LokaliIdRoute: typeof LokaliIdRoute
   VenuesSlugRoute: typeof VenuesSlugRouteWithChildren
   DashboardIndexRoute: typeof DashboardIndexRoute
+  LokaliIndexRoute: typeof LokaliIndexRoute
   VenuesIndexRoute: typeof VenuesIndexRoute
 }
 
@@ -351,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VenuesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lokali/': {
+      id: '/lokali/'
+      path: '/lokali'
+      fullPath: '/lokali/'
+      preLoaderRoute: typeof LokaliIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/dashboard'
@@ -363,6 +396,13 @@ declare module '@tanstack/react-router' {
       path: '/venues/$slug'
       fullPath: '/venues/$slug'
       preLoaderRoute: typeof VenuesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lokali/$id': {
+      id: '/lokali/$id'
+      path: '/lokali/$id'
+      fullPath: '/lokali/$id'
+      preLoaderRoute: typeof LokaliIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/venues': {
@@ -526,8 +566,10 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardUsersRoute: DashboardUsersRoute,
   DashboardVenuesRoute: DashboardVenuesRoute,
+  LokaliIdRoute: LokaliIdRoute,
   VenuesSlugRoute: VenuesSlugRouteWithChildren,
   DashboardIndexRoute: DashboardIndexRoute,
+  LokaliIndexRoute: LokaliIndexRoute,
   VenuesIndexRoute: VenuesIndexRoute,
 }
 export const routeTree = rootRouteImport
