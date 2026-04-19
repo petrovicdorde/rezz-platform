@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from '@tanstack/react-router';
 import {
@@ -15,7 +16,7 @@ import {
 import type { UserRole } from '@rezz/shared';
 import { useAuthStore } from '@/store/auth.store';
 import { useUnreadCount } from '@/hooks/useNotifications';
-import { useLogout } from '@/hooks/useAuth';
+import { LogoutConfirmDialog } from '@/components/auth/LogoutConfirmDialog';
 
 interface NavItem {
   to: string;
@@ -73,7 +74,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
   const location = useLocation();
   const user = useAuthStore((s) => s.user);
   const { data: unreadCount = 0 } = useUnreadCount();
-  const logoutMutation = useLogout();
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-tertiary-50">
@@ -139,8 +140,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
                 {t('nav.welcome', { name: user.firstName })}
               </span>
               <button
-                onClick={() => logoutMutation.mutate()}
-                disabled={logoutMutation.isPending}
+                type="button"
+                onClick={() => setLogoutOpen(true)}
                 className="rounded-md p-1.5 text-tertiary-400 transition-colors hover:bg-tertiary-100 hover:text-red-500"
                 title={t('auth.logout_button')}
               >
@@ -151,6 +152,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
         </div>
         <div className="p-4 md:p-8">{children}</div>
       </main>
+
+      <LogoutConfirmDialog
+        isOpen={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+      />
     </div>
   );
 }

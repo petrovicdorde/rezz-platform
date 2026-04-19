@@ -42,6 +42,8 @@
     "register_link": "Register",
     "login_success": "Welcome, {{name}}!",
     "logout_success": "Successfully logged out.",
+    "logout_confirm_title": "Are you sure?",
+    "logout_confirm_subtitle": "You will be logged out of your account.",
     "email_required": "Email address is required.",
     "email_invalid": "Please enter a valid email address.",
     "password_required": "Password is required.",

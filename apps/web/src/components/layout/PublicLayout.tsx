@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LogoutConfirmDialog } from '@/components/auth/LogoutConfirmDialog';
 import { useLoginStore } from '@/store/login-ui.store';
 import { useAuthStore } from '@/store/auth.store';
-import { useLogout } from '@/hooks/useAuth';
 import { ROLE_REDIRECT } from '@/hooks/useAuth';
 
 interface PublicLayoutProps {
@@ -17,7 +18,7 @@ export function PublicLayout({
   const { t } = useTranslation();
   const { open } = useLoginStore();
   const { isAuthenticated, user } = useAuthStore();
-  const logoutMutation = useLogout();
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -41,8 +42,8 @@ export function PublicLayout({
                 {user.firstName}
               </Link>
               <button
-                onClick={() => logoutMutation.mutate()}
-                disabled={logoutMutation.isPending}
+                type="button"
+                onClick={() => setLogoutOpen(true)}
                 className="rounded-md p-1.5 text-white/60 hover:text-white"
                 title={t('auth.logout_button')}
               >
@@ -69,6 +70,11 @@ export function PublicLayout({
       <footer className="bg-secondary-600 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">
         &copy; 2026 Rezz.ba. Sva prava zadržana.
       </footer>
+
+      <LogoutConfirmDialog
+        isOpen={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+      />
     </div>
   );
 }

@@ -42,6 +42,8 @@
     "register_link": "Registrujte se",
     "login_success": "Dobrodošli, {{name}}!",
     "logout_success": "Uspješno ste se odjavili.",
+    "logout_confirm_title": "Da li ste sigurni?",
+    "logout_confirm_subtitle": "Bićete odjavljeni sa svog naloga.",
     "email_required": "Email adresa je obavezna.",
     "email_invalid": "Unesite ispravnu email adresu.",
     "password_required": "Lozinka je obavezna.",
