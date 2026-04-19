@@ -21,7 +21,30 @@
     "search": "Pretraži",
     "or": "ili",
     "select_date": "Odaberite datum",
-    "select_time": "Odaberite vrijeme"
+    "select_time": "Odaberite vrijeme",
+    "months": {
+      "1": "Januar",
+      "2": "Februar",
+      "3": "Mart",
+      "4": "April",
+      "5": "Maj",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Avgust",
+      "9": "Septembar",
+      "10": "Oktobar",
+      "11": "Novembar",
+      "12": "Decembar"
+    },
+    "weekdays_short": {
+      "1": "P",
+      "2": "U",
+      "3": "S",
+      "4": "Č",
+      "5": "P",
+      "6": "S",
+      "7": "N"
+    }
   },
   "not_found": {
     "title": "Stranica nije pronađena",

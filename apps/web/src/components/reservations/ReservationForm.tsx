@@ -3,7 +3,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { format } from 'date-fns';
 import type { TableType } from '@rezz/shared';
 import { Input } from '@/components/ui/input';
-import { DateInput } from '@/components/ui/date-input';
+import { DatePicker } from '@/components/ui/date-picker';
+import { TimePicker } from '@/components/ui/time-picker';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -148,13 +149,17 @@ export function ReservationForm({
           <label className="mb-1 block text-sm font-medium">
             {t('reservation.date_label')}
           </label>
-          <DateInput
-            type="date"
-            min={today}
-            placeholder={t('common.select_date')}
-            {...register('date', {
-              required: t('reservation.date_required'),
-            })}
+          <Controller
+            control={control}
+            name="date"
+            rules={{ required: t('reservation.date_required') }}
+            render={({ field }) => (
+              <DatePicker
+                value={field.value}
+                onChange={field.onChange}
+                placeholder={t('common.select_date')}
+              />
+            )}
           />
           {errors.date && (
             <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>
@@ -164,12 +169,17 @@ export function ReservationForm({
           <label className="mb-1 block text-sm font-medium">
             {t('reservation.time_label')}
           </label>
-          <DateInput
-            type="time"
-            placeholder={t('common.select_time')}
-            {...register('time', {
-              required: t('reservation.time_required'),
-            })}
+          <Controller
+            control={control}
+            name="time"
+            rules={{ required: t('reservation.time_required') }}
+            render={({ field }) => (
+              <TimePicker
+                value={field.value}
+                onChange={field.onChange}
+                placeholder={t('common.select_time')}
+              />
+            )}
           />
           {errors.time && (
             <p className="mt-1 text-xs text-red-500">{errors.time.message}</p>

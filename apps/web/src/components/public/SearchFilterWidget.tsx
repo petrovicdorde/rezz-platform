@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
-import { format } from 'date-fns';
 import {
   Select,
   SelectContent,
@@ -10,7 +9,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { DateInput } from '@/components/ui/date-input';
+import { DatePicker } from '@/components/ui/date-picker';
+import { TimePicker } from '@/components/ui/time-picker';
 import { usePublicSettings } from '@/hooks/useSettings';
 import type { SearchFilters } from '@/lib/api/landing.api';
 
@@ -31,8 +31,6 @@ export function SearchFilterWidget({
 
   const { data: cities } = usePublicSettings('CITY');
   const { data: venueTypes } = usePublicSettings('VENUE_TYPE');
-
-  const today = format(new Date(), 'yyyy-MM-dd');
 
   return (
     <div className="mx-auto w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl">
@@ -80,12 +78,10 @@ export function SearchFilterWidget({
           <label className="mb-1 block text-xs font-medium text-tertiary-600">
             {t('home.filter_date_label')}
           </label>
-          <DateInput
-            type="date"
-            min={today}
-            placeholder={t('common.select_date')}
+          <DatePicker
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={setDate}
+            placeholder={t('common.select_date')}
           />
         </div>
 
@@ -94,11 +90,10 @@ export function SearchFilterWidget({
           <label className="mb-1 block text-xs font-medium text-tertiary-600">
             {t('home.filter_time_label')}
           </label>
-          <DateInput
-            type="time"
-            placeholder={t('common.select_time')}
+          <TimePicker
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={setTime}
+            placeholder={t('common.select_time')}
           />
         </div>
       </div>

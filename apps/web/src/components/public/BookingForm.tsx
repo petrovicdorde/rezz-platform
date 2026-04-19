@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
-import { format } from 'date-fns';
 import type { TableType } from '@rezz/shared';
 import { Input } from '@/components/ui/input';
-import { DateInput } from '@/components/ui/date-input';
+import { DatePicker } from '@/components/ui/date-picker';
+import { TimePicker } from '@/components/ui/time-picker';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -60,7 +60,6 @@ export function BookingForm({
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useMyProfile();
   const mutation = useCreateGuestReservation(venue.id);
-  const today = format(new Date(), 'yyyy-MM-dd');
 
   const {
     register,
@@ -180,11 +179,17 @@ export function BookingForm({
           <label className="mb-1 block text-sm font-medium text-secondary-600">
             {t('booking.date_label')}
           </label>
-          <DateInput
-            type="date"
-            min={today}
-            placeholder={t('common.select_date')}
-            {...register('date', { required: t('booking.required') })}
+          <Controller
+            control={control}
+            name="date"
+            rules={{ required: t('booking.required') }}
+            render={({ field }) => (
+              <DatePicker
+                value={field.value}
+                onChange={field.onChange}
+                placeholder={t('common.select_date')}
+              />
+            )}
           />
           {errors.date && (
             <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>
@@ -195,16 +200,23 @@ export function BookingForm({
           <label className="mb-1 block text-sm font-medium text-secondary-600">
             {t('booking.time_label')}
           </label>
-          <DateInput
-            type="time"
-            placeholder={t('common.select_time')}
-            {...register('time', {
+          <Controller
+            control={control}
+            name="time"
+            rules={{
               required: t('booking.required'),
               pattern: {
                 value: /^([01]\d|2[0-3]):([0-5]\d)$/,
                 message: t('booking.invalid_time'),
               },
-            })}
+            }}
+            render={({ field }) => (
+              <TimePicker
+                value={field.value}
+                onChange={field.onChange}
+                placeholder={t('common.select_time')}
+              />
+            )}
           />
           {errors.time && (
             <p className="mt-1 text-xs text-red-500">{errors.time.message}</p>
