@@ -35,12 +35,22 @@ export function PublicLayout({
         <div className="flex flex-1 items-center justify-end gap-2">
           {isAuthenticated && user ? (
             <>
-              <Link
-                to={ROLE_REDIRECT[user.role] ?? '/'}
-                className="text-sm text-white/70 hover:text-white"
-              >
-                {user.firstName}
-              </Link>
+              {user.role === 'GUEST' ? (
+                <Link to="/profil" className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white/50 bg-white/20 text-xs font-medium text-white">
+                    {(
+                      (user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')
+                    ).toUpperCase()}
+                  </div>
+                </Link>
+              ) : (
+                <Link
+                  to={ROLE_REDIRECT[user.role] ?? '/'}
+                  className="text-sm text-white/70 hover:text-white"
+                >
+                  {user.firstName}
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={() => setLogoutOpen(true)}

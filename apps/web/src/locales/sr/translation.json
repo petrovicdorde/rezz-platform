@@ -353,6 +353,7 @@
     "cancel_reason_placeholder": "Unesite razlog otkazivanja...",
     "cancel_reason_required": "Razlog otkazivanja je obavezan.",
     "cancel_confirm": "Otkaži rezervaciju",
+    "cancel_confirm_question": "Da li ste sigurni da želite otkazati ovu rezervaciju?",
     "cancel_button": "Otkaži",
     "cancel_success": "Rezervacija je otkazana."
   },
@@ -557,5 +558,35 @@
     "no_venues_available": "Nema dostupnih lokala.",
     "no_events_available": "Nema dostupnih dogadjaja.",
     "section_hidden": "Ova sekcija je sakrivena na landing stranici."
+  },
+  "profile": {
+    "title": "Moj profil",
+    "edit_profile": "Uredi profil",
+    "save_changes": "Sačuvaj izmjene",
+    "first_name_label": "Ime",
+    "last_name_label": "Prezime",
+    "phone_label": "Broj telefona",
+    "profile_updated": "Profil je ažuriran.",
+    "tab_upcoming": "Predstojeće",
+    "tab_history": "Istorija",
+    "no_upcoming": "Nemate predstojećih rezervacija.",
+    "no_history": "Nemate istorije rezervacija.",
+    "reservation_details": "Detalji rezervacije",
+    "hide_details": "Sakrij detalje",
+    "cancel_reservation": "Otkaži rezervaciju",
+    "cancel_reason_label": "Razlog otkazivanja",
+    "cancel_reason_placeholder": "Unesite razlog...",
+    "cancel_confirm_btn": "Potvrdi otkazivanje",
+    "cancel_back_btn": "Odustani",
+    "cancel_confirm_question": "Da li ste sigurni da želite otkazati ovu rezervaciju?",
+    "reservation_cancelled": "Rezervacija je otkazana.",
+    "venue_label": "Lokal",
+    "date_label": "Datum",
+    "time_label": "Vrijeme",
+    "table_label": "Tip stola",
+    "guests_label": "Broj osoba",
+    "status_label": "Status",
+    "special_request_label": "Poseban zahtjev",
+    "member_since": "Član od {{date}}"
   }
 }

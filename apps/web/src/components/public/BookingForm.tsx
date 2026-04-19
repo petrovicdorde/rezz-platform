@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { format } from 'date-fns';
@@ -17,6 +18,7 @@ import {
   useCreateGuestReservation,
   usePublicAvailableSlots,
 } from '@/hooks/useReservations';
+import { useMyProfile } from '@/hooks/useProfile';
 import type { PublicVenue } from '@/lib/types/venue.types';
 import type {
   CreateReservationRequest,
@@ -55,6 +57,7 @@ export function BookingForm({
 }: BookingFormProps): React.JSX.Element {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
+  const { data: profile } = useMyProfile();
   const mutation = useCreateGuestReservation(venue.id);
   const today = format(new Date(), 'yyyy-MM-dd');
 
@@ -63,12 +66,14 @@ export function BookingForm({
     handleSubmit,
     control,
     watch,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<BookingFormValues>({
     defaultValues: {
       firstName: user?.firstName ?? '',
       lastName: user?.lastName ?? '',
-      phone: '',
+      phone: user?.phone ?? '',
       date: '',
       time: '',
       numberOfGuests: 2,
@@ -76,6 +81,20 @@ export function BookingForm({
       specialRequest: '',
     },
   });
+
+  useEffect(() => {
+    if (!profile) return;
+    const current = getValues();
+    if (!current.firstName && profile.firstName) {
+      setValue('firstName', profile.firstName);
+    }
+    if (!current.lastName && profile.lastName) {
+      setValue('lastName', profile.lastName);
+    }
+    if (!current.phone && profile.phone) {
+      setValue('phone', profile.phone);
+    }
+  }, [profile, getValues, setValue]);
 
   const selectedDate = watch('date');
   const selectedTableType = watch('tableType');

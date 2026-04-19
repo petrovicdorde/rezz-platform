@@ -353,6 +353,7 @@
     "cancel_reason_placeholder": "Enter cancellation reason...",
     "cancel_reason_required": "Cancellation reason is required.",
     "cancel_confirm": "Cancel reservation",
+    "cancel_confirm_question": "Are you sure you want to cancel this reservation?",
     "cancel_button": "Cancel",
     "cancel_success": "Reservation cancelled."
   },
@@ -557,5 +558,35 @@
     "no_venues_available": "No venues available.",
     "no_events_available": "No events available.",
     "section_hidden": "This section is hidden on the landing page."
+  },
+  "profile": {
+    "title": "My profile",
+    "edit_profile": "Edit profile",
+    "save_changes": "Save changes",
+    "first_name_label": "First name",
+    "last_name_label": "Last name",
+    "phone_label": "Phone number",
+    "profile_updated": "Profile updated.",
+    "tab_upcoming": "Upcoming",
+    "tab_history": "History",
+    "no_upcoming": "You have no upcoming reservations.",
+    "no_history": "You have no reservation history.",
+    "reservation_details": "Reservation details",
+    "hide_details": "Hide details",
+    "cancel_reservation": "Cancel reservation",
+    "cancel_reason_label": "Cancellation reason",
+    "cancel_reason_placeholder": "Enter reason...",
+    "cancel_confirm_btn": "Confirm cancellation",
+    "cancel_back_btn": "Go back",
+    "cancel_confirm_question": "Are you sure you want to cancel this reservation?",
+    "reservation_cancelled": "Reservation cancelled.",
+    "venue_label": "Venue",
+    "date_label": "Date",
+    "time_label": "Time",
+    "table_label": "Table type",
+    "guests_label": "Guests",
+    "status_label": "Status",
+    "special_request_label": "Special request",
+    "member_since": "Member since {{date}}"
   }
 }

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as PretragaRouteImport } from './routes/pretraga'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VenuesIndexRouteImport } from './routes/venues/index'
@@ -35,6 +36,11 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as VenuesSlugReservationRouteImport } from './routes/venues/$slug/reservation'
 
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PretragaRoute = PretragaRouteImport.update({
   id: '/pretraga',
   path: '/pretraga',
@@ -164,6 +170,7 @@ const VenuesSlugReservationRoute = VenuesSlugReservationRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/pretraga': typeof PretragaRoute
+  '/profil': typeof ProfilRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/pretraga': typeof PretragaRoute
+  '/profil': typeof ProfilRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/pretraga': typeof PretragaRoute
+  '/profil': typeof ProfilRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/pretraga'
+    | '/profil'
     | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
@@ -275,6 +285,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/pretraga'
+    | '/profil'
     | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
@@ -302,6 +313,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/pretraga'
+    | '/profil'
     | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
@@ -330,6 +342,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PretragaRoute: typeof PretragaRoute
+  ProfilRoute: typeof ProfilRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
@@ -356,6 +369,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pretraga': {
       id: '/pretraga'
       path: '/pretraga'
@@ -549,6 +569,7 @@ const VenuesSlugRouteWithChildren = VenuesSlugRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PretragaRoute: PretragaRoute,
+  ProfilRoute: ProfilRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,

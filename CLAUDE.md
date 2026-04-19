@@ -17,6 +17,7 @@ Monorepo with pnpm workspaces + Turborepo.
 ## UI Rules
 
 - All buttons, links, and clickable elements must have `cursor: pointer`. This is enforced globally in `apps/web/src/index.css` via a base layer rule. Do not override it.
+- Every cancel action (cancel reservation, cancel invitation, etc.) must show an explicit confirmation question (e.g. "Are you sure you want to cancel this reservation?") with yes/no choice before the destructive mutation runs. The confirmation may be a dialog or an inline confirm step, but the question text and the two distinct yes/no actions must be present.
 
 ## Working Rules
 

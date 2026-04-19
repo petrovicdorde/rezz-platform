@@ -145,6 +145,14 @@
   "landing": {
     "config_updated": "Landing stranica je ažurirana."
   },
+  "profile": {
+    "not_found": "Profil nije pronađen.",
+    "updated": "Profil je uspješno ažuriran.",
+    "reservation_not_found": "Rezervacija nije pronađena.",
+    "cannot_cancel": "Ova rezervacija se ne može otkazati.",
+    "cancelled": "Rezervacija je otkazana.",
+    "cancel_reason_required": "Razlog otkazivanja je obavezan."
+  },
   "general": {
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",
     "not_found": "Traženi resurs nije pronađen.",

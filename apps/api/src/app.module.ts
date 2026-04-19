@@ -26,6 +26,7 @@ import { SettingsModule } from './settings/settings.module';
 import { Setting } from './settings/entities/setting.entity';
 import { LandingModule } from './landing/landing.module';
 import { LandingConfig } from './landing/entities/landing-config.entity';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { LandingConfig } from './landing/entities/landing-config.entity';
     EventsModule,
     SettingsModule,
     LandingModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

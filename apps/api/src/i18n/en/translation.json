@@ -145,6 +145,14 @@
   "landing": {
     "config_updated": "Landing page updated successfully."
   },
+  "profile": {
+    "not_found": "Profile not found.",
+    "updated": "Profile updated successfully.",
+    "reservation_not_found": "Reservation not found.",
+    "cannot_cancel": "This reservation cannot be cancelled.",
+    "cancelled": "Reservation cancelled.",
+    "cancel_reason_required": "Cancellation reason is required."
+  },
   "general": {
     "internal_error": "An error occurred. Please try again.",
     "not_found": "The requested resource was not found.",
