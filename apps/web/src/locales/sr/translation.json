@@ -19,7 +19,9 @@
     "confirm": "Potvrdi",
     "back": "Nazad",
     "search": "Pretraži",
-    "or": "ili"
+    "or": "ili",
+    "select_date": "Odaberite datum",
+    "select_time": "Odaberite vrijeme"
   },
   "not_found": {
     "title": "Stranica nije pronađena",

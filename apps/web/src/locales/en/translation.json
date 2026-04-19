@@ -19,7 +19,9 @@
     "confirm": "Confirm",
     "back": "Back",
     "search": "Search",
-    "or": "or"
+    "or": "or",
+    "select_date": "Select a date",
+    "select_time": "Select a time"
   },
   "not_found": {
     "title": "Page not found",

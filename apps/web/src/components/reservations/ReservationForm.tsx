@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { format } from 'date-fns';
 import type { TableType } from '@rezz/shared';
 import { Input } from '@/components/ui/input';
+import { DateInput } from '@/components/ui/date-input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -147,9 +148,10 @@ export function ReservationForm({
           <label className="mb-1 block text-sm font-medium">
             {t('reservation.date_label')}
           </label>
-          <Input
+          <DateInput
             type="date"
             min={today}
+            placeholder={t('common.select_date')}
             {...register('date', {
               required: t('reservation.date_required'),
             })}
@@ -162,8 +164,9 @@ export function ReservationForm({
           <label className="mb-1 block text-sm font-medium">
             {t('reservation.time_label')}
           </label>
-          <Input
+          <DateInput
             type="time"
+            placeholder={t('common.select_time')}
             {...register('time', {
               required: t('reservation.time_required'),
             })}

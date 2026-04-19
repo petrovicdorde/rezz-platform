@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { DateInput } from '@/components/ui/date-input';
 import { Switch } from '@/components/ui/switch';
 import type { WorkingHours, WorkingHourDay } from '@/lib/types/venue.types';
 
@@ -76,21 +77,23 @@ export function WorkingHoursInput({
 
             {!dayValue.isClosed ? (
               <div className="flex items-center gap-2">
-                <input
-                  type="time"
-                  value={dayValue.open}
-                  onChange={(e) => updateDay(day, { open: e.target.value })}
-                  disabled={disabled}
-                  className="w-28 rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
-                />
+                <div className="w-28">
+                  <DateInput
+                    type="time"
+                    value={dayValue.open}
+                    onChange={(e) => updateDay(day, { open: e.target.value })}
+                    disabled={disabled}
+                  />
+                </div>
                 <span className="text-sm text-tertiary-400">–</span>
-                <input
-                  type="time"
-                  value={dayValue.close}
-                  onChange={(e) => updateDay(day, { close: e.target.value })}
-                  disabled={disabled}
-                  className="w-28 rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
-                />
+                <div className="w-28">
+                  <DateInput
+                    type="time"
+                    value={dayValue.close}
+                    onChange={(e) => updateDay(day, { close: e.target.value })}
+                    disabled={disabled}
+                  />
+                </div>
               </div>
             ) : (
               <div className="w-[15.5rem]" />

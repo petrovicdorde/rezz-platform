@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { DateInput } from '@/components/ui/date-input';
 import { usePublicSettings } from '@/hooks/useSettings';
 import type { SearchFilters } from '@/lib/api/landing.api';
 
@@ -79,12 +80,12 @@ export function SearchFilterWidget({
           <label className="mb-1 block text-xs font-medium text-tertiary-600">
             {t('home.filter_date_label')}
           </label>
-          <input
+          <DateInput
             type="date"
             min={today}
+            placeholder={t('common.select_date')}
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
         </div>
 
@@ -93,11 +94,11 @@ export function SearchFilterWidget({
           <label className="mb-1 block text-xs font-medium text-tertiary-600">
             {t('home.filter_time_label')}
           </label>
-          <input
+          <DateInput
             type="time"
+            placeholder={t('common.select_time')}
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
         </div>
       </div>

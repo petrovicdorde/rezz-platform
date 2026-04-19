@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { format } from 'date-fns';
 import type { TableType } from '@rezz/shared';
 import { Input } from '@/components/ui/input';
+import { DateInput } from '@/components/ui/date-input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -179,11 +180,11 @@ export function BookingForm({
           <label className="mb-1 block text-sm font-medium text-secondary-600">
             {t('booking.date_label')}
           </label>
-          <input
+          <DateInput
             type="date"
             min={today}
+            placeholder={t('common.select_date')}
             {...register('date', { required: t('booking.required') })}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
           {errors.date && (
             <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>
@@ -194,8 +195,9 @@ export function BookingForm({
           <label className="mb-1 block text-sm font-medium text-secondary-600">
             {t('booking.time_label')}
           </label>
-          <input
+          <DateInput
             type="time"
+            placeholder={t('common.select_time')}
             {...register('time', {
               required: t('booking.required'),
               pattern: {
@@ -203,7 +205,6 @@ export function BookingForm({
                 message: t('booking.invalid_time'),
               },
             })}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
           {errors.time && (
             <p className="mt-1 text-xs text-red-500">{errors.time.message}</p>
