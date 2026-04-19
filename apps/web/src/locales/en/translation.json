@@ -21,6 +21,11 @@
     "search": "Search",
     "or": "or"
   },
+  "not_found": {
+    "title": "Page not found",
+    "subtitle": "The page you are looking for doesn't exist or has been moved.",
+    "back_home": "Back to home"
+  },
   "auth": {
     "login_title": "Welcome back",
     "login_subtitle": "Log in to your account",

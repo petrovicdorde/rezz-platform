@@ -1,14 +1,16 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { LoginDrawer } from '@/components/auth/LoginDrawer';
-import { LoginModal } from '@/components/auth/LoginModal';
-import { RegisterDrawer } from '@/components/auth/RegisterDrawer';
-import { RegisterModal } from '@/components/auth/RegisterModal';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { LoginDrawer } from "@/components/auth/LoginDrawer";
+import { LoginModal } from "@/components/auth/LoginModal";
+import { RegisterDrawer } from "@/components/auth/RegisterDrawer";
+import { RegisterModal } from "@/components/auth/RegisterModal";
+import { NotFoundPage } from "@/components/NotFoundPage";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
+// eslint-disable-next-line react-refresh/only-export-components
 function RootLayout(): React.JSX.Element {
-  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   return (
     <>
@@ -31,4 +33,5 @@ function RootLayout(): React.JSX.Element {
 
 export const Route = createRootRoute({
   component: RootLayout,
+  notFoundComponent: NotFoundPage,
 });

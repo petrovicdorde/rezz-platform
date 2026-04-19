@@ -21,6 +21,11 @@
     "search": "Pretraži",
     "or": "ili"
   },
+  "not_found": {
+    "title": "Stranica nije pronađena",
+    "subtitle": "Stranica koju tražite ne postoji ili je premještena.",
+    "back_home": "Nazad na početnu"
+  },
   "auth": {
     "login_title": "Dobrodošli nazad",
     "login_subtitle": "Ulogujte se na vaš nalog",
