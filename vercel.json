@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/api/src/lambda.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "apps/api/src/**",
+          "apps/api/dist/**",
+          "packages/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "apps/api/src/lambda.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "apps/api/src/lambda.ts"
+    }
+  ]
+}
