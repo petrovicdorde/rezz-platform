@@ -250,6 +250,8 @@
     "remove_table": "Ukloni",
     "social_links_label": "Društvene mreže (max 5)",
     "social_links_placeholder": "https://instagram.com/lokal...",
+    "social_link_required": "Link je obavezan.",
+    "social_link_invalid": "Unesite ispravan URL (npr. https://...).",
     "add_link": "Dodaj link",
     "manager_section": "Menadžer lokala",
     "manager_email_label": "Email menadžera",

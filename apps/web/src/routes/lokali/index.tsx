@@ -1,25 +1,25 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useState } from 'react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
-import { Building2, X } from 'lucide-react';
+import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { Building2, X } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { PublicLayout } from '@/components/layout/PublicLayout';
-import { VenuePublicCard } from '@/components/public/VenuePublicCard';
-import { VenueCategorySlider } from '@/components/public/VenueCategorySlider';
-import { usePublicVenues } from '@/hooks/useVenues';
-import { usePublicSettings } from '@/hooks/useSettings';
-import type { PublicVenue } from '@/lib/types/venue.types';
+} from "@/components/ui/select";
+import { PublicLayout } from "@/components/layout/PublicLayout";
+import { VenuePublicCard } from "@/components/public/VenuePublicCard";
+import { VenueCategorySlider } from "@/components/public/VenueCategorySlider";
+import { usePublicVenues } from "@/hooks/useVenues";
+import { usePublicSettings } from "@/hooks/useSettings";
+import type { PublicVenue } from "@/lib/types/venue.types";
 
-const ALL_SENTINEL = '__ALL__';
+const ALL_SENTINEL = "__ALL__";
 
-export const Route = createFileRoute('/lokali/')({
+export const Route = createFileRoute("/lokali/")({
   validateSearch: (search: Record<string, unknown>) => ({
     tip: (search.tip as string) || undefined,
     grad: (search.grad as string) || undefined,
@@ -34,25 +34,25 @@ function LokaliPage(): React.JSX.Element {
   const navigate = useNavigate();
   const { tip, grad } = Route.useSearch();
 
-  const [activeType, setActiveType] = useState<string>(tip ?? '');
-  const [activeCity, setActiveCity] = useState<string>(grad ?? '');
+  const [activeType, setActiveType] = useState<string>(tip ?? "");
+  const [activeCity, setActiveCity] = useState<string>(grad ?? "");
 
-  const { data: cities } = usePublicSettings('CITY');
-  const { data: venueTypes } = usePublicSettings('VENUE_TYPE');
+  const { data: cities } = usePublicSettings("CITY");
+  const { data: venueTypes } = usePublicSettings("VENUE_TYPE");
   const { data: venues, isLoading } = usePublicVenues({
     type: activeType || undefined,
     city: activeCity || undefined,
   });
 
-  const isFiltered = activeType !== '' || activeCity !== '';
+  const isFiltered = activeType !== "" || activeCity !== "";
 
   function handleVenueClick(venue: PublicVenue): void {
-    navigate({ to: '/lokali/$id', params: { id: venue.id } });
+    navigate({ to: "/lokali/$id", params: { id: venue.id } });
   }
 
   function clearFilters(): void {
-    setActiveType('');
-    setActiveCity('');
+    setActiveType("");
+    setActiveCity("");
   }
 
   const grouped =
@@ -64,24 +64,24 @@ function LokaliPage(): React.JSX.Element {
     }, {}) ?? {};
 
   const groupedEntries = Object.entries(grouped).filter(
-    ([, list]) => list.length > 0,
+    ([, list]) => list.length > 0
   );
 
   return (
     <PublicLayout>
       {/* Filter bar */}
       <div className="sticky top-16 z-40 border-b border-tertiary-200 bg-white px-4 py-4 md:px-8">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3">
+        <div className="mx-auto flex max-w-384 flex-wrap items-center gap-3">
           <Select
-            value={activeType === '' ? ALL_SENTINEL : activeType}
-            onValueChange={(v) => setActiveType(v === ALL_SENTINEL ? '' : v)}
+            value={activeType === "" ? ALL_SENTINEL : activeType}
+            onValueChange={(v) => setActiveType(v === ALL_SENTINEL ? "" : v)}
           >
             <SelectTrigger className="w-48">
-              <SelectValue placeholder={t('venues_page.filter_all_types')} />
+              <SelectValue placeholder={t("venues_page.filter_all_types")} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL_SENTINEL}>
-                {t('venues_page.filter_all_types')}
+                {t("venues_page.filter_all_types")}
               </SelectItem>
               {venueTypes?.map((vt) => (
                 <SelectItem key={vt.value} value={vt.value}>
@@ -92,15 +92,15 @@ function LokaliPage(): React.JSX.Element {
           </Select>
 
           <Select
-            value={activeCity === '' ? ALL_SENTINEL : activeCity}
-            onValueChange={(v) => setActiveCity(v === ALL_SENTINEL ? '' : v)}
+            value={activeCity === "" ? ALL_SENTINEL : activeCity}
+            onValueChange={(v) => setActiveCity(v === ALL_SENTINEL ? "" : v)}
           >
             <SelectTrigger className="w-48">
-              <SelectValue placeholder={t('venues_page.filter_all_cities')} />
+              <SelectValue placeholder={t("venues_page.filter_all_cities")} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL_SENTINEL}>
-                {t('venues_page.filter_all_cities')}
+                {t("venues_page.filter_all_cities")}
               </SelectItem>
               {cities?.map((c) => (
                 <SelectItem key={c.value} value={c.label}>
@@ -117,20 +117,20 @@ function LokaliPage(): React.JSX.Element {
               className="flex items-center gap-1 text-sm text-tertiary-500 hover:text-secondary-600"
             >
               <X className="size-3.5" />
-              {t('venues_page.clear_filters')}
+              {t("venues_page.clear_filters")}
             </button>
           )}
 
           {!isLoading && venues && (
             <div className="ml-auto text-sm text-tertiary-500">
-              {t('venues_page.results_count', { count: venues.length })}
+              {t("venues_page.results_count", { count: venues.length })}
             </div>
           )}
         </div>
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
+      <div className="mx-auto max-w-384 px-4 py-8 md:px-8">
         {isLoading && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -146,10 +146,10 @@ function LokaliPage(): React.JSX.Element {
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Building2 className="mx-auto size-16 text-tertiary-200" />
             <p className="mt-4 text-xl font-medium text-secondary-600">
-              {t('venues_page.no_results')}
+              {t("venues_page.no_results")}
             </p>
             <p className="mt-2 text-tertiary-500">
-              {t('venues_page.no_results_subtitle')}
+              {t("venues_page.no_results_subtitle")}
             </p>
           </div>
         )}

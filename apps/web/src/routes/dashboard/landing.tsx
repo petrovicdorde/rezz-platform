@@ -66,6 +66,38 @@ function LandingAdminPage(): React.JSX.Element {
     }
   }, [config]);
 
+  const upcomingEvents = useMemo(
+    () => allEvents.filter((e) => new Date(e.startsAt) >= new Date()),
+    [allEvents],
+  );
+
+  const venuesLoaded = allVenues !== undefined;
+  const eventsLoaded =
+    venueIds.length === 0 ||
+    eventQueries.every((q) => !q.isLoading && q.isFetched);
+
+  // Prune selections that no longer correspond to displayable items
+  // (e.g. events expired or were deleted, venues were deleted).
+  useEffect(() => {
+    if (!hasSynced.current) return;
+    if (!venuesLoaded || !allVenues) return;
+    const validVenueIds = new Set(allVenues.map((v) => v.id));
+    setSelectedVenueIds((prev) => {
+      const next = prev.filter((id) => validVenueIds.has(id));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [venuesLoaded, allVenues]);
+
+  useEffect(() => {
+    if (!hasSynced.current) return;
+    if (!eventsLoaded) return;
+    const validEventIds = new Set(upcomingEvents.map((e) => e.id));
+    setSelectedEventIds((prev) => {
+      const next = prev.filter((id) => validEventIds.has(id));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [eventsLoaded, upcomingEvents]);
+
   function toggleVenue(id: string): void {
     setSelectedVenueIds((prev) =>
       prev.includes(id)
@@ -109,9 +141,6 @@ function LandingAdminPage(): React.JSX.Element {
       showFeaturedEvents: showEvents,
     });
   }
-
-  const upcomingEvents =
-    allEvents?.filter((e) => new Date(e.startsAt) >= new Date()) ?? [];
 
   if (configLoading) {
     return (

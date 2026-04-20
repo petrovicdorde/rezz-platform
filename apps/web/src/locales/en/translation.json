@@ -250,6 +250,8 @@
     "remove_table": "Remove",
     "social_links_label": "Social networks (max 5)",
     "social_links_placeholder": "https://instagram.com/venue...",
+    "social_link_required": "Link is required.",
+    "social_link_invalid": "Enter a valid URL (e.g. https://...).",
     "add_link": "Add link",
     "manager_section": "Venue manager",
     "manager_email_label": "Manager email",

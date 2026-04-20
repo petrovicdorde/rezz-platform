@@ -137,7 +137,7 @@ export function VenueForm({
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<CreateVenueRequest>({
     defaultValues: initialData
       ? {
@@ -183,8 +183,14 @@ export function VenueForm({
 
   const socialLinks = watch("socialLinks") ?? [];
 
+  const URL_PATTERN = /^https?:\/\/[^\s]+\.[^\s]+$/i;
+  const hasInvalidSocialLink = socialLinks.some(
+    (url) => !url || !url.trim() || !URL_PATTERN.test(url.trim()),
+  );
+
   function addSocialLink(): void {
     if (socialLinks.length >= 5) return;
+    if (hasInvalidSocialLink) return;
     setValue("socialLinks", [...socialLinks, ""]);
   }
 
@@ -600,31 +606,46 @@ export function VenueForm({
           </h3>
 
           <div className="space-y-2">
-            {socialLinks.map((_, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <Input
-                  type="url"
-                  {...register(`socialLinks.${index}` as const)}
-                  placeholder={t("venue.social_links_placeholder")}
-                  disabled={isReadOnly}
-                />
-                {!isReadOnly && (
-                  <button
-                    type="button"
-                    onClick={() => removeSocialLink(index)}
-                    className="text-red-400 hover:text-red-600"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-            ))}
+            {socialLinks.map((_, index) => {
+              const error = errors.socialLinks?.[index];
+              return (
+                <div key={index}>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="url"
+                      {...register(`socialLinks.${index}` as const, {
+                        required: t("venue.social_link_required"),
+                        validate: (val) =>
+                          (val && URL_PATTERN.test(val.trim())) ||
+                          t("venue.social_link_invalid"),
+                      })}
+                      placeholder={t("venue.social_links_placeholder")}
+                      disabled={isReadOnly}
+                      aria-invalid={error ? "true" : "false"}
+                    />
+                    {!isReadOnly && (
+                      <button
+                        type="button"
+                        onClick={() => removeSocialLink(index)}
+                        className="text-red-400 hover:text-red-600"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    )}
+                  </div>
+                  {error && (
+                    <p className="mt-1 text-xs text-red-500">{error.message}</p>
+                  )}
+                </div>
+              );
+            })}
 
             {!isReadOnly && socialLinks.length < 5 && (
               <button
                 type="button"
                 onClick={addSocialLink}
-                className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-800"
+                disabled={hasInvalidSocialLink}
+                className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-800 disabled:cursor-not-allowed disabled:text-tertiary-400 disabled:hover:text-tertiary-400"
               >
                 <Plus className="h-4 w-4" />
                 {t("venue.add_link")}
@@ -712,7 +733,11 @@ export function VenueForm({
           )}
           <Button
             type="submit"
-            disabled={mutation.isPending}
+            disabled={
+              mutation.isPending ||
+              (isEdit && !isDirty) ||
+              Object.keys(errors).length > 0
+            }
             className="bg-primary-400 text-white hover:bg-primary-600"
           >
             {mutation.isPending
