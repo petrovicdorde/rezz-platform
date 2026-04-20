@@ -1,7 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { I18nModule, AcceptLanguageResolver, HeaderResolver } from 'nestjs-i18n';
+import {
+  I18nModule,
+  AcceptLanguageResolver,
+  HeaderResolver,
+} from 'nestjs-i18n';
 import * as path from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -41,8 +45,24 @@ import { ProfileModule } from './profile/profile.module';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User, Venue, VenueTable, VenueInvitation, Reservation, GuestRating, Notification, Event, EventPromotion, Setting, LandingConfig],
+        entities: [
+          User,
+          Venue,
+          VenueTable,
+          VenueInvitation,
+          Reservation,
+          GuestRating,
+          Notification,
+          Event,
+          EventPromotion,
+          Setting,
+          LandingConfig,
+        ],
         synchronize: configService.get('NODE_ENV') !== 'production',
+        ssl:
+          configService.get('DATABASE_SSL') === 'true'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
     I18nModule.forRoot({
