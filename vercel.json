@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "pnpm --filter api build",
   "installCommand": "pnpm install",
   "functions": {
     "api/index.ts": {
-      "runtime": "@vercel/node@5"
+      "runtime": "@vercel/node@5",
+      "includeFiles": "apps/api/src/**"
     }
   },
   "routes": [
