@@ -1,5 +1,27 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "DATABASE_HOST",
+    "DATABASE_PORT",
+    "DATABASE_USER",
+    "DATABASE_PASSWORD",
+    "DATABASE_NAME",
+    "DATABASE_SSL",
+    "JWT_SECRET",
+    "JWT_EXPIRES_IN",
+    "JWT_REFRESH_EXPIRES_IN",
+    "PORT",
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "BACKEND_URL",
+    "FRONTEND_URL",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CALLBACK_URL",
+    "SUPER_ADMIN_EMAIL",
+    "SUPER_ADMIN_PASSWORD",
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
     "dev": { "persistent": true, "cache": false },
