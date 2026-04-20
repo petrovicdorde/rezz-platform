@@ -12,7 +12,10 @@ async function bootstrap() {
   if (cachedServer) return cachedServer;
 
   const expressApp = express();
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressApp),
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({
