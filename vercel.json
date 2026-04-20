@@ -1,23 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "apps/api/src/lambda.ts",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "apps/api/src/**",
-          "apps/api/dist/**",
-          "packages/**"
-        ]
-      }
+  "buildCommand": "pnpm --filter api build",
+  "installCommand": "pnpm install",
+  "functions": {
+    "apps/api/src/lambda.ts": {
+      "runtime": "@vercel/node@5"
     }
-  ],
+  },
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "apps/api/src/lambda.ts"
-    },
     {
       "src": "/(.*)",
       "dest": "apps/api/src/lambda.ts"
