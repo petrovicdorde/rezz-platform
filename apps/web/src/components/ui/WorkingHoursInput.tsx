@@ -53,14 +53,14 @@ export function WorkingHoursInput({
         return (
           <div
             key={day}
-            className={`flex items-center justify-between gap-4 border-b border-tertiary-200 py-2 last:border-0 ${disabled ? 'opacity-60' : ''}`}
+            className={`flex h-14 items-center gap-3 border-b border-tertiary-200 last:border-0 ${disabled ? 'opacity-60' : ''}`}
           >
-            <span className="text-sm font-medium text-secondary-600 md:w-28">
+            <span className="w-6 text-sm font-medium text-secondary-600 md:w-28">
               <span className="hidden md:inline">{t(`venue.day_${day}`)}</span>
               <span className="md:hidden">{t(`venue.day_${day}`).charAt(0)}</span>
             </span>
 
-            <div className="flex items-center gap-2">
+            <div className="flex w-10 justify-center">
               <Switch
                 checked={!dayValue.isClosed}
                 onCheckedChange={(checked) =>
@@ -68,36 +68,37 @@ export function WorkingHoursInput({
                 }
                 disabled={disabled}
               />
-              {dayValue.isClosed && (
+            </div>
+
+            <div className="ml-auto flex items-center justify-end gap-1.5 md:gap-2">
+              {dayValue.isClosed ? (
                 <span className="text-sm text-tertiary-400">
                   {t('venue.working_hours_closed')}
                 </span>
+              ) : (
+                <>
+                  <div className="w-20 md:w-28">
+                    <DateInput
+                      type="time"
+                      value={dayValue.open}
+                      onChange={(e) => updateDay(day, { open: e.target.value })}
+                      disabled={disabled}
+                      className="[&::-webkit-calendar-picker-indicator]:hidden md:[&::-webkit-calendar-picker-indicator]:inline-block"
+                    />
+                  </div>
+                  <span className="text-sm text-tertiary-400">–</span>
+                  <div className="w-20 md:w-28">
+                    <DateInput
+                      type="time"
+                      value={dayValue.close}
+                      onChange={(e) => updateDay(day, { close: e.target.value })}
+                      disabled={disabled}
+                      className="[&::-webkit-calendar-picker-indicator]:hidden md:[&::-webkit-calendar-picker-indicator]:inline-block"
+                    />
+                  </div>
+                </>
               )}
             </div>
-
-            {!dayValue.isClosed ? (
-              <div className="flex items-center gap-2">
-                <div className="w-28">
-                  <DateInput
-                    type="time"
-                    value={dayValue.open}
-                    onChange={(e) => updateDay(day, { open: e.target.value })}
-                    disabled={disabled}
-                  />
-                </div>
-                <span className="text-sm text-tertiary-400">–</span>
-                <div className="w-28">
-                  <DateInput
-                    type="time"
-                    value={dayValue.close}
-                    onChange={(e) => updateDay(day, { close: e.target.value })}
-                    disabled={disabled}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="w-[15.5rem]" />
-            )}
           </div>
         );
       })}

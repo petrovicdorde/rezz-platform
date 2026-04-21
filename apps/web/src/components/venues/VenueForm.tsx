@@ -464,74 +464,78 @@ export function VenueForm({
             key={field.id}
             className="rounded-lg border border-tertiary-200 bg-tertiary-50 p-3"
           >
-            <div className="flex items-start gap-3">
-              <div className="flex-1">
-                <label className="mb-1 block text-sm font-medium">
-                  {t("venue.table_type_label")}
-                </label>
-                <Controller
-                  control={control}
-                  name={`tables.${index}.type`}
-                  rules={{ required: t("venue.table_type_label") }}
-                  render={({ field: selectField }) => (
-                    <Select
-                      value={selectField.value}
-                      onValueChange={selectField.onChange}
-                      disabled={isReadOnly}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={t("venue.type_placeholder")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {tableTypeOptions?.map((opt) => (
-                          <SelectItem key={opt.value} value={opt.value}>
-                            {settingLabel(opt)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
+            <div className="flex flex-col gap-3 md:flex-row md:items-start">
+              <div className="flex items-start gap-3 md:contents">
+                <div className="flex-1">
+                  <label className="mb-1 block text-sm font-medium">
+                    {t("venue.table_type_label")}
+                  </label>
+                  <Controller
+                    control={control}
+                    name={`tables.${index}.type`}
+                    rules={{ required: t("venue.table_type_label") }}
+                    render={({ field: selectField }) => (
+                      <Select
+                        value={selectField.value}
+                        onValueChange={selectField.onChange}
+                        disabled={isReadOnly}
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={t("venue.type_placeholder")}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {tableTypeOptions?.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {settingLabel(opt)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                <div className="w-24">
+                  <label className="mb-1 block text-sm font-medium">
+                    {t("venue.table_count_label")}
+                  </label>
+                  <Input
+                    type="number"
+                    min={1}
+                    {...register(`tables.${index}.count`, {
+                      required: t("venue.table_count_label"),
+                      valueAsNumber: true,
+                      min: { value: 1, message: t("venue.table_count_label") },
+                    })}
+                    disabled={isReadOnly}
+                  />
+                </div>
               </div>
 
-              <div className="w-24">
-                <label className="mb-1 block text-sm font-medium">
-                  {t("venue.table_count_label")}
-                </label>
-                <Input
-                  type="number"
-                  min={1}
-                  {...register(`tables.${index}.count`, {
-                    required: t("venue.table_count_label"),
-                    valueAsNumber: true,
-                    min: { value: 1, message: t("venue.table_count_label") },
-                  })}
-                  disabled={isReadOnly}
-                />
-              </div>
+              <div className="flex items-start gap-3 md:contents">
+                <div className="flex-1">
+                  <label className="mb-1 block text-sm font-medium">
+                    {t("venue.table_note_label")}
+                  </label>
+                  <Input
+                    {...register(`tables.${index}.note`)}
+                    placeholder={t("venue.table_note_placeholder")}
+                    disabled={isReadOnly}
+                  />
+                </div>
 
-              <div className="flex-1">
-                <label className="mb-1 block text-sm font-medium">
-                  {t("venue.table_note_label")}
-                </label>
-                <Input
-                  {...register(`tables.${index}.note`)}
-                  placeholder={t("venue.table_note_placeholder")}
-                  disabled={isReadOnly}
-                />
+                {!isReadOnly && (
+                  <button
+                    type="button"
+                    onClick={() => remove(index)}
+                    className="mt-7 text-red-500 hover:text-red-700"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
               </div>
-
-              {!isReadOnly && (
-                <button
-                  type="button"
-                  onClick={() => remove(index)}
-                  className="mt-7 text-red-500 hover:text-red-700"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              )}
             </div>
           </div>
         ))}
