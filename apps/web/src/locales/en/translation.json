@@ -536,6 +536,8 @@
     "add_table_type": "Add table type",
     "value_label": "Value (internal code)",
     "label_label": "Name (shown to users)",
+    "label_en_label": "English translation (optional)",
+    "label_en_placeholder": "Leave blank to use the default name",
     "value_placeholder": "e.g. NEW_CITY",
     "label_placeholder": "e.g. New City",
     "value_placeholder_CITY": "e.g. NEW_CITY",

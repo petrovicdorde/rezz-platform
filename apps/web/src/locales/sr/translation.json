@@ -536,6 +536,8 @@
     "add_table_type": "Dodaj tip stola",
     "value_label": "Vrijednost (interni kod)",
     "label_label": "Naziv (prikazuje se korisnicima)",
+    "label_en_label": "Engleski prevod (opciono)",
+    "label_en_placeholder": "Ostavite prazno da koristite zadati naziv",
     "value_placeholder": "npr. NOVI_GRAD",
     "label_placeholder": "npr. Novi Grad",
     "value_placeholder_CITY": "npr. NOVI_GRAD",

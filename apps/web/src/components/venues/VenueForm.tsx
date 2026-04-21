@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { X, Plus } from "lucide-react";
-import type { VenueType, TableType, PaymentMethod } from "@rezz/shared";
+import type { PaymentMethod } from "@rezz/shared";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import {
 import { TagInput } from "@/components/ui/TagInput";
 import { WorkingHoursInput } from "@/components/ui/WorkingHoursInput";
 import { useCreateVenue, useUpdateVenue } from "@/hooks/useVenues";
-import { usePublicSettings } from "@/hooks/useSettings";
+import { usePublicSettings, useSettingLabel } from "@/hooks/useSettings";
 import type {
   AdminVenue,
   CreateVenueRequest,
@@ -29,56 +29,6 @@ interface VenueFormProps {
   venueId?: string;
   isReadOnly?: boolean;
 }
-
-const VENUE_TYPES: VenueType[] = [
-  "RESTAURANT",
-  "CAFE",
-  "CAFFE_BAR",
-  "LOUNGE",
-  "CLUB",
-  "FAST_FOOD",
-  "PIZZERIA",
-  "ROOFTOP",
-  "SPORTS_BAR",
-  "WINE_BAR",
-  "HOOKAH_LOUNGE",
-  "BAKERY",
-];
-
-const VENUE_TYPE_KEYS: Record<VenueType, string> = {
-  RESTAURANT: "venue.venue_type_restaurant",
-  CAFE: "venue.venue_type_cafe",
-  CAFFE_BAR: "venue.venue_type_caffe_bar",
-  LOUNGE: "venue.venue_type_lounge",
-  CLUB: "venue.venue_type_club",
-  FAST_FOOD: "venue.venue_type_fast_food",
-  PIZZERIA: "venue.venue_type_pizzeria",
-  ROOFTOP: "venue.venue_type_rooftop",
-  SPORTS_BAR: "venue.venue_type_sports_bar",
-  WINE_BAR: "venue.venue_type_wine_bar",
-  HOOKAH_LOUNGE: "venue.venue_type_hookah_lounge",
-  BAKERY: "venue.venue_type_bakery",
-};
-
-const TABLE_TYPES: TableType[] = [
-  "STANDARD",
-  "BOOTH",
-  "BAR_SEAT",
-  "LOW_TABLE",
-  "HIGH_TABLE",
-  "TERRACE",
-  "VIP",
-];
-
-const TABLE_TYPE_KEYS: Record<TableType, string> = {
-  STANDARD: "venue.table_standard",
-  BOOTH: "venue.table_booth",
-  BAR_SEAT: "venue.table_bar_seat",
-  LOW_TABLE: "venue.table_low_table",
-  HIGH_TABLE: "venue.table_high_table",
-  TERRACE: "venue.table_terrace",
-  VIP: "venue.table_vip",
-};
 
 const PAYMENT_METHODS: { value: PaymentMethod; key: string }[] = [
   { value: "CASH", key: "venue.payment_cash" },
@@ -128,6 +78,9 @@ export function VenueForm({
   const createVenue = useCreateVenue();
   const updateVenue = useUpdateVenue();
   const { data: cities } = usePublicSettings("CITY");
+  const { data: venueTypeOptions } = usePublicSettings("VENUE_TYPE");
+  const { data: tableTypeOptions } = usePublicSettings("TABLE_TYPE");
+  const settingLabel = useSettingLabel();
   const isEdit = !!venueId;
   const mutation = isEdit ? updateVenue : createVenue;
 
@@ -264,9 +217,9 @@ export function VenueForm({
                 <SelectValue placeholder={t("venue.type_placeholder")} />
               </SelectTrigger>
               <SelectContent>
-                {VENUE_TYPES.map((vt) => (
-                  <SelectItem key={vt} value={vt}>
-                    {t(VENUE_TYPE_KEYS[vt])}
+                {venueTypeOptions?.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {settingLabel(opt)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -341,7 +294,7 @@ export function VenueForm({
                 <SelectContent>
                   {cities?.map((c) => (
                     <SelectItem key={c.value} value={c.label}>
-                      {c.label}
+                      {settingLabel(c)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -532,9 +485,9 @@ export function VenueForm({
                         />
                       </SelectTrigger>
                       <SelectContent>
-                        {TABLE_TYPES.map((tt) => (
-                          <SelectItem key={tt} value={tt}>
-                            {t(TABLE_TYPE_KEYS[tt])}
+                        {tableTypeOptions?.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {settingLabel(opt)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -588,7 +541,11 @@ export function VenueForm({
             type="button"
             variant="outline"
             onClick={() =>
-              append({ type: "STANDARD" as TableType, count: 1, note: "" })
+              append({
+                type: tableTypeOptions?.[0]?.value ?? "",
+                count: 1,
+                note: "",
+              })
             }
             className="gap-2"
           >

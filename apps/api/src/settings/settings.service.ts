@@ -91,6 +91,7 @@ export class SettingsService {
       type: dto.type,
       value,
       label,
+      labelEn: dto.labelEn?.trim() ?? '',
       isActive: dto.isActive ?? true,
       order: dto.order ?? 0,
     });
@@ -150,6 +151,7 @@ export class SettingsService {
 
       setting.label = label;
     }
+    if (dto.labelEn !== undefined) setting.labelEn = dto.labelEn.trim();
     if (dto.isActive !== undefined) setting.isActive = dto.isActive;
     if (dto.order !== undefined) setting.order = dto.order;
 
@@ -176,12 +178,16 @@ export class SettingsService {
 
   async getPublicByType(
     type: SettingType,
-  ): Promise<{ value: string; label: string }[]> {
+  ): Promise<{ value: string; label: string; labelEn: string }[]> {
     const settings = await this.settingRepo.find({
       where: { type, isActive: true },
       order: { order: 'ASC', label: 'ASC' },
     });
 
-    return settings.map((s) => ({ value: s.value, label: s.label }));
+    return settings.map((s) => ({
+      value: s.value,
+      label: s.label,
+      labelEn: s.labelEn ?? '',
+    }));
   }
 }

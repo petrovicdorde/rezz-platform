@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { settingsApi } from '@/lib/api/settings.api';
 import { handleApiError } from '@/lib/handle-error';
@@ -8,6 +9,22 @@ import type {
   CreateSettingRequest,
   UpdateSettingRequest,
 } from '@/lib/types/settings.types';
+
+export function resolveSettingLabel(
+  s: { label: string; labelEn?: string | null },
+  language: string,
+): string {
+  if (language.startsWith('en') && s.labelEn && s.labelEn.trim()) {
+    return s.labelEn;
+  }
+  return s.label;
+}
+
+export function useSettingLabel() {
+  const { i18n: i18nInstance } = useTranslation();
+  return (s: { label: string; labelEn?: string | null }): string =>
+    resolveSettingLabel(s, i18nInstance.language);
+}
 
 export function useAdminSettings(type?: SettingType) {
   return useQuery({

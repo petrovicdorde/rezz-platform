@@ -8,6 +8,10 @@ export class UpdateSettingDto {
 
   @IsOptional()
   @IsString()
+  labelEn?: string;
+
+  @IsOptional()
+  @IsString()
   @MinLength(1)
   value?: string;
 

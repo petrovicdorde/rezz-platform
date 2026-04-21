@@ -5,6 +5,7 @@ export interface Setting {
   type: SettingType;
   value: string;
   label: string;
+  labelEn: string;
   isActive: boolean;
   order: number;
   createdAt: string;
@@ -14,18 +15,21 @@ export interface Setting {
 export interface PublicSetting {
   value: string;
   label: string;
+  labelEn: string;
 }
 
 export interface CreateSettingRequest {
   type: SettingType;
   value: string;
   label: string;
+  labelEn?: string;
   isActive?: boolean;
   order?: number;
 }
 
 export interface UpdateSettingRequest {
   label?: string;
+  labelEn?: string;
   value?: string;
   isActive?: boolean;
   order?: number;

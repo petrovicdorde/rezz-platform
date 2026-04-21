@@ -22,6 +22,10 @@ export class CreateSettingDto {
   label: string;
 
   @IsOptional()
+  @IsString()
+  labelEn?: string;
+
+  @IsOptional()
   @IsBoolean()
   isActive?: boolean;
 

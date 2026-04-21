@@ -27,9 +27,16 @@ export function SettingRow({
             setting.isActive ? 'bg-green-400' : 'bg-tertiary-300'
           }`}
         />
-        <span className="text-sm font-medium text-secondary-600">
-          {setting.label}
-        </span>
+        <div className="flex flex-col">
+          <span className="text-sm font-medium text-secondary-600">
+            {setting.label}
+          </span>
+          {setting.labelEn ? (
+            <span className="text-xs text-tertiary-400">
+              EN: {setting.labelEn}
+            </span>
+          ) : null}
+        </div>
       </div>
       <div className="flex items-center gap-2">
         <button

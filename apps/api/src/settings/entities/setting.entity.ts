@@ -23,6 +23,9 @@ export class Setting {
   @Column()
   label: string;
 
+  @Column({ default: '' })
+  labelEn: string;
+
   @Column({ default: true })
   isActive: boolean;
 

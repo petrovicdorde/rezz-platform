@@ -65,15 +65,8 @@ class WorkingHoursDto {
 }
 
 class CreateVenueTableDto {
-  @IsEnum([
-    'STANDARD',
-    'BOOTH',
-    'BAR_SEAT',
-    'LOW_TABLE',
-    'HIGH_TABLE',
-    'TERRACE',
-    'VIP',
-  ])
+  @IsNotEmpty()
+  @IsString()
   type: TableType;
 
   @IsInt()
@@ -108,20 +101,9 @@ export class CreateVenueDto {
   @MinLength(2)
   name: string;
 
-  @IsEnum([
-    'RESTAURANT',
-    'CAFE',
-    'CAFFE_BAR',
-    'LOUNGE',
-    'CLUB',
-    'FAST_FOOD',
-    'PIZZERIA',
-    'ROOFTOP',
-    'SPORTS_BAR',
-    'WINE_BAR',
-    'HOOKAH_LOUNGE',
-    'BAKERY',
-  ])
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
   type: VenueType;
 
   @IsNotEmpty()

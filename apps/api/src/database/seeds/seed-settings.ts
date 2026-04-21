@@ -31,44 +31,45 @@ interface SeedItem {
   type: 'CITY' | 'VENUE_TYPE' | 'TABLE_TYPE';
   value: string;
   label: string;
+  labelEn: string;
   order: number;
 }
 
 const SEED_DATA: SeedItem[] = [
   // Cities
-  { type: 'CITY', value: 'BANJA_LUKA', label: 'Banja Luka', order: 1 },
-  { type: 'CITY', value: 'SARAJEVO', label: 'Sarajevo', order: 2 },
-  { type: 'CITY', value: 'MOSTAR', label: 'Mostar', order: 3 },
-  { type: 'CITY', value: 'TUZLA', label: 'Tuzla', order: 4 },
-  { type: 'CITY', value: 'ZENICA', label: 'Zenica', order: 5 },
-  { type: 'CITY', value: 'BIJELJINA', label: 'Bijeljina', order: 6 },
-  { type: 'CITY', value: 'PRIJEDOR', label: 'Prijedor', order: 7 },
-  { type: 'CITY', value: 'TREBINJE', label: 'Trebinje', order: 8 },
-  { type: 'CITY', value: 'DOBOJ', label: 'Doboj', order: 9 },
-  { type: 'CITY', value: 'BRCKO', label: 'Brčko', order: 10 },
+  { type: 'CITY', value: 'BANJA_LUKA', label: 'Banja Luka', labelEn: 'Banja Luka', order: 1 },
+  { type: 'CITY', value: 'SARAJEVO', label: 'Sarajevo', labelEn: 'Sarajevo', order: 2 },
+  { type: 'CITY', value: 'MOSTAR', label: 'Mostar', labelEn: 'Mostar', order: 3 },
+  { type: 'CITY', value: 'TUZLA', label: 'Tuzla', labelEn: 'Tuzla', order: 4 },
+  { type: 'CITY', value: 'ZENICA', label: 'Zenica', labelEn: 'Zenica', order: 5 },
+  { type: 'CITY', value: 'BIJELJINA', label: 'Bijeljina', labelEn: 'Bijeljina', order: 6 },
+  { type: 'CITY', value: 'PRIJEDOR', label: 'Prijedor', labelEn: 'Prijedor', order: 7 },
+  { type: 'CITY', value: 'TREBINJE', label: 'Trebinje', labelEn: 'Trebinje', order: 8 },
+  { type: 'CITY', value: 'DOBOJ', label: 'Doboj', labelEn: 'Doboj', order: 9 },
+  { type: 'CITY', value: 'BRCKO', label: 'Brčko', labelEn: 'Brčko', order: 10 },
 
   // Venue types
-  { type: 'VENUE_TYPE', value: 'RESTAURANT', label: 'Restoran', order: 1 },
-  { type: 'VENUE_TYPE', value: 'CAFE', label: 'Kafić', order: 2 },
-  { type: 'VENUE_TYPE', value: 'CAFFE_BAR', label: 'Caffe bar', order: 3 },
-  { type: 'VENUE_TYPE', value: 'LOUNGE', label: 'Lounge', order: 4 },
-  { type: 'VENUE_TYPE', value: 'CLUB', label: 'Klub', order: 5 },
-  { type: 'VENUE_TYPE', value: 'FAST_FOOD', label: 'Fast food', order: 6 },
-  { type: 'VENUE_TYPE', value: 'PIZZERIA', label: 'Pizzeria', order: 7 },
-  { type: 'VENUE_TYPE', value: 'ROOFTOP', label: 'Rooftop bar', order: 8 },
-  { type: 'VENUE_TYPE', value: 'SPORTS_BAR', label: 'Sports bar', order: 9 },
-  { type: 'VENUE_TYPE', value: 'WINE_BAR', label: 'Wine bar', order: 10 },
-  { type: 'VENUE_TYPE', value: 'HOOKAH_LOUNGE', label: 'Nargilana', order: 11 },
-  { type: 'VENUE_TYPE', value: 'BAKERY', label: 'Pekara', order: 12 },
+  { type: 'VENUE_TYPE', value: 'RESTAURANT', label: 'Restoran', labelEn: 'Restaurant', order: 1 },
+  { type: 'VENUE_TYPE', value: 'CAFE', label: 'Kafić', labelEn: 'Cafe', order: 2 },
+  { type: 'VENUE_TYPE', value: 'CAFFE_BAR', label: 'Caffe bar', labelEn: 'Caffe bar', order: 3 },
+  { type: 'VENUE_TYPE', value: 'LOUNGE', label: 'Lounge', labelEn: 'Lounge', order: 4 },
+  { type: 'VENUE_TYPE', value: 'CLUB', label: 'Klub', labelEn: 'Club', order: 5 },
+  { type: 'VENUE_TYPE', value: 'FAST_FOOD', label: 'Fast food', labelEn: 'Fast food', order: 6 },
+  { type: 'VENUE_TYPE', value: 'PIZZERIA', label: 'Pizzeria', labelEn: 'Pizzeria', order: 7 },
+  { type: 'VENUE_TYPE', value: 'ROOFTOP', label: 'Rooftop bar', labelEn: 'Rooftop bar', order: 8 },
+  { type: 'VENUE_TYPE', value: 'SPORTS_BAR', label: 'Sports bar', labelEn: 'Sports bar', order: 9 },
+  { type: 'VENUE_TYPE', value: 'WINE_BAR', label: 'Wine bar', labelEn: 'Wine bar', order: 10 },
+  { type: 'VENUE_TYPE', value: 'HOOKAH_LOUNGE', label: 'Nargilana', labelEn: 'Hookah lounge', order: 11 },
+  { type: 'VENUE_TYPE', value: 'BAKERY', label: 'Pekara', labelEn: 'Bakery', order: 12 },
 
   // Table types
-  { type: 'TABLE_TYPE', value: 'STANDARD', label: 'Standardni sto', order: 1 },
-  { type: 'TABLE_TYPE', value: 'BOOTH', label: 'Separe', order: 2 },
-  { type: 'TABLE_TYPE', value: 'BAR_SEAT', label: 'Sank', order: 3 },
-  { type: 'TABLE_TYPE', value: 'LOW_TABLE', label: 'Niski sto', order: 4 },
-  { type: 'TABLE_TYPE', value: 'HIGH_TABLE', label: 'Visoki sto', order: 5 },
-  { type: 'TABLE_TYPE', value: 'TERRACE', label: 'Terasa', order: 6 },
-  { type: 'TABLE_TYPE', value: 'VIP', label: 'VIP', order: 7 },
+  { type: 'TABLE_TYPE', value: 'STANDARD', label: 'Standardni sto', labelEn: 'Standard table', order: 1 },
+  { type: 'TABLE_TYPE', value: 'BOOTH', label: 'Separe', labelEn: 'Booth', order: 2 },
+  { type: 'TABLE_TYPE', value: 'BAR_SEAT', label: 'Sank', labelEn: 'Bar seat', order: 3 },
+  { type: 'TABLE_TYPE', value: 'LOW_TABLE', label: 'Niski sto', labelEn: 'Low table', order: 4 },
+  { type: 'TABLE_TYPE', value: 'HIGH_TABLE', label: 'Visoki sto', labelEn: 'High table', order: 5 },
+  { type: 'TABLE_TYPE', value: 'TERRACE', label: 'Terasa', labelEn: 'Terrace', order: 6 },
+  { type: 'TABLE_TYPE', value: 'VIP', label: 'VIP', labelEn: 'VIP', order: 7 },
 ];
 
 async function seedSettings(): Promise<void> {
@@ -79,6 +80,7 @@ async function seedSettings(): Promise<void> {
 
   let created = 0;
   let skipped = 0;
+  let updated = 0;
 
   for (const item of SEED_DATA) {
     const existing = await repo
@@ -88,7 +90,13 @@ async function seedSettings(): Promise<void> {
       .getOne();
 
     if (existing) {
-      skipped++;
+      if (!existing.labelEn || existing.labelEn.trim() === '') {
+        existing.labelEn = item.labelEn;
+        await repo.save(existing);
+        updated++;
+      } else {
+        skipped++;
+      }
       continue;
     }
 
@@ -97,6 +105,7 @@ async function seedSettings(): Promise<void> {
         type: item.type,
         value: item.value,
         label: item.label,
+        labelEn: item.labelEn,
         order: item.order,
         isActive: true,
       }),
@@ -104,7 +113,9 @@ async function seedSettings(): Promise<void> {
     created++;
   }
 
-  console.log(`Settings seed complete: ${created} created, ${skipped} skipped.`);
+  console.log(
+    `Settings seed complete: ${created} created, ${updated} labelEn backfilled, ${skipped} skipped.`,
+  );
   await app.close();
 }
 

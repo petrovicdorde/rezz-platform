@@ -13,6 +13,7 @@ interface AddSettingFormProps {
 
 interface AddFormValues {
   label: string;
+  labelEn: string;
 }
 
 export function AddSettingForm({
@@ -29,7 +30,7 @@ export function AddSettingForm({
     handleSubmit,
     formState: { errors },
   } = useForm<AddFormValues>({
-    defaultValues: { label: '' },
+    defaultValues: { label: '', labelEn: '' },
   });
 
   function onSubmit(data: AddFormValues): void {
@@ -38,6 +39,7 @@ export function AddSettingForm({
         type,
         value: data.label,
         label: data.label,
+        labelEn: data.labelEn.trim(),
         order: 0,
       },
       { onSuccess },
@@ -49,11 +51,11 @@ export function AddSettingForm({
       onSubmit={handleSubmit(onSubmit)}
       className="mb-3 rounded-lg border border-primary-200 bg-tertiary-50 p-4"
     >
-      <label className="mb-1 block text-xs font-medium text-tertiary-600">
-        {t('settings.label_label')}
-      </label>
-      <div className="flex items-start gap-2">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div>
+          <label className="mb-1 block text-xs font-medium text-tertiary-600">
+            {t('settings.label_label')}
+          </label>
           <Input
             placeholder={t(`settings.label_placeholder_${type}`)}
             {...register('label', {
@@ -72,6 +74,17 @@ export function AddSettingForm({
             <p className="mt-1 text-xs text-red-500">{errors.label.message}</p>
           )}
         </div>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-tertiary-600">
+            {t('settings.label_en_label')}
+          </label>
+          <Input
+            placeholder={t('settings.label_en_placeholder')}
+            {...register('labelEn')}
+          />
+        </div>
+      </div>
+      <div className="mt-3 flex justify-end gap-2">
         <Button type="button" variant="outline" size="sm" onClick={onCancel}>
           {t('settings.cancel_add')}
         </Button>

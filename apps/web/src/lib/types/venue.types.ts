@@ -22,7 +22,7 @@ export interface WorkingHours {
 }
 
 export interface VenueTableItem {
-  type: TableType;
+  type: string;
   count: number;
   note?: string;
 }
@@ -36,7 +36,7 @@ export interface VenueManager {
 
 export interface CreateVenueRequest {
   name: string;
-  type: VenueType;
+  type: string;
   reservationPhone: string;
   reservationEmail?: string;
   city: string;
