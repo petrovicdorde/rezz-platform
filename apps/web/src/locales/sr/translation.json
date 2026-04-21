@@ -226,6 +226,10 @@
   "venue": {
     "created": "Lokal je uspješno kreiran.",
     "add_new": "Dodaj lokal",
+    "discard_confirm_title": "Odbaciti promjene?",
+    "discard_confirm_body": "Imate nesačuvane promjene. Ako zatvorite sada, biće izgubljene.",
+    "discard_yes": "Odbaci",
+    "discard_no": "Nastavi uređivanje",
     "no_venues": "Nema lokala. Dodajte prvi lokal.",
     "name_label": "Naziv lokala",
     "name_placeholder": "Unesite naziv",

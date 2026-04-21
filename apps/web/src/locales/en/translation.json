@@ -226,6 +226,10 @@
   "venue": {
     "created": "Venue created successfully.",
     "add_new": "Add venue",
+    "discard_confirm_title": "Discard changes?",
+    "discard_confirm_body": "You have unsaved changes. If you close now, they will be lost.",
+    "discard_yes": "Discard",
+    "discard_no": "Keep editing",
     "no_venues": "No venues yet. Add your first venue.",
     "name_label": "Venue name",
     "name_placeholder": "Enter name",

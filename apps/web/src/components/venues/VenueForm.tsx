@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { X, Plus } from "lucide-react";
@@ -25,6 +26,7 @@ import type {
 interface VenueFormProps {
   onSuccess: () => void;
   onCancel?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
   initialData?: AdminVenue;
   venueId?: string;
   isReadOnly?: boolean;
@@ -70,6 +72,7 @@ function fillMissingDays(hours: WorkingHours | undefined): WorkingHours {
 export function VenueForm({
   onSuccess,
   onCancel,
+  onDirtyChange,
   initialData,
   venueId,
   isReadOnly = false,
@@ -135,6 +138,10 @@ export function VenueForm({
   });
 
   const socialLinks = watch("socialLinks") ?? [];
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const URL_PATTERN = /^https?:\/\/[^\s]+\.[^\s]+$/i;
   const hasInvalidSocialLink = socialLinks.some(
