@@ -1,17 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuthStore } from '@/store/auth.store';
 import { authApi } from '@/lib/api/auth.api';
+import { useIdleLogout } from '@/hooks/useIdleLogout';
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
+const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
+
 export function AuthProvider({ children }: AuthProviderProps): React.JSX.Element {
   const { t } = useTranslation();
   const [isInitialized, setIsInitialized] = useState(false);
   const hasRun = useRef(false);
-  const { accessToken, setUser, logout } = useAuthStore();
+  const { accessToken, isAuthenticated, setUser, logout } = useAuthStore();
+
+  useIdleLogout({
+    enabled: isAuthenticated,
+    timeoutMs: IDLE_TIMEOUT_MS,
+    onTimeout: () => {
+      logout();
+      toast.info(t('auth.idle_logout'));
+    },
+  });
 
   useEffect(() => {
     if (hasRun.current) return;

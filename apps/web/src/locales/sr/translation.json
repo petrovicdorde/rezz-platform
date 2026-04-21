@@ -52,6 +52,7 @@
     "back_home": "Nazad na početnu"
   },
   "auth": {
+    "idle_logout": "Odjavljeni ste zbog neaktivnosti.",
     "login_title": "Dobrodošli nazad",
     "login_subtitle": "Ulogujte se na vaš nalog",
     "login_button": "Uloguj se",

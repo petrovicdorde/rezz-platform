@@ -52,6 +52,7 @@
     "back_home": "Back to home"
   },
   "auth": {
+    "idle_logout": "You were logged out due to inactivity.",
     "login_title": "Welcome back",
     "login_subtitle": "Log in to your account",
     "login_button": "Log in",

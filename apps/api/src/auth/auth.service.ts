@@ -290,7 +290,7 @@ export class AuthService {
   private generateAccessToken(user: User): string {
     return this.jwtService.sign(
       { sub: user.id, email: user.email },
-      { expiresIn: this.configService.get('JWT_EXPIRES_IN', '15m') as any },
+      { expiresIn: this.configService.get('JWT_EXPIRES_IN', '60m') as any },
     );
   }
 
