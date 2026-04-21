@@ -44,13 +44,14 @@ export class ProfileService {
     };
   }
 
-  async getProfile(userId: string, lang: string = 'sr'): Promise<SafeProfileUser> {
+  async getProfile(
+    userId: string,
+    lang: string = 'sr',
+  ): Promise<SafeProfileUser> {
     const user = await this.userRepo.findOne({ where: { id: userId } });
 
     if (!user) {
-      throw new NotFoundException(
-        await this.i18n.t('profile.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('profile.not_found', { lang }));
     }
 
     return this.toSafeProfile(user);
@@ -64,9 +65,7 @@ export class ProfileService {
     const user = await this.userRepo.findOne({ where: { id: userId } });
 
     if (!user) {
-      throw new NotFoundException(
-        await this.i18n.t('profile.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('profile.not_found', { lang }));
     }
 
     if (dto.firstName !== undefined) {
@@ -125,7 +124,7 @@ export class ProfileService {
 
     if (!reservation) {
       throw new NotFoundException(
-        await this.i18n.t('profile.reservation_not_found', { lang }),
+        this.i18n.t('profile.reservation_not_found', { lang }),
       );
     }
 
@@ -133,7 +132,7 @@ export class ProfileService {
 
     if (!cancellable.includes(reservation.status)) {
       throw new BadRequestException(
-        await this.i18n.t('profile.cannot_cancel', { lang }),
+        this.i18n.t('profile.cannot_cancel', { lang }),
       );
     }
 
@@ -144,7 +143,7 @@ export class ProfileService {
     await this.reservationRepo.save(reservation);
 
     return {
-      message: await this.i18n.t('profile.cancelled', { lang }),
+      message: this.i18n.t('profile.cancelled', { lang }),
     };
   }
 }

@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { I18nLang } from 'nestjs-i18n';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -54,6 +47,11 @@ export class ProfileController {
     @Body() dto: CancelGuestReservationDto,
     @I18nLang() lang: string,
   ): Promise<{ message: string }> {
-    return this.profileService.cancelMyReservation(id, user.id, dto.reason, lang);
+    return this.profileService.cancelMyReservation(
+      id,
+      user.id,
+      dto.reason,
+      lang,
+    );
   }
 }

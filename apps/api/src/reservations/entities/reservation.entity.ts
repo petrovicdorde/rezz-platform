@@ -8,7 +8,11 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import type { ReservationStatus, ReservationSource, TableType } from '@rezz/shared';
+import type {
+  ReservationStatus,
+  ReservationSource,
+  TableType,
+} from '@rezz/shared';
 import { Venue } from '../../venues/entities/venue.entity';
 import { User } from '../../users/entities/user.entity';
 import type { GuestRating } from './guest-rating.entity';

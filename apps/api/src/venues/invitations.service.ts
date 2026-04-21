@@ -55,9 +55,7 @@ export class InvitationsService {
     const venue = await this.venueRepo.findOne({ where: { id: venueId } });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     const existingInvitation = await this.invitationRepo.findOne({
@@ -70,7 +68,7 @@ export class InvitationsService {
 
     if (existingInvitation) {
       throw new ConflictException(
-        await this.i18n.t('venue.invitation_already_accepted', { lang }),
+        this.i18n.t('venue.invitation_already_accepted', { lang }),
       );
     }
 
@@ -108,7 +106,7 @@ export class InvitationsService {
     }
 
     return {
-      message: await this.i18n.t('venue.invitation_sent', {
+      message: this.i18n.t('venue.invitation_sent', {
         lang,
         args: { email: dto.email },
       }),
@@ -131,19 +129,19 @@ export class InvitationsService {
 
     if (!invitation) {
       throw new NotFoundException(
-        await this.i18n.t('venue.invitation_not_found', { lang }),
+        this.i18n.t('venue.invitation_not_found', { lang }),
       );
     }
 
     if (invitation.status === 'DECLINED') {
       throw new BadRequestException(
-        await this.i18n.t('venue.invitation_already_declined', { lang }),
+        this.i18n.t('venue.invitation_already_declined', { lang }),
       );
     }
 
     if (invitation.status === 'ACCEPTED') {
       throw new BadRequestException(
-        await this.i18n.t('venue.invitation_already_accepted', { lang }),
+        this.i18n.t('venue.invitation_already_accepted', { lang }),
       );
     }
 
@@ -151,7 +149,7 @@ export class InvitationsService {
       invitation.status = 'EXPIRED' as const;
       await this.invitationRepo.save(invitation);
       throw new BadRequestException(
-        await this.i18n.t('venue.invitation_expired', { lang }),
+        this.i18n.t('venue.invitation_expired', { lang }),
       );
     }
 
@@ -160,9 +158,7 @@ export class InvitationsService {
     await this.invitationRepo.save(invitation);
 
     const invitationToken = crypto.randomBytes(32).toString('hex');
-    const invitationTokenExpiresAt = new Date(
-      Date.now() + 10 * 60 * 1000,
-    );
+    const invitationTokenExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     const existingUser = await this.usersService.findByEmail(invitation.email);
 
@@ -173,9 +169,7 @@ export class InvitationsService {
         invitationToken,
         invitationTokenExpiresAt,
       });
-      res.redirect(
-        `${frontendUrl}/auth/set-password?token=${invitationToken}`,
-      );
+      res.redirect(`${frontendUrl}/auth/set-password?token=${invitationToken}`);
     } else {
       await this.usersService.create({
         email: invitation.email,
@@ -190,9 +184,7 @@ export class InvitationsService {
         invitationTokenExpiresAt,
       });
 
-      res.redirect(
-        `${frontendUrl}/auth/set-password?token=${invitationToken}`,
-      );
+      res.redirect(`${frontendUrl}/auth/set-password?token=${invitationToken}`);
     }
   }
 
@@ -212,13 +204,13 @@ export class InvitationsService {
 
     if (!invitation) {
       throw new NotFoundException(
-        await this.i18n.t('venue.invitation_not_found', { lang }),
+        this.i18n.t('venue.invitation_not_found', { lang }),
       );
     }
 
     if (invitation.status !== 'PENDING') {
       throw new BadRequestException(
-        await this.i18n.t('venue.invitation_already_accepted', { lang }),
+        this.i18n.t('venue.invitation_already_accepted', { lang }),
       );
     }
 
@@ -247,7 +239,7 @@ export class InvitationsService {
       user.invitationTokenExpiresAt < new Date()
     ) {
       throw new BadRequestException(
-        await this.i18n.t('auth.invalid_or_expired_token', { lang }),
+        this.i18n.t('auth.invalid_or_expired_token', { lang }),
       );
     }
 
@@ -262,7 +254,7 @@ export class InvitationsService {
     const updatedUser = await this.usersService.findById(user.id);
     if (!updatedUser) {
       throw new BadRequestException(
-        await this.i18n.t('auth.invalid_or_expired_token', { lang }),
+        this.i18n.t('auth.invalid_or_expired_token', { lang }),
       );
     }
 
@@ -276,7 +268,7 @@ export class InvitationsService {
       accessToken,
       refreshToken,
       user: this.toSafeUser(updatedUser),
-      message: await this.i18n.t('auth.invitation_set_password_success', {
+      message: this.i18n.t('auth.invitation_set_password_success', {
         lang,
       }),
     };

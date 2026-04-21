@@ -53,6 +53,7 @@ export class VenuesService {
     return VenueMapper.toAdmin(venue, manager);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async findAllAdmin(lang: string = 'sr'): Promise<AdminVenueDto[]> {
     const venues = await this.venueRepo.find({
       relations: ['tables'],
@@ -83,19 +84,14 @@ export class VenuesService {
     return venues.map((v) => VenueMapper.toPublic(v));
   }
 
-  async findOneAdmin(
-    id: string,
-    lang: string = 'sr',
-  ): Promise<AdminVenueDto> {
+  async findOneAdmin(id: string, lang: string = 'sr'): Promise<AdminVenueDto> {
     const venue = await this.venueRepo.findOne({
       where: { id },
       relations: ['tables'],
     });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     return this.toAdminDto(venue);
@@ -111,9 +107,7 @@ export class VenuesService {
     });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     return VenueMapper.toPublic(venue);
@@ -129,7 +123,7 @@ export class VenuesService {
 
     if (existing) {
       throw new ConflictException(
-        await this.i18n.t('venue.name_already_exists', { lang }),
+        this.i18n.t('venue.name_already_exists', { lang }),
       );
     }
 
@@ -138,6 +132,8 @@ export class VenuesService {
       type: dto.type,
       reservationPhone: dto.reservationPhone,
       reservationEmail: dto.reservationEmail ?? null,
+      city: dto.city,
+      address: dto.address,
       workingHours: dto.workingHours ?? {},
       paymentMethods: dto.paymentMethods,
       hasParking: dto.hasParking,
@@ -187,9 +183,7 @@ export class VenuesService {
     });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     if (dto.name && dto.name !== venue.name) {
@@ -199,7 +193,7 @@ export class VenuesService {
 
       if (existing) {
         throw new ConflictException(
-          await this.i18n.t('venue.name_already_exists', { lang }),
+          this.i18n.t('venue.name_already_exists', { lang }),
         );
       }
     }
@@ -209,6 +203,8 @@ export class VenuesService {
       type: dto.type,
       reservationPhone: dto.reservationPhone,
       reservationEmail: dto.reservationEmail,
+      city: dto.city,
+      address: dto.address,
       workingHours: dto.workingHours,
       paymentMethods: dto.paymentMethods,
       hasParking: dto.hasParking,
@@ -238,25 +234,20 @@ export class VenuesService {
     return this.findOneAdmin(id, lang);
   }
 
-  async remove(
-    id: string,
-    lang: string = 'sr',
-  ): Promise<{ message: string }> {
+  async remove(id: string, lang: string = 'sr'): Promise<{ message: string }> {
     const venue = await this.venueRepo.findOne({
       where: { id },
     });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     await this.tableRepo.delete({ venueId: id });
     await this.invitationRepo.delete({ venueId: id });
     await this.venueRepo.remove(venue);
 
-    return { message: await this.i18n.t('venue.deleted', { lang }) };
+    return { message: this.i18n.t('venue.deleted', { lang }) };
   }
 
   async setActive(
@@ -270,9 +261,7 @@ export class VenuesService {
     });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     venue.isActive = isActive;

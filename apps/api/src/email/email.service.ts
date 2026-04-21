@@ -178,7 +178,9 @@ export class EmailService {
     reason: string,
     lang: string = 'sr',
   ): Promise<void> {
-    const subject = this.i18n.t('email.reservation_cancelled_subject', { lang });
+    const subject = this.i18n.t('email.reservation_cancelled_subject', {
+      lang,
+    });
     const body = this.i18n.t('email.reservation_cancelled_body', {
       lang,
       args: { venueName, date, time },

@@ -80,14 +80,12 @@ export class ReservationsService {
     });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     if (!venue.isActive) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.venue_inactive', { lang }),
+        this.i18n.t('reservation.venue_inactive', { lang }),
       );
     }
 
@@ -97,7 +95,7 @@ export class ReservationsService {
 
     if (!venueTable) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.table_type_not_available', { lang }),
+        this.i18n.t('reservation.table_type_not_available', { lang }),
       );
     }
 
@@ -130,7 +128,7 @@ export class ReservationsService {
 
     if (reservationDate < today) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.invalid_date', { lang }),
+        this.i18n.t('reservation.invalid_date', { lang }),
       );
     }
 
@@ -143,7 +141,7 @@ export class ReservationsService {
 
     if (slots.available <= 0) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.no_available_tables', { lang }),
+        this.i18n.t('reservation.no_available_tables', { lang }),
       );
     }
 
@@ -175,13 +173,13 @@ export class ReservationsService {
 
     if (!user) {
       throw new UnauthorizedException(
-        await this.i18n.t('auth.unauthorized', { lang }),
+        this.i18n.t('auth.unauthorized', { lang }),
       );
     }
 
     if (user.isBlacklisted) {
       throw new ForbiddenException(
-        await this.i18n.t('reservation.blacklisted_cannot_reserve', { lang }),
+        this.i18n.t('reservation.blacklisted_cannot_reserve', { lang }),
       );
     }
 
@@ -191,7 +189,7 @@ export class ReservationsService {
 
     if (reservationDate < today) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.invalid_date', { lang }),
+        this.i18n.t('reservation.invalid_date', { lang }),
       );
     }
 
@@ -204,7 +202,7 @@ export class ReservationsService {
 
     if (slots.available <= 0) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.no_available_tables', { lang }),
+        this.i18n.t('reservation.no_available_tables', { lang }),
       );
     }
 
@@ -241,7 +239,7 @@ export class ReservationsService {
       dateTo?: string;
       source?: ReservationSource;
     },
-    lang: string = 'sr',
+    _lang: string = 'sr',
   ): Promise<Reservation[]> {
     const qb = this.reservationRepo
       .createQueryBuilder('reservation')
@@ -273,10 +271,7 @@ export class ReservationsService {
       });
     }
 
-    qb.orderBy('reservation.date', 'ASC').addOrderBy(
-      'reservation.time',
-      'ASC',
-    );
+    qb.orderBy('reservation.date', 'ASC').addOrderBy('reservation.time', 'ASC');
 
     return qb.getMany();
   }
@@ -293,7 +288,7 @@ export class ReservationsService {
 
     if (!reservation) {
       throw new NotFoundException(
-        await this.i18n.t('reservation.not_found', { lang }),
+        this.i18n.t('reservation.not_found', { lang }),
       );
     }
 
@@ -309,13 +304,13 @@ export class ReservationsService {
 
     if (reservation.status === 'CONFIRMED') {
       throw new BadRequestException(
-        await this.i18n.t('reservation.already_confirmed', { lang }),
+        this.i18n.t('reservation.already_confirmed', { lang }),
       );
     }
 
     if (reservation.status !== 'PENDING') {
       throw new BadRequestException(
-        await this.i18n.t('reservation.cannot_reject', { lang }),
+        this.i18n.t('reservation.cannot_reject', { lang }),
       );
     }
 
@@ -335,7 +330,7 @@ export class ReservationsService {
 
     if (reservation.status !== 'PENDING') {
       throw new BadRequestException(
-        await this.i18n.t('reservation.cannot_reject', { lang }),
+        this.i18n.t('reservation.cannot_reject', { lang }),
       );
     }
 
@@ -361,13 +356,13 @@ export class ReservationsService {
       reservation.status === 'NO_SHOW'
     ) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.already_completed', { lang }),
+        this.i18n.t('reservation.already_completed', { lang }),
       );
     }
 
     if (reservation.status !== 'CONFIRMED') {
       throw new BadRequestException(
-        await this.i18n.t('reservation.cannot_cancel', { lang }),
+        this.i18n.t('reservation.cannot_cancel', { lang }),
       );
     }
 
@@ -418,9 +413,12 @@ export class ReservationsService {
   ): Promise<GuestRating> {
     const reservation = await this.findOne(reservationId, venueId, lang);
 
-    if (reservation.status !== 'COMPLETED' && reservation.status !== 'NO_SHOW') {
+    if (
+      reservation.status !== 'COMPLETED' &&
+      reservation.status !== 'NO_SHOW'
+    ) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.not_completed', { lang }),
+        this.i18n.t('reservation.not_completed', { lang }),
       );
     }
 
@@ -430,7 +428,7 @@ export class ReservationsService {
 
     if (existingRating) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.already_rated', { lang }),
+        this.i18n.t('reservation.already_rated', { lang }),
       );
     }
 
@@ -450,14 +448,17 @@ export class ReservationsService {
     reservationId: string,
     venueId: string,
     dto: GuestRatingDto,
-    ratedById: string,
+    _ratedById: string,
     lang: string = 'sr',
   ): Promise<GuestRating> {
     const reservation = await this.findOne(reservationId, venueId, lang);
 
-    if (reservation.status !== 'COMPLETED' && reservation.status !== 'NO_SHOW') {
+    if (
+      reservation.status !== 'COMPLETED' &&
+      reservation.status !== 'NO_SHOW'
+    ) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.rating_only_completed', { lang }),
+        this.i18n.t('reservation.rating_only_completed', { lang }),
       );
     }
 
@@ -467,7 +468,7 @@ export class ReservationsService {
 
     if (!existingRating) {
       throw new NotFoundException(
-        await this.i18n.t('reservation.rating_not_found', { lang }),
+        this.i18n.t('reservation.rating_not_found', { lang }),
       );
     }
 
@@ -479,7 +480,7 @@ export class ReservationsService {
 
   async getGuestScore(
     guestPhone: string,
-    venueId: string,
+    _venueId: string,
   ): Promise<{
     averageRating: number | null;
     totalRatings: number;
@@ -537,7 +538,7 @@ export class ReservationsService {
   ): Promise<Reservation> {
     if (!reason || reason.trim() === '') {
       throw new BadRequestException(
-        await this.i18n.t('reservation.cancel_reason_required', { lang }),
+        this.i18n.t('reservation.cancel_reason_required', { lang }),
       );
     }
 
@@ -552,7 +553,7 @@ export class ReservationsService {
 
     if (nonCancellable.includes(reservation.status)) {
       throw new BadRequestException(
-        await this.i18n.t('reservation.cannot_cancel', { lang }),
+        this.i18n.t('reservation.cannot_cancel', { lang }),
       );
     }
 
@@ -566,7 +567,9 @@ export class ReservationsService {
       try {
         const guest = await this.usersService.findById(reservation.userId);
         if (guest) {
-          const venue = await this.venueRepo.findOne({ where: { id: venueId } });
+          const venue = await this.venueRepo.findOne({
+            where: { id: venueId },
+          });
           await this.emailService.sendReservationCancelledEmail(
             guest.email,
             venue?.name ?? '',

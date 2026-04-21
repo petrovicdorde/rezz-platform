@@ -67,7 +67,7 @@ export class NotificationsService {
 
     if (!notification) {
       throw new NotFoundException(
-        await this.i18n.t('notification.not_found', { lang }),
+        this.i18n.t('notification.not_found', { lang }),
       );
     }
 

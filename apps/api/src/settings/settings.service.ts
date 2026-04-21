@@ -19,10 +19,7 @@ export class SettingsService {
     private readonly i18n: I18nService,
   ) {}
 
-  async findAll(
-    type?: SettingType,
-    onlyActive = false,
-  ): Promise<Setting[]> {
+  async findAll(type?: SettingType, onlyActive = false): Promise<Setting[]> {
     const qb = this.settingRepo.createQueryBuilder('setting');
 
     if (type) {
@@ -42,9 +39,7 @@ export class SettingsService {
     const setting = await this.settingRepo.findOne({ where: { id } });
 
     if (!setting) {
-      throw new NotFoundException(
-        await this.i18n.t('settings.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('settings.not_found', { lang }));
     }
 
     return setting;
@@ -65,10 +60,7 @@ export class SettingsService {
     );
   }
 
-  async create(
-    dto: CreateSettingDto,
-    lang: string = 'sr',
-  ): Promise<Setting> {
+  async create(dto: CreateSettingDto, lang: string = 'sr'): Promise<Setting> {
     const value = this.normalizeValue(dto.value);
     const label = dto.label.trim();
 
@@ -83,15 +75,17 @@ export class SettingsService {
 
     if (duplicate) {
       throw new ConflictException(
-        await this.i18n.t('settings.already_exists', { lang }),
+        this.i18n.t('settings.already_exists', { lang }),
       );
     }
+
+    const labelEn: string = dto.labelEn ? dto.labelEn.trim() : '';
 
     const setting = this.settingRepo.create({
       type: dto.type,
       value,
       label,
-      labelEn: dto.labelEn?.trim() ?? '',
+      labelEn,
       isActive: dto.isActive ?? true,
       order: dto.order ?? 0,
     });
@@ -101,7 +95,7 @@ export class SettingsService {
     } catch (error) {
       if (this.isUniqueViolation(error)) {
         throw new ConflictException(
-          await this.i18n.t('settings.already_exists', { lang }),
+          this.i18n.t('settings.already_exists', { lang }),
         );
       }
       throw error;
@@ -127,7 +121,7 @@ export class SettingsService {
 
       if (duplicate) {
         throw new ConflictException(
-          await this.i18n.t('settings.already_exists', { lang }),
+          this.i18n.t('settings.already_exists', { lang }),
         );
       }
 
@@ -145,13 +139,16 @@ export class SettingsService {
 
       if (labelDuplicate) {
         throw new ConflictException(
-          await this.i18n.t('settings.already_exists', { lang }),
+          this.i18n.t('settings.already_exists', { lang }),
         );
       }
 
       setting.label = label;
     }
-    if (dto.labelEn !== undefined) setting.labelEn = dto.labelEn.trim();
+    if (dto.labelEn !== undefined) {
+      const trimmed: string = dto.labelEn.trim();
+      setting.labelEn = trimmed;
+    }
     if (dto.isActive !== undefined) setting.isActive = dto.isActive;
     if (dto.order !== undefined) setting.order = dto.order;
 
@@ -160,20 +157,17 @@ export class SettingsService {
     } catch (error) {
       if (this.isUniqueViolation(error)) {
         throw new ConflictException(
-          await this.i18n.t('settings.already_exists', { lang }),
+          this.i18n.t('settings.already_exists', { lang }),
         );
       }
       throw error;
     }
   }
 
-  async remove(
-    id: string,
-    lang: string = 'sr',
-  ): Promise<{ message: string }> {
+  async remove(id: string, lang: string = 'sr'): Promise<{ message: string }> {
     await this.findOne(id, lang);
     await this.settingRepo.delete(id);
-    return { message: await this.i18n.t('settings.deleted', { lang }) };
+    return { message: this.i18n.t('settings.deleted', { lang }) };
   }
 
   async getPublicByType(
@@ -187,7 +181,7 @@ export class SettingsService {
     return settings.map((s) => ({
       value: s.value,
       label: s.label,
-      labelEn: s.labelEn ?? '',
+      labelEn: s.labelEn,
     }));
   }
 }

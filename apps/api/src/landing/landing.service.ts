@@ -92,7 +92,7 @@ export class LandingService {
     const saved = await this.configRepo.save(config);
 
     return {
-      message: await this.i18n.t('landing.config_updated', { lang }),
+      message: this.i18n.t('landing.config_updated', { lang }),
       config: saved,
     };
   }

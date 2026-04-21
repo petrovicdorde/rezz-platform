@@ -71,7 +71,7 @@ export class EmployeesService {
       firstName: inv.firstName,
       lastName: inv.lastName,
       phone: inv.phone,
-      role: inv.role as 'MANAGER' | 'WORKER',
+      role: inv.role,
       isActive: false,
       invitationStatus:
         inv.tokenExpiresAt < new Date()
@@ -86,18 +86,18 @@ export class EmployeesService {
   async invite(
     venueId: string,
     dto: InviteEmployeeDto,
-    invitedBy: User,
+    _invitedBy: User,
     lang: string = 'sr',
   ): Promise<{ message: string }> {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
       if (existingUser.venueId === venueId) {
         throw new ConflictException(
-          await this.i18n.t('employee.already_exists', { lang }),
+          this.i18n.t('employee.already_exists', { lang }),
         );
       }
       throw new ConflictException(
-        await this.i18n.t('employee.email_taken', { lang }),
+        this.i18n.t('employee.email_taken', { lang }),
       );
     }
 
@@ -107,15 +107,13 @@ export class EmployeesService {
 
     if (pendingInvitation) {
       throw new ConflictException(
-        await this.i18n.t('employee.invitation_pending', { lang }),
+        this.i18n.t('employee.invitation_pending', { lang }),
       );
     }
 
     const venue = await this.venueRepo.findOne({ where: { id: venueId } });
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -152,7 +150,7 @@ export class EmployeesService {
     }
 
     return {
-      message: await this.i18n.t('venue.invitation_sent', {
+      message: this.i18n.t('venue.invitation_sent', {
         lang,
         args: { email: dto.email },
       }),
@@ -168,14 +166,12 @@ export class EmployeesService {
     const user = await this.usersService.findById(employeeId);
 
     if (!user || user.venueId !== venueId) {
-      throw new NotFoundException(
-        await this.i18n.t('employee.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('employee.not_found', { lang }));
     }
 
     if (employeeId === requestingUserId) {
       throw new BadRequestException(
-        await this.i18n.t('employee.cannot_remove_self', { lang }),
+        this.i18n.t('employee.cannot_remove_self', { lang }),
       );
     }
 
@@ -184,7 +180,7 @@ export class EmployeesService {
       isActive: false,
     });
 
-    return { message: await this.i18n.t('employee.removed', { lang }) };
+    return { message: this.i18n.t('employee.removed', { lang }) };
   }
 
   async updateRole(
@@ -197,14 +193,12 @@ export class EmployeesService {
     const user = await this.usersService.findById(employeeId);
 
     if (!user || user.venueId !== venueId) {
-      throw new NotFoundException(
-        await this.i18n.t('employee.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('employee.not_found', { lang }));
     }
 
     if (employeeId === requestingUserId) {
       throw new BadRequestException(
-        await this.i18n.t('employee.cannot_change_own_role', { lang }),
+        this.i18n.t('employee.cannot_change_own_role', { lang }),
       );
     }
 
@@ -212,7 +206,7 @@ export class EmployeesService {
       role: UserRole[dto.role as keyof typeof UserRole],
     });
 
-    return { message: await this.i18n.t('employee.role_updated', { lang }) };
+    return { message: this.i18n.t('employee.role_updated', { lang }) };
   }
 
   async cancelInvitation(
@@ -225,14 +219,12 @@ export class EmployeesService {
     });
 
     if (!invitation) {
-      throw new NotFoundException(
-        await this.i18n.t('employee.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('employee.not_found', { lang }));
     }
 
     if (invitation.status !== 'PENDING') {
       throw new BadRequestException(
-        await this.i18n.t('employee.not_found', { lang }),
+        this.i18n.t('employee.not_found', { lang }),
       );
     }
 
@@ -240,7 +232,7 @@ export class EmployeesService {
     await this.invitationRepo.save(invitation);
 
     return {
-      message: await this.i18n.t('employee.invitation_cancelled', { lang }),
+      message: this.i18n.t('employee.invitation_cancelled', { lang }),
     };
   }
 }

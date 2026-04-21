@@ -23,11 +23,15 @@ export class UsersService {
   }
 
   async findByEmailVerificationToken(token: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { emailVerificationToken: token } });
+    return this.usersRepository.findOne({
+      where: { emailVerificationToken: token },
+    });
   }
 
   async findByPasswordResetToken(token: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { passwordResetToken: token } });
+    return this.usersRepository.findOne({
+      where: { passwordResetToken: token },
+    });
   }
 
   async findByInvitationToken(token: string): Promise<User | null> {
@@ -55,7 +59,10 @@ export class UsersService {
       qb.andWhere('user.role IN (:...roles)', { roles });
     }
 
-    return qb.orderBy('user.role', 'ASC').addOrderBy('user.firstName', 'ASC').getMany();
+    return qb
+      .orderBy('user.role', 'ASC')
+      .addOrderBy('user.firstName', 'ASC')
+      .getMany();
   }
 
   async create(data: DeepPartial<User>): Promise<User> {

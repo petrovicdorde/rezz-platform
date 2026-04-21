@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Patch,
-  Body,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Patch, Body, UseGuards } from '@nestjs/common';
 import { I18nLang } from 'nestjs-i18n';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -32,10 +26,7 @@ export class LandingController {
   @Patch('config')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.SUPER_ADMIN)
-  updateConfig(
-    @Body() dto: UpdateLandingConfigDto,
-    @I18nLang() lang: string,
-  ) {
+  updateConfig(@Body() dto: UpdateLandingConfigDto, @I18nLang() lang: string) {
     return this.landingService.updateConfig(dto, lang);
   }
 }

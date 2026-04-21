@@ -53,7 +53,7 @@ export class AuthService {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
       throw new ConflictException(
-        await this.i18n.t('auth.registration_failed', { lang }),
+        this.i18n.t('auth.registration_failed', { lang }),
       );
     }
 
@@ -81,7 +81,7 @@ export class AuthService {
       lang,
     );
 
-    return { message: await this.i18n.t('auth.registration_success', { lang }) };
+    return { message: this.i18n.t('auth.registration_success', { lang }) };
   }
 
   async verifyEmail(
@@ -92,7 +92,7 @@ export class AuthService {
 
     if (!user) {
       throw new BadRequestException(
-        await this.i18n.t('auth.invalid_or_expired_token', { lang }),
+        this.i18n.t('auth.invalid_or_expired_token', { lang }),
       );
     }
 
@@ -101,7 +101,7 @@ export class AuthService {
       user.emailVerificationTokenExpiresAt < new Date()
     ) {
       throw new BadRequestException(
-        await this.i18n.t('auth.invalid_or_expired_token', { lang }),
+        this.i18n.t('auth.invalid_or_expired_token', { lang }),
       );
     }
 
@@ -112,10 +112,13 @@ export class AuthService {
       emailVerificationTokenExpiresAt: null,
     });
 
-    return { message: await this.i18n.t('auth.email_verified', { lang }) };
+    return { message: this.i18n.t('auth.email_verified', { lang }) };
   }
 
-  async login(dto: LoginDto, lang: string = 'sr'): Promise<{
+  async login(
+    dto: LoginDto,
+    lang: string = 'sr',
+  ): Promise<{
     accessToken: string;
     refreshToken: string;
     user: SafeUser;
@@ -123,36 +126,47 @@ export class AuthService {
     const user = await this.usersService.findByEmail(dto.email);
 
     if (!user || !user.passwordHash) {
-      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials', { lang }));
+      throw new UnauthorizedException(
+        this.i18n.t('auth.invalid_credentials', { lang }),
+      );
     }
 
-    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
+    const isPasswordValid = await bcrypt.compare(
+      dto.password,
+      user.passwordHash,
+    );
     if (!isPasswordValid) {
-      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials', { lang }));
+      throw new UnauthorizedException(
+        this.i18n.t('auth.invalid_credentials', { lang }),
+      );
     }
 
     if (!user.isEmailVerified) {
-      throw new ForbiddenException(await this.i18n.t('auth.email_not_verified', { lang }));
+      throw new ForbiddenException(
+        this.i18n.t('auth.email_not_verified', { lang }),
+      );
     }
 
     if (!user.isActive) {
-      throw new ForbiddenException(await this.i18n.t('auth.account_inactive', { lang }));
+      throw new ForbiddenException(
+        this.i18n.t('auth.account_inactive', { lang }),
+      );
     }
 
     if (user.isBlacklisted) {
-      throw new ForbiddenException(
-        await this.i18n.t('auth.blacklisted', { lang }),
-      );
+      throw new ForbiddenException(this.i18n.t('auth.blacklisted', { lang }));
     }
 
     if (
       (user.role === UserRole.MANAGER || user.role === UserRole.WORKER) &&
       user.venueId
     ) {
-      const venue = await this.venueRepo.findOne({ where: { id: user.venueId } });
+      const venue = await this.venueRepo.findOne({
+        where: { id: user.venueId },
+      });
       if (venue && !venue.isActive) {
         throw new ForbiddenException(
-          await this.i18n.t('auth.venue_blocked', { lang }),
+          this.i18n.t('auth.venue_blocked', { lang }),
         );
       }
     }
@@ -167,12 +181,15 @@ export class AuthService {
     const user = await this.usersService.findById(userId);
 
     if (!user || !user.refreshTokenHash) {
-      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
+      throw new UnauthorizedException(this.i18n.t('auth.invalid_credentials'));
     }
 
-    const isRefreshTokenValid = await bcrypt.compare(refreshToken, user.refreshTokenHash);
+    const isRefreshTokenValid = await bcrypt.compare(
+      refreshToken,
+      user.refreshTokenHash,
+    );
     if (!isRefreshTokenValid) {
-      throw new UnauthorizedException(await this.i18n.t('auth.invalid_credentials'));
+      throw new UnauthorizedException(this.i18n.t('auth.invalid_credentials'));
     }
 
     const accessToken = this.generateAccessToken(user);
@@ -198,18 +215,25 @@ export class AuthService {
       );
     }
 
-    return { message: await this.i18n.t('auth.reset_email_sent') };
+    return { message: this.i18n.t('auth.reset_email_sent') };
   }
 
   async resetPassword(dto: ResetPasswordDto): Promise<{ message: string }> {
     const user = await this.findByResetToken(dto.token);
 
     if (!user) {
-      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
+      throw new BadRequestException(
+        this.i18n.t('auth.invalid_or_expired_token'),
+      );
     }
 
-    if (user.passwordResetTokenExpiresAt && user.passwordResetTokenExpiresAt < new Date()) {
-      throw new BadRequestException(await this.i18n.t('auth.invalid_or_expired_token'));
+    if (
+      user.passwordResetTokenExpiresAt &&
+      user.passwordResetTokenExpiresAt < new Date()
+    ) {
+      throw new BadRequestException(
+        this.i18n.t('auth.invalid_or_expired_token'),
+      );
     }
 
     const passwordHash = await bcrypt.hash(dto.newPassword, 12);
@@ -220,7 +244,7 @@ export class AuthService {
       passwordResetTokenExpiresAt: null,
     });
 
-    return { message: await this.i18n.t('auth.password_reset_success') };
+    return { message: this.i18n.t('auth.password_reset_success') };
   }
 
   async googleLogin(googleUser: GoogleOAuthUser): Promise<{
@@ -254,7 +278,7 @@ export class AuthService {
 
   async logout(userId: string): Promise<{ message: string }> {
     await this.usersService.update(userId, { refreshTokenHash: null });
-    return { message: await this.i18n.t('auth.logout_success') };
+    return { message: this.i18n.t('auth.logout_success') };
   }
 
   toSafeUser(user: User): SafeUser {
@@ -288,16 +312,23 @@ export class AuthService {
   }
 
   private generateAccessToken(user: User): string {
+    const expiresIn = this.configService.get<string>('JWT_EXPIRES_IN', '60m');
     return this.jwtService.sign(
       { sub: user.id, email: user.email },
-      { expiresIn: this.configService.get('JWT_EXPIRES_IN', '60m') as any },
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      { expiresIn: expiresIn as any },
     );
   }
 
   private generateRefreshToken(user: User): string {
+    const expiresIn = this.configService.get<string>(
+      'JWT_REFRESH_EXPIRES_IN',
+      '7d',
+    );
     return this.jwtService.sign(
       { sub: user.id, email: user.email },
-      { expiresIn: this.configService.get('JWT_REFRESH_EXPIRES_IN', '7d') as any },
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      { expiresIn: expiresIn as any },
     );
   }
 

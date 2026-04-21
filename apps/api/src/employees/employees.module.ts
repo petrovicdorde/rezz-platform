@@ -7,10 +7,7 @@ import { EmployeesController } from './employees.controller';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([VenueInvitation, Venue]),
-    UsersModule,
-  ],
+  imports: [TypeOrmModule.forFeature([VenueInvitation, Venue]), UsersModule],
   controllers: [EmployeesController],
   providers: [EmployeesService],
   exports: [EmployeesService],

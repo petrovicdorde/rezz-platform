@@ -21,9 +21,7 @@ import { SetPasswordDto } from './dto/set-password.dto';
 
 @Controller()
 export class InvitationsController {
-  constructor(
-    private readonly invitationsService: InvitationsService,
-  ) {}
+  constructor(private readonly invitationsService: InvitationsService) {}
 
   @Post('venues/:venueId/invitations')
   @UseGuards(JwtAuthGuard, RolesGuard)

@@ -98,9 +98,7 @@ export class UsersAdminService {
     });
 
     if (!user) {
-      throw new NotFoundException(
-        await this.i18n.t('user.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('user.not_found', { lang }));
     }
 
     return this.toSafeAdminUser(user);
@@ -114,7 +112,7 @@ export class UsersAdminService {
   ): Promise<{ message: string }> {
     if (id === requestingUserId) {
       throw new BadRequestException(
-        await this.i18n.t('user.cannot_modify_self', { lang }),
+        this.i18n.t('user.cannot_modify_self', { lang }),
       );
     }
 
@@ -123,9 +121,7 @@ export class UsersAdminService {
     });
 
     if (!user) {
-      throw new NotFoundException(
-        await this.i18n.t('user.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('user.not_found', { lang }));
     }
 
     user.isActive = isActive;
@@ -133,8 +129,8 @@ export class UsersAdminService {
 
     return {
       message: isActive
-        ? await this.i18n.t('user.activated', { lang })
-        : await this.i18n.t('user.deactivated', { lang }),
+        ? this.i18n.t('user.activated', { lang })
+        : this.i18n.t('user.deactivated', { lang }),
     };
   }
 
@@ -147,7 +143,7 @@ export class UsersAdminService {
   ): Promise<{ message: string }> {
     if (id === requestingUserId) {
       throw new BadRequestException(
-        await this.i18n.t('user.cannot_modify_self', { lang }),
+        this.i18n.t('user.cannot_modify_self', { lang }),
       );
     }
 
@@ -156,9 +152,7 @@ export class UsersAdminService {
     });
 
     if (!user) {
-      throw new NotFoundException(
-        await this.i18n.t('user.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('user.not_found', { lang }));
     }
 
     if (isBlacklisted) {
@@ -175,8 +169,8 @@ export class UsersAdminService {
 
     return {
       message: isBlacklisted
-        ? await this.i18n.t('user.blacklisted', { lang })
-        : await this.i18n.t('user.unblacklisted', { lang }),
+        ? this.i18n.t('user.blacklisted', { lang })
+        : this.i18n.t('user.unblacklisted', { lang }),
     };
   }
 
@@ -188,7 +182,7 @@ export class UsersAdminService {
   ): Promise<SafeAdminUser> {
     if (id === requestingUserId) {
       throw new BadRequestException(
-        await this.i18n.t('user.cannot_modify_self', { lang }),
+        this.i18n.t('user.cannot_modify_self', { lang }),
       );
     }
 
@@ -197,9 +191,7 @@ export class UsersAdminService {
     });
 
     if (!user) {
-      throw new NotFoundException(
-        await this.i18n.t('user.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('user.not_found', { lang }));
     }
 
     if (dto.firstName !== undefined) user.firstName = dto.firstName;

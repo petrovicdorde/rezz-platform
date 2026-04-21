@@ -56,9 +56,7 @@ export class EventsService {
     });
 
     if (!event) {
-      throw new NotFoundException(
-        await this.i18n.t('event.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('event.not_found', { lang }));
     }
 
     return event;
@@ -72,14 +70,12 @@ export class EventsService {
     const venue = await this.venueRepo.findOne({ where: { id: venueId } });
 
     if (!venue) {
-      throw new NotFoundException(
-        await this.i18n.t('venue.not_found', { lang }),
-      );
+      throw new NotFoundException(this.i18n.t('venue.not_found', { lang }));
     }
 
     if (new Date(dto.startsAt) < new Date()) {
       throw new BadRequestException(
-        await this.i18n.t('event.already_past', { lang }),
+        this.i18n.t('event.already_past', { lang }),
       );
     }
 
@@ -155,7 +151,7 @@ export class EventsService {
   ): Promise<{ message: string }> {
     const event = await this.findOne(id, venueId, lang);
     await this.eventRepo.remove(event);
-    return { message: await this.i18n.t('event.deleted', { lang }) };
+    return { message: this.i18n.t('event.deleted', { lang }) };
   }
 
   async addPromotion(
@@ -190,11 +186,11 @@ export class EventsService {
 
     if (!promotion) {
       throw new NotFoundException(
-        await this.i18n.t('event.promotion_not_found', { lang }),
+        this.i18n.t('event.promotion_not_found', { lang }),
       );
     }
 
     await this.promotionRepo.remove(promotion);
-    return { message: await this.i18n.t('event.promotion_deleted', { lang }) };
+    return { message: this.i18n.t('event.promotion_deleted', { lang }) };
   }
 }

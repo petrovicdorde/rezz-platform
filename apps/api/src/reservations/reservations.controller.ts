@@ -11,7 +11,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { I18nLang } from 'nestjs-i18n';
-import type { TableType, ReservationStatus, ReservationSource } from '@rezz/shared';
+import type {
+  TableType,
+  ReservationStatus,
+  ReservationSource,
+} from '@rezz/shared';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -153,7 +157,13 @@ export class ReservationsController {
     @CurrentUser() user: User,
     @I18nLang() lang: string,
   ) {
-    return this.reservationsService.recordArrival(id, venueId, dto, user.id, lang);
+    return this.reservationsService.recordArrival(
+      id,
+      venueId,
+      dto,
+      user.id,
+      lang,
+    );
   }
 
   @Patch(':id/cancel')
@@ -179,13 +189,7 @@ export class ReservationsController {
     @CurrentUser() user: User,
     @I18nLang() lang: string,
   ) {
-    return this.reservationsService.rateGuest(
-      id,
-      venueId,
-      dto,
-      user.id,
-      lang,
-    );
+    return this.reservationsService.rateGuest(id, venueId, dto, user.id, lang);
   }
 
   @Patch(':id/rate')
@@ -207,5 +211,4 @@ export class ReservationsController {
       lang,
     );
   }
-
 }
