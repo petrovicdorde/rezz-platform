@@ -66,10 +66,14 @@ export class InvitationsService {
       },
     });
 
-    if (existingInvitation) {
+    if (existingInvitation?.status === 'ACCEPTED') {
       throw new ConflictException(
         this.i18n.t('venue.invitation_already_accepted', { lang }),
       );
+    }
+
+    if (existingInvitation?.status === 'PENDING') {
+      await this.invitationRepo.remove(existingInvitation);
     }
 
     const token = crypto.randomBytes(32).toString('hex');
