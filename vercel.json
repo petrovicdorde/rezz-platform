@@ -1,6 +1,7 @@
 {
   "version": 2,
   "installCommand": "pnpm install",
+  "buildCommand": "pnpm build && pnpm --filter api migration:run:prod",
   "functions": {
     "api/index.ts": {
       "runtime": "@vercel/node@5",
