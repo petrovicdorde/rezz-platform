@@ -15,18 +15,7 @@ export class VenueTable {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    type: 'enum',
-    enum: [
-      'STANDARD',
-      'BOOTH',
-      'BAR_SEAT',
-      'LOW_TABLE',
-      'HIGH_TABLE',
-      'TERRACE',
-      'VIP',
-    ],
-  })
+  @Column({ type: 'varchar' })
   type: TableType;
 
   @Column()

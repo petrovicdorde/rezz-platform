@@ -18,23 +18,7 @@ export class Venue {
   @Column()
   name: string;
 
-  @Column({
-    type: 'enum',
-    enum: [
-      'RESTAURANT',
-      'CAFE',
-      'CAFFE_BAR',
-      'LOUNGE',
-      'CLUB',
-      'FAST_FOOD',
-      'PIZZERIA',
-      'ROOFTOP',
-      'SPORTS_BAR',
-      'WINE_BAR',
-      'HOOKAH_LOUNGE',
-      'BAKERY',
-    ],
-  })
+  @Column({ type: 'varchar' })
   type: VenueType;
 
   @Column()

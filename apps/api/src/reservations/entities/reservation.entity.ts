@@ -43,18 +43,7 @@ export class Reservation {
   @Column({ type: 'int' })
   numberOfGuests: number;
 
-  @Column({
-    type: 'enum',
-    enum: [
-      'STANDARD',
-      'BOOTH',
-      'BAR_SEAT',
-      'LOW_TABLE',
-      'HIGH_TABLE',
-      'TERRACE',
-      'VIP',
-    ],
-  })
+  @Column({ type: 'varchar' })
   tableType: TableType;
 
   @Column({ nullable: true, type: 'text' })
