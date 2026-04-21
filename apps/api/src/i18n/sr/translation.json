@@ -121,6 +121,7 @@
     "updated": "Korisnik je uspješno ažuriran.",
     "activated": "Korisnik je aktiviran.",
     "deactivated": "Korisnik je deaktiviran.",
+    "deleted": "Korisnik je obrisan.",
     "blacklisted": "Korisnik je stavljen na crnu listu.",
     "unblacklisted": "Korisnik je uklonjen sa crne liste.",
     "cannot_modify_self": "Ne možete mijenjati vlastiti nalog."

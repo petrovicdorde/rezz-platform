@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format, parseISO } from 'date-fns';
-import { UserX, UserCheck, ShieldAlert, ShieldOff } from 'lucide-react';
+import { Trash2, ShieldAlert, ShieldOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { UserStatusBadge } from './UserStatusBadge';
-import { useSetUserActive, useSetUserBlacklisted } from '@/hooks/useUsersAdmin';
+import { useDeleteUser, useSetUserBlacklisted } from '@/hooks/useUsersAdmin';
 import type { AdminUser } from '@/lib/types/user-admin.types';
 
 const ROLE_STYLES: Record<string, string> = {
@@ -14,7 +14,7 @@ const ROLE_STYLES: Record<string, string> = {
   WORKER: 'bg-blue-50 text-blue-600',
 };
 
-type ConfirmAction = 'deactivate' | 'activate' | 'blacklist' | 'unblacklist' | null;
+type ConfirmAction = 'delete' | 'blacklist' | 'unblacklist' | null;
 
 interface UserDetailContentProps {
   user: AdminUser;
@@ -41,7 +41,7 @@ export function UserDetailContent({
   const { t } = useTranslation();
   const [confirmAction, setConfirmAction] = useState<ConfirmAction>(null);
   const [blacklistReason, setBlacklistReason] = useState('');
-  const setActiveMutation = useSetUserActive();
+  const deleteMutation = useDeleteUser();
   const setBlacklistedMutation = useSetUserBlacklisted();
 
   return (
@@ -134,31 +134,14 @@ export function UserDetailContent({
       {/* Actions / Confirm */}
       {confirmAction === null && (
         <div className="flex flex-col gap-2">
-          {!user.isBlacklisted && (
-            <Button
-              variant="outline"
-              className={`w-full ${
-                user.isActive
-                  ? 'border-amber-300 text-amber-600 hover:bg-amber-50'
-                  : 'border-green-300 text-green-600 hover:bg-green-50'
-              }`}
-              onClick={() =>
-                setConfirmAction(user.isActive ? 'deactivate' : 'activate')
-              }
-            >
-              {user.isActive ? (
-                <>
-                  <UserX className="mr-2 h-4 w-4" />
-                  {t('users.deactivate')}
-                </>
-              ) : (
-                <>
-                  <UserCheck className="mr-2 h-4 w-4" />
-                  {t('users.activate')}
-                </>
-              )}
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            className="w-full border-red-300 text-red-500 hover:bg-red-50"
+            onClick={() => setConfirmAction('delete')}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            {t('users.delete')}
+          </Button>
           <Button
             variant="outline"
             className={`w-full ${
@@ -250,52 +233,30 @@ export function UserDetailContent({
         </div>
       )}
 
-      {confirmAction === 'deactivate' && (
+      {confirmAction === 'delete' && (
         <div>
           <p className="text-center text-sm text-secondary-600">
-            {t('users.deactivate_confirm')}
+            {t('users.delete_confirm')}
+          </p>
+          <p className="mt-1 text-center text-xs text-tertiary-500">
+            {t('users.delete_warning')}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-3">
             <Button variant="outline" onClick={() => setConfirmAction(null)}>
               {t('common.cancel')}
             </Button>
             <Button
-              className="bg-amber-500 text-white hover:bg-amber-600"
-              disabled={setActiveMutation.isPending}
+              className="bg-red-600 text-white hover:bg-red-700"
+              disabled={deleteMutation.isPending}
               onClick={() =>
-                setActiveMutation.mutate(
-                  { id: user.id, isActive: false },
-                  { onSuccess: onClose },
-                )
+                deleteMutation.mutate(user.id, { onSuccess: onClose })
               }
             >
-              {setActiveMutation.isPending
+              {deleteMutation.isPending
                 ? t('common.loading')
                 : t('users.confirm_yes')}
             </Button>
           </div>
-        </div>
-      )}
-
-      {confirmAction === 'activate' && (
-        <div className="mt-3 grid grid-cols-2 gap-3">
-          <Button variant="outline" onClick={() => setConfirmAction(null)}>
-            {t('common.cancel')}
-          </Button>
-          <Button
-            className="bg-green-600 text-white hover:bg-green-700"
-            disabled={setActiveMutation.isPending}
-            onClick={() =>
-              setActiveMutation.mutate(
-                { id: user.id, isActive: true },
-                { onSuccess: onClose },
-              )
-            }
-          >
-            {setActiveMutation.isPending
-              ? t('common.loading')
-              : t('users.confirm_yes')}
-          </Button>
         </div>
       )}
     </div>

@@ -51,4 +51,11 @@ export const usersAdminApi = {
     );
     return response.data;
   },
+
+  remove: async (id: string): Promise<{ message: string }> => {
+    const response = await api.delete<{ message: string }>(
+      `/admin/users/${id}`,
+    );
+    return response.data;
+  },
 };

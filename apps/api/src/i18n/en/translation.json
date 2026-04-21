@@ -121,6 +121,7 @@
     "updated": "User updated successfully.",
     "activated": "User activated.",
     "deactivated": "User deactivated.",
+    "deleted": "User has been deleted.",
     "blacklisted": "User has been blacklisted.",
     "unblacklisted": "User has been removed from the blacklist.",
     "cannot_modify_self": "You cannot modify your own account."

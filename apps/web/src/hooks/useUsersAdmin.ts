@@ -45,3 +45,15 @@ export function useSetUserBlacklisted() {
     onError: (error: unknown) => handleApiError(error),
   });
 }
+
+export function useDeleteUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => usersAdminApi.remove(id),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      toast.success(res.message);
+    },
+    onError: (error: unknown) => handleApiError(error),
+  });
+}

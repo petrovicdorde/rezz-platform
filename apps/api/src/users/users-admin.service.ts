@@ -174,6 +174,30 @@ export class UsersAdminService {
     };
   }
 
+  async remove(
+    id: string,
+    requestingUserId: string,
+    lang: string = 'sr',
+  ): Promise<{ message: string }> {
+    if (id === requestingUserId) {
+      throw new BadRequestException(
+        this.i18n.t('user.cannot_modify_self', { lang }),
+      );
+    }
+
+    const user = await this.userRepo.findOne({
+      where: { id, role: Not(UserRole.SUPER_ADMIN) },
+    });
+
+    if (!user) {
+      throw new NotFoundException(this.i18n.t('user.not_found', { lang }));
+    }
+
+    await this.userRepo.remove(user);
+
+    return { message: this.i18n.t('user.deleted', { lang }) };
+  }
+
   async updateUser(
     id: string,
     dto: UpdateUserAdminDto,

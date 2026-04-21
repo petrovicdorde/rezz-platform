@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Patch,
+  Delete,
   Param,
   Query,
   Body,
@@ -29,7 +30,6 @@ export class UsersAdminController {
     @Query('isActive') isActive: string,
     @Query('isBlacklisted') isBlacklisted: string,
     @Query('search') search: string,
-    @I18nLang() lang: string,
   ) {
     return this.usersAdminService.findAll({
       role: role || undefined,
@@ -63,6 +63,15 @@ export class UsersAdminController {
     @I18nLang() lang: string,
   ) {
     return this.usersAdminService.setActive(id, isActive, user.id, lang);
+  }
+
+  @Delete(':id')
+  remove(
+    @Param('id') id: string,
+    @CurrentUser() user: User,
+    @I18nLang() lang: string,
+  ) {
+    return this.usersAdminService.remove(id, user.id, lang);
   }
 
   @Patch(':id/blacklist')
