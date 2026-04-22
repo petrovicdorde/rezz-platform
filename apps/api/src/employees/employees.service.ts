@@ -175,10 +175,7 @@ export class EmployeesService {
       );
     }
 
-    await this.usersService.update(employeeId, {
-      venueId: null,
-      isActive: false,
-    });
+    await this.usersService.delete(employeeId);
 
     return { message: this.i18n.t('employee.removed', { lang }) };
   }

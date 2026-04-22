@@ -78,4 +78,8 @@ export class UsersService {
   async updatePhone(userId: string, phone: string): Promise<void> {
     await this.usersRepository.update(userId, { phone });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.usersRepository.delete(id);
+  }
 }
