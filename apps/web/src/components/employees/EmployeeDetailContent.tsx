@@ -196,7 +196,12 @@ export function EmployeeDetailContent({
       {confirmAction === 'change_role' && (
         <div>
           <p className="mb-3 text-center text-sm text-secondary-600">
-            {t('common.confirm')}
+            {t(
+              employee.role === 'MANAGER'
+                ? 'employees.change_role_to_worker_confirm'
+                : 'employees.change_role_to_manager_confirm',
+              { name: displayName },
+            )}
           </p>
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" onClick={() => setConfirmAction(null)}>
@@ -216,7 +221,7 @@ export function EmployeeDetailContent({
             >
               {updateRole.isPending
                 ? t('common.loading')
-                : t('common.confirm')}
+                : t('employees.confirm_yes')}
             </Button>
           </div>
         </div>
