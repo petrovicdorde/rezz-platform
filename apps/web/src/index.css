@@ -48,6 +48,18 @@
   summary {
     cursor: pointer;
   }
+
+  /* Suppress native browser focus outline on form controls — we use
+     border-color transitions for the focused state instead. */
+  input:focus,
+  input:focus-visible,
+  textarea:focus,
+  textarea:focus-visible,
+  select:focus,
+  select:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 .venue-modal-scroll::-webkit-scrollbar {
