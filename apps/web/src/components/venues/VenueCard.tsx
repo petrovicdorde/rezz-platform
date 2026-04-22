@@ -1,27 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Car, CreditCard, Banknote, Smartphone, MapPin } from 'lucide-react';
-import type { PaymentMethod, VenueType } from '@rezz/shared';
+import type { PaymentMethod } from '@rezz/shared';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { AdminVenue } from '@/lib/types/venue.types';
 
 interface VenueCardProps {
   venue: AdminVenue;
   onClick: () => void;
 }
-
-const VENUE_TYPE_KEYS: Record<VenueType, string> = {
-  RESTAURANT: 'venue.venue_type_restaurant',
-  CAFE: 'venue.venue_type_cafe',
-  CAFFE_BAR: 'venue.venue_type_caffe_bar',
-  LOUNGE: 'venue.venue_type_lounge',
-  CLUB: 'venue.venue_type_club',
-  FAST_FOOD: 'venue.venue_type_fast_food',
-  PIZZERIA: 'venue.venue_type_pizzeria',
-  ROOFTOP: 'venue.venue_type_rooftop',
-  SPORTS_BAR: 'venue.venue_type_sports_bar',
-  WINE_BAR: 'venue.venue_type_wine_bar',
-  HOOKAH_LOUNGE: 'venue.venue_type_hookah_lounge',
-  BAKERY: 'venue.venue_type_bakery',
-};
 
 const PAYMENT_ICONS: Record<PaymentMethod, React.ElementType> = {
   CASH: Banknote,
@@ -37,6 +23,7 @@ const PAYMENT_KEYS: Record<PaymentMethod, string> = {
 
 export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element {
   const { t } = useTranslation();
+  const venueTypeLabel = useSettingValueLabel('VENUE_TYPE');
   const visibleTags = venue.tags.slice(0, 3);
   const extraTagCount = venue.tags.length - 3;
 
@@ -61,7 +48,7 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
 
       {/* Type + phone */}
       <div className="mt-1 flex items-center gap-2 text-sm text-tertiary-600">
-        <span>{t(VENUE_TYPE_KEYS[venue.type])}</span>
+        <span>{venueTypeLabel(venue.type)}</span>
         <span>·</span>
         <span>{venue.reservationPhone}</span>
       </div>

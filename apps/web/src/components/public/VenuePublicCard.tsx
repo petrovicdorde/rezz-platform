@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Building2, MapPin, Car } from 'lucide-react';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { PublicVenue } from '@/lib/types/venue.types';
 
 interface VenuePublicCardProps {
@@ -12,8 +13,9 @@ export function VenuePublicCard({
   onClick,
 }: VenuePublicCardProps): React.JSX.Element {
   const { t } = useTranslation();
+  const venueTypeLabel = useSettingValueLabel('VENUE_TYPE');
   const visibleTags = venue.tags.slice(0, 3);
-  const typeLabel = t(`venue.venue_type_${venue.type.toLowerCase()}`);
+  const typeLabel = venueTypeLabel(venue.type);
 
   return (
     <div

@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useQueries } from "@tanstack/react-query";
@@ -14,14 +15,39 @@ import {
 import { useVenues } from "@/hooks/useVenues";
 import { eventsApi } from "@/lib/api/events.api";
 import type { VenueEvent } from "@/lib/types/event.types";
+import type { LandingConfig } from "@/lib/types/landing.types";
 
 export const Route = createFileRoute("/dashboard/landing")({
   component: LandingAdminPage,
 });
 
 function LandingAdminPage(): React.JSX.Element {
-  const { t } = useTranslation();
   const { data: config, isLoading: configLoading } = useAdminLandingConfig();
+
+  if (configLoading || !config) {
+    return (
+      <DashboardLayout>
+        <div className="flex flex-col gap-4">
+          {[0, 1].map((i) => (
+            <div
+              key={i}
+              className="h-48 animate-pulse rounded-xl bg-tertiary-200"
+            />
+          ))}
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  return <LandingAdminForm config={config} />;
+}
+
+interface LandingAdminFormProps {
+  config: LandingConfig;
+}
+
+function LandingAdminForm({ config }: LandingAdminFormProps): React.JSX.Element {
+  const { t } = useTranslation();
   const { data: allVenues } = useVenues();
   const updateConfig = useUpdateLandingConfig();
 
@@ -42,29 +68,14 @@ function LandingAdminPage(): React.JSX.Element {
     [eventQueries]
   );
 
-  const [showVenues, setShowVenues] = useState(
-    () => config?.showFeaturedVenues ?? true
-  );
-  const [showEvents, setShowEvents] = useState(
-    () => config?.showFeaturedEvents ?? false
-  );
+  const [showVenues, setShowVenues] = useState(config.showFeaturedVenues);
+  const [showEvents, setShowEvents] = useState(config.showFeaturedEvents);
   const [selectedVenueIds, setSelectedVenueIds] = useState<string[]>(
-    () => config?.featuredVenueIds ?? []
+    config.featuredVenueIds
   );
   const [selectedEventIds, setSelectedEventIds] = useState<string[]>(
-    () => config?.featuredEventIds ?? []
+    config.featuredEventIds
   );
-  const hasSynced = useRef(false);
-
-  useEffect(() => {
-    if (config && !hasSynced.current) {
-      hasSynced.current = true;
-      setShowVenues(config.showFeaturedVenues);
-      setShowEvents(config.showFeaturedEvents);
-      setSelectedVenueIds(config.featuredVenueIds);
-      setSelectedEventIds(config.featuredEventIds);
-    }
-  }, [config]);
 
   const upcomingEvents = useMemo(
     () => allEvents.filter((e) => new Date(e.startsAt) >= new Date()),
@@ -77,26 +88,31 @@ function LandingAdminPage(): React.JSX.Element {
     eventQueries.every((q) => !q.isLoading && q.isFetched);
 
   // Prune selections that no longer correspond to displayable items
-  // (e.g. events expired or were deleted, venues were deleted).
-  useEffect(() => {
-    if (!hasSynced.current) return;
-    if (!venuesLoaded || !allVenues) return;
-    const validVenueIds = new Set(allVenues.map((v) => v.id));
-    setSelectedVenueIds((prev) => {
-      const next = prev.filter((id) => validVenueIds.has(id));
-      return next.length === prev.length ? prev : next;
-    });
-  }, [venuesLoaded, allVenues]);
+  // (e.g. events expired or were deleted, venues were deleted). Derived
+  // via memo so we don't have to setState-in-effect.
+  const validVenueIds = useMemo(
+    () => (venuesLoaded && allVenues ? new Set(allVenues.map((v) => v.id)) : null),
+    [venuesLoaded, allVenues],
+  );
+  const effectiveSelectedVenueIds = useMemo(
+    () =>
+      validVenueIds
+        ? selectedVenueIds.filter((id) => validVenueIds.has(id))
+        : selectedVenueIds,
+    [selectedVenueIds, validVenueIds],
+  );
 
-  useEffect(() => {
-    if (!hasSynced.current) return;
-    if (!eventsLoaded) return;
-    const validEventIds = new Set(upcomingEvents.map((e) => e.id));
-    setSelectedEventIds((prev) => {
-      const next = prev.filter((id) => validEventIds.has(id));
-      return next.length === prev.length ? prev : next;
-    });
-  }, [eventsLoaded, upcomingEvents]);
+  const validEventIds = useMemo(
+    () => (eventsLoaded ? new Set(upcomingEvents.map((e) => e.id)) : null),
+    [eventsLoaded, upcomingEvents],
+  );
+  const effectiveSelectedEventIds = useMemo(
+    () =>
+      validEventIds
+        ? selectedEventIds.filter((id) => validEventIds.has(id))
+        : selectedEventIds,
+    [selectedEventIds, validEventIds],
+  );
 
   function toggleVenue(id: string): void {
     setSelectedVenueIds((prev) =>
@@ -115,18 +131,22 @@ function LandingAdminPage(): React.JSX.Element {
   }
 
   const isDirty = useMemo(() => {
-    if (!config) return false;
     if (showVenues !== config.showFeaturedVenues) return true;
     if (showEvents !== config.showFeaturedEvents) return true;
     const sameIds = (a: string[], b: string[]): boolean =>
       a.length === b.length && a.every((id) => b.includes(id));
-    if (!sameIds(selectedVenueIds, config.featuredVenueIds)) return true;
-    if (!sameIds(selectedEventIds, config.featuredEventIds)) return true;
+    if (!sameIds(effectiveSelectedVenueIds, config.featuredVenueIds)) return true;
+    if (!sameIds(effectiveSelectedEventIds, config.featuredEventIds)) return true;
     return false;
-  }, [config, showVenues, showEvents, selectedVenueIds, selectedEventIds]);
+  }, [
+    config,
+    showVenues,
+    showEvents,
+    effectiveSelectedVenueIds,
+    effectiveSelectedEventIds,
+  ]);
 
   function handleCancel(): void {
-    if (!config) return;
     setShowVenues(config.showFeaturedVenues);
     setShowEvents(config.showFeaturedEvents);
     setSelectedVenueIds(config.featuredVenueIds);
@@ -135,26 +155,11 @@ function LandingAdminPage(): React.JSX.Element {
 
   function handleSave(): void {
     updateConfig.mutate({
-      featuredVenueIds: selectedVenueIds,
-      featuredEventIds: selectedEventIds,
+      featuredVenueIds: effectiveSelectedVenueIds,
+      featuredEventIds: effectiveSelectedEventIds,
       showFeaturedVenues: showVenues,
       showFeaturedEvents: showEvents,
     });
-  }
-
-  if (configLoading) {
-    return (
-      <DashboardLayout>
-        <div className="flex flex-col gap-4">
-          {[0, 1].map((i) => (
-            <div
-              key={i}
-              className="h-48 animate-pulse rounded-xl bg-tertiary-200"
-            />
-          ))}
-        </div>
-      </DashboardLayout>
-    );
   }
 
   return (
@@ -164,7 +169,7 @@ function LandingAdminPage(): React.JSX.Element {
         <h1 className="text-2xl font-bold text-secondary-600">
           {t("landing_admin.title")}
         </h1>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -173,7 +178,7 @@ function LandingAdminPage(): React.JSX.Element {
             <ExternalLink className="mr-1.5 h-4 w-4" />
             {t("landing_admin.preview")}
           </Button>
-          <div className="ml-auto flex gap-2">
+          <div className="ml-auto flex items-center gap-2">
           {isDirty && (
             <Button
               variant="outline"
@@ -231,7 +236,7 @@ function LandingAdminPage(): React.JSX.Element {
 
         <span className="mt-3 inline-block rounded-full bg-primary-50 px-3 py-1 text-xs text-primary-700">
           {t("landing_admin.selected_count", {
-            count: selectedVenueIds.length,
+            count: effectiveSelectedVenueIds.length,
           })}
         </span>
 
@@ -240,7 +245,7 @@ function LandingAdminPage(): React.JSX.Element {
             <SelectableVenueCard
               key={venue.id}
               venue={venue}
-              isSelected={selectedVenueIds.includes(venue.id)}
+              isSelected={effectiveSelectedVenueIds.includes(venue.id)}
               onToggle={toggleVenue}
             />
           ))}
@@ -281,7 +286,7 @@ function LandingAdminPage(): React.JSX.Element {
 
         <span className="mt-3 inline-block rounded-full bg-primary-50 px-3 py-1 text-xs text-primary-700">
           {t("landing_admin.selected_count", {
-            count: selectedEventIds.length,
+            count: effectiveSelectedEventIds.length,
           })}
         </span>
 
@@ -291,7 +296,7 @@ function LandingAdminPage(): React.JSX.Element {
               <SelectableEventCard
                 key={event.id}
                 event={event}
-                isSelected={selectedEventIds.includes(event.id)}
+                isSelected={effectiveSelectedEventIds.includes(event.id)}
                 onToggle={toggleEvent}
               />
             ))}

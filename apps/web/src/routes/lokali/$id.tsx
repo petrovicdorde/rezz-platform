@@ -22,6 +22,7 @@ import { BookingForm } from '@/components/public/BookingForm';
 import { BookingSuccessView } from '@/components/public/BookingSuccessView';
 import { Button } from '@/components/ui/button';
 import { usePublicVenue } from '@/hooks/useVenues';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import { useAuthStore } from '@/store/auth.store';
 import { useLoginStore } from '@/store/login-ui.store';
 import type { Reservation } from '@/lib/types/reservation.types';
@@ -55,6 +56,7 @@ function VenueDetailPage(): React.JSX.Element {
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const openLogin = useLoginStore((s) => s.open);
+  const venueTypeLabel = useSettingValueLabel('VENUE_TYPE');
   const { data: venue, isLoading, isError } = usePublicVenue(id);
   const [completedReservation, setCompletedReservation] =
     useState<Reservation | null>(null);
@@ -102,7 +104,7 @@ function VenueDetailPage(): React.JSX.Element {
     );
   }
 
-  const typeLabel = t(`venue.venue_type_${venue.type.toLowerCase()}`);
+  const typeLabel = venueTypeLabel(venue.type);
   const images = venue.images ?? [];
   const socialLinks = venue.socialLinks ?? [];
   const isGuest = isAuthenticated && user?.role === 'GUEST';
