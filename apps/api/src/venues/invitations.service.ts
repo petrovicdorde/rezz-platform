@@ -173,6 +173,10 @@ export class InvitationsService {
       await this.usersService.update(existingUser.id, {
         role: UserRole[invitation.role as keyof typeof UserRole],
         venueId: invitation.venueId,
+        phone:
+          existingUser.phone && existingUser.phone.trim() !== ''
+            ? existingUser.phone
+            : invitation.phone,
         invitationToken,
         invitationTokenExpiresAt,
       });
@@ -182,6 +186,7 @@ export class InvitationsService {
         email: invitation.email,
         firstName: invitation.firstName ?? '',
         lastName: invitation.lastName ?? '',
+        phone: invitation.phone,
         role: UserRole[invitation.role as keyof typeof UserRole],
         venueId: invitation.venueId,
         isEmailVerified: true,

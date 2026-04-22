@@ -58,7 +58,7 @@ export class EmployeesService {
       email: u.email,
       firstName: u.firstName || null,
       lastName: u.lastName || null,
-      phone: null,
+      phone: u.phone ?? null,
       role: u.role as 'MANAGER' | 'WORKER',
       isActive: u.isActive,
       createdAt: u.createdAt,
