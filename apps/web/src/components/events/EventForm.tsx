@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { X } from 'lucide-react';
+import { X, ImageIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,10 @@ interface EventFormValues {
 
 function toDateTimeLocal(dateStr: string): string {
   return format(new Date(dateStr), "yyyy-MM-dd'T'HH:mm");
+}
+
+function nowDateTimeLocal(offsetMs = 0): string {
+  return format(new Date(Date.now() + offsetMs), "yyyy-MM-dd'T'HH:mm");
 }
 
 export function EventForm({
@@ -126,7 +130,7 @@ export function EventForm({
           </label>
           <DateInput
             type="datetime-local"
-            placeholder={t('events.starts_at_placeholder')}
+            placeholder={nowDateTimeLocal()}
             {...register('startsAt', {
               required: t('events.starts_at_required'),
               validate: (value) =>
@@ -147,9 +151,20 @@ export function EventForm({
           </label>
           <DateInput
             type="datetime-local"
-            placeholder={t('events.ends_at_placeholder')}
+            placeholder={nowDateTimeLocal(60 * 60 * 1000)}
             {...register('endsAt')}
           />
+        </div>
+      </div>
+
+      {/* Image upload — placeholder, separate feature */}
+      <div>
+        <label className="mb-1 block text-sm font-medium">
+          {t('events.image_label')}
+        </label>
+        <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-tertiary-300 bg-tertiary-50 py-6 text-tertiary-400">
+          <ImageIcon className="h-7 w-7" />
+          <p className="text-sm">{t('events.image_coming_soon')}</p>
         </div>
       </div>
 
