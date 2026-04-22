@@ -432,6 +432,7 @@
   },
   "employees": {
     "title": "Employees",
+    "self_notice": "This is your account. You can't change your own role or remove yourself.",
     "add": "Add employee",
     "no_employees": "No employees. Add your first employee.",
     "role_manager": "Manager",

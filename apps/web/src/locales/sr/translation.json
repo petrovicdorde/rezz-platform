@@ -432,6 +432,7 @@
   },
   "employees": {
     "title": "Zaposleni",
+    "self_notice": "Ovo je vaš nalog. Ne možete promijeniti vlastitu ulogu niti se ukloniti.",
     "add": "Dodaj zaposlenog",
     "no_employees": "Nema zaposlenih. Dodajte prvog zaposlenog.",
     "role_manager": "Menadžer",

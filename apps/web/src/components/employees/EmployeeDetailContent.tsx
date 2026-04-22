@@ -9,6 +9,7 @@ import {
   useCancelInvitation,
   useUpdateEmployeeRole,
 } from '@/hooks/useEmployees';
+import { useAuthStore } from '@/store/auth.store';
 import type { Employee } from '@/lib/types/employee.types';
 
 interface EmployeeDetailContentProps {
@@ -37,6 +38,9 @@ export function EmployeeDetailContent({
   const removeEmployee = useRemoveEmployee(venueId);
   const cancelInvitation = useCancelInvitation(venueId);
   const updateRole = useUpdateEmployeeRole(venueId);
+  const currentUserId = useAuthStore((s) => s.user?.id);
+  const isSelf =
+    employee.type === 'ACTIVE' && currentUserId === employee.id;
 
   const displayName =
     employee.firstName || employee.lastName
@@ -98,7 +102,13 @@ export function EmployeeDetailContent({
       {/* Actions */}
       {confirmAction === null && (
         <>
-          {employee.type === 'ACTIVE' && (
+          {isSelf && (
+            <p className="rounded-lg bg-tertiary-50 p-3 text-center text-sm text-tertiary-600">
+              {t('employees.self_notice')}
+            </p>
+          )}
+
+          {!isSelf && employee.type === 'ACTIVE' && (
             <div className="space-y-2">
               <Button
                 variant="outline"
