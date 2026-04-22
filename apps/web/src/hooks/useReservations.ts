@@ -156,7 +156,7 @@ export function useUpdateRating() {
 export function usePublicAvailableSlots(
   venueId: string,
   date: string,
-  tableType: TableType | '',
+  tableType: string,
 ) {
   return useQuery({
     queryKey: ['public-available-slots', venueId, date, tableType],

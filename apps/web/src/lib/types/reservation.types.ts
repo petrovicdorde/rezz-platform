@@ -48,7 +48,7 @@ export interface CreateReservationRequest {
   date: string;
   time: string;
   numberOfGuests: number;
-  tableType: TableType;
+  tableType: string;
   specialRequest?: string;
   eventId?: string;
 }

@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
-import type { TableType } from '@rezz/shared';
 import { Input } from '@/components/ui/input';
 import { DatePicker } from '@/components/ui/date-picker';
 import { TimePicker } from '@/components/ui/time-picker';
@@ -20,6 +19,7 @@ import {
   usePublicAvailableSlots,
 } from '@/hooks/useReservations';
 import { useMyProfile } from '@/hooks/useProfile';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { PublicVenue } from '@/lib/types/venue.types';
 import type {
   CreateReservationRequest,
@@ -40,19 +40,9 @@ interface BookingFormValues {
   date: string;
   time: string;
   numberOfGuests: number;
-  tableType: TableType | '';
+  tableType: string;
   specialRequest: string;
 }
-
-const TABLE_TYPE_KEYS: Record<TableType, string> = {
-  STANDARD: 'venue.table_standard',
-  BOOTH: 'venue.table_booth',
-  BAR_SEAT: 'venue.table_bar_seat',
-  LOW_TABLE: 'venue.table_low_table',
-  HIGH_TABLE: 'venue.table_high_table',
-  TERRACE: 'venue.table_terrace',
-  VIP: 'venue.table_vip',
-};
 
 export function BookingForm({
   venue,
@@ -64,6 +54,7 @@ export function BookingForm({
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useMyProfile();
   const mutation = useCreateGuestReservation(venue.id);
+  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
 
   const {
     register,
@@ -286,7 +277,7 @@ export function BookingForm({
                   <SelectContent>
                     {availableTableTypes.map((tt) => (
                       <SelectItem key={tt} value={tt}>
-                        {t(TABLE_TYPE_KEYS[tt])}
+                        {tableTypeLabel(tt)}
                       </SelectItem>
                     ))}
                   </SelectContent>
