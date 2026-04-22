@@ -221,7 +221,8 @@
     "menu_arrivals": "Dolasci",
     "menu_users": "Korisnici",
     "menu_settings": "Postavke",
-    "menu_landing": "Landing stranica"
+    "menu_landing": "Landing stranica",
+    "menu_profile": "Profil"
   },
   "venue": {
     "created": "Lokal je uspješno kreiran.",
@@ -598,6 +599,7 @@
   },
   "profile": {
     "title": "Moj profil",
+    "email_label": "Email adresa",
     "edit_profile": "Uredi profil",
     "save_changes": "Sačuvaj izmjene",
     "first_name_label": "Ime",

@@ -221,7 +221,8 @@
     "menu_arrivals": "Arrivals",
     "menu_users": "Users",
     "menu_settings": "Settings",
-    "menu_landing": "Landing page"
+    "menu_landing": "Landing page",
+    "menu_profile": "Profile"
   },
   "venue": {
     "created": "Venue created successfully.",
@@ -598,6 +599,7 @@
   },
   "profile": {
     "title": "My profile",
+    "email_label": "Email address",
     "edit_profile": "Edit profile",
     "save_changes": "Save changes",
     "first_name_label": "First name",

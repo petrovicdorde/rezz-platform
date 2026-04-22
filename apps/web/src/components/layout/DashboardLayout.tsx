@@ -12,6 +12,7 @@ import {
   SlidersHorizontal,
   LayoutDashboard,
   LogOut,
+  User,
 } from 'lucide-react';
 import type { UserRole } from '@rezz/shared';
 import { useAuthStore } from '@/store/auth.store';
@@ -36,6 +37,7 @@ function useNavItems(): NavItem[] {
       { to: '/dashboard/users', label: t('dashboard.menu_users'), icon: UsersRound },
       { to: '/dashboard/settings', label: t('dashboard.menu_settings'), icon: SlidersHorizontal },
       { to: '/dashboard/landing', label: t('dashboard.menu_landing'), icon: LayoutDashboard },
+      { to: '/dashboard/profile', label: t('dashboard.menu_profile'), icon: User },
     ],
     MANAGER: [
       { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },
@@ -43,10 +45,12 @@ function useNavItems(): NavItem[] {
       { to: '/dashboard/history', label: t('dashboard.menu_history'), icon: Clock },
       { to: '/dashboard/employees', label: t('dashboard.menu_employees'), icon: Users },
       { to: '/dashboard/events', label: t('dashboard.menu_events'), icon: PartyPopper },
+      { to: '/dashboard/profile', label: t('dashboard.menu_profile'), icon: User },
     ],
     WORKER: [
       { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },
       { to: '/dashboard/reservations', label: t('dashboard.menu_reservations'), icon: CalendarCheck },
+      { to: '/dashboard/profile', label: t('dashboard.menu_profile'), icon: User },
     ],
     GUEST: [],
   };
@@ -110,16 +114,22 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
       </aside>
 
       {/* Bottom nav — mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-primary-600 bg-primary-400 md:hidden">
-        {navItems.slice(0, 5).map((item) => {
+      <nav
+        className={`fixed inset-x-0 bottom-0 z-40 flex items-center border-t border-primary-600 bg-primary-400 md:hidden ${
+          navItems.length > 5
+            ? 'snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+            : 'justify-around'
+        }`}
+      >
+        {navItems.map((item) => {
           const isActive = location.pathname === item.to;
           return (
             <Link
               key={item.to}
               to={item.to}
-              className={`flex flex-1 flex-col items-center py-3 text-xs transition-colors ${
-                isActive ? 'text-white' : 'text-white/60'
-              }`}
+              className={`flex flex-col items-center py-3 text-xs snap-start transition-colors ${
+                navItems.length > 5 ? 'basis-1/5 shrink-0' : 'flex-1'
+              } ${isActive ? 'text-white' : 'text-white/60'}`}
             >
               <span className="relative">
                 <item.icon className="h-6 w-6" />

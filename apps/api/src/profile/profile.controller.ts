@@ -12,7 +12,12 @@ import { CancelGuestReservationDto } from './dto/cancel-guest-reservation.dto';
 
 @Controller('profile')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.GUEST)
+@Roles(
+  UserRole.GUEST,
+  UserRole.MANAGER,
+  UserRole.WORKER,
+  UserRole.SUPER_ADMIN,
+)
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
@@ -34,6 +39,7 @@ export class ProfileController {
   }
 
   @Get('reservations')
+  @Roles(UserRole.GUEST)
   getMyReservations(
     @CurrentUser() user: User,
   ): Promise<{ upcoming: Reservation[]; history: Reservation[] }> {
@@ -41,6 +47,7 @@ export class ProfileController {
   }
 
   @Patch('reservations/:id/cancel')
+  @Roles(UserRole.GUEST)
   cancelMyReservation(
     @Param('id') id: string,
     @CurrentUser() user: User,
