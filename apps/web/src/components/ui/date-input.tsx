@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 interface DateInputProps extends Omit<React.ComponentProps<'input'>, 'type'> {
-  type?: 'date' | 'time';
+  type?: 'date' | 'time' | 'datetime-local';
   placeholder?: string;
 }
 

@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { DateInput } from '@/components/ui/date-input';
 import { useCreateEvent, useUpdateEvent } from '@/hooks/useEvents';
 import type { VenueEvent } from '@/lib/types/event.types';
 
@@ -123,8 +124,9 @@ export function EventForm({
           <label className="mb-1 block text-sm font-medium">
             {t('events.starts_at_label')}
           </label>
-          <input
+          <DateInput
             type="datetime-local"
+            placeholder={t('events.starts_at_placeholder')}
             {...register('startsAt', {
               required: t('events.starts_at_required'),
               validate: (value) =>
@@ -132,7 +134,6 @@ export function EventForm({
                 new Date(value) > new Date() ||
                 t('events.starts_at_past'),
             })}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
           {errors.startsAt && (
             <p className="mt-1 text-xs text-red-500">
@@ -144,10 +145,10 @@ export function EventForm({
           <label className="mb-1 block text-sm font-medium">
             {t('events.ends_at_label')}
           </label>
-          <input
+          <DateInput
             type="datetime-local"
+            placeholder={t('events.ends_at_placeholder')}
             {...register('endsAt')}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
         </div>
       </div>
