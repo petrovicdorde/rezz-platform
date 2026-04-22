@@ -6,7 +6,7 @@ import {
   AcceptLanguageResolver,
   HeaderResolver,
 } from 'nestjs-i18n';
-import * as path from 'path';
+import { StaticI18nLoader } from './i18n.loader';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -67,10 +67,8 @@ import { ProfileModule } from './profile/profile.module';
     }),
     I18nModule.forRoot({
       fallbackLanguage: 'sr',
-      loaderOptions: {
-        path: path.join(__dirname, '/i18n/'),
-        watch: true,
-      },
+      loader: StaticI18nLoader,
+      loaderOptions: {},
       resolvers: [
         { use: HeaderResolver, options: ['accept-language'] },
         AcceptLanguageResolver,
