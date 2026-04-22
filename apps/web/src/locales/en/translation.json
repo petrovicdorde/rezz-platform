@@ -504,6 +504,8 @@
     "ends_at_label": "End date and time",
     "image_label": "Event image",
     "image_coming_soon": "Image upload will be available soon.",
+    "promotion_image_short": "Image",
+    "promotion_image_coming_soon": "Promotion image upload will be available soon.",
     "promotions_section": "Promotions",
     "promotion_name_label": "Promotion name",
     "promotion_name_placeholder": "E.g. VIP entry",

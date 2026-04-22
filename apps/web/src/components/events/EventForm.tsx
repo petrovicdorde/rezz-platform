@@ -176,34 +176,48 @@ export function EventForm({
 
         <div className="space-y-3">
           {fields.map((field, index) => (
-            <div key={field.id} className="flex items-start gap-2">
-              <div className="flex-1">
-                <Input
-                  {...register(`promotions.${index}.name`, {
-                    required: t('events.name_required'),
-                  })}
-                  placeholder={t('events.promotion_name_placeholder')}
-                />
-              </div>
-              <div className="w-24">
-                <Input
-                  type="number"
-                  min={0}
-                  step={0.01}
-                  {...register(`promotions.${index}.price`, {
-                    valueAsNumber: true,
-                    min: { value: 0, message: t('events.price_min') },
-                  })}
-                  placeholder="0.00"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="mt-2 text-red-400 hover:text-red-600"
+            <div
+              key={field.id}
+              className="flex items-start gap-2 rounded-lg border border-tertiary-200 bg-tertiary-50 p-2"
+            >
+              <div
+                className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-md border border-dashed border-tertiary-300 bg-white text-tertiary-400"
+                title={t('events.promotion_image_coming_soon')}
               >
-                <X className="h-5 w-5" />
-              </button>
+                <ImageIcon className="h-5 w-5" />
+                <span className="mt-0.5 text-[10px] leading-tight">
+                  {t('events.promotion_image_short')}
+                </span>
+              </div>
+              <div className="flex flex-1 items-start gap-2">
+                <div className="flex-1">
+                  <Input
+                    {...register(`promotions.${index}.name`, {
+                      required: t('events.name_required'),
+                    })}
+                    placeholder={t('events.promotion_name_placeholder')}
+                  />
+                </div>
+                <div className="w-24">
+                  <Input
+                    type="number"
+                    min={0}
+                    step={0.01}
+                    {...register(`promotions.${index}.price`, {
+                      valueAsNumber: true,
+                      min: { value: 0, message: t('events.price_min') },
+                    })}
+                    placeholder="0.00"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  className="mt-2 text-red-400 hover:text-red-600"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           ))}
         </div>

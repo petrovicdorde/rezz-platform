@@ -504,6 +504,8 @@
     "ends_at_label": "Datum i vrijeme završetka",
     "image_label": "Slika događaja",
     "image_coming_soon": "Upload slike će biti dostupan uskoro.",
+    "promotion_image_short": "Slika",
+    "promotion_image_coming_soon": "Upload slike promocije će biti dostupan uskoro.",
     "promotions_section": "Promocije",
     "promotion_name_label": "Naziv promocije",
     "promotion_name_placeholder": "Npr. VIP ulaz",
