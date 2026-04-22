@@ -11,9 +11,11 @@ import { EventDetailDrawer } from '@/components/events/EventDetailDrawer';
 import { EventDetailModal } from '@/components/events/EventDetailModal';
 import { useEvents } from '@/hooks/useEvents';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { requireRole } from '@/lib/route-guards';
 import type { VenueEvent } from '@/lib/types/event.types';
 
 export const Route = createFileRoute('/dashboard/events')({
+  beforeLoad: () => requireRole(['MANAGER', 'SUPER_ADMIN']),
   component: EventsPage,
 });
 

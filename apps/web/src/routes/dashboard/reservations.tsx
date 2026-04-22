@@ -19,9 +19,11 @@ import {
   useRecordArrival,
 } from '@/hooks/useReservations';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { requireRole } from '@/lib/route-guards';
 import type { ReservationStatus } from '@rezz/shared';
 
 export const Route = createFileRoute('/dashboard/reservations')({
+  beforeLoad: () => requireRole(['MANAGER', 'WORKER', 'SUPER_ADMIN']),
   component: ReservationsPage,
 });
 

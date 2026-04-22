@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { SettingsTabContent } from '@/components/settings/SettingsTabContent';
+import { requireRole } from '@/lib/route-guards';
 
 export const Route = createFileRoute('/dashboard/settings')({
+  beforeLoad: () => requireRole(['SUPER_ADMIN']),
   component: SettingsPage,
 });
 

@@ -14,10 +14,12 @@ import {
 } from "@/hooks/useLanding";
 import { useVenues } from "@/hooks/useVenues";
 import { eventsApi } from "@/lib/api/events.api";
+import { requireRole } from "@/lib/route-guards";
 import type { VenueEvent } from "@/lib/types/event.types";
 import type { LandingConfig } from "@/lib/types/landing.types";
 
 export const Route = createFileRoute("/dashboard/landing")({
+  beforeLoad: () => requireRole(["SUPER_ADMIN"]),
   component: LandingAdminPage,
 });
 

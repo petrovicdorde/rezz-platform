@@ -8,9 +8,11 @@ import { NotificationItem } from '@/components/notifications/NotificationItem';
 import { ReservationDetailDrawer } from '@/components/reservations/ReservationDetailDrawer';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useAuthStore } from '@/store/auth.store';
+import { requireRole } from '@/lib/route-guards';
 import type { Notification } from '@/lib/types/notification.types';
 
 export const Route = createFileRoute('/dashboard/notifications')({
+  beforeLoad: () => requireRole(['MANAGER', 'WORKER', 'SUPER_ADMIN']),
   component: NotificationsPage,
 });
 

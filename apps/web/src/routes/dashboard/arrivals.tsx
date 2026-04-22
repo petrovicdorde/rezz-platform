@@ -1,8 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { requireRole } from '@/lib/route-guards';
 
 export const Route = createFileRoute('/dashboard/arrivals')({
+  beforeLoad: () => requireRole(['MANAGER', 'WORKER', 'SUPER_ADMIN']),
   component: ArrivalsPage,
 });
 

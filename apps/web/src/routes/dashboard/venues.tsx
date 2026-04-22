@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
-import { useAuthStore } from '@/store/auth.store';
 import { useVenues } from '@/hooks/useVenues';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -12,25 +11,20 @@ import { VenueFormDrawer } from '@/components/venues/VenueFormDrawer';
 import { VenueDetailModal } from '@/components/venues/VenueDetailModal';
 import { VenueDetailDrawer } from '@/components/venues/VenueDetailDrawer';
 import { Button } from '@/components/ui/button';
+import { requireRole } from '@/lib/route-guards';
 import type { AdminVenue } from '@/lib/types/venue.types';
 
 export const Route = createFileRoute('/dashboard/venues')({
+  beforeLoad: () => requireRole(['SUPER_ADMIN']),
   component: VenuesDashboardPage,
 });
 
 function VenuesDashboardPage(): React.JSX.Element {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const user = useAuthStore((s) => s.user);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedVenue, setSelectedVenue] = useState<AdminVenue | null>(null);
   const { data: venues, isLoading, isError } = useVenues();
   const isMobile = useMediaQuery('(max-width: 767px)');
-
-  if (user?.role !== 'SUPER_ADMIN') {
-    navigate({ to: '/' });
-    return <></>;
-  }
 
   return (
     <DashboardLayout>

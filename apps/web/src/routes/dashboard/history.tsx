@@ -8,9 +8,11 @@ import { SwiperFilterChips } from '@/components/ui/SwiperFilterChips';
 import { HistoryCard } from '@/components/reservations/HistoryCard';
 import { useReservations, RESERVATIONS_KEY } from '@/hooks/useReservations';
 import { useAuthStore } from '@/store/auth.store';
+import { requireRole } from '@/lib/route-guards';
 import type { ReservationStatus } from '@rezz/shared';
 
 export const Route = createFileRoute('/dashboard/history')({
+  beforeLoad: () => requireRole(['MANAGER', 'SUPER_ADMIN']),
   component: HistoryPage,
 });
 

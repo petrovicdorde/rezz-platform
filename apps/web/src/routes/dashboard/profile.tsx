@@ -8,8 +8,10 @@ import { EditProfileDrawer } from '@/components/profile/EditProfileDrawer';
 import { VenueProfileSection } from '@/components/venues/VenueProfileSection';
 import { useMyProfile } from '@/hooks/useProfile';
 import { useAuthStore } from '@/store/auth.store';
+import { requireRole } from '@/lib/route-guards';
 
 export const Route = createFileRoute('/dashboard/profile')({
+  beforeLoad: () => requireRole(['MANAGER', 'WORKER', 'SUPER_ADMIN']),
   component: ProfilePage,
 });
 

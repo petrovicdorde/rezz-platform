@@ -9,10 +9,12 @@ import { UserDetailModal } from '@/components/users/UserDetailModal';
 import { UserDetailDrawer } from '@/components/users/UserDetailDrawer';
 import { useAdminUsers } from '@/hooks/useUsersAdmin';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { requireRole } from '@/lib/route-guards';
 import type { AdminUser } from '@/lib/types/user-admin.types';
 import type { UsersAdminFilters } from '@/lib/api/users-admin.api';
 
 export const Route = createFileRoute('/dashboard/users')({
+  beforeLoad: () => requireRole(['SUPER_ADMIN']),
   component: UsersPage,
 });
 

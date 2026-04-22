@@ -11,9 +11,11 @@ import { EmployeeDetailDrawer } from '@/components/employees/EmployeeDetailDrawe
 import { EmployeeDetailModal } from '@/components/employees/EmployeeDetailModal';
 import { useEmployees } from '@/hooks/useEmployees';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { requireRole } from '@/lib/route-guards';
 import type { Employee } from '@/lib/types/employee.types';
 
 export const Route = createFileRoute('/dashboard/employees')({
+  beforeLoad: () => requireRole(['MANAGER', 'SUPER_ADMIN']),
   component: EmployeesPage,
 });
 
