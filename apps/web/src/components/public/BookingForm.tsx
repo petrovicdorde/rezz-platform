@@ -1,30 +1,30 @@
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useForm, Controller } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { DatePicker } from '@/components/ui/date-picker';
-import { TimePicker } from '@/components/ui/time-picker';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useForm, Controller } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useAuthStore } from '@/store/auth.store';
+} from "@/components/ui/select";
+import { useAuthStore } from "@/store/auth.store";
 import {
   useCreateGuestReservation,
   usePublicAvailableSlots,
-} from '@/hooks/useReservations';
-import { useMyProfile } from '@/hooks/useProfile';
-import { useSettingValueLabel } from '@/hooks/useSettings';
-import type { PublicVenue } from '@/lib/types/venue.types';
+} from "@/hooks/useReservations";
+import { useMyProfile } from "@/hooks/useProfile";
+import { useSettingValueLabel } from "@/hooks/useSettings";
+import type { PublicVenue } from "@/lib/types/venue.types";
 import type {
   CreateReservationRequest,
   Reservation,
-} from '@/lib/types/reservation.types';
+} from "@/lib/types/reservation.types";
 
 interface BookingFormProps {
   venue: PublicVenue;
@@ -54,7 +54,7 @@ export function BookingForm({
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useMyProfile();
   const mutation = useCreateGuestReservation(venue.id);
-  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
+  const tableTypeLabel = useSettingValueLabel("TABLE_TYPE");
 
   const {
     register,
@@ -66,14 +66,14 @@ export function BookingForm({
     formState: { errors },
   } = useForm<BookingFormValues>({
     defaultValues: {
-      firstName: user?.firstName ?? '',
-      lastName: user?.lastName ?? '',
-      phone: user?.phone ?? '',
-      date: lockedDate ?? '',
-      time: '',
+      firstName: user?.firstName ?? "",
+      lastName: user?.lastName ?? "",
+      phone: user?.phone ?? "",
+      date: lockedDate ?? "",
+      time: "",
       numberOfGuests: 2,
-      tableType: '',
-      specialRequest: '',
+      tableType: "",
+      specialRequest: "",
     },
   });
 
@@ -81,18 +81,19 @@ export function BookingForm({
     if (!profile) return;
     const current = getValues();
     if (!current.firstName && profile.firstName) {
-      setValue('firstName', profile.firstName);
+      setValue("firstName", profile.firstName);
     }
     if (!current.lastName && profile.lastName) {
-      setValue('lastName', profile.lastName);
+      setValue("lastName", profile.lastName);
     }
     if (!current.phone && profile.phone) {
-      setValue('phone', profile.phone);
+      setValue("phone", profile.phone);
     }
   }, [profile, getValues, setValue]);
 
-  const selectedDate = watch('date');
-  const selectedTableType = watch('tableType');
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const selectedDate = watch("date");
+  const selectedTableType = watch("tableType");
 
   const { data: slots, isLoading: slotsLoading } = usePublicAvailableSlots(
     venue.id,
@@ -130,10 +131,10 @@ export function BookingForm({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm font-medium text-secondary-600">
-            {t('booking.first_name_label')}
+            {t("booking.first_name_label")}
           </label>
           <Input
-            {...register('firstName', { required: t('booking.required') })}
+            {...register("firstName", { required: t("booking.required") })}
           />
           {errors.firstName && (
             <p className="mt-1 text-xs text-red-500">
@@ -144,10 +145,10 @@ export function BookingForm({
 
         <div>
           <label className="mb-1 block text-sm font-medium text-secondary-600">
-            {t('booking.last_name_label')}
+            {t("booking.last_name_label")}
           </label>
           <Input
-            {...register('lastName', { required: t('booking.required') })}
+            {...register("lastName", { required: t("booking.required") })}
           />
           {errors.lastName && (
             <p className="mt-1 text-xs text-red-500">
@@ -159,11 +160,11 @@ export function BookingForm({
 
       <div>
         <label className="mb-1 block text-sm font-medium text-secondary-600">
-          {t('booking.phone_label')}
+          {t("booking.phone_label")}
         </label>
         <Input
           type="tel"
-          {...register('phone', { required: t('booking.required') })}
+          {...register("phone", { required: t("booking.required") })}
         />
         {errors.phone && (
           <p className="mt-1 text-xs text-red-500">{errors.phone.message}</p>
@@ -173,7 +174,7 @@ export function BookingForm({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm font-medium text-secondary-600">
-            {t('booking.date_label')}
+            {t("booking.date_label")}
           </label>
           {lockedDate ? (
             <>
@@ -182,21 +183,21 @@ export function BookingForm({
                 readOnly
                 className="bg-tertiary-50 text-tertiary-700"
               />
-              <input type="hidden" {...register('date', { required: true })} />
+              <input type="hidden" {...register("date", { required: true })} />
               <p className="mt-1 text-xs text-tertiary-500">
-                {t('booking.date_locked_by_event')}
+                {t("booking.date_locked_by_event")}
               </p>
             </>
           ) : (
             <Controller
               control={control}
               name="date"
-              rules={{ required: t('booking.required') }}
+              rules={{ required: t("booking.required") }}
               render={({ field }) => (
                 <DatePicker
                   value={field.value}
                   onChange={field.onChange}
-                  placeholder={t('common.select_date')}
+                  placeholder={t("common.select_date")}
                 />
               )}
             />
@@ -208,23 +209,23 @@ export function BookingForm({
 
         <div>
           <label className="mb-1 block text-sm font-medium text-secondary-600">
-            {t('booking.time_label')}
+            {t("booking.time_label")}
           </label>
           <Controller
             control={control}
             name="time"
             rules={{
-              required: t('booking.required'),
+              required: t("booking.required"),
               pattern: {
                 value: /^([01]\d|2[0-3]):([0-5]\d)$/,
-                message: t('booking.invalid_time'),
+                message: t("booking.invalid_time"),
               },
             }}
             render={({ field }) => (
               <TimePicker
                 value={field.value}
                 onChange={field.onChange}
-                placeholder={t('common.select_time')}
+                placeholder={t("common.select_time")}
               />
             )}
           />
@@ -237,15 +238,15 @@ export function BookingForm({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm font-medium text-secondary-600">
-            {t('booking.guests_label')}
+            {t("booking.guests_label")}
           </label>
           <Input
             type="number"
             min={1}
-            {...register('numberOfGuests', {
-              required: t('booking.required'),
+            {...register("numberOfGuests", {
+              required: t("booking.required"),
               valueAsNumber: true,
-              min: { value: 1, message: t('booking.min_guests') },
+              min: { value: 1, message: t("booking.min_guests") },
             })}
           />
           {errors.numberOfGuests && (
@@ -257,13 +258,13 @@ export function BookingForm({
 
         <div>
           <label className="mb-1 block text-sm font-medium text-secondary-600">
-            {t('booking.table_type_label')}
+            {t("booking.table_type_label")}
           </label>
           {hasTables ? (
             <Controller
               control={control}
               name="tableType"
-              rules={{ required: t('booking.required') }}
+              rules={{ required: t("booking.required") }}
               render={({ field }) => (
                 <Select
                   value={field.value || undefined}
@@ -271,7 +272,7 @@ export function BookingForm({
                 >
                   <SelectTrigger>
                     <SelectValue
-                      placeholder={t('booking.table_type_placeholder')}
+                      placeholder={t("booking.table_type_placeholder")}
                     />
                   </SelectTrigger>
                   <SelectContent>
@@ -286,7 +287,7 @@ export function BookingForm({
             />
           ) : (
             <p className="rounded-md border border-tertiary-200 bg-tertiary-50 px-3 py-2 text-sm text-tertiary-500">
-              {t('booking.no_tables_configured')}
+              {t("booking.no_tables_configured")}
             </p>
           )}
           {errors.tableType && (
@@ -301,16 +302,16 @@ export function BookingForm({
         <div className="text-sm">
           {slotsLoading ? (
             <span className="text-tertiary-500">
-              {t('booking.availability_checking')}
+              {t("booking.availability_checking")}
             </span>
           ) : slots && slots.available > 0 ? (
             <span className="text-primary-600">
-              {t('booking.availability_available', { count: slots.available })}
+              {t("booking.availability_available", { count: slots.available })}
             </span>
           ) : (
             slots && (
               <span className="text-red-500">
-                {t('booking.availability_none')}
+                {t("booking.availability_none")}
               </span>
             )
           )}
@@ -319,11 +320,11 @@ export function BookingForm({
 
       <div>
         <label className="mb-1 block text-sm font-medium text-secondary-600">
-          {t('booking.special_request_label')}
+          {t("booking.special_request_label")}
         </label>
         <Textarea
-          {...register('specialRequest')}
-          placeholder={t('booking.special_request_placeholder')}
+          {...register("specialRequest")}
+          placeholder={t("booking.special_request_placeholder")}
           rows={3}
         />
       </div>
@@ -333,7 +334,7 @@ export function BookingForm({
         disabled={mutation.isPending || !hasTables}
         className="w-full bg-primary-400 py-3 font-medium text-white hover:bg-primary-600"
       >
-        {mutation.isPending ? t('booking.submitting') : t('booking.submit')}
+        {mutation.isPending ? t("booking.submitting") : t("booking.submit")}
       </Button>
     </form>
   );

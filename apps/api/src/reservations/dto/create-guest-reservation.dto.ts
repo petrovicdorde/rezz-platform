@@ -1,6 +1,5 @@
 import {
   IsDateString,
-  IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -8,6 +7,7 @@ import {
   IsUUID,
   Matches,
   Min,
+  MinLength,
 } from 'class-validator';
 import type { TableType } from '@rezz/shared';
 
@@ -37,15 +37,9 @@ export class CreateGuestReservationDto {
   @Min(1)
   numberOfGuests: number;
 
-  @IsEnum([
-    'STANDARD',
-    'BOOTH',
-    'BAR_SEAT',
-    'LOW_TABLE',
-    'HIGH_TABLE',
-    'TERRACE',
-    'VIP',
-  ])
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
   tableType: TableType;
 
   @IsOptional()
