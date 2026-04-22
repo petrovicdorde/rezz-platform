@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ReservationStatusBadge } from './ReservationStatusBadge';
 import { useConfirmReservation, useRejectReservation } from '@/hooks/useReservations';
 import { useMarkAsRead } from '@/hooks/useNotifications';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { Notification } from '@/lib/types/notification.types';
 import type { ReservationStatus } from '@rezz/shared';
 
@@ -29,6 +30,7 @@ export function ReservationDetailDrawer({
   const confirmMutation = useConfirmReservation();
   const rejectMutation = useRejectReservation();
   const markAsReadMutation = useMarkAsRead();
+  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
 
   const res = notification?.reservation;
   const status = res?.status as ReservationStatus | undefined;
@@ -67,11 +69,16 @@ export function ReservationDetailDrawer({
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-tertiary-500">{t('reservation.phone_label')}</span>
-                  <span className="flex items-center gap-1 text-secondary-600">
+                  <a
+                    href={res.phone ? `tel:${res.phone.replace(/\s+/g, '')}` : undefined}
+                    className="flex items-center gap-1 text-secondary-600 hover:text-primary-600"
+                  >
                     <Phone className="h-3.5 w-3.5" />
-                    {/* phone not in notification.reservation — show from metadata */}
-                    {(notification?.metadata as Record<string, string> | null)?.phone ?? '—'}
-                  </span>
+                    {res.phone ||
+                      (notification?.metadata as Record<string, string> | null)
+                        ?.phone ||
+                      '—'}
+                  </a>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-tertiary-500">{t('reservation.date_label')}</span>
@@ -86,7 +93,7 @@ export function ReservationDetailDrawer({
                 <div className="flex justify-between">
                   <span className="text-tertiary-500">{t('reservation.table_type_label')}</span>
                   <span className="text-secondary-600">
-                    {t(`reservation.table_${res.tableType.toLowerCase()}`)}
+                    {tableTypeLabel(res.tableType)}
                   </span>
                 </div>
                 <div className="flex justify-between">

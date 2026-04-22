@@ -2,21 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format, parseISO } from 'date-fns';
 import { ChevronUp, Loader2 } from 'lucide-react';
-import type { TableType } from '@rezz/shared';
 import { ReservationStatusBadge } from '@/components/reservations/ReservationStatusBadge';
 import { Collapsible } from '@/components/ui/collapsible';
 import { useCancelMyReservation } from '@/hooks/useProfile';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { Reservation } from '@/lib/types/reservation.types';
-
-const TABLE_TYPE_KEYS: Record<TableType, string> = {
-  STANDARD: 'reservation.table_standard',
-  BOOTH: 'reservation.table_booth',
-  BAR_SEAT: 'reservation.table_bar_seat',
-  LOW_TABLE: 'reservation.table_low_table',
-  HIGH_TABLE: 'reservation.table_high_table',
-  TERRACE: 'reservation.table_terrace',
-  VIP: 'reservation.table_vip',
-};
 
 type ExpandedSection = 'none' | 'details' | 'cancel';
 
@@ -30,6 +20,7 @@ export function ProfileReservationCard({
   showCancelButton,
 }: ProfileReservationCardProps): React.JSX.Element {
   const { t } = useTranslation();
+  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
   const [expanded, setExpanded] = useState<ExpandedSection>('none');
   const [cancelReason, setCancelReason] = useState('');
   const cancelMutation = useCancelMyReservation();
@@ -89,7 +80,7 @@ export function ProfileReservationCard({
         <span>·</span>
         <span>{reservation.time}</span>
         <span>·</span>
-        <span>{t(TABLE_TYPE_KEYS[reservation.tableType])}</span>
+        <span>{tableTypeLabel(reservation.tableType)}</span>
         <span>·</span>
         <span>{reservation.numberOfGuests}</span>
       </div>
@@ -122,7 +113,7 @@ export function ProfileReservationCard({
               {t('profile.table_label')}
             </span>
             <span className="text-secondary-600">
-              {t(TABLE_TYPE_KEYS[reservation.tableType])}
+              {tableTypeLabel(reservation.tableType)}
             </span>
           </div>
           <div className="flex items-center justify-between">

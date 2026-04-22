@@ -2,21 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Phone, MessageSquare, Loader2 } from 'lucide-react';
 import { format, parseISO, isToday, isPast } from 'date-fns';
-import type { TableType } from '@rezz/shared';
 import { Button } from '@/components/ui/button';
 import { ReservationStatusBadge } from './ReservationStatusBadge';
 import { GuestScoreBadge } from './GuestScoreBadge';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { Reservation } from '@/lib/types/reservation.types';
-
-const TABLE_TYPE_KEYS: Record<TableType, string> = {
-  STANDARD: 'reservation.table_standard',
-  BOOTH: 'reservation.table_booth',
-  BAR_SEAT: 'reservation.table_bar_seat',
-  LOW_TABLE: 'reservation.table_low_table',
-  HIGH_TABLE: 'reservation.table_high_table',
-  TERRACE: 'reservation.table_terrace',
-  VIP: 'reservation.table_vip',
-};
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -42,6 +32,7 @@ export function ReservationCard({
   isRecordingArrival,
 }: ReservationCardProps): React.JSX.Element {
   const { t } = useTranslation();
+  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
   const dateObj = parseISO(reservation.date);
   const canRecordArrival = isToday(dateObj) || isPast(dateObj);
   const [confirmAction, setConfirmAction] = useState<'arrival' | 'noShow' | null>(null);
@@ -81,7 +72,7 @@ export function ReservationCard({
         <span>·</span>
         <span>{reservation.time}</span>
         <span>·</span>
-        <span>{t(TABLE_TYPE_KEYS[reservation.tableType])}</span>
+        <span>{tableTypeLabel(reservation.tableType)}</span>
         <span>·</span>
         <span>{t('reservation.guests_count', { count: reservation.numberOfGuests })}</span>
       </div>

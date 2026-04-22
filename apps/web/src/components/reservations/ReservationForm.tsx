@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { format } from 'date-fns';
-import type { TableType } from '@rezz/shared';
 import { Input } from '@/components/ui/input';
 import { DatePicker } from '@/components/ui/date-picker';
 import { TimePicker } from '@/components/ui/time-picker';
@@ -15,26 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useCreateReservation, useAvailableSlots } from '@/hooks/useReservations';
-
-const TABLE_TYPES: TableType[] = [
-  'STANDARD',
-  'BOOTH',
-  'BAR_SEAT',
-  'LOW_TABLE',
-  'HIGH_TABLE',
-  'TERRACE',
-  'VIP',
-];
-
-const TABLE_TYPE_KEYS: Record<TableType, string> = {
-  STANDARD: 'reservation.table_standard',
-  BOOTH: 'reservation.table_booth',
-  BAR_SEAT: 'reservation.table_bar_seat',
-  LOW_TABLE: 'reservation.table_low_table',
-  HIGH_TABLE: 'reservation.table_high_table',
-  TERRACE: 'reservation.table_terrace',
-  VIP: 'reservation.table_vip',
-};
+import { usePublicSettings, useSettingLabel } from '@/hooks/useSettings';
 
 interface ReservationFormProps {
   onSuccess: () => void;
@@ -58,6 +38,8 @@ export function ReservationForm({
 }: ReservationFormProps): React.JSX.Element {
   const { t } = useTranslation();
   const createReservation = useCreateReservation();
+  const { data: tableTypeOptions } = usePublicSettings('TABLE_TYPE');
+  const settingLabel = useSettingLabel();
   const today = format(new Date(), 'yyyy-MM-dd');
 
   const {
@@ -221,9 +203,9 @@ export function ReservationForm({
                 <SelectValue placeholder={t('reservation.table_type_label')} />
               </SelectTrigger>
               <SelectContent>
-                {TABLE_TYPES.map((tt) => (
-                  <SelectItem key={tt} value={tt}>
-                    {t(TABLE_TYPE_KEYS[tt])}
+                {tableTypeOptions?.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {settingLabel(opt)}
                   </SelectItem>
                 ))}
               </SelectContent>

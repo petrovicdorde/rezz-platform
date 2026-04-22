@@ -2,24 +2,14 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Phone, MessageSquare, Star as StarIcon, AlertTriangle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
-import type { TableType } from '@rezz/shared';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { StarRating } from '@/components/ui/StarRating';
 import { ReservationStatusBadge } from './ReservationStatusBadge';
 import { GuestRatingForm } from './GuestRatingForm';
 import { GuestScoreBadge } from './GuestScoreBadge';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { Reservation } from '@/lib/types/reservation.types';
-
-const TABLE_TYPE_KEYS: Record<TableType, string> = {
-  STANDARD: 'reservation.table_standard',
-  BOOTH: 'reservation.table_booth',
-  BAR_SEAT: 'reservation.table_bar_seat',
-  LOW_TABLE: 'reservation.table_low_table',
-  HIGH_TABLE: 'reservation.table_high_table',
-  TERRACE: 'reservation.table_terrace',
-  VIP: 'reservation.table_vip',
-};
 
 interface HistoryCardProps {
   reservation: Reservation;
@@ -31,6 +21,7 @@ export function HistoryCard({
   onRatingSuccess,
 }: HistoryCardProps): React.JSX.Element {
   const { t } = useTranslation();
+  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
   const [showRatingForm, setShowRatingForm] = useState(false);
   const dateObj = parseISO(reservation.date);
 
@@ -67,7 +58,7 @@ export function HistoryCard({
         <span>·</span>
         <span>{reservation.time}</span>
         <span>·</span>
-        <span>{t(TABLE_TYPE_KEYS[reservation.tableType])}</span>
+        <span>{tableTypeLabel(reservation.tableType)}</span>
         <span>·</span>
         <span>
           {t('reservation.guests_count', {

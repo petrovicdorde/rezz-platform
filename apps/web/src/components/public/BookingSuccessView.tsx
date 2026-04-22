@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { format, parseISO } from 'date-fns';
 import { CheckCircle2, Calendar, Clock, Users, Utensils } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { Reservation } from '@/lib/types/reservation.types';
 
 interface BookingSuccessViewProps {
@@ -10,22 +11,13 @@ interface BookingSuccessViewProps {
   onNewReservation: () => void;
 }
 
-const TABLE_TYPE_KEYS: Record<string, string> = {
-  STANDARD: 'venue.table_standard',
-  BOOTH: 'venue.table_booth',
-  BAR_SEAT: 'venue.table_bar_seat',
-  LOW_TABLE: 'venue.table_low_table',
-  HIGH_TABLE: 'venue.table_high_table',
-  TERRACE: 'venue.table_terrace',
-  VIP: 'venue.table_vip',
-};
-
 export function BookingSuccessView({
   reservation,
   venueName,
   onNewReservation,
 }: BookingSuccessViewProps): React.JSX.Element {
   const { t } = useTranslation();
+  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
   const formattedDate = format(parseISO(reservation.date), 'dd.MM.yyyy');
 
   return (
@@ -84,7 +76,7 @@ export function BookingSuccessView({
             {t('booking.table_type_label')}
           </span>
           <span className="text-sm font-medium text-secondary-600">
-            {t(TABLE_TYPE_KEYS[reservation.tableType] ?? reservation.tableType)}
+            {tableTypeLabel(reservation.tableType)}
           </span>
         </div>
       </div>
