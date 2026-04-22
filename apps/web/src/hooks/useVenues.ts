@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { venuesApi } from '@/lib/api/venues.api';
-import type { SendInvitationRequest } from '@/lib/api/venues.api';
 import { handleApiError } from '@/lib/handle-error';
 import type { CreateVenueRequest } from '@/lib/types/venue.types';
 import i18n from '@/i18n';
@@ -73,16 +72,6 @@ export function useToggleVenueStatus() {
         i18n.t(variables.isActive ? 'venue.activated' : 'venue.deactivated'),
       );
     },
-    onError: (error: unknown) => {
-      handleApiError(error);
-    },
-  });
-}
-
-export function useSendInvitation(venueId: string) {
-  return useMutation({
-    mutationFn: (data: SendInvitationRequest) =>
-      venuesApi.sendInvitation(venueId, data),
     onError: (error: unknown) => {
       handleApiError(error);
     },

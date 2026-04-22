@@ -14,6 +14,7 @@ import type { Employee } from '@/lib/types/employee.types';
 interface EmployeeDetailContentProps {
   employee: Employee;
   onClose: () => void;
+  venueId?: string;
 }
 
 function getInitials(employee: Employee): string {
@@ -26,15 +27,16 @@ function getInitials(employee: Employee): string {
 export function EmployeeDetailContent({
   employee,
   onClose,
+  venueId,
 }: EmployeeDetailContentProps): React.JSX.Element {
   const { t } = useTranslation();
   const [confirmAction, setConfirmAction] = useState<
     'remove' | 'cancel_invite' | 'change_role' | null
   >(null);
 
-  const removeEmployee = useRemoveEmployee();
-  const cancelInvitation = useCancelInvitation();
-  const updateRole = useUpdateEmployeeRole();
+  const removeEmployee = useRemoveEmployee(venueId);
+  const cancelInvitation = useCancelInvitation(venueId);
+  const updateRole = useUpdateEmployeeRole(venueId);
 
   const displayName =
     employee.firstName || employee.lastName

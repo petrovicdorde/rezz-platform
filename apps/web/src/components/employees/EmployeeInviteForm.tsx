@@ -9,6 +9,7 @@ import i18n from '@/i18n';
 interface EmployeeInviteFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  venueId?: string;
 }
 
 interface InviteFormValues {
@@ -22,9 +23,10 @@ interface InviteFormValues {
 export function EmployeeInviteForm({
   onSuccess,
   onCancel,
+  venueId,
 }: EmployeeInviteFormProps): React.JSX.Element {
   const { t } = useTranslation();
-  const inviteEmployee = useInviteEmployee();
+  const inviteEmployee = useInviteEmployee(venueId);
 
   const {
     register,

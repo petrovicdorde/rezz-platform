@@ -7,8 +7,13 @@ import type { InviteEmployeeRequest } from '@/lib/types/employee.types';
 
 const EMPLOYEES_KEY = (venueId: string) => ['employees', venueId];
 
-export function useEmployees() {
-  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+function useResolvedVenueId(override?: string): string {
+  const storeVenueId = useAuthStore((s) => s.user?.venueId ?? '');
+  return override ?? storeVenueId;
+}
+
+export function useEmployees(venueIdOverride?: string) {
+  const venueId = useResolvedVenueId(venueIdOverride);
   return useQuery({
     queryKey: EMPLOYEES_KEY(venueId),
     queryFn: () => employeesApi.getAll(venueId),
@@ -16,8 +21,8 @@ export function useEmployees() {
   });
 }
 
-export function useInviteEmployee() {
-  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+export function useInviteEmployee(venueIdOverride?: string) {
+  const venueId = useResolvedVenueId(venueIdOverride);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: InviteEmployeeRequest) =>
@@ -30,8 +35,8 @@ export function useInviteEmployee() {
   });
 }
 
-export function useUpdateEmployeeRole() {
-  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+export function useUpdateEmployeeRole(venueIdOverride?: string) {
+  const venueId = useResolvedVenueId(venueIdOverride);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, role }: { id: string; role: 'MANAGER' | 'WORKER' }) =>
@@ -44,8 +49,8 @@ export function useUpdateEmployeeRole() {
   });
 }
 
-export function useRemoveEmployee() {
-  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+export function useRemoveEmployee(venueIdOverride?: string) {
+  const venueId = useResolvedVenueId(venueIdOverride);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => employeesApi.remove(venueId, id),
@@ -57,8 +62,8 @@ export function useRemoveEmployee() {
   });
 }
 
-export function useCancelInvitation() {
-  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+export function useCancelInvitation(venueIdOverride?: string) {
+  const venueId = useResolvedVenueId(venueIdOverride);
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (invitationId: string) =>

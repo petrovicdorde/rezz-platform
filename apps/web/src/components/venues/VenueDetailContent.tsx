@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { VenueForm } from './VenueForm';
-import { ManagerTab } from './ManagerTab';
+import { EmployeesTab } from './EmployeesTab';
 import { useDeleteVenue, useToggleVenueStatus } from '@/hooks/useVenues';
 import type { AdminVenue } from '@/lib/types/venue.types';
 
@@ -201,7 +201,7 @@ export function VenueDetailContent({
         </TabsContent>
 
         <TabsContent value="manager">
-          <ManagerTab venue={venue} />
+          <EmployeesTab venueId={venue.id} />
         </TabsContent>
       </Tabs>
     </div>
