@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Building2, MapPin, Car } from 'lucide-react';
 import { useSettingValueLabel } from '@/hooks/useSettings';
+import { useAuthStore } from '@/store/auth.store';
 import type { PublicVenue } from '@/lib/types/venue.types';
 
 interface VenuePublicCardProps {
@@ -14,6 +15,9 @@ export function VenuePublicCard({
 }: VenuePublicCardProps): React.JSX.Element {
   const { t } = useTranslation();
   const venueTypeLabel = useSettingValueLabel('VENUE_TYPE');
+  const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const canReserve = !isAuthenticated || user?.role === 'GUEST';
   const visibleTags = venue.tags.slice(0, 3);
   const typeLabel = venueTypeLabel(venue.type);
 
@@ -68,7 +72,9 @@ export function VenuePublicCard({
             {venue.hasParking && <Car className="size-3.5" />}
           </div>
           <span className="text-xs font-medium text-primary-600 group-hover:text-primary-800">
-            {t('venues_page.card_reserve_cta')}
+            {canReserve
+              ? t('venues_page.card_reserve_cta')
+              : t('venues_page.card_view_cta')}
           </span>
         </div>
       </div>

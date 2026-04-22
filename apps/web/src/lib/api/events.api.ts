@@ -6,10 +6,22 @@ import type {
   EventPromotion,
 } from '@/lib/types/event.types';
 
+export interface PublicEventWithVenue {
+  event: VenueEvent;
+  venue: { id: string; name: string; address: string; city: string };
+}
+
 export const eventsApi = {
   getAll: async (venueId: string): Promise<VenueEvent[]> => {
     const response = await api.get<VenueEvent[]>(
       `/venues/${venueId}/events`,
+    );
+    return response.data;
+  },
+
+  getPublicById: async (id: string): Promise<PublicEventWithVenue> => {
+    const response = await api.get<PublicEventWithVenue>(
+      `/events/public/${id}`,
     );
     return response.data;
   },

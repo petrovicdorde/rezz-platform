@@ -50,6 +50,7 @@ export interface CreateReservationRequest {
   numberOfGuests: number;
   tableType: TableType;
   specialRequest?: string;
+  eventId?: string;
 }
 
 export interface GuestRatingRequest {

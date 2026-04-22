@@ -126,7 +126,7 @@ function HomePage(): React.JSX.Element {
                   <button
                     key={event.id}
                     type="button"
-                    onClick={() => navigate({ to: `/lokali/${event.venueId}` })}
+                    onClick={() => navigate({ to: `/dogadjaji/${event.id}` })}
                     className="group relative flex aspect-3/4 flex-col justify-end overflow-hidden rounded-2xl bg-linear-to-b from-secondary-400 to-secondary-700 text-left"
                   >
                     {event.imageUrl && (

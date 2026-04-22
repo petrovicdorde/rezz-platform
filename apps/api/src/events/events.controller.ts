@@ -24,6 +24,11 @@ import { CreatePromotionDto } from './dto/create-promotion.dto';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+  @Get('events/public/:id')
+  findOnePublicById(@Param('id') id: string, @I18nLang() lang: string) {
+    return this.eventsService.findOnePublicById(id, lang);
+  }
+
   @Get('venues/:venueId/events/public')
   findAllPublic(@Param('venueId') venueId: string) {
     return this.eventsService.findAllPublicByVenue(venueId);

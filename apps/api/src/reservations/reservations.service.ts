@@ -224,6 +224,7 @@ export class ReservationsService {
       source: 'GUEST_APP',
       createdByManagerId: null,
       userId,
+      eventId: dto.eventId ?? null,
     });
 
     const saved = await this.reservationRepo.save(reservation);

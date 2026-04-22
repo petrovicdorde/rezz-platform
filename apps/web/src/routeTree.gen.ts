@@ -17,6 +17,7 @@ import { Route as LokaliIndexRouteImport } from './routes/lokali/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as VenuesSlugRouteImport } from './routes/venues/$slug'
 import { Route as LokaliIdRouteImport } from './routes/lokali/$id'
+import { Route as DogadjajiIdRouteImport } from './routes/dogadjaji/$id'
 import { Route as DashboardVenuesRouteImport } from './routes/dashboard/venues'
 import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
@@ -75,6 +76,11 @@ const VenuesSlugRoute = VenuesSlugRouteImport.update({
 const LokaliIdRoute = LokaliIdRouteImport.update({
   id: '/lokali/$id',
   path: '/lokali/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DogadjajiIdRoute = DogadjajiIdRouteImport.update({
+  id: '/dogadjaji/$id',
+  path: '/dogadjaji/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardVenuesRoute = DashboardVenuesRouteImport.update({
@@ -195,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
+  '/dogadjaji/$id': typeof DogadjajiIdRoute
   '/lokali/$id': typeof LokaliIdRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
@@ -224,6 +231,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
+  '/dogadjaji/$id': typeof DogadjajiIdRoute
   '/lokali/$id': typeof LokaliIdRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
@@ -254,6 +262,7 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/venues': typeof DashboardVenuesRoute
+  '/dogadjaji/$id': typeof DogadjajiIdRoute
   '/lokali/$id': typeof LokaliIdRoute
   '/venues/$slug': typeof VenuesSlugRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
@@ -285,6 +294,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/users'
     | '/dashboard/venues'
+    | '/dogadjaji/$id'
     | '/lokali/$id'
     | '/venues/$slug'
     | '/dashboard/'
@@ -314,6 +324,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/users'
     | '/dashboard/venues'
+    | '/dogadjaji/$id'
     | '/lokali/$id'
     | '/venues/$slug'
     | '/dashboard'
@@ -343,6 +354,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/users'
     | '/dashboard/venues'
+    | '/dogadjaji/$id'
     | '/lokali/$id'
     | '/venues/$slug'
     | '/dashboard/'
@@ -373,6 +385,7 @@ export interface RootRouteChildren {
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardVenuesRoute: typeof DashboardVenuesRoute
+  DogadjajiIdRoute: typeof DogadjajiIdRoute
   LokaliIdRoute: typeof LokaliIdRoute
   VenuesSlugRoute: typeof VenuesSlugRouteWithChildren
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -436,6 +449,13 @@ declare module '@tanstack/react-router' {
       path: '/lokali/$id'
       fullPath: '/lokali/$id'
       preLoaderRoute: typeof LokaliIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dogadjaji/$id': {
+      id: '/dogadjaji/$id'
+      path: '/dogadjaji/$id'
+      fullPath: '/dogadjaji/$id'
+      preLoaderRoute: typeof DogadjajiIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/venues': {
@@ -608,6 +628,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardUsersRoute: DashboardUsersRoute,
   DashboardVenuesRoute: DashboardVenuesRoute,
+  DogadjajiIdRoute: DogadjajiIdRoute,
   LokaliIdRoute: LokaliIdRoute,
   VenuesSlugRoute: VenuesSlugRouteWithChildren,
   DashboardIndexRoute: DashboardIndexRoute,

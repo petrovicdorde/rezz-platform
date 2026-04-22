@@ -150,7 +150,8 @@
     "category_see_all": "See all",
     "loading": "Loading venues...",
     "clear_filters": "Clear filters",
-    "card_reserve_cta": "Reserve →"
+    "card_reserve_cta": "Reserve →",
+    "card_view_cta": "View →"
   },
   "venue_detail": {
     "about": "About us",
@@ -184,6 +185,17 @@
     "not_found": "Venue not found.",
     "not_found_subtitle": "This venue does not exist or has been removed."
   },
+  "event_detail": {
+    "not_found": "Event not found.",
+    "about": "About the event",
+    "no_description": "No description.",
+    "promotions": "Promotions",
+    "venue_section": "Venue",
+    "view_venue": "View venue",
+    "book_for_event": "Reserve for this event",
+    "book_for_event_hint": "Date is already set for {{name}}. Pick a time, number of guests, and table type.",
+    "reserve_for_event": "Reserve for event"
+  },
   "booking": {
     "title": "Book a table",
     "success_title": "Reservation sent",
@@ -202,6 +214,7 @@
     "availability_checking": "Checking availability...",
     "availability_available": "Available: {{count}}",
     "availability_none": "No tables available for the selected date",
+    "date_locked_by_event": "Date is set by the event.",
     "submit": "Send reservation",
     "submitting": "Sending...",
     "new_reservation": "New reservation",

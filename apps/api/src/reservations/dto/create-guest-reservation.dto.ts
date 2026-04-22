@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   Matches,
   Min,
 } from 'class-validator';
@@ -50,4 +51,8 @@ export class CreateGuestReservationDto {
   @IsOptional()
   @IsString()
   specialRequest?: string;
+
+  @IsOptional()
+  @IsUUID()
+  eventId?: string;
 }

@@ -20,6 +20,14 @@ export function useEvents() {
   });
 }
 
+export function usePublicEvent(eventId: string) {
+  return useQuery({
+    queryKey: ['event-public', eventId],
+    queryFn: () => eventsApi.getPublicById(eventId),
+    enabled: !!eventId,
+  });
+}
+
 export function useCreateEvent() {
   const venueId = useAuthStore((s) => s.user?.venueId ?? '');
   const queryClient = useQueryClient();

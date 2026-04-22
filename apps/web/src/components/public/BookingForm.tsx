@@ -29,6 +29,8 @@ import type {
 interface BookingFormProps {
   venue: PublicVenue;
   onSuccess: (reservation: Reservation) => void;
+  eventId?: string;
+  lockedDate?: string;
 }
 
 interface BookingFormValues {
@@ -55,6 +57,8 @@ const TABLE_TYPE_KEYS: Record<TableType, string> = {
 export function BookingForm({
   venue,
   onSuccess,
+  eventId,
+  lockedDate,
 }: BookingFormProps): React.JSX.Element {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
@@ -74,7 +78,7 @@ export function BookingForm({
       firstName: user?.firstName ?? '',
       lastName: user?.lastName ?? '',
       phone: user?.phone ?? '',
-      date: '',
+      date: lockedDate ?? '',
       time: '',
       numberOfGuests: 2,
       tableType: '',
@@ -122,6 +126,7 @@ export function BookingForm({
       numberOfGuests: Number(data.numberOfGuests),
       tableType: data.tableType,
       specialRequest: data.specialRequest || undefined,
+      eventId,
     };
 
     mutation.mutate(payload, {
@@ -179,19 +184,33 @@ export function BookingForm({
           <label className="mb-1 block text-sm font-medium text-secondary-600">
             {t('booking.date_label')}
           </label>
-          <Controller
-            control={control}
-            name="date"
-            rules={{ required: t('booking.required') }}
-            render={({ field }) => (
-              <DatePicker
-                value={field.value}
-                onChange={field.onChange}
-                placeholder={t('common.select_date')}
+          {lockedDate ? (
+            <>
+              <Input
+                value={lockedDate}
+                readOnly
+                className="bg-tertiary-50 text-tertiary-700"
               />
-            )}
-          />
-          {errors.date && (
+              <input type="hidden" {...register('date', { required: true })} />
+              <p className="mt-1 text-xs text-tertiary-500">
+                {t('booking.date_locked_by_event')}
+              </p>
+            </>
+          ) : (
+            <Controller
+              control={control}
+              name="date"
+              rules={{ required: t('booking.required') }}
+              render={({ field }) => (
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder={t('common.select_date')}
+                />
+              )}
+            />
+          )}
+          {errors.date && !lockedDate && (
             <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>
           )}
         </div>

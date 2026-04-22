@@ -62,6 +62,41 @@ export class EventsService {
     return event;
   }
 
+  async findOnePublicById(
+    id: string,
+    lang: string = 'sr',
+  ): Promise<{
+    event: Event;
+    venue: { id: string; name: string; address: string; city: string };
+  }> {
+    const event = await this.eventRepo.findOne({
+      where: { id, isActive: true },
+      relations: ['promotions'],
+    });
+
+    if (!event) {
+      throw new NotFoundException(this.i18n.t('event.not_found', { lang }));
+    }
+
+    const venue = await this.venueRepo.findOne({
+      where: { id: event.venueId, isActive: true },
+    });
+
+    if (!venue) {
+      throw new NotFoundException(this.i18n.t('event.not_found', { lang }));
+    }
+
+    return {
+      event,
+      venue: {
+        id: venue.id,
+        name: venue.name,
+        address: venue.address,
+        city: venue.city,
+      },
+    };
+  }
+
   async create(
     venueId: string,
     dto: CreateEventDto,

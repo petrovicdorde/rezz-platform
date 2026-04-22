@@ -150,7 +150,8 @@
     "category_see_all": "Pogledaj sve",
     "loading": "Učitavanje lokala...",
     "clear_filters": "Očisti filtere",
-    "card_reserve_cta": "Rezerviši →"
+    "card_reserve_cta": "Rezerviši →",
+    "card_view_cta": "Pogledaj →"
   },
   "venue_detail": {
     "about": "O nama",
@@ -184,6 +185,17 @@
     "not_found": "Lokal nije pronađen.",
     "not_found_subtitle": "Ovaj lokal ne postoji ili je uklonjen."
   },
+  "event_detail": {
+    "not_found": "Event nije pronađen.",
+    "about": "O eventu",
+    "no_description": "Nema opisa.",
+    "promotions": "Promocije",
+    "venue_section": "Lokal",
+    "view_venue": "Pogledaj lokal",
+    "book_for_event": "Rezerviši za event",
+    "book_for_event_hint": "Datum je već postavljen za event {{name}}. Izaberi vrijeme, broj gostiju i tip stola.",
+    "reserve_for_event": "Rezerviši za event"
+  },
   "booking": {
     "title": "Rezerviši sto",
     "success_title": "Rezervacija je poslata",
@@ -202,6 +214,7 @@
     "availability_checking": "Provjera dostupnosti...",
     "availability_available": "Dostupno: {{count}}",
     "availability_none": "Nema slobodnih stolova za odabrani datum",
+    "date_locked_by_event": "Datum je određen eventom.",
     "submit": "Pošalji rezervaciju",
     "submitting": "Slanje...",
     "new_reservation": "Nova rezervacija",

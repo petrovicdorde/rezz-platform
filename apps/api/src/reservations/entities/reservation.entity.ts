@@ -15,6 +15,7 @@ import type {
 } from '@rezz/shared';
 import { Venue } from '../../venues/entities/venue.entity';
 import { User } from '../../users/entities/user.entity';
+import { Event } from '../../events/entities/event.entity';
 import type { GuestRating } from './guest-rating.entity';
 
 @Entity('reservations')
@@ -87,6 +88,13 @@ export class Reservation {
 
   @Column({ name: 'user_id', type: 'uuid', nullable: true })
   userId: string | null;
+
+  @ManyToOne(() => Event, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'event_id' })
+  event: Event | null;
+
+  @Column({ name: 'event_id', type: 'uuid', nullable: true })
+  eventId: string | null;
 
   @Column({ type: 'timestamptz', nullable: true })
   arrivedAt: Date | null;

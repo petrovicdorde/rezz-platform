@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
-import { Car, CreditCard, Banknote, Smartphone, MapPin } from 'lucide-react';
-import type { PaymentMethod } from '@rezz/shared';
-import { useSettingValueLabel } from '@/hooks/useSettings';
-import type { AdminVenue } from '@/lib/types/venue.types';
+import { useTranslation } from "react-i18next";
+import { Car, CreditCard, Banknote, Smartphone, MapPin } from "lucide-react";
+import type { PaymentMethod } from "@rezz/shared";
+import { useSettingValueLabel } from "@/hooks/useSettings";
+import type { AdminVenue } from "@/lib/types/venue.types";
 
 interface VenueCardProps {
   venue: AdminVenue;
@@ -16,14 +16,17 @@ const PAYMENT_ICONS: Record<PaymentMethod, React.ElementType> = {
 };
 
 const PAYMENT_KEYS: Record<PaymentMethod, string> = {
-  CASH: 'venue.payment_cash',
-  CARD: 'venue.payment_card',
-  MOBILE: 'venue.payment_mobile',
+  CASH: "venue.payment_cash",
+  CARD: "venue.payment_card",
+  MOBILE: "venue.payment_mobile",
 };
 
-export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element {
+export function VenueCard({
+  venue,
+  onClick,
+}: VenueCardProps): React.JSX.Element {
   const { t } = useTranslation();
-  const venueTypeLabel = useSettingValueLabel('VENUE_TYPE');
+  const venueTypeLabel = useSettingValueLabel("VENUE_TYPE");
   const visibleTags = venue.tags.slice(0, 3);
   const extraTagCount = venue.tags.length - 3;
 
@@ -38,11 +41,13 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
         <span
           className={`rounded-full px-2 py-0.5 text-xs ${
             venue.isActive
-              ? 'bg-green-100 text-green-700'
-              : 'bg-red-100 text-red-700'
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
           }`}
         >
-          {venue.isActive ? t('venue.status_active') : t('venue.status_inactive')}
+          {venue.isActive
+            ? t("venue.status_active")
+            : t("venue.status_inactive")}
         </span>
       </div>
 
@@ -55,7 +60,7 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
 
       {/* City + Address */}
       <div className="mt-1 flex items-center gap-1 text-sm text-tertiary-500">
-        <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-tertiary-400" />
+        <MapPin className="h-3.5 w-3.5 shrink-0 text-tertiary-400" />
         <span>{venue.city}</span>
       </div>
 
@@ -72,7 +77,7 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
           ))}
           {extraTagCount > 0 && (
             <span className="rounded-full bg-tertiary-100 px-2 py-0.5 text-xs text-tertiary-600">
-              +{extraTagCount} {t('venue.tags_more')}
+              +{extraTagCount} {t("venue.tags_more")}
             </span>
           )}
         </div>
@@ -89,14 +94,18 @@ export function VenueCard({ venue, onClick }: VenueCardProps): React.JSX.Element
           {venue.paymentMethods.map((pm) => {
             const Icon = PAYMENT_ICONS[pm];
             return (
-              <span key={pm} className="flex items-center gap-1" title={t(PAYMENT_KEYS[pm])}>
+              <span
+                key={pm}
+                className="flex items-center gap-1"
+                title={t(PAYMENT_KEYS[pm])}
+              >
                 <Icon className="h-4 w-4" />
               </span>
             );
           })}
         </div>
         <span className="text-xs text-tertiary-400">
-          {venue.tables.length} {t('venue.tables_label').toLowerCase()}
+          {venue.tables.length} {t("venue.tables_label").toLowerCase()}
         </span>
       </div>
     </div>
