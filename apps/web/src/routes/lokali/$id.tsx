@@ -171,10 +171,13 @@ function VenueDetailPage(): React.JSX.Element {
               <Navigation className="size-3.5" />
               {venue.address}
             </span>
-            <span className="flex items-center gap-1">
+            <a
+              href={`tel:${venue.reservationPhone.replace(/\s+/g, '')}`}
+              className="flex items-center gap-1 hover:text-white"
+            >
               <Phone className="size-3.5" />
               {venue.reservationPhone}
-            </span>
+            </a>
           </div>
         </div>
       </div>

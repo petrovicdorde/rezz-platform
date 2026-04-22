@@ -25,6 +25,7 @@ export class PublicVenueDto {
   hasParking: boolean;
   tags: string[];
   imageUrl: string | null;
+  description: string | null;
   city: string;
   address: string;
   tables: PublicVenueTableDto[];
@@ -60,6 +61,7 @@ export class VenueMapper {
       hasParking: venue.hasParking,
       tags: venue.tags,
       imageUrl: venue.imageUrl,
+      description: venue.description ?? null,
       city: venue.city,
       address: venue.address,
       isActive: venue.isActive,

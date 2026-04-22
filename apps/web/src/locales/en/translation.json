@@ -224,6 +224,14 @@
     "invalid_time": "Time must be in HH:MM format",
     "venue_label": "Venue"
   },
+  "my_venue": {
+    "title": "Venue profile",
+    "about_label": "About the venue",
+    "about_placeholder": "Short description of the venue, atmosphere, and offering...",
+    "about_max": "Description can be at most 800 characters.",
+    "gallery_label": "Gallery",
+    "gallery_coming_soon": "Gallery will be available soon."
+  },
   "dashboard": {
     "menu_venues": "Venues",
     "menu_notifications": "Notifications",

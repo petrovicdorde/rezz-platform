@@ -224,6 +224,14 @@
     "invalid_time": "Vrijeme mora biti u formatu HH:MM",
     "venue_label": "Lokal"
   },
+  "my_venue": {
+    "title": "Profil lokala",
+    "about_label": "O lokalu",
+    "about_placeholder": "Kratak opis lokala, atmosfere i ponude...",
+    "about_max": "Opis može imati najviše 800 karaktera.",
+    "gallery_label": "Galerija",
+    "gallery_coming_soon": "Galerija će biti dostupna uskoro."
+  },
   "dashboard": {
     "menu_venues": "Lokali",
     "menu_notifications": "Obavještenja",

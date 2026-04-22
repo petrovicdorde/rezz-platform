@@ -41,6 +41,7 @@ export interface CreateVenueRequest {
   reservationEmail?: string;
   city: string;
   address: string;
+  description?: string;
   workingHours?: WorkingHours;
   paymentMethods: PaymentMethod[];
   hasParking: boolean;
@@ -77,6 +78,7 @@ export interface AdminVenue {
   reservationEmail: string | null;
   city: string;
   address: string;
+  description?: string | null;
   workingHours: WorkingHours;
   paymentMethods: PaymentMethod[];
   hasParking: boolean;

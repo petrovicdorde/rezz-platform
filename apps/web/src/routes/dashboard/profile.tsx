@@ -1,10 +1,13 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { Mail, Phone, Pencil } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { EditProfileDrawer } from '@/components/profile/EditProfileDrawer';
+import { VenueProfileSection } from '@/components/venues/VenueProfileSection';
 import { useMyProfile } from '@/hooks/useProfile';
+import { useAuthStore } from '@/store/auth.store';
 
 export const Route = createFileRoute('/dashboard/profile')({
   component: ProfilePage,
@@ -13,6 +16,7 @@ export const Route = createFileRoute('/dashboard/profile')({
 function ProfilePage(): React.JSX.Element {
   const { t } = useTranslation();
   const { data: profile, isLoading } = useMyProfile();
+  const role = useAuthStore((s) => s.user?.role);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const initials = (
@@ -23,7 +27,7 @@ function ProfilePage(): React.JSX.Element {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-lg">
+      <div className="max-w-2xl">
         <h1 className="mb-4 text-2xl font-semibold text-secondary-600">
           {t('dashboard.menu_profile')}
         </h1>
@@ -81,6 +85,8 @@ function ProfilePage(): React.JSX.Element {
             </button>
           </div>
         )}
+
+        {role === 'MANAGER' && <VenueProfileSection />}
       </div>
 
       {profile && (

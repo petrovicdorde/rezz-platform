@@ -51,6 +51,9 @@ export class Venue {
   @Column({ type: 'varchar', nullable: true })
   imageUrl: string | null;
 
+  @Column({ type: 'text', nullable: true })
+  description: string | null;
+
   @Column({ type: 'jsonb', default: '[]' })
   socialLinks: SocialLink[];
 

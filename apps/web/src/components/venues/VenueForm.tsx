@@ -5,6 +5,7 @@ import { X, Plus } from "lucide-react";
 import type { PaymentMethod } from "@rezz/shared";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -103,6 +104,7 @@ export function VenueForm({
           reservationEmail: initialData.reservationEmail ?? "",
           city: initialData.city ?? "",
           address: initialData.address ?? "",
+          description: initialData.description ?? "",
           hasParking: initialData.hasParking,
           paymentMethods: initialData.paymentMethods,
           tags: initialData.tags,
@@ -122,6 +124,7 @@ export function VenueForm({
           reservationEmail: "",
           city: "",
           address: "",
+          description: "",
           hasParking: false,
           paymentMethods: [],
           tags: [],
@@ -169,6 +172,7 @@ export function VenueForm({
     const payload = {
       ...data,
       reservationEmail: data.reservationEmail || undefined,
+      description: data.description?.trim() || undefined,
       socialLinks: cleanedSocialLinks,
       workingHours: fillMissingDays(data.workingHours),
     };
@@ -438,6 +442,31 @@ export function VenueForm({
               />
             )}
           />
+        </div>
+      )}
+
+      {!(isReadOnly && !initialData?.description) && (
+        <div className="mb-4">
+          <label className="mb-1 block text-sm font-medium">
+            {t("my_venue.about_label")}
+          </label>
+          <Textarea
+            {...register("description", {
+              maxLength: {
+                value: 800,
+                message: t("my_venue.about_max"),
+              },
+            })}
+            placeholder={t("my_venue.about_placeholder")}
+            rows={5}
+            disabled={isReadOnly}
+            className="max-h-48 resize-y"
+          />
+          {errors.description && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.description.message}
+            </p>
+          )}
         </div>
       )}
 
