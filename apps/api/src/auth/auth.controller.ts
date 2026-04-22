@@ -48,10 +48,15 @@ export class AuthController {
     @Res() res: Response,
     @I18nLang() lang: string,
   ): Promise<void> {
-    const frontendUrl = this.configService.get<string>(
-      'FRONTEND_URL',
-      'http://localhost:5173',
-    );
+    const frontendUrl = (
+      this.configService.get<string>(
+        'FRONTEND_URL',
+        'http://localhost:5173',
+      ) ?? 'http://localhost:5173'
+    )
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)[0];
     try {
       await this.authService.verifyEmail(token, lang);
       res.redirect(`${frontendUrl}/auth/verified`);
@@ -108,10 +113,15 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     const result = await this.authService.googleLogin(req.user);
-    const frontendUrl = this.configService.get<string>(
-      'FRONTEND_URL',
-      'http://localhost:5173',
-    );
+    const frontendUrl = (
+      this.configService.get<string>(
+        'FRONTEND_URL',
+        'http://localhost:5173',
+      ) ?? 'http://localhost:5173'
+    )
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)[0];
     const params = new URLSearchParams({
       token: result.accessToken,
       refreshToken: result.refreshToken,

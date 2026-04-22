@@ -76,10 +76,15 @@ export class EmailService {
     firstName: string,
     token: string,
   ): Promise<void> {
-    const frontendUrl = this.configService.get<string>(
-      'FRONTEND_URL',
-      'http://localhost:5173',
-    );
+    const frontendUrl = (
+      this.configService.get<string>(
+        'FRONTEND_URL',
+        'http://localhost:5173',
+      ) ?? 'http://localhost:5173'
+    )
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)[0];
     const resetLink = `${frontendUrl}/auth/reset-password?token=${token}`;
 
     try {
