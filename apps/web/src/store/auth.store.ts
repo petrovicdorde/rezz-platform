@@ -10,6 +10,9 @@ export interface AuthUser {
   lastName: string;
   phone?: string | null;
   venueId: string | null;
+  isBlacklisted?: boolean;
+  blacklistReason?: string | null;
+  blacklistExpiresAt?: string | null;
 }
 
 interface AuthState {
@@ -22,6 +25,14 @@ interface AuthState {
   setRefreshToken: (refreshToken: string) => void;
   setAuth: (user: AuthUser, accessToken: string, refreshToken: string) => void;
   logout: () => void;
+}
+
+export function isUserCurrentlyBlocked(
+  user: AuthUser | null | undefined,
+): boolean {
+  if (!user?.isBlacklisted) return false;
+  if (!user.blacklistExpiresAt) return true;
+  return new Date(user.blacklistExpiresAt).getTime() > Date.now();
 }
 
 export const useAuthStore = create<AuthState>()(

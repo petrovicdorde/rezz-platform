@@ -31,6 +31,7 @@ import { Setting } from './settings/entities/setting.entity';
 import { LandingModule } from './landing/landing.module';
 import { LandingConfig } from './landing/entities/landing-config.entity';
 import { ProfileModule } from './profile/profile.module';
+import { BlacklistModule } from './blacklist/blacklist.module';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { ProfileModule } from './profile/profile.module';
     SettingsModule,
     LandingModule,
     ProfileModule,
+    BlacklistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

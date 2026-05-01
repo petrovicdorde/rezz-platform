@@ -94,7 +94,8 @@
     "blacklisted_after_no_shows": "Gost je stavljen na crnu listu nakon 3 nepojavljivanja.",
     "guest_created": "Rezervacija je uspješno poslata. Čekajte potvrdu lokala.",
     "phone_required_for_reservation": "Broj telefona je obavezan za rezervaciju.",
-    "blacklisted_cannot_reserve": "Vaš nalog je blokiran. Ne možete slati rezervacije."
+    "blacklisted_cannot_reserve": "Vaš nalog je blokiran. Ne možete slati rezervacije.",
+    "blacklisted_auto_reason": "Automatski: {count} nepojavljivanja u posljednjih {days} dana"
   },
   "notification": {
     "not_found": "Obavještenje nije pronađeno.",

@@ -20,10 +20,11 @@ import { VenueGallery } from '@/components/public/VenueGallery';
 import { GoogleMapEmbed } from '@/components/public/GoogleMapEmbed';
 import { BookingForm } from '@/components/public/BookingForm';
 import { BookingSuccessView } from '@/components/public/BookingSuccessView';
+import { BlacklistedBanner } from '@/components/profile/BlacklistedBanner';
 import { Button } from '@/components/ui/button';
 import { usePublicVenue } from '@/hooks/useVenues';
 import { useSettingValueLabel } from '@/hooks/useSettings';
-import { useAuthStore } from '@/store/auth.store';
+import { useAuthStore, isUserCurrentlyBlocked } from '@/store/auth.store';
 import { useLoginStore } from '@/store/login-ui.store';
 import type { Reservation } from '@/lib/types/reservation.types';
 
@@ -257,7 +258,9 @@ function VenueDetailPage(): React.JSX.Element {
             <h2 className="mb-6 text-xl font-bold text-secondary-600">
               {t('booking.title')}
             </h2>
-            {completedReservation ? (
+            {isUserCurrentlyBlocked(user) ? (
+              <BlacklistedBanner reason={user?.blacklistReason ?? null} />
+            ) : completedReservation ? (
               <BookingSuccessView
                 reservation={completedReservation}
                 venueName={venue.name}

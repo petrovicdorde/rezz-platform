@@ -153,6 +153,13 @@
     "card_reserve_cta": "Reserve →",
     "card_view_cta": "View →"
   },
+  "blacklist": {
+    "title": "Your account is blocked",
+    "description": "You can't send reservations. Please contact support to explain the situation — a super admin will review your case.",
+    "reason_label": "Reason",
+    "contact_support": "Email {{email}}",
+    "support_subject": "Blocked account appeal — Rezz.ba"
+  },
   "venue_detail": {
     "about": "About us",
     "working_hours": "Working hours",
@@ -349,6 +356,8 @@
     "cancelled": "Reservation cancelled.",
     "arrived": "Guest arrival confirmed.",
     "no_show": "Guest marked as no-show.",
+    "no_show_count": "{{count}} no-shows ({{days}}d)",
+    "no_show_count_hint": "Number of no-shows by this guest in the last {{days}} days.",
     "title": "Reservations",
     "new": "New reservation",
     "filter_today": "Today",

@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { EmailService } from '../email/email.service';
+import { BlacklistConfig } from '../blacklist/blacklist.config';
 import { User, UserRole } from '../users/entities/user.entity';
 import { Venue } from '../venues/entities/venue.entity';
 import { RegisterDto } from './dto/register.dto';
@@ -30,6 +31,9 @@ export interface SafeUser {
   role: string;
   isEmailVerified: boolean;
   isActive: boolean;
+  isBlacklisted: boolean;
+  blacklistReason: string | null;
+  blacklistExpiresAt: Date | null;
   venueId: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -43,8 +47,23 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly emailService: EmailService,
     private readonly i18n: I18nService,
+    private readonly blacklistConfig: BlacklistConfig,
     @InjectRepository(Venue) private readonly venueRepo: Repository<Venue>,
   ) {}
+
+  async applyBlacklistExpiry(user: User): Promise<User> {
+    if (
+      user.isBlacklisted &&
+      this.blacklistConfig.isExpired(user.blacklistedAt)
+    ) {
+      return this.usersService.update(user.id, {
+        isBlacklisted: false,
+        blacklistedAt: null,
+        blacklistReason: null,
+      });
+    }
+    return user;
+  }
 
   async register(
     dto: RegisterDto,
@@ -291,6 +310,12 @@ export class AuthService {
       role: user.role,
       isEmailVerified: user.isEmailVerified,
       isActive: user.isActive,
+      isBlacklisted: user.isBlacklisted ?? false,
+      blacklistReason: user.blacklistReason ?? null,
+      blacklistExpiresAt:
+        user.isBlacklisted && user.blacklistedAt
+          ? this.blacklistConfig.expiresAt(user.blacklistedAt)
+          : null,
       venueId: user.venueId ?? null,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

@@ -15,10 +15,11 @@ import {
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { BookingForm } from '@/components/public/BookingForm';
 import { BookingSuccessView } from '@/components/public/BookingSuccessView';
+import { BlacklistedBanner } from '@/components/profile/BlacklistedBanner';
 import { Button } from '@/components/ui/button';
 import { usePublicEvent } from '@/hooks/useEvents';
 import { usePublicVenue } from '@/hooks/useVenues';
-import { useAuthStore } from '@/store/auth.store';
+import { useAuthStore, isUserCurrentlyBlocked } from '@/store/auth.store';
 import { useLoginStore } from '@/store/login-ui.store';
 import type { Reservation } from '@/lib/types/reservation.types';
 
@@ -211,7 +212,9 @@ function EventDetailPage(): React.JSX.Element {
             <p className="mb-6 text-sm text-tertiary-500">
               {t('event_detail.book_for_event_hint', { name: event.name })}
             </p>
-            {completedReservation ? (
+            {isUserCurrentlyBlocked(user) ? (
+              <BlacklistedBanner reason={user?.blacklistReason ?? null} />
+            ) : completedReservation ? (
               <BookingSuccessView
                 reservation={completedReservation}
                 venueName={venue.name}

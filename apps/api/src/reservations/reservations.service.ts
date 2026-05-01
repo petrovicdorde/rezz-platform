@@ -27,6 +27,7 @@ import { GuestRatingDto } from './dto/guest-rating.dto';
 import { NotificationsService } from '../notifications/notifications.service';
 import { UsersService } from '../users/users.service';
 import { EmailService } from '../email/email.service';
+import { BlacklistConfig } from '../blacklist/blacklist.config';
 
 @Injectable()
 export class ReservationsService {
@@ -42,6 +43,7 @@ export class ReservationsService {
     private i18n: I18nService,
     private usersService: UsersService,
     private emailService: EmailService,
+    private blacklistConfig: BlacklistConfig,
     @Inject(forwardRef(() => NotificationsService))
     private notificationsService: NotificationsService,
   ) {}
@@ -178,9 +180,17 @@ export class ReservationsService {
     }
 
     if (user.isBlacklisted) {
-      throw new ForbiddenException(
-        this.i18n.t('reservation.blacklisted_cannot_reserve', { lang }),
-      );
+      if (this.blacklistConfig.isExpired(user.blacklistedAt)) {
+        await this.usersService.update(user.id, {
+          isBlacklisted: false,
+          blacklistedAt: null,
+          blacklistReason: null,
+        });
+      } else {
+        throw new ForbiddenException(
+          this.i18n.t('reservation.blacklisted_cannot_reserve', { lang }),
+        );
+      }
     }
 
     const today = new Date();
@@ -372,37 +382,54 @@ export class ReservationsService {
     reservation.arrivalNote = dto.note ?? null;
     const saved = await this.reservationRepo.save(reservation);
 
-    if (dto.outcome === 'NO_SHOW') {
-      const autoRating = this.ratingRepo.create({
-        rating: 0,
-        note: null,
-        isAutomatic: true,
-        reservationId: reservation.id,
-        guestUserId: reservation.userId ?? null,
-        ratedById: userId,
-        venueId: reservation.venueId,
-      });
-      await this.ratingRepo.save(autoRating);
-
-      if (reservation.userId) {
-        const noShowCount = await this.reservationRepo.count({
-          where: { phone: reservation.phone, status: 'NO_SHOW' as const },
-        });
-
-        if (noShowCount >= 3) {
-          const guest = await this.usersService.findById(reservation.userId);
-          if (guest && !guest.isBlacklisted) {
-            await this.usersService.update(guest.id, {
-              isBlacklisted: true,
-              blacklistedAt: new Date(),
-              blacklistReason: 'Automatski: 3 nepojavljivanja na rezervacijama',
-            });
-          }
+    if (dto.outcome === 'NO_SHOW' && reservation.userId) {
+      const recentNoShows = await this.countRecentNoShows(reservation.userId);
+      if (recentNoShows >= this.blacklistConfig.noShowThreshold) {
+        const guest = await this.usersService.findById(reservation.userId);
+        if (guest && !guest.isBlacklisted) {
+          await this.usersService.update(guest.id, {
+            isBlacklisted: true,
+            blacklistedAt: new Date(),
+            blacklistReason: this.i18n.t(
+              'reservation.blacklisted_auto_reason',
+              {
+                lang,
+                args: {
+                  count: this.blacklistConfig.noShowThreshold,
+                  days: this.blacklistConfig.noShowWindowDays,
+                },
+              },
+            ),
+          });
         }
       }
     }
 
     return saved;
+  }
+
+  private async countRecentNoShows(userId: string): Promise<number> {
+    const cutoff = new Date(Date.now() - this.blacklistConfig.noShowWindowMs);
+    return this.reservationRepo
+      .createQueryBuilder('reservation')
+      .where('reservation.userId = :userId', { userId })
+      .andWhere('reservation.status = :status', { status: 'NO_SHOW' })
+      .andWhere('reservation.createdAt >= :cutoff', { cutoff })
+      .getCount();
+  }
+
+  async getReservationGuestStats(
+    reservationId: string,
+    venueId: string,
+    lang: string = 'sr',
+  ): Promise<{ noShowCount: number; windowDays: number }> {
+    const windowDays = this.blacklistConfig.noShowWindowDays;
+    const reservation = await this.findOne(reservationId, venueId, lang);
+    if (!reservation.userId) {
+      return { noShowCount: 0, windowDays };
+    }
+    const noShowCount = await this.countRecentNoShows(reservation.userId);
+    return { noShowCount, windowDays };
   }
 
   async rateGuest(

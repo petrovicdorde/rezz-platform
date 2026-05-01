@@ -37,6 +37,16 @@ export const reservationsApi = {
     return response.data;
   },
 
+  getGuestStats: async (
+    venueId: string,
+    id: string,
+  ): Promise<{ noShowCount: number; windowDays: number }> => {
+    const response = await api.get<{ noShowCount: number; windowDays: number }>(
+      `/venues/${venueId}/reservations/${id}/guest-stats`,
+    );
+    return response.data;
+  },
+
   getAvailableSlots: async (
     venueId: string,
     date: string,

@@ -22,3 +22,5 @@ Monorepo with pnpm workspaces + Turborepo.
 ## Working Rules
 
 - Before making changes, check the current implementation first. If the request conflicts with what's already there, stop and ask questions: explain what the conflict is and ask how to proceed instead of guessing.
+- Read `README.md` at the start of every prompt. It is the living documentation of the project's features and behavior. Use it to understand what already exists before proposing or making changes.
+- After making any change that adds, removes, or alters a feature, business rule, or configurable behavior, update `README.md` in the same change. Keep the language plain and readable — describe the user-facing flow first, then a short technical outline. No code snippets in `README.md`. If a change is purely internal refactoring with no behavioral effect, no `README.md` update is needed.

@@ -153,6 +153,13 @@
     "card_reserve_cta": "Rezerviši →",
     "card_view_cta": "Pogledaj →"
   },
+  "blacklist": {
+    "title": "Vaš nalog je blokiran",
+    "description": "Ne možete slati rezervacije. Molimo kontaktirajte podršku da objasnite situaciju — super admin će razmotriti vaš slučaj.",
+    "reason_label": "Razlog",
+    "contact_support": "Pišite na {{email}}",
+    "support_subject": "Žalba na blokiran nalog — Rezz.ba"
+  },
   "venue_detail": {
     "about": "O nama",
     "working_hours": "Radno vrijeme",
@@ -349,6 +356,8 @@
     "cancelled": "Rezervacija je otkazana.",
     "arrived": "Dolazak gosta je potvrđen.",
     "no_show": "Gost označen kao nije došao.",
+    "no_show_count": "{{count}} nepojavljivanja ({{days}}d)",
+    "no_show_count_hint": "Broj nepojavljivanja ovog gosta u posljednjih {{days}} dana.",
     "title": "Rezervacije",
     "new": "Nova rezervacija",
     "filter_today": "Danas",

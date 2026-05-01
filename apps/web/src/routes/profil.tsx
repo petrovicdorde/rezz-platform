@@ -6,8 +6,9 @@ import { CalendarX, Pencil } from 'lucide-react';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { EditProfileDrawer } from '@/components/profile/EditProfileDrawer';
 import { ProfileReservationCard } from '@/components/profile/ProfileReservationCard';
+import { BlacklistedBanner } from '@/components/profile/BlacklistedBanner';
 import { useMyProfile, useMyReservations } from '@/hooks/useProfile';
-import { useAuthStore } from '@/store/auth.store';
+import { useAuthStore, isUserCurrentlyBlocked } from '@/store/auth.store';
 
 export const Route = createFileRoute('/profil')({
   component: ProfilPage,
@@ -44,6 +45,12 @@ function ProfilPage(): React.JSX.Element {
   return (
     <PublicLayout>
       <div className="mx-auto max-w-lg px-4 py-6">
+        {isUserCurrentlyBlocked(user) && (
+          <BlacklistedBanner
+            reason={user?.blacklistReason ?? null}
+            className="mb-4"
+          />
+        )}
         {/* Profile card */}
         <div className="mb-4 overflow-hidden rounded-2xl border border-tertiary-200 bg-white">
           <div className="flex items-center gap-3 p-4">

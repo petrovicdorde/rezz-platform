@@ -138,7 +138,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  me(@CurrentUser() user: User): SafeUser {
-    return this.authService.toSafeUser(user);
+  async me(@CurrentUser() user: User): Promise<SafeUser> {
+    const resolved = await this.authService.applyBlacklistExpiry(user);
+    return this.authService.toSafeUser(resolved);
   }
 }

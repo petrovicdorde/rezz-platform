@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone } from 'lucide-react';
+import { Phone, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ReservationStatusBadge } from './ReservationStatusBadge';
-import { useConfirmReservation, useRejectReservation } from '@/hooks/useReservations';
+import {
+  useConfirmReservation,
+  useRejectReservation,
+  useReservationGuestStats,
+} from '@/hooks/useReservations';
 import { useMarkAsRead } from '@/hooks/useNotifications';
 import { useSettingValueLabel } from '@/hooks/useSettings';
 import type { Notification } from '@/lib/types/notification.types';
@@ -34,6 +38,9 @@ export function ReservationDetailDrawer({
 
   const res = notification?.reservation;
   const status = res?.status as ReservationStatus | undefined;
+  const { data: guestStats } = useReservationGuestStats(res?.id);
+  const noShowCount = guestStats?.noShowCount ?? 0;
+  const windowDays = guestStats?.windowDays ?? 30;
 
   useEffect(() => {
     setNote('');
@@ -67,6 +74,26 @@ export function ReservationDetailDrawer({
                     {res.firstName} {res.lastName}
                   </span>
                 </div>
+                {noShowCount > 0 && (
+                  <div className="flex justify-end">
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
+                        noShowCount >= 2
+                          ? 'bg-red-50 text-red-600'
+                          : 'bg-amber-50 text-amber-700'
+                      }`}
+                      title={t('reservation.no_show_count_hint', {
+                        days: windowDays,
+                      })}
+                    >
+                      <AlertTriangle className="h-3 w-3" />
+                      {t('reservation.no_show_count', {
+                        count: noShowCount,
+                        days: windowDays,
+                      })}
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between">
                   <span className="text-tertiary-500">{t('reservation.phone_label')}</span>
                   <a

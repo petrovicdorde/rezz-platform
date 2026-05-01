@@ -26,6 +26,16 @@ export function useReservations(filters?: {
   });
 }
 
+export function useReservationGuestStats(reservationId: string | undefined) {
+  const venueId = useAuthStore((s) => s.user?.venueId ?? '');
+  return useQuery({
+    queryKey: ['reservation-guest-stats', venueId, reservationId],
+    queryFn: () =>
+      reservationsApi.getGuestStats(venueId, reservationId as string),
+    enabled: !!venueId && !!reservationId,
+  });
+}
+
 export function useAvailableSlots(date: string, tableType: TableType) {
   const venueId = useAuthStore((s) => s.user?.venueId ?? '');
   return useQuery({

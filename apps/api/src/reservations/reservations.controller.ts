@@ -93,6 +93,17 @@ export class ReservationsController {
     return this.reservationsService.findOne(id, venueId, lang);
   }
 
+  @Get(':id/guest-stats')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.MANAGER, UserRole.WORKER, UserRole.SUPER_ADMIN)
+  getGuestStats(
+    @Param('venueId') venueId: string,
+    @Param('id') id: string,
+    @I18nLang() lang: string,
+  ) {
+    return this.reservationsService.getReservationGuestStats(id, venueId, lang);
+  }
+
   @Post('guest')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(RolesGuard)

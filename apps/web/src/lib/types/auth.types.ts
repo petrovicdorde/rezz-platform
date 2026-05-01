@@ -13,6 +13,9 @@ export interface LoginResponse {
     lastName: string;
     role: string;
     venueId: string | null;
+    isBlacklisted?: boolean;
+    blacklistReason?: string | null;
+    blacklistExpiresAt?: string | null;
   };
 }
 
