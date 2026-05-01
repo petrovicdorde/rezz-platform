@@ -78,7 +78,7 @@ export function PublicLayout({
 
       {/* Footer */}
       <footer className="bg-secondary-600 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">
-        &copy; 2026 Rezz.ba. Sva prava zadržana.
+        &copy; 2026 Table.ba. Sva prava zadržana.
       </footer>
 
       <LogoutConfirmDialog

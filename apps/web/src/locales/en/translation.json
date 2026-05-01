@@ -1,6 +1,6 @@
 {
   "brand": {
-    "name": "rezz.ba"
+    "name": "Table.ba"
   },
   "nav": {
     "home": "Home",
@@ -84,7 +84,7 @@
     "google_button": "Continue with Google",
     "google_error": "Google login failed. Please try again.",
     "register_title": "Create an account",
-    "register_subtitle": "Join the Rezz.ba platform",
+    "register_subtitle": "Join the Table.ba platform",
     "register_button": "Register",
     "first_name_label": "First name",
     "first_name_placeholder": "Your first name",
@@ -112,7 +112,7 @@
     "set_password_title": "Set your password",
     "set_password_subtitle": "Create a password to access your account.",
     "set_password_button": "Set password",
-    "set_password_success": "Password set. Welcome to Rezz.ba!",
+    "set_password_success": "Password set. Welcome to Table.ba!",
     "venue_blocked": "Your venue has been deactivated. Please contact the platform administrator."
   },
   "home": {
@@ -158,7 +158,7 @@
     "description": "You can't send reservations. Please contact support to explain the situation — a super admin will review your case.",
     "reason_label": "Reason",
     "contact_support": "Email {{email}}",
-    "support_subject": "Blocked account appeal — Rezz.ba"
+    "support_subject": "Blocked account appeal — Table.ba"
   },
   "venue_detail": {
     "about": "About us",

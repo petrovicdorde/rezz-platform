@@ -18,6 +18,52 @@ This file is the living documentation of the project. Every notable feature, bus
 
 ---
 
+# Roles
+
+The system has four roles. Each user has exactly one. Permissions below describe what the role can do; anything not listed is forbidden.
+
+## Super admin
+
+The platform owner. Has full access to every part of the system.
+
+- **Venue management** — create, edit, activate or deactivate, and delete venues.
+- **Venue invitations** — invite a manager or worker to a venue by email.
+- **User management** — list and search all users, view details, change a guest's name or role, activate or deactivate accounts, blacklist or unblacklist guests with a reason, and delete accounts.
+- **Settings** — manage configurable enums such as table types and any other admin-tunable lookups.
+- **Landing page** — read and update the public landing page configuration.
+- **All manager-level powers** — can also do everything a manager can do at any venue.
+
+## Manager
+
+Operates a single venue they own.
+
+- **My venue** — view and edit their own venue's profile, working hours, gallery, payment methods, and table layout.
+- **Employees** — invite workers to their venue, change a worker's role, and remove employees.
+- **Events** — create, edit, and delete events for their venue, plus add or remove event promotion images.
+- **Reservations** — see the full reservation list for their venue, view a reservation in detail, confirm or reject pending reservations, record arrival or no-show, cancel reservations, and rate guests after a completed reservation.
+- **Notifications** — receive and read notifications for new and updated reservations.
+- **Guest insight** — view a guest's score and recent no-show count from any reservation in their venue.
+
+## Worker
+
+Floor staff at a single venue. Read-only on most lists, but can record what actually happens at arrival time.
+
+- **Notifications** — receive and read notifications for new and updated reservations.
+- **Arrival recording** — mark a reservation as completed (guest arrived) or no-show. This is the action that feeds the auto-blacklist counter.
+- **Guest insight** — view a guest's score and recent no-show count from a reservation.
+- Workers do not see the full reservation list, do not confirm or reject reservations, and do not manage events, employees, settings, or the venue profile.
+
+## Guest
+
+A regular user of the public app. Can hold accounts and make reservations.
+
+- **Browse** — view venues and events on public pages without logging in.
+- **Reserve** — request a reservation at a venue or for an event when logged in. Subject to the blacklist rules described in the Blacklist feature below.
+- **Profile** — view and edit their own profile, see their upcoming reservations and reservation history, cancel a reservation while it is still pending or confirmed.
+- Guests do not see any dashboard, venue management, or other-user data.
+
+---
+
 # Features
 
 ## Blacklist

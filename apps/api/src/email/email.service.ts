@@ -45,7 +45,7 @@ export class EmailService {
     <!DOCTYPE html>
     <html>
     <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
-      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <h2 style="color:#3D2645;">Table.ba</h2>
       <p>${greeting}</p>
       <p>${body}</p>
       <a href="${verificationLink}"
@@ -77,10 +77,8 @@ export class EmailService {
     token: string,
   ): Promise<void> {
     const frontendUrl = (
-      this.configService.get<string>(
-        'FRONTEND_URL',
-        'http://localhost:5173',
-      ) ?? 'http://localhost:5173'
+      this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173') ??
+      'http://localhost:5173'
     )
       .split(',')
       .map((s) => s.trim())
@@ -141,7 +139,7 @@ export class EmailService {
     <!DOCTYPE html>
     <html>
     <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
-      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <h2 style="color:#3D2645;">Table.ba</h2>
       <p>${body}</p>
       <a href="${acceptLink}"
          style="display:inline-block;background:#C9A84C;color:#3A2A08;
@@ -200,7 +198,7 @@ export class EmailService {
     <!DOCTYPE html>
     <html>
     <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
-      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <h2 style="color:#3D2645;">Table.ba</h2>
       <p>${body}</p>
       <p style="background:#FEF3C7;border-left:4px solid #F59E0B;padding:12px;border-radius:4px;margin:16px 0;">
         ${reasonText}
@@ -254,7 +252,7 @@ export class EmailService {
     <!DOCTYPE html>
     <html>
     <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
-      <h2 style="color:#3D2645;">Rezz.ba</h2>
+      <h2 style="color:#3D2645;">Table.ba</h2>
       <p>${body}</p>
       <a href="${acceptLink}"
          style="display:inline-block;background:#C9A84C;color:#3A2A08;

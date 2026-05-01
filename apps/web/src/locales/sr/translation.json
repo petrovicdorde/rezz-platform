@@ -1,6 +1,6 @@
 {
   "brand": {
-    "name": "rezz.ba"
+    "name": "Table.ba"
   },
   "nav": {
     "home": "Početna",
@@ -84,7 +84,7 @@
     "google_button": "Nastavi sa Google",
     "google_error": "Google prijava nije uspjela. Pokušajte ponovo.",
     "register_title": "Kreirajte nalog",
-    "register_subtitle": "Pridružite se Rezz.ba platformi",
+    "register_subtitle": "Pridružite se Table.ba platformi",
     "register_button": "Registrujte se",
     "first_name_label": "Ime",
     "first_name_placeholder": "Vaše ime",
@@ -112,7 +112,7 @@
     "set_password_title": "Postavite lozinku",
     "set_password_subtitle": "Kreirajte lozinku za pristup vašem nalogu.",
     "set_password_button": "Postavi lozinku",
-    "set_password_success": "Lozinka je postavljena. Dobrodošli na Rezz.ba!",
+    "set_password_success": "Lozinka je postavljena. Dobrodošli na Table.ba!",
     "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora."
   },
   "home": {
@@ -158,7 +158,7 @@
     "description": "Ne možete slati rezervacije. Molimo kontaktirajte podršku da objasnite situaciju — super admin će razmotriti vaš slučaj.",
     "reason_label": "Razlog",
     "contact_support": "Pišite na {{email}}",
-    "support_subject": "Žalba na blokiran nalog — Rezz.ba"
+    "support_subject": "Žalba na blokiran nalog — Table.ba"
   },
   "venue_detail": {
     "about": "O nama",
