@@ -12,6 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ClosedDayDto } from './create-venue.dto';
 import type { PaymentMethod, TableType } from '@rezz/shared';
 
 class MyVenueDayHoursDto {
@@ -117,4 +118,11 @@ export class UpdateMyVenueDto {
   @IsInt()
   @Min(1)
   minGuestAge?: number | null;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(366)
+  @ValidateNested({ each: true })
+  @Type(() => ClosedDayDto)
+  closedDays?: ClosedDayDto[];
 }

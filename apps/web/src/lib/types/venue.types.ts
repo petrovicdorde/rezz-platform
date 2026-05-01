@@ -21,6 +21,11 @@ export interface WorkingHours {
   sunday?: WorkingHourDay;
 }
 
+export interface ClosedDay {
+  month: number;
+  day: number;
+}
+
 export interface VenueTableItem {
   type: string;
   count: number;
@@ -49,6 +54,7 @@ export interface CreateVenueRequest {
   tables?: VenueTableItem[];
   socialLinks?: string[];
   minGuestAge?: number | null;
+  closedDays?: ClosedDay[];
   manager: VenueManager;
 }
 
@@ -70,6 +76,7 @@ export interface PublicVenue {
   description?: string | null;
   images?: string[];
   minGuestAge: number | null;
+  closedDays: ClosedDay[];
 }
 
 export interface AdminVenue {
@@ -102,6 +109,7 @@ export interface AdminVenue {
   } | null;
   socialLinkUrls?: string[];
   minGuestAge: number | null;
+  closedDays: ClosedDay[];
   createdAt: string;
   updatedAt: string;
 }

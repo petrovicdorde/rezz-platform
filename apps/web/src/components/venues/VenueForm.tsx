@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { TagInput } from "@/components/ui/TagInput";
 import { WorkingHoursInput } from "@/components/ui/WorkingHoursInput";
+import { ClosedDaysPicker } from "@/components/venues/ClosedDaysPicker";
 import { useCreateVenue, useUpdateVenue } from "@/hooks/useVenues";
 import { usePublicSettings, useSettingLabel } from "@/hooks/useSettings";
 import type {
@@ -116,6 +117,7 @@ export function VenueForm({
           })),
           socialLinks: initialData.socialLinkUrls ?? [],
           minGuestAge: initialData.minGuestAge ?? null,
+          closedDays: initialData.closedDays ?? [],
           manager: { email: "", phone: "", firstName: "", lastName: "" },
         }
       : {
@@ -133,6 +135,7 @@ export function VenueForm({
           tables: [],
           socialLinks: [],
           minGuestAge: null,
+          closedDays: [],
           manager: { email: "", phone: "", firstName: "", lastName: "" },
         },
   });
@@ -523,6 +526,25 @@ export function VenueForm({
         render={({ field }) => (
           <WorkingHoursInput
             value={field.value ?? {}}
+            onChange={field.onChange}
+            disabled={isReadOnly}
+          />
+        )}
+      />
+
+      {/* Section — Closed days */}
+      <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+        {t("venue.closed_days_label")}
+      </h3>
+      <p className="mb-2 text-xs text-tertiary-500">
+        {t("venue.closed_days_hint")}
+      </p>
+      <Controller
+        control={control}
+        name="closedDays"
+        render={({ field }) => (
+          <ClosedDaysPicker
+            value={field.value ?? []}
             onChange={field.onChange}
             disabled={isReadOnly}
           />

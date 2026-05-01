@@ -118,6 +118,27 @@ export class ReservationsService {
     };
   }
 
+  private async assertVenueOpenOnDate(
+    venueId: string,
+    date: string,
+    lang: string,
+  ): Promise<void> {
+    const venue = await this.venueRepo.findOne({ where: { id: venueId } });
+    if (!venue || !venue.closedDays || venue.closedDays.length === 0) return;
+    const parsed = new Date(date);
+    if (Number.isNaN(parsed.getTime())) return;
+    const month = parsed.getMonth() + 1;
+    const day = parsed.getDate();
+    const isClosed = venue.closedDays.some(
+      (d) => d.month === month && d.day === day,
+    );
+    if (isClosed) {
+      throw new BadRequestException(
+        this.i18n.t('reservation.closed_day', { lang }),
+      );
+    }
+  }
+
   private async validateGuestAges(
     venueId: string,
     dto: { numberOfGuests: number; guestAges?: number[] },
@@ -177,6 +198,8 @@ export class ReservationsService {
         this.i18n.t('reservation.no_available_tables', { lang }),
       );
     }
+
+    await this.assertVenueOpenOnDate(venueId, dto.date, lang);
 
     const guestAges = await this.validateGuestAges(venueId, dto, lang);
 

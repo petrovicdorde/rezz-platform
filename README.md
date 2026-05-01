@@ -150,3 +150,25 @@ The frontend validation is for UX. The backend repeats the same checks before pe
 ### Implementation outline
 
 The venue entity gains a single nullable integer column for the minimum age. Both venue write paths (admin create/update and manager update) accept the field and persist it. The public venue response includes it so the booking form can read it without an extra request. The reservation entity gains a nullable array column for the ages, stored only when the venue had a limit at booking time. The reservations service has a small helper that loads the venue, decides whether ages are required, and either validates or returns null. Both reservation create endpoints call the same helper, so manager-created reservations are held to the same rule as guest-submitted ones. Error messages live in the API i18n files in Serbian and English with the minimum interpolated, so the message stays accurate when the venue's limit changes.
+
+## Venue closed days
+
+### What it does
+
+A venue can mark specific calendar dates as closed days. Closed days are year-agnostic — they are stored as month-and-day pairs, and the same dates apply every year, so a venue that is closed on January 1 stays closed on January 1 in 2026, 2027, and beyond without anyone re-entering the date. The list is optional. Venues with no closed days behave exactly as before.
+
+### How it appears in the venue forms
+
+Both the super admin's venue create/edit form and the manager's "my venue" editor expose a calendar-style picker labeled "Closed days". The picker shows one month at a time with previous/next arrows, the month name, and a grid of days. Clicking a day toggles it red (closed) or back to white (open). Navigating to the next month preserves selections. The year shown in the header is purely for layout context — selections do not depend on it, because the underlying data is the month-and-day pair only. Leaving the picker empty means the venue has no closed days.
+
+### How it appears in the booking form
+
+When a guest opens a venue's booking form and picks a date, the form checks whether that date's month and day match any of the venue's closed days. If so, the venue page still renders normally — the guest can read everything about the venue — but the reservation submit button is disabled and its label changes to "Neradni dan" (in English: "Closed day"). This communicates clearly that the booking is not allowed for the chosen date without hiding the venue from the catalog.
+
+### Server-side enforcement
+
+The frontend gate is for UX. The backend repeats the same check before persisting any reservation. In both the guest-submitted and manager-created reservation paths, the service loads the venue, extracts the month and day of the requested reservation date, and looks for a match in the venue's closed-days array. A match returns a localized 400 with a "venue is closed on this date" message, so anyone calling the API directly gets the same protection as the form does.
+
+### Implementation outline
+
+The venue entity gains a single jsonb column holding an array of `{ month, day }` pairs. Both venue write paths accept the array and run a normalizer in the service: invalid entries are dropped, duplicates are removed, and the result is sorted month-first then day-first so the persisted form is stable. The public venue response includes the array so the booking form has it without an extra request. The booking form computes a single boolean from the selected date plus the venue's array; nothing else in the form changes. The reservations service exposes a small helper that re-runs the same boolean against the stored venue and throws a localized 400 when it matches. Both reservation create endpoints call the helper, so manager-created reservations are held to the same rule as guest-submitted ones. The picker UI is its own component sharing the visual language of the project's existing date picker.

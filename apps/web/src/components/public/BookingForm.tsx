@@ -113,6 +113,17 @@ export function BookingForm({
   const minGuestAge = venue.minGuestAge;
   const requiresAges = minGuestAge != null;
 
+  const isClosedDay = (() => {
+    if (!selectedDate) return false;
+    const parsed = new Date(selectedDate);
+    if (Number.isNaN(parsed.getTime())) return false;
+    const m = parsed.getMonth() + 1;
+    const d = parsed.getDate();
+    return (venue.closedDays ?? []).some(
+      (cd) => cd.month === m && cd.day === d,
+    );
+  })();
+
   useEffect(() => {
     if (!requiresAges) return;
     const desired = Math.max(1, Number(numberOfGuests) || 0);
@@ -429,10 +440,14 @@ export function BookingForm({
 
       <Button
         type="submit"
-        disabled={mutation.isPending || !hasTables}
+        disabled={mutation.isPending || !hasTables || isClosedDay}
         className="w-full bg-primary-400 py-3 font-medium text-white hover:bg-primary-600"
       >
-        {mutation.isPending ? t("booking.submitting") : t("booking.submit")}
+        {isClosedDay
+          ? t("booking.closed_day")
+          : mutation.isPending
+          ? t("booking.submitting")
+          : t("booking.submit")}
       </Button>
     </form>
   );

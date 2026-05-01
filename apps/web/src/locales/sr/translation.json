@@ -234,7 +234,8 @@
     "guest_ages_hint": "Lokal zahtijeva da svaki gost ima najmanje {{min}} godina.",
     "guest_age_n": "Gost {{n}}",
     "guest_age_required": "Godine su obavezne",
-    "guest_age_below_min": "Mora biti najmanje {{min}}"
+    "guest_age_below_min": "Mora biti najmanje {{min}}",
+    "closed_day": "Neradni dan"
   },
   "my_venue": {
     "title": "Profil lokala",
@@ -277,6 +278,8 @@
     "min_guest_age_placeholder": "npr. 18",
     "min_guest_age_hint": "Opcionalno. Ostavite prazno ako lokal nema starosno ograničenje. Kada je postavljeno, gosti moraju unijeti godine svake osobe na rezervaciji.",
     "min_guest_age_invalid": "Godine moraju biti između 1 i 120",
+    "closed_days_label": "Neradni dani",
+    "closed_days_hint": "Kliknite na dane kada lokal ne radi. Isti datumi važe za svaku godinu. Ostavite prazno ako lokal nema neradnih dana.",
     "payment_methods_label": "Načini plaćanja",
     "tags_label": "Tagovi",
     "tags_placeholder": "Dodaj tag...",

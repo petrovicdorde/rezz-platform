@@ -4,7 +4,7 @@ import type {
   TableType,
   SocialLink,
 } from '@rezz/shared';
-import type { WorkingHours } from '../entities/venue.entity';
+import type { WorkingHours, ClosedDay } from '../entities/venue.entity';
 import { Venue } from '../entities/venue.entity';
 import type { User } from '../../users/entities/user.entity';
 
@@ -32,6 +32,7 @@ export class PublicVenueDto {
   isActive: boolean;
   socialLinks: SocialLink[];
   minGuestAge: number | null;
+  closedDays: ClosedDay[];
 }
 
 export class AdminVenueManagerDto {
@@ -68,6 +69,7 @@ export class VenueMapper {
       isActive: venue.isActive,
       socialLinks: venue.socialLinks ?? [],
       minGuestAge: venue.minGuestAge ?? null,
+      closedDays: venue.closedDays ?? [],
       tables:
         venue.tables?.map((t) => ({
           id: t.id,

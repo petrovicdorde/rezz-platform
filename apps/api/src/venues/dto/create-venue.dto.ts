@@ -9,6 +9,7 @@ import {
   ValidateNested,
   IsInt,
   Min,
+  Max,
   MinLength,
   IsUrl,
   ArrayMaxSize,
@@ -76,6 +77,18 @@ class CreateVenueTableDto {
   @IsOptional()
   @IsString()
   note?: string;
+}
+
+export class ClosedDayDto {
+  @IsInt()
+  @Min(1)
+  @Max(12)
+  month: number;
+
+  @IsInt()
+  @Min(1)
+  @Max(31)
+  day: number;
 }
 
 class CreateManagerDto {
@@ -162,6 +175,13 @@ export class CreateVenueDto {
   @IsInt()
   @Min(1)
   minGuestAge?: number | null;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(366)
+  @ValidateNested({ each: true })
+  @Type(() => ClosedDayDto)
+  closedDays?: ClosedDayDto[];
 
   @ValidateNested()
   @Type(() => CreateManagerDto)

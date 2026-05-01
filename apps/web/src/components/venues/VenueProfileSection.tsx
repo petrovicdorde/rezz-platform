@@ -15,9 +15,14 @@ import {
 } from '@/components/ui/select';
 import { TagInput } from '@/components/ui/TagInput';
 import { WorkingHoursInput } from '@/components/ui/WorkingHoursInput';
+import { ClosedDaysPicker } from '@/components/venues/ClosedDaysPicker';
 import { useMyVenue, useUpdateMyVenue } from '@/hooks/useMyVenue';
 import { usePublicSettings, useSettingLabel } from '@/hooks/useSettings';
-import type { WorkingHours, WorkingHourDay } from '@/lib/types/venue.types';
+import type {
+  WorkingHours,
+  WorkingHourDay,
+  ClosedDay,
+} from '@/lib/types/venue.types';
 
 const PAYMENT_METHODS: { value: PaymentMethod; key: string }[] = [
   { value: 'CASH', key: 'venue.payment_cash' },
@@ -58,6 +63,7 @@ interface FormValues {
   tables: { type: string; count: number; note: string }[];
   socialLinks: string[];
   minGuestAge: number | null;
+  closedDays: ClosedDay[];
 }
 
 const URL_PATTERN = /^https?:\/\/[^\s]+\.[^\s]+$/i;
@@ -87,6 +93,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
       tables: [],
       socialLinks: [],
       minGuestAge: null,
+      closedDays: [],
     },
   });
 
@@ -110,6 +117,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
       })),
       socialLinks: venue.socialLinkUrls ?? [],
       minGuestAge: venue.minGuestAge ?? null,
+      closedDays: venue.closedDays ?? [],
     });
   }, [venue, reset]);
 
@@ -153,6 +161,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
       tables: data.tables,
       socialLinks: cleanedSocialLinks,
       minGuestAge,
+      closedDays: data.closedDays ?? [],
     });
   }
 
@@ -224,6 +233,26 @@ export function VenueProfileSection(): React.JSX.Element | null {
             render={({ field }) => (
               <WorkingHoursInput
                 value={field.value ?? {}}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+
+        {/* Closed days */}
+        <div>
+          <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-tertiary-500">
+            {t('venue.closed_days_label')}
+          </h3>
+          <p className="mb-2 text-xs text-tertiary-500">
+            {t('venue.closed_days_hint')}
+          </p>
+          <Controller
+            control={control}
+            name="closedDays"
+            render={({ field }) => (
+              <ClosedDaysPicker
+                value={field.value ?? []}
                 onChange={field.onChange}
               />
             )}

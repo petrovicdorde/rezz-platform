@@ -234,7 +234,8 @@
     "guest_ages_hint": "This venue requires every guest to be at least {{min}} years old.",
     "guest_age_n": "Guest {{n}}",
     "guest_age_required": "Age is required",
-    "guest_age_below_min": "Must be at least {{min}}"
+    "guest_age_below_min": "Must be at least {{min}}",
+    "closed_day": "Closed day"
   },
   "my_venue": {
     "title": "Venue profile",
@@ -277,6 +278,8 @@
     "min_guest_age_placeholder": "e.g. 18",
     "min_guest_age_hint": "Optional. Leave empty for no age limit. When set, guests must enter the age of every person in their reservation.",
     "min_guest_age_invalid": "Age must be between 1 and 120",
+    "closed_days_label": "Closed days",
+    "closed_days_hint": "Click days when the venue is closed. The same dates apply every year. Leave empty if the venue has no closed days.",
     "payment_methods_label": "Payment methods",
     "tags_label": "Tags",
     "tags_placeholder": "Add tag...",

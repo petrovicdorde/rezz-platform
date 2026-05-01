@@ -60,6 +60,9 @@ export class Venue {
   @Column({ type: 'int', nullable: true })
   minGuestAge: number | null;
 
+  @Column({ type: 'jsonb', default: '[]' })
+  closedDays: ClosedDay[];
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -89,4 +92,9 @@ export interface DayHours {
   open: string; // e.g. "08:00"
   close: string; // e.g. "23:00"
   isClosed: boolean;
+}
+
+export interface ClosedDay {
+  month: number; // 1-12
+  day: number; // 1-31
 }

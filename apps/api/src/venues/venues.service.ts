@@ -38,6 +38,34 @@ export class VenuesService {
     private invitationsService: InvitationsService,
   ) {}
 
+  private normalizeClosedDays(
+    days: { month: number; day: number }[] | undefined,
+  ): { month: number; day: number }[] {
+    if (!days) return [];
+    const seen = new Set<string>();
+    const out: { month: number; day: number }[] = [];
+    for (const d of days) {
+      const month = Math.floor(Number(d.month));
+      const day = Math.floor(Number(d.day));
+      if (
+        !Number.isFinite(month) ||
+        !Number.isFinite(day) ||
+        month < 1 ||
+        month > 12 ||
+        day < 1 ||
+        day > 31
+      ) {
+        continue;
+      }
+      const key = `${month}-${day}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ month, day });
+    }
+    out.sort((a, b) => (a.month - b.month) * 100 + (a.day - b.day));
+    return out;
+  }
+
   private mapSocialLinks(urls: string[] | undefined): SocialLink[] {
     return (urls ?? [])
       .filter((url) => url && url.trim() !== '')
@@ -141,6 +169,7 @@ export class VenuesService {
       tags: dto.tags ?? [],
       socialLinks: this.mapSocialLinks(dto.socialLinks),
       minGuestAge: dto.minGuestAge ?? null,
+      closedDays: this.normalizeClosedDays(dto.closedDays),
     });
 
     const savedVenue = await this.venueRepo.save(venue);
@@ -216,6 +245,10 @@ export class VenuesService {
 
     if (dto.minGuestAge !== undefined) {
       venue.minGuestAge = dto.minGuestAge ?? null;
+    }
+
+    if (dto.closedDays !== undefined) {
+      venue.closedDays = this.normalizeClosedDays(dto.closedDays);
     }
 
     if (dto.socialLinks !== undefined) {

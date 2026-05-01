@@ -1,5 +1,9 @@
 import { api } from '@/lib/api';
-import type { AdminVenue, WorkingHours } from '@/lib/types/venue.types';
+import type {
+  AdminVenue,
+  WorkingHours,
+  ClosedDay,
+} from '@/lib/types/venue.types';
 import type { PaymentMethod } from '@rezz/shared';
 
 export interface UpdateMyVenueRequest {
@@ -11,6 +15,7 @@ export interface UpdateMyVenueRequest {
   tables?: { type: string; count: number; note?: string }[];
   socialLinks?: string[];
   minGuestAge?: number | null;
+  closedDays?: ClosedDay[];
 }
 
 export const myVenueApi = {
