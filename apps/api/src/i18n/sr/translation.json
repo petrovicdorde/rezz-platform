@@ -95,7 +95,9 @@
     "guest_created": "Rezervacija je uspješno poslata. Čekajte potvrdu lokala.",
     "phone_required_for_reservation": "Broj telefona je obavezan za rezervaciju.",
     "blacklisted_cannot_reserve": "Vaš nalog je blokiran. Ne možete slati rezervacije.",
-    "blacklisted_auto_reason": "Automatski: {count} nepojavljivanja u posljednjih {days} dana"
+    "blacklisted_auto_reason": "Automatski: {count} nepojavljivanja u posljednjih {days} dana",
+    "guest_ages_required": "Lokal zahtijeva godine za sve goste. Unesite {count} godina.",
+    "guest_ages_below_minimum": "Lokal ima minimalnu starost gostiju od {min}. Sve godine moraju biti najmanje {min}."
   },
   "notification": {
     "not_found": "Obavještenje nije pronađeno.",

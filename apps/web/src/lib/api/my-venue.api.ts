@@ -10,6 +10,7 @@ export interface UpdateMyVenueRequest {
   tags?: string[];
   tables?: { type: string; count: number; note?: string }[];
   socialLinks?: string[];
+  minGuestAge?: number | null;
 }
 
 export const myVenueApi = {

@@ -1,4 +1,7 @@
 import {
+  IsArray,
+  ArrayMinSize,
+  ArrayMaxSize,
   IsDateString,
   IsInt,
   IsNotEmpty,
@@ -7,6 +10,7 @@ import {
   IsUUID,
   Matches,
   Min,
+  Max,
   MinLength,
 } from 'class-validator';
 import type { TableType } from '@rezz/shared';
@@ -49,4 +53,13 @@ export class CreateGuestReservationDto {
   @IsOptional()
   @IsUUID()
   eventId?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(50)
+  @IsInt({ each: true })
+  @Min(0, { each: true })
+  @Max(100, { each: true })
+  guestAges?: number[];
 }

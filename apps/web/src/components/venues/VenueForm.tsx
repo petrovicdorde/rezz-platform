@@ -115,6 +115,7 @@ export function VenueForm({
             note: t.note ?? "",
           })),
           socialLinks: initialData.socialLinkUrls ?? [],
+          minGuestAge: initialData.minGuestAge ?? null,
           manager: { email: "", phone: "", firstName: "", lastName: "" },
         }
       : {
@@ -131,6 +132,7 @@ export function VenueForm({
           workingHours: buildDefaultWorkingHours(),
           tables: [],
           socialLinks: [],
+          minGuestAge: null,
           manager: { email: "", phone: "", firstName: "", lastName: "" },
         },
   });
@@ -169,12 +171,22 @@ export function VenueForm({
       .map((url) => url.trim())
       .filter((url) => url !== "");
 
+    const minGuestAgeRaw =
+      data.minGuestAge === undefined || data.minGuestAge === null
+        ? null
+        : Number(data.minGuestAge);
+    const minGuestAge =
+      minGuestAgeRaw !== null && Number.isFinite(minGuestAgeRaw) && minGuestAgeRaw >= 1
+        ? Math.floor(minGuestAgeRaw)
+        : null;
+
     const payload = {
       ...data,
       reservationEmail: data.reservationEmail || undefined,
       description: data.description?.trim() || undefined,
       socialLinks: cleanedSocialLinks,
       workingHours: fillMissingDays(data.workingHours),
+      minGuestAge,
     };
 
     if (isEdit) {
@@ -370,6 +382,36 @@ export function VenueForm({
           </button>
         )}
       />
+
+      <div className="mb-4">
+        <label className="mb-1 block text-sm font-medium">
+          {t("venue.min_guest_age_label")}
+        </label>
+        <Input
+          type="number"
+          min={1}
+          max={120}
+          placeholder={t("venue.min_guest_age_placeholder")}
+          {...register("minGuestAge", {
+            setValueAs: (v) => {
+              if (v === "" || v === null || v === undefined) return null;
+              const n = Number(v);
+              return Number.isFinite(n) && n >= 1 ? Math.floor(n) : null;
+            },
+            min: { value: 1, message: t("venue.min_guest_age_invalid") },
+            max: { value: 120, message: t("venue.min_guest_age_invalid") },
+          })}
+          disabled={isReadOnly}
+        />
+        <p className="mt-1 text-xs text-tertiary-500">
+          {t("venue.min_guest_age_hint")}
+        </p>
+        {errors.minGuestAge && (
+          <p className="mt-1 text-xs text-red-500">
+            {errors.minGuestAge.message}
+          </p>
+        )}
+      </div>
 
       <div className="mb-4">
         <label className="mb-1 block text-sm font-medium">

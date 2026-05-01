@@ -57,6 +57,9 @@ export class Venue {
   @Column({ type: 'jsonb', default: '[]' })
   socialLinks: SocialLink[];
 
+  @Column({ type: 'int', nullable: true })
+  minGuestAge: number | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

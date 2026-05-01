@@ -158,6 +158,11 @@ export class CreateVenueDto {
   @IsUrl({}, { each: true })
   socialLinks?: string[];
 
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  minGuestAge?: number | null;
+
   @ValidateNested()
   @Type(() => CreateManagerDto)
   manager: CreateManagerDto;

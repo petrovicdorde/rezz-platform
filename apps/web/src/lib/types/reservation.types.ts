@@ -51,6 +51,7 @@ export interface CreateReservationRequest {
   tableType: string;
   specialRequest?: string;
   eventId?: string;
+  guestAges?: number[];
 }
 
 export interface GuestRatingRequest {

@@ -140,6 +140,7 @@ export class VenuesService {
       hasParking: dto.hasParking,
       tags: dto.tags ?? [],
       socialLinks: this.mapSocialLinks(dto.socialLinks),
+      minGuestAge: dto.minGuestAge ?? null,
     });
 
     const savedVenue = await this.venueRepo.save(venue);
@@ -212,6 +213,10 @@ export class VenuesService {
       hasParking: dto.hasParking,
       tags: dto.tags,
     });
+
+    if (dto.minGuestAge !== undefined) {
+      venue.minGuestAge = dto.minGuestAge ?? null;
+    }
 
     if (dto.socialLinks !== undefined) {
       venue.socialLinks = this.mapSocialLinks(dto.socialLinks);

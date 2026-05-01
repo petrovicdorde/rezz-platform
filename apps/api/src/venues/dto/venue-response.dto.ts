@@ -31,6 +31,7 @@ export class PublicVenueDto {
   tables: PublicVenueTableDto[];
   isActive: boolean;
   socialLinks: SocialLink[];
+  minGuestAge: number | null;
 }
 
 export class AdminVenueManagerDto {
@@ -66,6 +67,7 @@ export class VenueMapper {
       address: venue.address,
       isActive: venue.isActive,
       socialLinks: venue.socialLinks ?? [],
+      minGuestAge: venue.minGuestAge ?? null,
       tables:
         venue.tables?.map((t) => ({
           id: t.id,

@@ -118,6 +118,37 @@ export class ReservationsService {
     };
   }
 
+  private async validateGuestAges(
+    venueId: string,
+    dto: { numberOfGuests: number; guestAges?: number[] },
+    lang: string,
+  ): Promise<number[] | null> {
+    const venue = await this.venueRepo.findOne({ where: { id: venueId } });
+    if (!venue || venue.minGuestAge == null) {
+      return null;
+    }
+    const min = venue.minGuestAge;
+    const ages = dto.guestAges;
+    if (!ages || ages.length !== dto.numberOfGuests) {
+      throw new BadRequestException(
+        this.i18n.t('reservation.guest_ages_required', {
+          lang,
+          args: { count: dto.numberOfGuests },
+        }),
+      );
+    }
+    const parsed = ages.map((a) => Number(a));
+    if (parsed.some((a) => a < min)) {
+      throw new BadRequestException(
+        this.i18n.t('reservation.guest_ages_below_minimum', {
+          lang,
+          args: { min },
+        }),
+      );
+    }
+    return parsed;
+  }
+
   async createByManager(
     venueId: string,
     dto: CreateReservationDto,
@@ -147,6 +178,8 @@ export class ReservationsService {
       );
     }
 
+    const guestAges = await this.validateGuestAges(venueId, dto, lang);
+
     const reservation = this.reservationRepo.create({
       venueId,
       date: dto.date,
@@ -157,6 +190,7 @@ export class ReservationsService {
       numberOfGuests: dto.numberOfGuests,
       tableType: dto.tableType,
       specialRequest: dto.specialRequest ?? null,
+      guestAges,
       status: 'CONFIRMED',
       source: 'MANAGER',
       createdByManagerId: managerId,
@@ -220,6 +254,8 @@ export class ReservationsService {
       await this.usersService.updatePhone(userId, dto.phone);
     }
 
+    const guestAges = await this.validateGuestAges(venueId, dto, lang);
+
     const reservation = this.reservationRepo.create({
       venueId,
       date: dto.date,
@@ -230,6 +266,7 @@ export class ReservationsService {
       numberOfGuests: dto.numberOfGuests,
       tableType: dto.tableType,
       specialRequest: dto.specialRequest ?? null,
+      guestAges,
       status: 'PENDING',
       source: 'GUEST_APP',
       createdByManagerId: null,

@@ -229,7 +229,12 @@
     "required": "Ovo polje je obavezno",
     "min_guests": "Minimalno 1 gost",
     "invalid_time": "Vrijeme mora biti u formatu HH:MM",
-    "venue_label": "Lokal"
+    "venue_label": "Lokal",
+    "guest_ages_label": "Godine gostiju (minimalna starost: {{min}})",
+    "guest_ages_hint": "Lokal zahtijeva da svaki gost ima najmanje {{min}} godina.",
+    "guest_age_n": "Gost {{n}}",
+    "guest_age_required": "Godine su obavezne",
+    "guest_age_below_min": "Mora biti najmanje {{min}}"
   },
   "my_venue": {
     "title": "Profil lokala",
@@ -268,6 +273,10 @@
     "email_label": "Email",
     "email_placeholder": "email@lokal.ba",
     "parking_label": "Parking",
+    "min_guest_age_label": "Minimalna starost gostiju",
+    "min_guest_age_placeholder": "npr. 18",
+    "min_guest_age_hint": "Opcionalno. Ostavite prazno ako lokal nema starosno ograničenje. Kada je postavljeno, gosti moraju unijeti godine svake osobe na rezervaciji.",
+    "min_guest_age_invalid": "Godine moraju biti između 1 i 120",
     "payment_methods_label": "Načini plaćanja",
     "tags_label": "Tagovi",
     "tags_placeholder": "Dodaj tag...",

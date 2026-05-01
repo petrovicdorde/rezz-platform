@@ -112,4 +112,9 @@ export class UpdateMyVenueDto {
   @IsString({ each: true })
   @IsUrl({}, { each: true })
   socialLinks?: string[];
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  minGuestAge?: number | null;
 }

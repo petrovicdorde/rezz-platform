@@ -48,6 +48,7 @@ export interface CreateVenueRequest {
   tags?: string[];
   tables?: VenueTableItem[];
   socialLinks?: string[];
+  minGuestAge?: number | null;
   manager: VenueManager;
 }
 
@@ -68,6 +69,7 @@ export interface PublicVenue {
   socialLinks: SocialLink[];
   description?: string | null;
   images?: string[];
+  minGuestAge: number | null;
 }
 
 export interface AdminVenue {
@@ -99,6 +101,7 @@ export interface AdminVenue {
     phone?: string | null;
   } | null;
   socialLinkUrls?: string[];
+  minGuestAge: number | null;
   createdAt: string;
   updatedAt: string;
 }

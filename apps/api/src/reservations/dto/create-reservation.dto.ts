@@ -4,8 +4,12 @@ import {
   IsInt,
   IsOptional,
   IsDateString,
+  IsArray,
+  ArrayMinSize,
+  ArrayMaxSize,
   Matches,
   Min,
+  Max,
   MinLength,
 } from 'class-validator';
 import type { TableType } from '@rezz/shared';
@@ -44,4 +48,13 @@ export class CreateReservationDto {
   @IsOptional()
   @IsString()
   specialRequest?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(50)
+  @IsInt({ each: true })
+  @Min(0, { each: true })
+  @Max(100, { each: true })
+  guestAges?: number[];
 }

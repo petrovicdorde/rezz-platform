@@ -57,6 +57,7 @@ interface FormValues {
   workingHours: WorkingHours;
   tables: { type: string; count: number; note: string }[];
   socialLinks: string[];
+  minGuestAge: number | null;
 }
 
 const URL_PATTERN = /^https?:\/\/[^\s]+\.[^\s]+$/i;
@@ -85,6 +86,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
       workingHours: fillMissingDays(undefined),
       tables: [],
       socialLinks: [],
+      minGuestAge: null,
     },
   });
 
@@ -107,6 +109,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
         note: tbl.note ?? '',
       })),
       socialLinks: venue.socialLinkUrls ?? [],
+      minGuestAge: venue.minGuestAge ?? null,
     });
   }, [venue, reset]);
 
@@ -133,6 +136,14 @@ export function VenueProfileSection(): React.JSX.Element | null {
     const cleanedSocialLinks = data.socialLinks
       .map((url) => url.trim())
       .filter((url) => url !== '');
+    const minGuestAge =
+      data.minGuestAge !== null &&
+      data.minGuestAge !== undefined &&
+      Number.isFinite(Number(data.minGuestAge)) &&
+      Number(data.minGuestAge) >= 1
+        ? Math.floor(Number(data.minGuestAge))
+        : null;
+
     updateVenue.mutate({
       address: data.address,
       description: data.description.trim() || undefined,
@@ -141,6 +152,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
       workingHours: fillMissingDays(data.workingHours),
       tables: data.tables,
       socialLinks: cleanedSocialLinks,
+      minGuestAge,
     });
   }
 
@@ -265,6 +277,36 @@ export function VenueProfileSection(): React.JSX.Element | null {
           {errors.paymentMethods && (
             <p className="mt-1 text-xs text-red-500">
               {errors.paymentMethods.message}
+            </p>
+          )}
+        </div>
+
+        {/* Minimum guest age */}
+        <div>
+          <label className="mb-1 block text-sm font-medium text-secondary-600">
+            {t('venue.min_guest_age_label')}
+          </label>
+          <Input
+            type="number"
+            min={1}
+            max={120}
+            placeholder={t('venue.min_guest_age_placeholder')}
+            {...register('minGuestAge', {
+              setValueAs: (v) => {
+                if (v === '' || v === null || v === undefined) return null;
+                const n = Number(v);
+                return Number.isFinite(n) && n >= 1 ? Math.floor(n) : null;
+              },
+              min: { value: 1, message: t('venue.min_guest_age_invalid') },
+              max: { value: 120, message: t('venue.min_guest_age_invalid') },
+            })}
+          />
+          <p className="mt-1 text-xs text-tertiary-500">
+            {t('venue.min_guest_age_hint')}
+          </p>
+          {errors.minGuestAge && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.minGuestAge.message}
             </p>
           )}
         </div>

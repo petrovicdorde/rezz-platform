@@ -124,3 +124,29 @@ Manual block and unblock are handled by a pre-existing super-admin endpoint on t
 To make the blacklist stricter, change the three environment variables and redeploy the API. No database migration, no code change, no frontend release. The auto-generated reason text, the staff badge label, and the booking-form gate will all reflect the new numbers as soon as the API restarts. Existing rows are not rewritten — but their effective expiry is recomputed from the stored timestamp plus the new block duration on the next read.
 
 If the policy needs to become editable by admins from inside the app rather than through environment variables, the natural next step is to migrate these three values into the existing settings table that already powers other admin-tunable lookups. Everything downstream — enforcement, stats, banner — would stay unchanged.
+
+## Venue minimum guest age
+
+### What it does
+
+A venue can declare a minimum age for guests. When that limit is set, every reservation at that venue must carry the age of every guest, and each age must meet the limit. This lets venues like bars and clubs enforce age policies through the booking flow instead of catching mismatches at the door.
+
+### How it appears in the venue forms
+
+Both the super admin's venue create/edit form and the manager's "my venue" editor expose a single optional **minimum guest age** field. The field accepts a whole number between 1 and 120, or it can be left empty. Empty means the venue has no age limit and no age inputs will appear in its booking flow.
+
+### How it appears in the booking form
+
+The public booking form watches two things: the venue's minimum guest age and the number of guests selected for the reservation. If the venue has no minimum, nothing changes — the form looks exactly as before, no age inputs, no age payload. If the venue has a minimum, an "ages" block appears with one numeric input per guest. Changing the number of guests adds or removes inputs to match. Each input is labeled and shows the venue's minimum in the section header so the guest knows the rule before typing.
+
+Each age input is a numeric input constrained to the range 0–100 by the input itself, so out-of-range typing is prevented at the browser level without an explicit error message. The only message the form shows is for the venue policy: an age below the venue's minimum is highlighted with a red border and a per-input message that includes the actual minimum, so the guest understands what value would be accepted. Empty inputs are required before submit. The submit button is enabled only when every input is valid; submitting with any invalid input is blocked.
+
+When the form is submitted, the ages array is sent alongside the rest of the reservation payload. When the venue has no limit, no ages are sent.
+
+### Server-side enforcement
+
+The frontend validation is for UX. The backend repeats the same checks before persisting any reservation, both in the guest-side and manager-created reservation paths. If the venue has a minimum age set, the API requires the ages array to be present, to match the number of guests in length, and to have every entry at or above the minimum. Any failure returns a localized 400 with a message that names the actual minimum, so anyone hitting the API directly gets the same protection as the form does.
+
+### Implementation outline
+
+The venue entity gains a single nullable integer column for the minimum age. Both venue write paths (admin create/update and manager update) accept the field and persist it. The public venue response includes it so the booking form can read it without an extra request. The reservation entity gains a nullable array column for the ages, stored only when the venue had a limit at booking time. The reservations service has a small helper that loads the venue, decides whether ages are required, and either validates or returns null. Both reservation create endpoints call the same helper, so manager-created reservations are held to the same rule as guest-submitted ones. Error messages live in the API i18n files in Serbian and English with the minimum interpolated, so the message stays accurate when the venue's limit changes.

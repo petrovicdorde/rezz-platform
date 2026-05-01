@@ -54,6 +54,9 @@ export class Reservation {
   @Column({ nullable: true, type: 'text' })
   specialRequest: string | null;
 
+  @Column({ type: 'simple-array', nullable: true })
+  guestAges: number[] | null;
+
   @Column({
     type: 'enum',
     enum: [
