@@ -12,7 +12,7 @@ import { requireRole } from '@/lib/route-guards';
 import type { Notification } from '@/lib/types/notification.types';
 
 export const Route = createFileRoute('/dashboard/notifications')({
-  beforeLoad: () => requireRole(['MANAGER', 'WORKER', 'SUPER_ADMIN']),
+  beforeLoad: () => requireRole(['MANAGER', 'SUPER_ADMIN']),
   component: NotificationsPage,
 });
 

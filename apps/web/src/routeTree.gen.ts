@@ -28,7 +28,6 @@ import { Route as DashboardLandingRouteImport } from './routes/dashboard/landing
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
 import { Route as DashboardEventsRouteImport } from './routes/dashboard/events'
 import { Route as DashboardEmployeesRouteImport } from './routes/dashboard/employees'
-import { Route as DashboardArrivalsRouteImport } from './routes/dashboard/arrivals'
 import { Route as AuthVerifyErrorRouteImport } from './routes/auth/verify-error'
 import { Route as AuthVerifyEmailRouteImport } from './routes/auth/verify-email'
 import { Route as AuthVerifiedRouteImport } from './routes/auth/verified'
@@ -133,11 +132,6 @@ const DashboardEmployeesRoute = DashboardEmployeesRouteImport.update({
   path: '/dashboard/employees',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardArrivalsRoute = DashboardArrivalsRouteImport.update({
-  id: '/dashboard/arrivals',
-  path: '/dashboard/arrivals',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthVerifyErrorRoute = AuthVerifyErrorRouteImport.update({
   id: '/auth/verify-error',
   path: '/auth/verify-error',
@@ -190,7 +184,6 @@ export interface FileRoutesByFullPath {
   '/auth/verified': typeof AuthVerifiedRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/auth/verify-error': typeof AuthVerifyErrorRoute
-  '/dashboard/arrivals': typeof DashboardArrivalsRoute
   '/dashboard/employees': typeof DashboardEmployeesRoute
   '/dashboard/events': typeof DashboardEventsRoute
   '/dashboard/history': typeof DashboardHistoryRoute
@@ -220,7 +213,6 @@ export interface FileRoutesByTo {
   '/auth/verified': typeof AuthVerifiedRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/auth/verify-error': typeof AuthVerifyErrorRoute
-  '/dashboard/arrivals': typeof DashboardArrivalsRoute
   '/dashboard/employees': typeof DashboardEmployeesRoute
   '/dashboard/events': typeof DashboardEventsRoute
   '/dashboard/history': typeof DashboardHistoryRoute
@@ -251,7 +243,6 @@ export interface FileRoutesById {
   '/auth/verified': typeof AuthVerifiedRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/auth/verify-error': typeof AuthVerifyErrorRoute
-  '/dashboard/arrivals': typeof DashboardArrivalsRoute
   '/dashboard/employees': typeof DashboardEmployeesRoute
   '/dashboard/events': typeof DashboardEventsRoute
   '/dashboard/history': typeof DashboardHistoryRoute
@@ -283,7 +274,6 @@ export interface FileRouteTypes {
     | '/auth/verified'
     | '/auth/verify-email'
     | '/auth/verify-error'
-    | '/dashboard/arrivals'
     | '/dashboard/employees'
     | '/dashboard/events'
     | '/dashboard/history'
@@ -313,7 +303,6 @@ export interface FileRouteTypes {
     | '/auth/verified'
     | '/auth/verify-email'
     | '/auth/verify-error'
-    | '/dashboard/arrivals'
     | '/dashboard/employees'
     | '/dashboard/events'
     | '/dashboard/history'
@@ -343,7 +332,6 @@ export interface FileRouteTypes {
     | '/auth/verified'
     | '/auth/verify-email'
     | '/auth/verify-error'
-    | '/dashboard/arrivals'
     | '/dashboard/employees'
     | '/dashboard/events'
     | '/dashboard/history'
@@ -374,7 +362,6 @@ export interface RootRouteChildren {
   AuthVerifiedRoute: typeof AuthVerifiedRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthVerifyErrorRoute: typeof AuthVerifyErrorRoute
-  DashboardArrivalsRoute: typeof DashboardArrivalsRoute
   DashboardEmployeesRoute: typeof DashboardEmployeesRoute
   DashboardEventsRoute: typeof DashboardEventsRoute
   DashboardHistoryRoute: typeof DashboardHistoryRoute
@@ -528,13 +515,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardEmployeesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/arrivals': {
-      id: '/dashboard/arrivals'
-      path: '/dashboard/arrivals'
-      fullPath: '/dashboard/arrivals'
-      preLoaderRoute: typeof DashboardArrivalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth/verify-error': {
       id: '/auth/verify-error'
       path: '/auth/verify-error'
@@ -617,7 +597,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthVerifiedRoute: AuthVerifiedRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthVerifyErrorRoute: AuthVerifyErrorRoute,
-  DashboardArrivalsRoute: DashboardArrivalsRoute,
   DashboardEmployeesRoute: DashboardEmployeesRoute,
   DashboardEventsRoute: DashboardEventsRoute,
   DashboardHistoryRoute: DashboardHistoryRoute,

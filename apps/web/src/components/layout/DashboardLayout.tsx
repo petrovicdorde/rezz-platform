@@ -48,8 +48,6 @@ function useNavItems(): NavItem[] {
       { to: '/dashboard/profile', label: t('dashboard.menu_profile'), icon: User },
     ],
     WORKER: [
-      { to: '/dashboard/notifications', label: t('dashboard.menu_notifications'), icon: Bell, showBadge: true },
-      { to: '/dashboard/reservations', label: t('dashboard.menu_reservations'), icon: CalendarCheck },
       { to: '/dashboard/profile', label: t('dashboard.menu_profile'), icon: User },
     ],
     GUEST: [],

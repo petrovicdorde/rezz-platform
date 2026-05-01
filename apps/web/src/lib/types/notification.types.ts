@@ -1,4 +1,5 @@
 import type { NotificationType } from '@rezz/shared';
+import type { GuestRating } from './reservation.types';
 
 export interface Notification {
   id: string;
@@ -10,6 +11,7 @@ export interface Notification {
     id: string;
     firstName: string;
     lastName: string;
+    phone: string;
     date: string;
     time: string;
     tableType: string;
@@ -17,6 +19,7 @@ export interface Notification {
     status: string;
     specialRequest: string | null;
     source: string;
+    guestRating: GuestRating | null;
   } | null;
   metadata: Record<string, unknown> | null;
   createdAt: string;

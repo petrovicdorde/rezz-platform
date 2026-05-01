@@ -23,7 +23,7 @@ import { requireRole } from '@/lib/route-guards';
 import type { ReservationStatus } from '@rezz/shared';
 
 export const Route = createFileRoute('/dashboard/reservations')({
-  beforeLoad: () => requireRole(['MANAGER', 'WORKER', 'SUPER_ADMIN']),
+  beforeLoad: () => requireRole(['MANAGER', 'SUPER_ADMIN']),
   component: ReservationsPage,
 });
 

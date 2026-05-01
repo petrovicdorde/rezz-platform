@@ -74,7 +74,7 @@ export class ReservationsController {
 
   @Get('guest-score/:phone')
   @UseGuards(RolesGuard)
-  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN, UserRole.WORKER)
+  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
   getGuestScore(
     @Param('venueId') venueId: string,
     @Param('phone') phone: string,
@@ -95,7 +95,7 @@ export class ReservationsController {
 
   @Get(':id/guest-stats')
   @UseGuards(RolesGuard)
-  @Roles(UserRole.MANAGER, UserRole.WORKER, UserRole.SUPER_ADMIN)
+  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
   getGuestStats(
     @Param('venueId') venueId: string,
     @Param('id') id: string,
@@ -192,7 +192,7 @@ export class ReservationsController {
   @Post(':id/rate')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(RolesGuard)
-  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @Roles(UserRole.MANAGER, UserRole.WORKER, UserRole.SUPER_ADMIN)
   rateGuest(
     @Param('venueId') venueId: string,
     @Param('id') id: string,
@@ -206,7 +206,7 @@ export class ReservationsController {
   @Patch(':id/rate')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RolesGuard)
-  @Roles(UserRole.MANAGER, UserRole.SUPER_ADMIN)
+  @Roles(UserRole.MANAGER, UserRole.WORKER, UserRole.SUPER_ADMIN)
   updateRating(
     @Param('venueId') venueId: string,
     @Param('id') id: string,

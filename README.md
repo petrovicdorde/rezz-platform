@@ -37,7 +37,7 @@ The platform owner. Has full access to every part of the system.
 
 Operates a single venue they own.
 
-- **My venue** — view and edit their own venue's profile, working hours, gallery, payment methods, and table layout.
+- **My venue** — view and edit their own venue's profile, working hours, payment methods, and table layout. (Gallery management is not yet implemented; the section currently shows a "coming soon" placeholder.)
 - **Employees** — invite workers to their venue, change a worker's role, and remove employees.
 - **Events** — create, edit, and delete events for their venue, plus add or remove event promotion images.
 - **Reservations** — see the full reservation list for their venue, view a reservation in detail, confirm or reject pending reservations, record arrival or no-show, cancel reservations, and rate guests after a completed reservation.
@@ -46,12 +46,13 @@ Operates a single venue they own.
 
 ## Worker
 
-Floor staff at a single venue. Read-only on most lists, but can record what actually happens at arrival time.
+Floor staff at a single venue. The worker's allowed actions are intentionally narrow: rate a guest and record whether the guest arrived or did not show up. Nothing else.
 
-- **Notifications** — receive and read notifications for new and updated reservations.
-- **Arrival recording** — mark a reservation as completed (guest arrived) or no-show. This is the action that feeds the auto-blacklist counter.
-- **Guest insight** — view a guest's score and recent no-show count from a reservation.
-- Workers do not see the full reservation list, do not confirm or reject reservations, and do not manage events, employees, settings, or the venue profile.
+- **Arrival recording** — mark a confirmed reservation as completed (guest arrived) or no-show. The no-show outcome is the action that feeds the auto-blacklist counter.
+- **Guest rating** — rate a guest with stars and an optional note after a reservation has been marked completed. Existing ratings can also be edited.
+- Workers do not see notifications, do not see any guest insight (no-show count, guest score), do not see the reservation list, do not confirm or reject pending reservations, and do not manage events, employees, settings, or the venue profile.
+
+The dedicated worker UI surface that lets workers find and act on the reservations they are responsible for is not yet built. For now, the only worker-accessible page in the dashboard is their own profile. The arrival-recording and rating endpoints are available to the worker role on the API side and ready to be wired up when the worker UI is designed.
 
 ## Guest
 
