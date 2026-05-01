@@ -151,6 +151,33 @@ The frontend validation is for UX. The backend repeats the same checks before pe
 
 The venue entity gains a single nullable integer column for the minimum age. Both venue write paths (admin create/update and manager update) accept the field and persist it. The public venue response includes it so the booking form can read it without an extra request. The reservation entity gains a nullable array column for the ages, stored only when the venue had a limit at booking time. The reservations service has a small helper that loads the venue, decides whether ages are required, and either validates or returns null. Both reservation create endpoints call the same helper, so manager-created reservations are held to the same rule as guest-submitted ones. Error messages live in the API i18n files in Serbian and English with the minimum interpolated, so the message stays accurate when the venue's limit changes.
 
+## Guest reservation emails
+
+### What it does
+
+Whenever a venue confirms or rejects a guest's reservation, the guest gets an automatic email about the outcome. This is the only way a guest finds out the result of a reservation outside of opening the app, so it is a hard requirement, not a nice-to-have.
+
+### When the emails are sent
+
+- **Confirmation email** — sent the moment a manager or super admin confirms a pending reservation. The email tells the guest the reservation is confirmed at the named venue for the chosen date and time, and reminds them to contact the venue directly or use their profile if they need to change anything.
+- **Rejection email** — sent when a manager or super admin rejects a pending reservation. The email tells the guest the reservation was not accepted at the named venue for the chosen date and time. If the staff included a written reason when rejecting, the reason is shown to the guest in a highlighted block.
+
+A separate cancellation email already existed and continues to work the same way; this feature only adds the confirm and reject paths.
+
+### Who receives them
+
+Emails are sent only to guests who reserved while logged in (the reservation is linked to a user account with an email). Manager-created reservations made on behalf of someone who has no Table.ba account get no email, because there is no email address attached to the reservation.
+
+### Reliability
+
+If the email provider is unavailable or the call fails, the reservation status change still succeeds and the failure is logged. The mailer never blocks the operation. The text is localized in Serbian and English using the same i18n flow that powers the existing cancellation, invitation, and verification emails.
+
+### Implementation outline
+
+The email service exposes two new methods that mirror the existing cancellation-email shape: one for confirmation and one for rejection. Each loads its subject, body, and footer from the API i18n files with the venue name, date, and time interpolated; the rejection email also conditionally renders a highlighted "reason" block when the staff supplied one. Both methods catch and log Resend errors instead of throwing.
+
+The reservations service has a small private helper that runs after a successful confirm or reject save. It checks whether the reservation is linked to a guest user, fetches that user, fetches the venue for its name, and dispatches the appropriate email. Nothing in the helper can prevent the status change — it is wrapped in a silent try/catch — so an email outage cannot block a manager from running their venue.
+
 ## Venue closed days
 
 ### What it does

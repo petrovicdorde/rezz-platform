@@ -153,6 +153,33 @@ Frontend validacija je za UX. Backend ponavlja iste provjere prije čuvanja bilo
 
 Entitet lokala dobija jednu nullable integer kolonu za minimalnu starost. Oba puta upisivanja lokala (admin kreiranje/izmjena i menadžer izmjena) prihvataju polje i čuvaju ga. Javni odgovor lokala uključuje ga tako da forma za rezervaciju može da ga pročita bez dodatnog zahtjeva. Entitet rezervacije dobija nullable kolonu niza za godine, sačuvanu samo kada je lokal imao ograničenje u trenutku rezervacije. Reservations servis ima mali helper koji učitava lokal, odlučuje da li su godine potrebne, i ili validira ili vraća null. Oba endpoint-a za kreiranje rezervacije pozivaju isti helper, tako da menadžerski-kreirane rezervacije podliježu istom pravilu kao i one koje pošalje gost. Poruke o greškama žive u API i18n fajlovima na srpskom i engleskom sa interpolovanim minimumom, tako da poruka ostaje tačna kada se ograničenje lokala promijeni.
 
+## Email obavještenja gostu o rezervaciji
+
+### Šta radi
+
+Kad god lokal potvrdi ili odbije gostovu rezervaciju, gost dobija automatski email o ishodu. Ovo je jedini način da gost sazna rezultat rezervacije van aplikacije, pa je to tvrd zahtjev, a ne nešto opcionalno.
+
+### Kada se email-ovi šalju
+
+- **Email o potvrdi** — šalje se u trenutku kada menadžer ili super admin potvrdi rezervaciju koja je na čekanju. Email obavještava gosta da je rezervacija potvrđena u imenovanom lokalu za izabrani datum i vrijeme, i podsjeća ga da kontaktira lokal direktno ili koristi svoj profil ako treba nešto da promijeni.
+- **Email o odbijanju** — šalje se kada menadžer ili super admin odbije rezervaciju koja je na čekanju. Email obavještava gosta da rezervacija nije prihvaćena u imenovanom lokalu za izabrani datum i vrijeme. Ako je osoblje pri odbijanju uključilo pisani razlog, razlog se gostu prikazuje u istaknutom bloku.
+
+Poseban email o otkazivanju je već postojao i nastavlja da radi na isti način; ova funkcionalnost samo dodaje tokove za potvrdu i odbijanje.
+
+### Ko ih prima
+
+Email-ovi se šalju samo gostima koji su rezervisali dok su bili prijavljeni (rezervacija je povezana sa korisničkim nalogom koji ima email). Rezervacije koje menadžer kreira u ime nekoga ko nema Table.ba nalog ne dobijaju email, jer ne postoji email adresa povezana sa rezervacijom.
+
+### Pouzdanost
+
+Ako je email provajder nedostupan ili poziv ne uspije, promjena statusa rezervacije i dalje uspijeva, a neuspjeh se loguje. Slanje email-a nikada ne blokira operaciju. Tekst je lokalizovan na srpskom i engleskom kroz isti i18n tok koji pokreće postojeće email-ove o otkazivanju, pozivnicama i verifikaciji.
+
+### Skica implementacije
+
+Email servis izlaže dvije nove metode koje preslikavaju oblik postojećeg email-a o otkazivanju: jednu za potvrdu i jednu za odbijanje. Svaka učitava svoj subject, body i footer iz API i18n fajlova sa interpolovanim imenom lokala, datumom i vremenom; email o odbijanju takođe uslovno renderuje istaknut blok "razlog" kada osoblje navede razlog. Obje metode hvataju i loguju Resend greške umjesto da bacaju.
+
+Reservations servis ima mali privatni helper koji se pokreće nakon uspješnog čuvanja potvrde ili odbijanja. Provjerava da li je rezervacija povezana sa korisničkim nalogom gosta, učitava tog korisnika, učitava lokal radi imena, i šalje odgovarajući email. Ništa u helper-u ne može da spriječi promjenu statusa — umotan je u tihi try/catch — pa nedostupnost email servisa ne može da blokira menadžera da vodi svoj lokal.
+
 ## Neradni dani lokala
 
 ### Šta radi

@@ -388,6 +388,7 @@ export class ReservationsService {
     reservation.status = 'CONFIRMED';
     const saved = await this.reservationRepo.save(reservation);
     await this.notifyVenueManagers(saved, 'RESERVATION_CONFIRMED');
+    await this.sendGuestStatusEmail(saved, 'CONFIRMED', null, lang);
     return saved;
   }
 
@@ -410,7 +411,45 @@ export class ReservationsService {
     reservation.cancelledAt = new Date();
     const saved = await this.reservationRepo.save(reservation);
     await this.notifyVenueManagers(saved, 'RESERVATION_REJECTED');
+    await this.sendGuestStatusEmail(saved, 'REJECTED', note ?? null, lang);
     return saved;
+  }
+
+  private async sendGuestStatusEmail(
+    reservation: Reservation,
+    outcome: 'CONFIRMED' | 'REJECTED',
+    reason: string | null,
+    lang: string,
+  ): Promise<void> {
+    if (!reservation.userId) return;
+    try {
+      const guest = await this.usersService.findById(reservation.userId);
+      if (!guest?.email) return;
+      const venue = await this.venueRepo.findOne({
+        where: { id: reservation.venueId },
+      });
+      const venueName = venue?.name ?? '';
+      if (outcome === 'CONFIRMED') {
+        await this.emailService.sendReservationConfirmedEmail(
+          guest.email,
+          venueName,
+          reservation.date,
+          reservation.time,
+          lang,
+        );
+      } else {
+        await this.emailService.sendReservationRejectedEmail(
+          guest.email,
+          venueName,
+          reservation.date,
+          reservation.time,
+          reason,
+          lang,
+        );
+      }
+    } catch {
+      // Silent fail — don't block status change if email fails
+    }
   }
 
   async recordArrival(

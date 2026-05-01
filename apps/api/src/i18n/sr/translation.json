@@ -43,7 +43,14 @@
     "reservation_cancelled_subject": "Vaša rezervacija je otkazana – Table.ba",
     "reservation_cancelled_body": "Nažalost, vaša rezervacija u lokalu <strong>{venueName}</strong> za <strong>{date}</strong> u <strong>{time}</strong> je otkazana.",
     "reservation_cancelled_reason": "Razlog: {reason}",
-    "reservation_cancelled_footer": "Ukoliko imate pitanja, kontaktirajte lokal direktno."
+    "reservation_cancelled_footer": "Ukoliko imate pitanja, kontaktirajte lokal direktno.",
+    "reservation_confirmed_subject": "Vaša rezervacija je potvrđena – Table.ba",
+    "reservation_confirmed_body": "Dobre vijesti! Vaša rezervacija u lokalu <strong>{venueName}</strong> za <strong>{date}</strong> u <strong>{time}</strong> je potvrđena.",
+    "reservation_confirmed_footer": "Vidimo se! Ako trebate nešto da promijenite, kontaktirajte lokal direktno ili otkažite rezervaciju kroz svoj profil.",
+    "reservation_rejected_subject": "Vaša rezervacija je odbijena – Table.ba",
+    "reservation_rejected_body": "Nažalost, vaša rezervacija u lokalu <strong>{venueName}</strong> za <strong>{date}</strong> u <strong>{time}</strong> je odbijena.",
+    "reservation_rejected_reason": "Razlog: {reason}",
+    "reservation_rejected_footer": "Možete pokušati sa drugim datumom ili kontaktirati lokal direktno za više informacija."
   },
   "venue": {
     "not_found": "Lokal nije pronađen.",

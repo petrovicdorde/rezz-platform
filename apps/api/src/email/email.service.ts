@@ -223,6 +223,102 @@ export class EmailService {
     }
   }
 
+  async sendReservationConfirmedEmail(
+    email: string,
+    venueName: string,
+    date: string,
+    time: string,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const subject = this.i18n.t('email.reservation_confirmed_subject', {
+      lang,
+    });
+    const body = this.i18n.t('email.reservation_confirmed_body', {
+      lang,
+      args: { venueName, date, time },
+    });
+    const footer = this.i18n.t('email.reservation_confirmed_footer', { lang });
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
+      <h2 style="color:#3D2645;">Table.ba</h2>
+      <p>${body}</p>
+      <p style="color:#9A8C7C;font-size:13px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send reservation confirmed email to ${email}`,
+        error,
+      );
+    }
+  }
+
+  async sendReservationRejectedEmail(
+    email: string,
+    venueName: string,
+    date: string,
+    time: string,
+    reason: string | null,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const subject = this.i18n.t('email.reservation_rejected_subject', {
+      lang,
+    });
+    const body = this.i18n.t('email.reservation_rejected_body', {
+      lang,
+      args: { venueName, date, time },
+    });
+    const footer = this.i18n.t('email.reservation_rejected_footer', { lang });
+    const reasonText = reason
+      ? this.i18n.t('email.reservation_rejected_reason', {
+          lang,
+          args: { reason },
+        })
+      : null;
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
+      <h2 style="color:#3D2645;">Table.ba</h2>
+      <p>${body}</p>
+      ${
+        reasonText
+          ? `<p style="background:#FEF3C7;border-left:4px solid #F59E0B;padding:12px;border-radius:4px;margin:16px 0;">${reasonText}</p>`
+          : ''
+      }
+      <p style="color:#9A8C7C;font-size:13px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send reservation rejected email to ${email}`,
+        error,
+      );
+    }
+  }
+
   async sendWorkerInvitationEmail(
     email: string,
     venueName: string,

@@ -43,7 +43,14 @@
     "reservation_cancelled_subject": "Your reservation has been cancelled – Table.ba",
     "reservation_cancelled_body": "Unfortunately, your reservation at <strong>{venueName}</strong> for <strong>{date}</strong> at <strong>{time}</strong> has been cancelled.",
     "reservation_cancelled_reason": "Reason: {reason}",
-    "reservation_cancelled_footer": "If you have any questions, please contact the venue directly."
+    "reservation_cancelled_footer": "If you have any questions, please contact the venue directly.",
+    "reservation_confirmed_subject": "Your reservation has been confirmed – Table.ba",
+    "reservation_confirmed_body": "Good news! Your reservation at <strong>{venueName}</strong> for <strong>{date}</strong> at <strong>{time}</strong> has been confirmed.",
+    "reservation_confirmed_footer": "See you there! If you need to make any changes, please contact the venue directly or cancel the reservation from your profile.",
+    "reservation_rejected_subject": "Your reservation has been rejected – Table.ba",
+    "reservation_rejected_body": "Unfortunately, your reservation at <strong>{venueName}</strong> for <strong>{date}</strong> at <strong>{time}</strong> has been rejected.",
+    "reservation_rejected_reason": "Reason: {reason}",
+    "reservation_rejected_footer": "You can try a different date or contact the venue directly for more information."
   },
   "venue": {
     "not_found": "Venue not found.",
