@@ -94,10 +94,11 @@ export function PublicLayout({
       {/* Main */}
       <main className="flex-1 pt-[68px]">{children}</main>
 
-      {/* Footer */}
+      {/* Footer — hidden for now.
       <footer className="bg-secondary-500 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">
         &copy; 2026 Table.ba. Sva prava zadržana.
       </footer>
+      */}
 
       <LogoutConfirmDialog
         isOpen={logoutOpen}
