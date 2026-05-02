@@ -1,6 +1,7 @@
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
-import { VenueSliderCard } from './VenueSliderCard';
+import { useNavigate } from '@tanstack/react-router';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { VenuePublicCard } from './VenuePublicCard';
 import type { PublicVenue } from '@/lib/types/venue.types';
 
 interface VenueSliderProps {
@@ -10,20 +11,33 @@ interface VenueSliderProps {
 export function VenueSlider({
   venues,
 }: VenueSliderProps): React.JSX.Element {
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: 'start', dragFree: true },
-    [Autoplay({ delay: 4000, stopOnInteraction: true })],
-  );
+  const navigate = useNavigate();
 
   return (
-    <div className="overflow-hidden" ref={emblaRef}>
-      <div className="flex gap-4 pl-4 md:pl-0">
+    <div className="-mx-[5%]">
+      <Swiper
+        slidesPerView="auto"
+        spaceBetween={14}
+        grabCursor
+        className="!px-[5%] !pt-1 !pb-2"
+        breakpoints={{
+          640: { spaceBetween: 16 },
+          768: { spaceBetween: 20 },
+          1024: { spaceBetween: 24 },
+        }}
+      >
         {venues.map((venue) => (
-          <div key={venue.id} className="flex-[0_0_auto]">
-            <VenueSliderCard venue={venue} />
-          </div>
+          <SwiperSlide
+            key={venue.id}
+            className="!w-[78vw] !max-w-[320px] sm:!w-[44%] md:!w-[44%] lg:!w-[31%] xl:!w-[23.5%]"
+          >
+            <VenuePublicCard
+              venue={venue}
+              onClick={(v) => navigate({ to: `/lokali/${v.id}` })}
+            />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 }

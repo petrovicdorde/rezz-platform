@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { SearchFilterWidget } from "@/components/public/SearchFilterWidget";
@@ -84,37 +84,53 @@ function HomePage(): React.JSX.Element {
 
       {/* Featured venues */}
       {showVenues && (
-        <section className="bg-white px-4 py-16">
-          <div className="mx-auto w-full max-w-384">
-            <h2 className="text-center text-3xl font-bold text-secondary-500">
-              {t("home.featured_venues_title")}
-            </h2>
-            <p className="mt-2 text-center text-tertiary-500">
-              {t("home.featured_venues_subtitle")}
-            </p>
-
-            <div className="mt-10">
-              {isLoading && (
-                <div className="flex gap-4 overflow-hidden pl-4 md:pl-0">
-                  {[0, 1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="aspect-3/4 min-w-55 animate-pulse rounded-2xl bg-tertiary-200 md:min-w-65"
-                    />
-                  ))}
+        <section className="bg-tertiary-50 px-[5%] py-22">
+          <div className="mx-auto w-full max-w-[1440px]">
+            {/* Section head */}
+            <div className="mb-9 flex items-end justify-between gap-4">
+              <div>
+                <div className="mb-1.5 text-[0.68rem] font-bold uppercase tracking-[3px] text-secondary-400">
+                  {t("home.featured_venues_label")}
                 </div>
-              )}
-
-              {!isLoading && featuredVenues.length > 0 && (
-                <VenueSlider venues={featuredVenues} />
-              )}
-
-              {!isLoading && featuredVenues.length === 0 && (
-                <p className="text-center text-tertiary-500">
-                  {t("home.no_featured_venues")}
-                </p>
-              )}
+                <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-1px] text-[#140B00]">
+                  {t("home.featured_venues_title")}
+                </h2>
+              </div>
+              <Link
+                to="/lokali"
+                search={{
+                  tip: undefined,
+                  grad: undefined,
+                  datum: undefined,
+                  vrijeme: undefined,
+                }}
+                className="whitespace-nowrap border-b border-[rgba(20,11,0,0.12)] pb-px text-[0.82rem] font-medium text-[rgba(20,11,0,0.4)] transition-colors hover:border-[#140B00] hover:text-[#140B00]"
+              >
+                {t("home.featured_venues_see_all")}
+              </Link>
             </div>
+
+            {/* Cards */}
+            {isLoading && (
+              <div className="-mx-[5%] flex gap-3.5 overflow-hidden px-[5%]">
+                {[0, 1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="h-[320px] w-[78vw] max-w-[320px] flex-shrink-0 animate-pulse rounded-[22px] bg-tertiary-200 md:w-[44%] lg:w-[31%] xl:w-[23.5%]"
+                  />
+                ))}
+              </div>
+            )}
+
+            {!isLoading && featuredVenues.length > 0 && (
+              <VenueSlider venues={featuredVenues} />
+            )}
+
+            {!isLoading && featuredVenues.length === 0 && (
+              <p className="text-center text-tertiary-500">
+                {t("home.no_featured_venues")}
+              </p>
+            )}
           </div>
         </section>
       )}
