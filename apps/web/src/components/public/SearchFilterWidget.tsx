@@ -154,7 +154,7 @@ export function SearchFilterWidget({
         )}
 
         {/* Type / Date / Time row */}
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
           {/* Type */}
           <div className={FIELD_WRAPPER}>
             <span className={FIELD_LABEL}>
@@ -204,7 +204,7 @@ export function SearchFilterWidget({
           </div>
 
           {/* Time */}
-          <div className={`${FIELD_WRAPPER} col-span-2 sm:col-span-1`}>
+          <div className={FIELD_WRAPPER}>
             <span className={FIELD_LABEL}>{t('home.filter_time_label')}</span>
             <div className="mt-0.5 flex justify-center [&>button]:!h-auto [&>button]:!min-h-0 [&>button]:!justify-center [&>button]:!rounded-none [&>button]:!border-0 [&>button]:!bg-transparent [&>button]:!px-0 [&>button]:!py-0 [&>button]:!shadow-none [&>button>span]:!text-[0.92rem] [&>button>span]:!font-medium [&>button>span]:!text-[#140B00]">
               <TimePicker

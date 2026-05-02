@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { SearchFilterWidget } from "@/components/public/SearchFilterWidget";
@@ -85,29 +85,15 @@ function HomePage(): React.JSX.Element {
       {/* Featured venues */}
       {showVenues && (
         <section className="bg-tertiary-50 px-[5%] py-22">
-          <div className="mx-auto w-full max-w-[1440px]">
+          <div className="mx-auto w-full max-w-(--breakpoint-2xl)">
             {/* Section head */}
-            <div className="mb-9 flex items-end justify-between gap-4">
-              <div>
-                <div className="mb-1.5 text-[0.68rem] font-bold uppercase tracking-[3px] text-secondary-400">
-                  {t("home.featured_venues_label")}
-                </div>
-                <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-1px] text-[#140B00]">
-                  {t("home.featured_venues_title")}
-                </h2>
+            <div className="mb-9">
+              <div className="mb-1.5 text-[0.68rem] font-bold uppercase tracking-[3px] text-secondary-400">
+                {t("home.featured_venues_label")}
               </div>
-              <Link
-                to="/lokali"
-                search={{
-                  tip: undefined,
-                  grad: undefined,
-                  datum: undefined,
-                  vrijeme: undefined,
-                }}
-                className="whitespace-nowrap border-b border-[rgba(20,11,0,0.12)] pb-px text-[0.82rem] font-medium text-[rgba(20,11,0,0.4)] transition-colors hover:border-[#140B00] hover:text-[#140B00]"
-              >
-                {t("home.featured_venues_see_all")}
-              </Link>
+              <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-1px] text-[#140B00]">
+                {t("home.featured_venues_title")}
+              </h2>
             </div>
 
             {/* Cards */}

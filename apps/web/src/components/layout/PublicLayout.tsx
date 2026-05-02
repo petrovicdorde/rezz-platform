@@ -43,51 +43,56 @@ export function PublicLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Navbar */}
+      {/* Navbar — full-bleed cream blur background, content constrained to the
+          same max-w-[1440px] + 5% padding as the page sections so the logo and
+          Prijava button line up vertically with the section grid. */}
       <nav
         data-visible={navVisible}
-        className="right-scroll-bar-position fixed top-0 right-0 left-0 z-50 flex h-[68px] items-center justify-between border-b border-[rgba(20,11,0,0.07)] bg-[rgba(245,241,235,0.85)] px-4 backdrop-blur-[24px] backdrop-saturate-150 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] data-[visible=false]:pointer-events-none data-[visible=false]:opacity-0 md:px-[5%]"
+        className="right-scroll-bar-position fixed top-0 right-0 left-0 z-50 h-[68px] border-b border-[rgba(20,11,0,0.07)] bg-[rgba(245,241,235,0.85)] px-[5%] backdrop-blur-[24px] backdrop-saturate-150 transition-opacity duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] data-[visible=false]:pointer-events-none data-[visible=false]:opacity-0"
         style={{ WebkitBackdropFilter: 'blur(24px) saturate(1.5)' }}
       >
-        <Logo />
+        <div className="mx-auto flex h-full w-full max-w-(--breakpoint-2xl) items-center justify-between">
+          <Logo />
 
-        <div className="flex items-center gap-2">
-          {isAuthenticated && user ? (
-            <>
-              {user.role === 'GUEST' ? (
-                <Link to="/profil" className="flex items-center gap-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(20,11,0,0.1)] bg-[rgba(20,11,0,0.04)] text-xs font-semibold text-[#140B00]">
-                    {(
-                      (user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')
-                    ).toUpperCase()}
-                  </div>
-                </Link>
-              ) : (
-                <Link
-                  to={ROLE_REDIRECT[user.role] ?? '/'}
-                  className="text-sm font-medium text-[rgba(20,11,0,0.6)] hover:text-[#140B00]"
+          <div className="flex items-center gap-2">
+            {isAuthenticated && user ? (
+              <>
+                {user.role === 'GUEST' ? (
+                  <Link to="/profil" className="flex items-center gap-2">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(20,11,0,0.1)] bg-[rgba(20,11,0,0.04)] text-xs font-semibold text-[#140B00]">
+                      {(
+                        (user.firstName?.[0] ?? '') +
+                        (user.lastName?.[0] ?? '')
+                      ).toUpperCase()}
+                    </div>
+                  </Link>
+                ) : (
+                  <Link
+                    to={ROLE_REDIRECT[user.role] ?? '/'}
+                    className="text-sm font-medium text-[rgba(20,11,0,0.6)] hover:text-[#140B00]"
+                  >
+                    {user.firstName}
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setLogoutOpen(true)}
+                  className="rounded-md p-1.5 text-[rgba(20,11,0,0.45)] transition-colors hover:bg-[rgba(20,11,0,0.05)] hover:text-[#140B00]"
+                  title={t('auth.logout_button')}
                 >
-                  {user.firstName}
-                </Link>
-              )}
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </>
+            ) : (
               <button
                 type="button"
-                onClick={() => setLogoutOpen(true)}
-                className="rounded-md p-1.5 text-[rgba(20,11,0,0.45)] transition-colors hover:bg-[rgba(20,11,0,0.05)] hover:text-[#140B00]"
-                title={t('auth.logout_button')}
+                onClick={open}
+                className="rounded-full bg-secondary-400 px-6 py-2.5 text-sm font-semibold tracking-[0.1px] text-white shadow-[0_2px_8px_rgba(249,133,19,0.25),0_6px_20px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-px hover:bg-secondary-500 hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
               >
-                <LogOut className="h-4 w-4" />
+                {t('nav.login')}
               </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={open}
-              className="rounded-full bg-secondary-400 px-6 py-2.5 text-sm font-semibold tracking-[0.1px] text-white shadow-[0_2px_8px_rgba(249,133,19,0.25),0_6px_20px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-px hover:bg-secondary-500 hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
-            >
-              {t('nav.login')}
-            </button>
-          )}
+            )}
+          </div>
         </div>
       </nav>
 
