@@ -36,7 +36,7 @@ function HomePage(): React.JSX.Element {
   return (
     <PublicLayout>
       {/* Hero section */}
-      <section className="relative -mt-16 flex h-[100svh] min-h-[640px] flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16">
+      <section className="relative -mt-[68px] flex h-[100svh] min-h-[640px] flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16">
         {/* Background image */}
         <div
           aria-hidden
@@ -58,22 +58,9 @@ function HomePage(): React.JSX.Element {
         />
 
         <div className="relative z-[2] mx-auto flex w-full max-w-3xl flex-col items-center">
-          {/* Badge */}
-          <div
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-secondary-400/30 bg-secondary-400/10 px-5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-secondary-400 backdrop-blur-sm sm:mb-7"
-            style={{ animation: 'hero-fade-up 0.55s 0.1s both' }}
-          >
-            <span
-              aria-hidden
-              className="h-1.5 w-1.5 rounded-full bg-secondary-400 shadow-[0_0_6px_rgba(249,133,19,0.6)]"
-              style={{ animation: 'hero-blink 2.5s ease-in-out infinite' }}
-            />
-            {t('home.hero_badge')}
-          </div>
-
           {/* Title */}
           <h1
-            className="text-center font-serif text-[clamp(3rem,6vw,5.8rem)] leading-[1] font-black tracking-[-0.025em] text-tertiary-50 [text-shadow:0_2px_40px_rgba(20,11,0,0.4)]"
+            className="mb-10 text-center font-serif text-[clamp(3rem,6vw,5.8rem)] leading-[1] font-black tracking-[-0.025em] text-tertiary-50 [text-shadow:0_2px_40px_rgba(20,11,0,0.4)] sm:mb-12"
             style={{ animation: 'hero-fade-up 0.65s 0.2s both' }}
           >
             {t('home.hero_title_line1')}
@@ -84,14 +71,6 @@ function HomePage(): React.JSX.Element {
               {t('home.hero_title_line3')}
             </em>
           </h1>
-
-          {/* Subtitle */}
-          <p
-            className="mx-auto mt-5 mb-10 max-w-md text-center text-[1.02rem] leading-[1.8] font-light text-white/55 sm:mb-12"
-            style={{ animation: 'hero-fade-up 0.65s 0.32s both' }}
-          >
-            {t('home.hero_subtitle')}
-          </p>
 
           {/* Search card */}
           <div

@@ -2,35 +2,35 @@
 
 @theme {
   /* Primary — Deadly Depths (deep navy) */
-  --color-primary-50: #E7E7F0;
-  --color-primary-100: #B8B9D0;
-  --color-primary-200: #6B6DA0;
+  --color-primary-50: #e7e7f0;
+  --color-primary-100: #b8b9d0;
+  --color-primary-200: #6b6da0;
   --color-primary-400: #111144;
-  --color-primary-600: #0D0D33;
+  --color-primary-600: #0d0d33;
   --color-primary-800: #080822;
   --color-primary-900: #030311;
 
   /* Secondary — Habañero (orange) */
-  --color-secondary-50: #FEF1E4;
-  --color-secondary-100: #FDD6B0;
-  --color-secondary-200: #FBAB5A;
-  --color-secondary-400: #F98513;
-  --color-secondary-600: #C66A0F;
-  --color-secondary-800: #7E430A;
-  --color-secondary-900: #3F2105;
+  --color-secondary-50: #fef1e4;
+  --color-secondary-100: #fdd6b0;
+  --color-secondary-200: #fbab5a;
+  --color-secondary-400: #f98513;
+  --color-secondary-600: #c66a0f;
+  --color-secondary-800: #7e430a;
+  --color-secondary-900: #3f2105;
 
   /* Tertiary — Jodhpur Tan (warm beige) */
-  --color-tertiary-50: #FAF8F6;
-  --color-tertiary-100: #F1ECE7;
-  --color-tertiary-200: #EAE2D9;
-  --color-tertiary-400: #DAD1C8;
-  --color-tertiary-600: #A89E92;
-  --color-tertiary-800: #726A60;
-  --color-tertiary-900: #3A342E;
+  --color-tertiary-50: #faf8f6;
+  --color-tertiary-100: #f1ece7;
+  --color-tertiary-200: #eae2d9;
+  --color-tertiary-400: #dad1c8;
+  --color-tertiary-600: #a89e92;
+  --color-tertiary-800: #726a60;
+  --color-tertiary-900: #3a342e;
 
   /* Default font */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
 }
 
 @keyframes hero-fade-up {
@@ -76,12 +76,12 @@
   }
 }
 
-[data-slot='select-content'][data-hero-dropdown='true'][data-state='open'] {
+[data-slot="select-content"][data-hero-dropdown="true"][data-state="open"] {
   animation: hero-dropdown-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   transform-origin: var(--radix-select-content-transform-origin);
 }
 
-[data-slot='select-content'][data-hero-dropdown='true'][data-state='closed'] {
+[data-slot="select-content"][data-hero-dropdown="true"][data-state="closed"] {
   animation: hero-dropdown-out 0.16s cubic-bezier(0.4, 0, 1, 1) both;
   transform-origin: var(--radix-select-content-transform-origin);
 }

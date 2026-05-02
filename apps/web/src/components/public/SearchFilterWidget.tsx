@@ -43,7 +43,7 @@ export function SearchFilterWidget({
 }: SearchFilterWidgetProps): React.JSX.Element {
   const { t } = useTranslation();
   const settingLabel = useSettingLabel();
-  const [activeTab, setActiveTab] = useState<'venues' | 'events'>('venues');
+  // const [activeTab, setActiveTab] = useState<'venues' | 'events'>('venues');
   const [type, setType] = useState(initialValues?.type ?? '');
   const [city, setCity] = useState(initialValues?.city ?? '');
   const [date, setDate] = useState(initialValues?.date ?? '');
@@ -67,7 +67,7 @@ export function SearchFilterWidget({
       className="mx-auto w-full max-w-[640px] rounded-[26px] border border-white/90 bg-[rgba(253,249,244,0.97)] p-5 shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_4px_6px_rgba(20,11,0,0.04),0_12px_32px_rgba(20,11,0,0.12),0_32px_64px_rgba(20,11,0,0.18),0_64px_80px_rgba(20,11,0,0.12)] backdrop-blur-md sm:p-7"
       style={{ WebkitBackdropFilter: 'blur(20px)' }}
     >
-      {/* Tabs */}
+      {/* Tabs — Lokali / Događaji. Commented out until events search is wired up.
       <div className="mb-5 flex gap-1 rounded-[13px] bg-[rgba(20,11,0,0.055)] p-1">
         <button
           type="button"
@@ -92,6 +92,7 @@ export function SearchFilterWidget({
           {t('home.search_tab_events')}
         </button>
       </div>
+      */}
 
       {/* Fields */}
       <div className="flex flex-col gap-2.5">

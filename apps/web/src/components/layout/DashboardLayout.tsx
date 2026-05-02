@@ -17,6 +17,7 @@ import {
 import type { UserRole } from '@rezz/shared';
 import { useAuthStore } from '@/store/auth.store';
 import { useUnreadCount } from '@/hooks/useNotifications';
+import { Logo } from '@/components/ui/Logo';
 import { LogoutConfirmDialog } from '@/components/auth/LogoutConfirmDialog';
 
 interface NavItem {
@@ -83,9 +84,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
       {/* Sidebar — desktop */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-56 bg-primary-400 md:block">
         <div className="px-6 pt-6 pb-8">
-          <Link to="/">
-            <img src="/rezz_logo_green.webp" alt={t('brand.name')} className="h-8 brightness-0 invert" />
-          </Link>
+          <Logo variant="light" />
+
         </div>
         <nav className="flex flex-col gap-1">
           {navItems.map((item) => {

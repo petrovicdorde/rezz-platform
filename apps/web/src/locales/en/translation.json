@@ -116,12 +116,10 @@
     "venue_blocked": "Your venue has been deactivated. Please contact the platform administrator."
   },
   "home": {
-    "hero_badge": "Reservation platform",
     "hero_title": "Book with a click!",
     "hero_title_line1": "Find",
     "hero_title_line2": "the best.",
     "hero_title_line3": "Book easily.",
-    "hero_subtitle": "The finest restaurants, cafés and night clubs in BiH — all in one place.",
     "search_tab_venues": "Venues",
     "search_tab_events": "Events",
     "search_button": "Search venues",

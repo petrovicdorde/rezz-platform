@@ -116,12 +116,10 @@
     "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora."
   },
   "home": {
-    "hero_badge": "Platforma za rezervacije",
     "hero_title": "Rezervacija na klik!",
     "hero_title_line1": "Pronađi",
     "hero_title_line2": "najbolje.",
     "hero_title_line3": "Rezerviši lako.",
-    "hero_subtitle": "Najljepši restorani, kafići i noćni klubovi u BiH — sve na jednom mjestu.",
     "search_tab_venues": "Lokali",
     "search_tab_events": "Događaji",
     "search_button": "Pretraži lokale",
