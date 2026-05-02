@@ -319,6 +319,72 @@ export class EmailService {
     }
   }
 
+  async sendManagerPendingReminderEmail(
+    email: string,
+    firstName: string | null,
+    count: number,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const frontendUrl = (
+      this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173') ??
+      'http://localhost:5173'
+    )
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)[0];
+    const dashboardUrl = `${frontendUrl}/dashboard/reservations`;
+
+    const subject = this.i18n.t('email.manager_pending_reminder_subject', {
+      lang,
+    });
+    const greeting = this.i18n.t('email.greeting', {
+      lang,
+      args: { firstName: firstName ?? '' },
+    });
+    const body = this.i18n.t('email.manager_pending_reminder_body', {
+      lang,
+      args: { count },
+    });
+    const button = this.i18n.t('email.manager_pending_reminder_button', {
+      lang,
+    });
+    const footer = this.i18n.t('email.manager_pending_reminder_footer', {
+      lang,
+    });
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;">
+      <h2 style="color:#3D2645;">Table.ba</h2>
+      <p>${greeting}</p>
+      <p>${body}</p>
+      <a href="${dashboardUrl}"
+         style="display:inline-block;background:#C9A84C;color:#3A2A08;
+                padding:12px 24px;border-radius:8px;text-decoration:none;
+                font-weight:bold;margin:16px 0;">
+        ${button}
+      </a>
+      <p style="color:#9A8C7C;font-size:13px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send manager pending reminder email to ${email}`,
+        error,
+      );
+    }
+  }
+
   async sendWorkerInvitationEmail(
     email: string,
     venueName: string,

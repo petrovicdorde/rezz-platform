@@ -78,6 +78,9 @@ export class User {
   @Column({ nullable: true, type: 'text' })
   blacklistReason: string | null;
 
+  @Column({ type: 'timestamptz', nullable: true })
+  lastReservationReminderAt: Date | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

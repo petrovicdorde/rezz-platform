@@ -50,7 +50,11 @@
     "reservation_rejected_subject": "Your reservation has been rejected – Table.ba",
     "reservation_rejected_body": "Unfortunately, your reservation at <strong>{venueName}</strong> for <strong>{date}</strong> at <strong>{time}</strong> has been rejected.",
     "reservation_rejected_reason": "Reason: {reason}",
-    "reservation_rejected_footer": "You can try a different date or contact the venue directly for more information."
+    "reservation_rejected_footer": "You can try a different date or contact the venue directly for more information.",
+    "manager_pending_reminder_subject": "You have new reservations to review – Table.ba",
+    "manager_pending_reminder_body": "You have <strong>{count}</strong> new pending reservations waiting for your review. Open the dashboard to confirm or reject them.",
+    "manager_pending_reminder_button": "Open dashboard",
+    "manager_pending_reminder_footer": "This reminder is sent automatically every 3 hours only when new reservations are waiting."
   },
   "venue": {
     "not_found": "Venue not found.",

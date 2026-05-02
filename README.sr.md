@@ -180,6 +180,45 @@ Email servis izlaže dvije nove metode koje preslikavaju oblik postojećeg email
 
 Reservations servis ima mali privatni helper koji se pokreće nakon uspješnog čuvanja potvrde ili odbijanja. Provjerava da li je rezervacija povezana sa korisničkim nalogom gosta, učitava tog korisnika, učitava lokal radi imena, i šalje odgovarajući email. Ništa u helper-u ne može da spriječi promjenu statusa — umotan je u tihi try/catch — pa nedostupnost email servisa ne može da blokira menadžera da vodi svoj lokal.
 
+## Podsjetnici menadžera o rezervacijama na čekanju (cron)
+
+### Šta radi
+
+Svake tri sata automatizovani posao provjerava svakog aktivnog menadžera i šalje mu email podsjetnik ako postoje nove rezervacije na čekanju koje još nije obradio. Ako menadžer nema ništa novo, email se ne šalje — tišina je signal da je sve pod kontrolom. Posao je sigurnosna mreža za menadžere koji ne drže dashboard otvoren: nikada neće proći više od tri sata a da im se ne kaže da imaju posao.
+
+### Šta znači "novo"
+
+Rezervacija se računa kao nova za menadžera samo ako je kreirana nakon posljednjeg podsjetnika koji je taj menadžer primio. Prvi podsjetnik ikada poslat menadžeru pokriva sve njegove trenutno rezervacije na čekanju; kasniji podsjetnici pokrivaju samo one koje su stigle nakon prethodnog podsjetnika. Na taj način menadžer koji ignoriše jednu rezervaciju na čekanju ne dobija obavještenje o njoj svake tri sate zauvijek — kada mu je rečeno za nju, ona je njegova odgovornost.
+
+### Ko je uključen
+
+Posao iterira kroz aktivne naloge menadžera koji su povezani sa aktivnim lokalom. Radnici, super admini, gosti, deaktivirani menadžeri i menadžeri bez lokala se preskaču. Sažetak koji endpoint vrati prijavljuje ukupan broj razmotrenih menadžera, koliko ih je dobilo email i koliko je preskočeno (nema email, nema lokala, nema novih na čekanju ili greška tokom obrade).
+
+### Pouzdanost
+
+Svaki menadžer se obrađuje nezavisno unutar try/catch-a. Greška na jednom menadžeru — neispravan email, prolazna greška mail provajdera, lokal koji nedostaje — loguje se i broji kao preskok; nikada ne prekida pokretanje za druge. Polje `lastReservationReminderAt` na korisniku se ažurira tek nakon uspješnog slanja email-a, tako da prolazna nedostupnost mailera znači da će menadžer biti ponovo pokušan u sljedećem pokretanju umjesto tihog gubitka.
+
+### Endpoint
+
+Posao živi na `POST /cron/reservation-reminders`. Endpoint **nije** zaštićen redovnom JWT autentikacijom — zaštićen je jednostavnim guardom sa zajedničkom tajnom koji zahtijeva header `Authorization: Bearer ${CRON_SECRET}`. Bez ispravne tajne endpoint vraća 401. Ako uopšte nema postavljene `CRON_SECRET` env varijable, endpoint odbija svaki zahtjev, tako da zaboravljena konfiguracija ne može slučajno da ga izloži.
+
+### Podešavanje na Vercel-u
+
+Cron se konfiguriše deklarativno u `vercel.json` pod `crons` nizom na vrhu. Raspored je standardna cron sintaksa — `0 */3 * * *` znači "minut 0 svakog trećeg sata" (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC).
+
+Da bi ovo radilo nakon deploy-a, vlasnik projekta mora da uradi dva jednokratna koraka u Vercel dashboard-u za ovaj projekat:
+
+1. **Dodati env varijablu `CRON_SECRET`** na Production (i Preview okruženju, ako cron treba tu da se pokreće). Generiši nasumičnu vrijednost — na primjer komandom `openssl rand -hex 32` — i unesi je u "Environment Variables" panel u Vercel-u za API projekat. Ista vrijednost mora postojati i u `apps/api/.env` za lokalno testiranje.
+2. **Provjeriti da je cron registrovan** pod "Settings → Cron Jobs" u Vercel dashboard-u nakon sljedećeg deploy-a. Vercel automatski čita `crons` blok iz `vercel.json`; dashboard treba da pokaže jedan unos koji pokazuje na `/cron/reservation-reminders` sa rasporedom od 3 sata. Ako se unos ne pojavi, ponovo deploy-uj.
+
+Vercel automatski dodaje `Authorization: Bearer ${CRON_SECRET}` header kada pokrene posao, tako da guard vidi ispravnu tajnu bez ikakvog klijentskog koda. Da ručno testiraš endpoint sa svoje mašine, pokreni `curl -X POST -H "Authorization: Bearer <tajna>" https://<vaš-api-domen>/cron/reservation-reminders`.
+
+Ako raspored treba da se promijeni, izmijeni `schedule` vrijednost u `vercel.json` i ponovo deploy-uj. Da pauziraš posao, ukloni unos iz `crons` i ponovo deploy-uj.
+
+### Skica implementacije
+
+Novi `CronModule` izlaže jedan endpoint zaštićen prilagođenim `CronAuthGuard`-om koji poredi bearer token sa `CRON_SECRET` env varijablom. Servis učitava aktivne menadžere povezane sa lokalom, pokreće jedan count upit po menadžeru ograničen na `lastReservationReminderAt` tog menadžera, i šalje lokalizovan email "imate N novih rezervacija" kroz postojeći email servis kada je broj veći od nule. Zapis korisnika dobija jednu nullable timestamp kolonu, `lastReservationReminderAt`, koju servis ažurira pri svakom uspješnom slanju. Šablon email-a podsjetnika prati isti obrazac kao i drugi transakcioni email-ovi projekta (verifikacija, pozivnice, otkazivanje rezervacije), sa subject-om, body-jem, dugmetom i footer-om iz i18n-a.
+
 ## Neradni dani lokala
 
 ### Šta radi
