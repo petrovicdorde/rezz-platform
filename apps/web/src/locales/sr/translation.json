@@ -138,8 +138,8 @@
     "featured_venues_label": "Istaknuto",
     "featured_venues_title": "Popularni lokali",
     "no_featured_venues": "Nema izdvojenih lokala.",
-    "featured_events_title": "Izdvojeni događaji",
-    "featured_events_subtitle": "Predstojeći događaji koje ne smiješ propustiti",
+    "featured_events_label": "Uskoro",
+    "featured_events_title": "Predstojeći događaji",
     "no_featured_events": "Nema izdvojenih događaja."
   },
   "search": {

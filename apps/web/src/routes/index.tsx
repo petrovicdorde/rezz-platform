@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { SearchFilterWidget } from "@/components/public/SearchFilterWidget";
 import { VenueSlider } from "@/components/public/VenueSlider";
+import { EventSlider } from "@/components/public/EventSlider";
 import { useLandingData } from "@/hooks/useLanding";
 import type { SearchFilters } from "@/lib/api/landing.api";
 
@@ -121,51 +122,47 @@ function HomePage(): React.JSX.Element {
         </section>
       )}
 
-      {/* Featured events */}
+      {/* Featured events — dark section, matches the mockup's events look */}
       {showEvents && (isLoading || featuredEvents.length > 0) && (
-        <section className="bg-white px-4 py-16">
-          <div className="mx-auto w-full max-w-384">
-            <h2 className="text-center text-3xl font-bold text-secondary-500">
-              {t("home.featured_events_title")}
-            </h2>
-            <p className="mt-2 text-center text-tertiary-500">
-              {t("home.featured_events_subtitle")}
-            </p>
+        <section className="relative overflow-hidden bg-[linear-gradient(180deg,#160D00_0%,#1A0E00_100%)] px-[5%] py-22">
+          {/* Orange radial glow (top-right) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 -right-24 h-[500px] w-[700px] bg-[radial-gradient(ellipse,rgba(249,133,19,0.08)_0%,transparent_65%)]"
+          />
 
-            <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {isLoading &&
-                [0, 1, 2].map((i) => (
+          <div className="relative mx-auto w-full max-w-(--breakpoint-2xl)">
+            {/* Section head */}
+            <div className="mb-9">
+              <div className="mb-1.5 text-[0.68rem] font-bold uppercase tracking-[3px] text-secondary-400">
+                {t("home.featured_events_label")}
+              </div>
+              <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-1px] text-white">
+                {t("home.featured_events_title")}
+              </h2>
+            </div>
+
+            {/* Cards */}
+            {isLoading && (
+              <div className="-mx-[5%] flex gap-3.5 overflow-hidden px-[5%]">
+                {[0, 1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="aspect-3/4 animate-pulse rounded-2xl bg-tertiary-200"
+                    className="h-[320px] w-[78vw] max-w-[320px] flex-shrink-0 animate-pulse rounded-[22px] bg-white/5 md:w-[44%] lg:w-[31%] xl:w-[23.5%]"
                   />
                 ))}
+              </div>
+            )}
 
-              {!isLoading &&
-                featuredEvents.map((event) => (
-                  <button
-                    key={event.id}
-                    type="button"
-                    onClick={() => navigate({ to: `/dogadjaji/${event.id}` })}
-                    className="group relative flex aspect-3/4 flex-col justify-end overflow-hidden rounded-2xl bg-linear-to-b from-secondary-400 to-secondary-700 text-left"
-                  >
-                    {event.imageUrl && (
-                      <img
-                        src={event.imageUrl}
-                        alt={event.name}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-                    <div className="relative p-4 text-white">
-                      <h3 className="text-lg font-bold">{event.name}</h3>
-                      <p className="text-sm text-white/80">
-                        {new Date(event.startsAt).toLocaleString()}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-            </div>
+            {!isLoading && featuredEvents.length > 0 && (
+              <EventSlider events={featuredEvents} />
+            )}
+
+            {!isLoading && featuredEvents.length === 0 && (
+              <p className="text-center text-white/40">
+                {t("home.no_featured_events")}
+              </p>
+            )}
           </div>
         </section>
       )}

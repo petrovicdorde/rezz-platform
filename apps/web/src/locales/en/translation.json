@@ -138,8 +138,8 @@
     "featured_venues_label": "Featured",
     "featured_venues_title": "Popular venues",
     "no_featured_venues": "No featured venues.",
-    "featured_events_title": "Featured events",
-    "featured_events_subtitle": "Upcoming events you don't want to miss",
+    "featured_events_label": "Upcoming",
+    "featured_events_title": "Upcoming events",
     "no_featured_events": "No featured events."
   },
   "search": {
