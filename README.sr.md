@@ -127,31 +127,37 @@ Da bi crna lista postala stroža, promijenite tri environment varijable i redepl
 
 Ako politika treba da postane uređiva od strane admina iz same aplikacije umjesto kroz environment varijable, prirodan sljedeći korak je migracija ova tri broja u postojeću settings tabelu koja već pokreće druge admin-podesive vrijednosti. Sve nizvodno — provođenje, statistika, baner — bi ostalo nepromijenjeno.
 
-## Minimalna starost gostiju lokala
+## Godine gostiju na svakoj rezervaciji
 
 ### Šta radi
 
-Lokal može da deklariše minimalnu starost za goste. Kada je to ograničenje postavljeno, svaka rezervacija na tom lokalu mora da nosi godine svakog gosta, i svake godine moraju da zadovolje ograničenje. Ovo omogućava lokalima poput barova i klubova da provode politike o godinama kroz tok rezervacije umjesto da hvataju neusklađenosti na ulazu.
+Svaka rezervacija mora da nosi godine svakog gosta u rezervaciji. Ovaj podatak se prikuplja unaprijed kroz formu za rezervaciju i čuva na rezervaciji, bez obzira na to na kom lokalu je rezervacija. Podatak služi kao osnova za buduću analitiku super admina (raspodjela starosti rezervacija, prosječne godine osobe koja rezerviše po lokalu i slično) i kao ulaz u provjeru starosne politike lokala opisanu ispod.
+
+Lokal dodatno može da deklariše **minimalnu starost gostiju**. Kada je postavljena, svaka unesena godina na rezervaciji za taj lokal mora biti jednaka ili veća od tog ograničenja, povrh toga što je svejedno prikupljena. Ovo omogućava lokalima poput barova i klubova da provode politike o godinama kroz tok rezervacije umjesto da hvataju neusklađenosti na ulazu. Kada minimum nije postavljen, godine se i dalje prikupljaju i čuvaju; samo ne postoji donja granica po polju.
 
 ### Kako se pojavljuje u formama lokala
 
-I forma za kreiranje/izmjenu lokala super admina i editor "moj lokal" menadžera izlažu jedno opcionalno polje **minimalna starost gostiju**. Polje prima cio broj između 1 i 120, ili može ostati prazno. Prazno znači da lokal nema starosno ograničenje i da se neće pojaviti polja za godine u njegovom toku rezervacije.
+I forma za kreiranje/izmjenu lokala super admina i editor "moj lokal" menadžera izlažu jedno opcionalno polje **minimalna starost gostiju**. Polje prima cio broj između 1 i 120, ili može ostati prazno. Prazno znači da lokal nema starosno ograničenje — godine se i dalje traže od osobe koja rezerviše, samo se primjenjuje gornja granica zdravog razuma (0–120).
 
 ### Kako se pojavljuje u formi za rezervaciju
 
-Javna forma za rezervaciju prati dvije stvari: minimalnu starost gostiju lokala i broj gostiju izabran za rezervaciju. Ako lokal nema minimum, ništa se ne mijenja — forma izgleda kao i prije, bez polja za godine, bez payload-a za godine. Ako lokal ima minimum, pojavljuje se blok "godine" sa jednim numeričkim poljem po gostu. Mijenjanje broja gostiju dodaje ili uklanja polja kako bi se podudaralo. Svako polje je označeno i prikazuje minimum lokala u naslovu sekcije tako da gost zna pravilo prije kucanja.
+Javna forma za rezervaciju uvijek prikazuje blok "godine" sa jednim numeričkim poljem po gostu. Mijenjanje broja gostiju dodaje ili uklanja polja kako bi se podudaralo. Naslov bloka i pomoćni tekst se prilagođavaju politici lokala: kada lokal ima postavljenu minimalnu starost, naslov glasi "Godine gostiju (minimalna starost: N)" i pomoćna linija objašnjava da svaki gost mora imati najmanje N godina; kada minimum nije postavljen, naslov glasi "Godine gostiju" a pomoćna linija samo traži godine za svakog gosta.
 
-Svako polje za godine je numeričko polje ograničeno na opseg 0–100 samim poljem, tako da se kucanje van opsega sprečava na nivou pretraživača bez eksplicitne poruke o grešci. Jedina poruka koju forma prikazuje je za politiku lokala: godina ispod minimuma lokala se ističe crvenom ivicom i porukom po polju koja uključuje stvarni minimum, tako da gost razumije koja vrijednost bi bila prihvaćena. Prazna polja su obavezna prije slanja. Dugme za slanje je omogućeno samo kada je svako polje validno; slanje sa bilo kojim nevalidnim poljem je blokirano.
+Svako polje za godine je numeričko polje ograničeno na opseg 0–120 samim poljem, tako da se kucanje van opsega sprečava na nivou pretraživača bez eksplicitne poruke o grešci. Prazna polja su obavezna prije slanja. Kada lokal ima minimum, godina ispod ograničenja se ističe crvenom ivicom i porukom po polju koja uključuje stvarni minimum, tako da gost razumije koja vrijednost bi bila prihvaćena. Slanje sa bilo kojim nepopunjenim poljem je blokirano.
 
-Kada se forma pošalje, niz godina se šalje uz ostatak payload-a rezervacije. Kada lokal nema ograničenje, godine se ne šalju.
+Isti blok za godine je dio i menadžer-side forme za "kreiranje rezervacije" u dashboard-u. Menadžerska forma povlači minimum lokala iz `useMyVenue` tako da se ista provjera politike primjenjuje i tu.
+
+Kada se forma pošalje, niz godina se šalje uz ostatak payload-a rezervacije — uvijek, na svakoj rezervaciji.
 
 ### Provođenje na strani servera
 
-Frontend validacija je za UX. Backend ponavlja iste provjere prije čuvanja bilo koje rezervacije, i u toku gosta i u toku menadžerski-kreirane rezervacije. Ako lokal ima postavljenu minimalnu starost, API zahtijeva da niz godina bude prisutan, da se po dužini podudara sa brojem gostiju, i da svaki unos bude na ili iznad minimuma. Bilo koji propust vraća lokalizovani 400 sa porukom koja imenuje stvarni minimum, tako da svako ko pogađa API direktno dobija istu zaštitu kao i forma.
+Frontend validacija je za UX. Backend ponavlja iste provjere prije čuvanja bilo koje rezervacije, i u toku gosta i u toku menadžerski-kreirane rezervacije. API zahtijeva da niz `guestAges` bude prisutan, da se po dužini podudara sa brojem gostiju, i da svaka vrijednost bude u opsegu 0–120. Ako lokal dodatno ima postavljenu minimalnu starost, svaka stavka mora dodatno biti na ili iznad tog minimuma. Bilo koji propust vraća lokalizovani 400; poruka za minimum imenuje stvarni minimum, tako da svako ko pogađa API direktno dobija istu zaštitu kao i forma.
 
 ### Skica implementacije
 
-Entitet lokala dobija jednu nullable integer kolonu za minimalnu starost. Oba puta upisivanja lokala (admin kreiranje/izmjena i menadžer izmjena) prihvataju polje i čuvaju ga. Javni odgovor lokala uključuje ga tako da forma za rezervaciju može da ga pročita bez dodatnog zahtjeva. Entitet rezervacije dobija nullable kolonu niza za godine, sačuvanu samo kada je lokal imao ograničenje u trenutku rezervacije. Reservations servis ima mali helper koji učitava lokal, odlučuje da li su godine potrebne, i ili validira ili vraća null. Oba endpoint-a za kreiranje rezervacije pozivaju isti helper, tako da menadžerski-kreirane rezervacije podliježu istom pravilu kao i one koje pošalje gost. Poruke o greškama žive u API i18n fajlovima na srpskom i engleskom sa interpolovanim minimumom, tako da poruka ostaje tačna kada se ograničenje lokala promijeni.
+Entitet lokala ima jednu nullable integer kolonu za opcionalnu minimalnu starost, izloženu kroz oba puta upisivanja lokala (admin i menadžer) i uključenu u javni odgovor lokala tako da forma za rezervaciju može da je pročita bez dodatnog zahtjeva. Entitet rezervacije ima nullable kolonu niza za godine. Pošto su godine sada obavezne na svakoj rezervaciji, kolona će uvijek biti popunjena za nove rezervacije; starije rezervacije nastale prije ove promjene mogu i dalje biti `null`, tako da svaki analitički upit treba to da uzme u obzir.
+
+Oba DTO-a za kreiranje rezervacije (`CreateGuestReservationDto` i `CreateReservationDto`) deklarišu `guestAges` kao obavezan niz cijelih brojeva između 0 i 120, dužine između 1 i 50. Reservations servis ima mali helper `validateGuestAges` koji potvrđuje prisutnost, podudaranje dužine sa `numberOfGuests`, i — kada lokal ima postavljen minimum — da nijedna stavka nije ispod njega. Oba endpoint-a za kreiranje rezervacije pozivaju isti helper, tako da menadžerski-kreirane rezervacije podliježu istom pravilu kao i one koje pošalje gost. Poruke o greškama žive u API i18n fajlovima na srpskom i engleskom; poruka "godine su obavezne" je nezavisna od lokala, dok poruka "ispod minimuma" interpolira stvarni minimum tako da tekst ostaje tačan kada se ograničenje lokala promijeni.
 
 ## Email obavještenja gostu o rezervaciji
 

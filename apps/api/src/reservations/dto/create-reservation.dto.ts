@@ -49,12 +49,11 @@ export class CreateReservationDto {
   @IsString()
   specialRequest?: string;
 
-  @IsOptional()
   @IsArray()
   @ArrayMinSize(1)
   @ArrayMaxSize(50)
   @IsInt({ each: true })
   @Min(0, { each: true })
-  @Max(100, { each: true })
-  guestAges?: number[];
+  @Max(120, { each: true })
+  guestAges: number[];
 }

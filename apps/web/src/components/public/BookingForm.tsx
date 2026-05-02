@@ -111,7 +111,6 @@ export function BookingForm({
   const hasTables = availableTableTypes.length > 0;
 
   const minGuestAge = venue.minGuestAge;
-  const requiresAges = minGuestAge != null;
 
   const isClosedDay = (() => {
     if (!selectedDate) return false;
@@ -125,7 +124,6 @@ export function BookingForm({
   })();
 
   useEffect(() => {
-    if (!requiresAges) return;
     const desired = Math.max(1, Number(numberOfGuests) || 0);
     const current = guestAges ?? [];
     if (current.length === desired) return;
@@ -133,17 +131,17 @@ export function BookingForm({
       current[i] ?? null,
     );
     setValue("guestAges", next, { shouldDirty: false, shouldValidate: false });
-  }, [requiresAges, numberOfGuests, guestAges, setValue]);
+  }, [numberOfGuests, guestAges, setValue]);
 
   function onSubmit(data: BookingFormValues): void {
     if (!data.tableType) return;
 
     const guestCount = Number(data.numberOfGuests);
-    const ages = requiresAges
-      ? (data.guestAges ?? [])
-          .slice(0, guestCount)
-          .map((a) => (a === null || a === undefined ? null : Number(a)))
-      : null;
+    const ages = (data.guestAges ?? [])
+      .slice(0, guestCount)
+      .map((a) => (a === null || a === undefined ? null : Number(a)));
+
+    if (!ages.every((a): a is number => a != null)) return;
 
     const payload: CreateReservationRequest = {
       firstName: data.firstName,
@@ -155,9 +153,7 @@ export function BookingForm({
       tableType: data.tableType,
       specialRequest: data.specialRequest || undefined,
       eventId,
-      ...(ages && ages.every((a): a is number => a != null)
-        ? { guestAges: ages.map((a) => Math.floor(a)) }
-        : {}),
+      guestAges: ages.map((a) => Math.floor(a)),
     };
 
     mutation.mutate(payload, {
@@ -337,75 +333,79 @@ export function BookingForm({
         </div>
       </div>
 
-      {requiresAges && (
-        <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
-            {t("booking.guest_ages_label", { min: minGuestAge })}
-          </label>
-          <p className="mb-2 text-xs text-tertiary-500">
-            {t("booking.guest_ages_hint", { min: minGuestAge })}
-          </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {Array.from({
-              length: Math.max(1, Number(numberOfGuests) || 0),
-            }).map((_, index) => {
-              const fieldError = errors.guestAges?.[index];
-              const currentValue = guestAges?.[index];
-              const belowMin =
-                currentValue != null &&
-                Number(currentValue) > 0 &&
-                Number(currentValue) < (minGuestAge ?? 0);
-              return (
-                <div key={index}>
-                  <label className="mb-1 block text-xs text-tertiary-500">
-                    {t("booking.guest_age_n", { n: index + 1 })}
-                  </label>
-                  <Input
-                    type="number"
-                    min={0}
-                    max={100}
-                    aria-invalid={belowMin || !!fieldError ? "true" : "false"}
-                    className={
-                      belowMin || fieldError
-                        ? "border-red-500 focus-visible:ring-red-500"
-                        : undefined
-                    }
-                    {...register(`guestAges.${index}` as const, {
-                      required: t("booking.guest_age_required"),
-                      setValueAs: (v) => {
-                        if (v === "" || v === null || v === undefined)
-                          return null;
-                        const n = Number(v);
-                        return Number.isFinite(n) ? Math.floor(n) : null;
-                      },
-                      validate: (value) => {
-                        if (value === null || value === undefined) {
-                          return t("booking.guest_age_required");
-                        }
-                        const n = Number(value);
-                        if (minGuestAge != null && n < minGuestAge) {
-                          return t("booking.guest_age_below_min", {
-                            min: minGuestAge,
-                          });
-                        }
-                        return true;
-                      },
-                    })}
-                  />
-                  {(belowMin || fieldError) && (
-                    <p className="mt-1 text-xs text-red-500">
-                      {fieldError?.message ??
-                        t("booking.guest_age_below_min", {
+      <div>
+        <label className="mb-1 block text-sm font-medium text-secondary-500">
+          {minGuestAge != null
+            ? t("booking.guest_ages_label", { min: minGuestAge })
+            : t("booking.guest_ages_label_simple")}
+        </label>
+        <p className="mb-2 text-xs text-tertiary-500">
+          {minGuestAge != null
+            ? t("booking.guest_ages_hint", { min: minGuestAge })
+            : t("booking.guest_ages_hint_simple")}
+        </p>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {Array.from({
+            length: Math.max(1, Number(numberOfGuests) || 0),
+          }).map((_, index) => {
+            const fieldError = errors.guestAges?.[index];
+            const currentValue = guestAges?.[index];
+            const belowMin =
+              minGuestAge != null &&
+              currentValue != null &&
+              Number(currentValue) > 0 &&
+              Number(currentValue) < minGuestAge;
+            return (
+              <div key={index}>
+                <label className="mb-1 block text-xs text-tertiary-500">
+                  {t("booking.guest_age_n", { n: index + 1 })}
+                </label>
+                <Input
+                  type="number"
+                  min={0}
+                  max={120}
+                  aria-invalid={belowMin || !!fieldError ? "true" : "false"}
+                  className={
+                    belowMin || fieldError
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : undefined
+                  }
+                  {...register(`guestAges.${index}` as const, {
+                    required: t("booking.guest_age_required"),
+                    setValueAs: (v) => {
+                      if (v === "" || v === null || v === undefined)
+                        return null;
+                      const n = Number(v);
+                      return Number.isFinite(n) ? Math.floor(n) : null;
+                    },
+                    validate: (value) => {
+                      if (value === null || value === undefined) {
+                        return t("booking.guest_age_required");
+                      }
+                      const n = Number(value);
+                      if (minGuestAge != null && n < minGuestAge) {
+                        return t("booking.guest_age_below_min", {
                           min: minGuestAge,
-                        })}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                        });
+                      }
+                      return true;
+                    },
+                  })}
+                />
+                {(belowMin || fieldError) && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {fieldError?.message ??
+                      t("booking.guest_age_below_min", {
+                        min: minGuestAge,
+                      })}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
-      )}
+      </div>
+
 
       {selectedDate && selectedTableType && (
         <div className="text-sm">

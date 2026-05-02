@@ -107,7 +107,7 @@
     "phone_required_for_reservation": "Phone number is required for reservation.",
     "blacklisted_cannot_reserve": "Your account is blocked. You cannot make reservations.",
     "blacklisted_auto_reason": "Automatic: {count} no-shows in the last {days} days",
-    "guest_ages_required": "This venue requires an age for every guest. Please provide {count} ages.",
+    "guest_ages_required": "Please provide an age for every guest. Required: {count}.",
     "guest_ages_below_minimum": "This venue has a minimum guest age of {min}. All ages must be at least {min}.",
     "closed_day": "The venue is closed on this date."
   },

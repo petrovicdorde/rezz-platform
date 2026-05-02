@@ -242,6 +242,8 @@
     "venue_label": "Lokal",
     "guest_ages_label": "Godine gostiju (minimalna starost: {{min}})",
     "guest_ages_hint": "Lokal zahtijeva da svaki gost ima najmanje {{min}} godina.",
+    "guest_ages_label_simple": "Godine gostiju",
+    "guest_ages_hint_simple": "Unesite koliko godina ima svaki gost u rezervaciji.",
     "guest_age_n": "Gost {{n}}",
     "guest_age_required": "Godine su obavezne",
     "guest_age_below_min": "Mora biti najmanje {{min}}",

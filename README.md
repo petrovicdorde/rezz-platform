@@ -125,31 +125,37 @@ To make the blacklist stricter, change the three environment variables and redep
 
 If the policy needs to become editable by admins from inside the app rather than through environment variables, the natural next step is to migrate these three values into the existing settings table that already powers other admin-tunable lookups. Everything downstream — enforcement, stats, banner — would stay unchanged.
 
-## Venue minimum guest age
+## Guest ages on every reservation
 
 ### What it does
 
-A venue can declare a minimum age for guests. When that limit is set, every reservation at that venue must carry the age of every guest, and each age must meet the limit. This lets venues like bars and clubs enforce age policies through the booking flow instead of catching mismatches at the door.
+Every reservation must carry the age of every guest in the booking. This is collected up-front in the booking flow and stored on the reservation, regardless of which venue the booking is at. The data is intended to power age-related analytics for the super admin (age distribution of bookings, average booker age per venue, etc.) and to feed the venue-level age-policy check described below.
+
+A venue can additionally declare a **minimum guest age**. When set, every age entered for a reservation at that venue must meet or exceed the limit, on top of being collected. This lets venues like bars and clubs enforce age policies through the booking flow instead of catching mismatches at the door. When unset, ages are still collected and stored; there is just no per-age lower-bound check.
 
 ### How it appears in the venue forms
 
-Both the super admin's venue create/edit form and the manager's "my venue" editor expose a single optional **minimum guest age** field. The field accepts a whole number between 1 and 120, or it can be left empty. Empty means the venue has no age limit and no age inputs will appear in its booking flow.
+Both the super admin's venue create/edit form and the manager's "my venue" editor expose a single optional **minimum guest age** field. The field accepts a whole number between 1 and 120, or it can be left empty. Empty means the venue has no age limit — ages are still required from the booker, but only the upper sanity bound (0–120) applies.
 
 ### How it appears in the booking form
 
-The public booking form watches two things: the venue's minimum guest age and the number of guests selected for the reservation. If the venue has no minimum, nothing changes — the form looks exactly as before, no age inputs, no age payload. If the venue has a minimum, an "ages" block appears with one numeric input per guest. Changing the number of guests adds or removes inputs to match. Each input is labeled and shows the venue's minimum in the section header so the guest knows the rule before typing.
+The public booking form always shows an "ages" block with one numeric input per guest. Changing the number of guests adds or removes inputs to match. The block heading and helper text adapt to the venue's policy: when the venue has set a minimum age, the heading reads "Guest ages (minimum age: N)" and a helper line explains that every guest must be at least N years old; when there is no minimum, the heading reads "Guest ages" and the helper just asks for each guest's age.
 
-Each age input is a numeric input constrained to the range 0–100 by the input itself, so out-of-range typing is prevented at the browser level without an explicit error message. The only message the form shows is for the venue policy: an age below the venue's minimum is highlighted with a red border and a per-input message that includes the actual minimum, so the guest understands what value would be accepted. Empty inputs are required before submit. The submit button is enabled only when every input is valid; submitting with any invalid input is blocked.
+Each age input is a numeric input constrained to the range 0–120 by the input itself, so out-of-range typing is prevented at the browser level without an explicit error message. Empty inputs are required before submit. When the venue has a minimum, an age below the venue's limit is highlighted with a red border and a per-input message that includes the actual minimum, so the guest understands what value would be accepted. The submit handler refuses to dispatch the request unless every input is filled.
 
-When the form is submitted, the ages array is sent alongside the rest of the reservation payload. When the venue has no limit, no ages are sent.
+The same ages block is also part of the manager-side "create reservation" form in the dashboard. The manager-side form pulls the venue's minimum from `useMyVenue` so the policy check applies identically there.
+
+When the form is submitted, the ages array is sent alongside the rest of the reservation payload — always, on every booking.
 
 ### Server-side enforcement
 
-The frontend validation is for UX. The backend repeats the same checks before persisting any reservation, both in the guest-side and manager-created reservation paths. If the venue has a minimum age set, the API requires the ages array to be present, to match the number of guests in length, and to have every entry at or above the minimum. Any failure returns a localized 400 with a message that names the actual minimum, so anyone hitting the API directly gets the same protection as the form does.
+The frontend validation is for UX. The backend repeats the same checks before persisting any reservation, both in the guest-side and manager-created reservation paths. The API requires the `guestAges` array to be present, to match the number of guests in length, and to have each value within the 0–120 range. If the venue also has a minimum age set, every entry must additionally be at or above that minimum. Any failure returns a localized 400; the minimum-age message names the actual minimum, so anyone hitting the API directly gets the same protection as the form does.
 
 ### Implementation outline
 
-The venue entity gains a single nullable integer column for the minimum age. Both venue write paths (admin create/update and manager update) accept the field and persist it. The public venue response includes it so the booking form can read it without an extra request. The reservation entity gains a nullable array column for the ages, stored only when the venue had a limit at booking time. The reservations service has a small helper that loads the venue, decides whether ages are required, and either validates or returns null. Both reservation create endpoints call the same helper, so manager-created reservations are held to the same rule as guest-submitted ones. Error messages live in the API i18n files in Serbian and English with the minimum interpolated, so the message stays accurate when the venue's limit changes.
+The venue entity has a single nullable integer column for the optional minimum age, surfaced through both the admin and manager venue write paths and included on the public venue response so the booking form can read it without an extra request. The reservation entity has a nullable array column for the ages. With ages now required on every booking, the column will always be populated for new reservations; older reservations created before this change may still be `null`, so any analytics query needs to handle that.
+
+Both reservation create DTOs (`CreateGuestReservationDto` and `CreateReservationDto`) declare `guestAges` as a required array of integers between 0 and 120, sized between 1 and 50. The reservations service has a small `validateGuestAges` helper that asserts presence, length match against `numberOfGuests`, and — when the venue has set a minimum — that no entry is below it. Both reservation create endpoints call the same helper, so manager-created reservations are held to the same rule as guest-submitted ones. Error messages live in the API i18n files in Serbian and English; the "ages required" message is venue-agnostic, while the "below minimum" message interpolates the actual minimum so the text stays accurate when the venue's limit changes.
 
 ## Guest reservation emails
 

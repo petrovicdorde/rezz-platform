@@ -107,7 +107,7 @@
     "phone_required_for_reservation": "Broj telefona je obavezan za rezervaciju.",
     "blacklisted_cannot_reserve": "Vaš nalog je blokiran. Ne možete slati rezervacije.",
     "blacklisted_auto_reason": "Automatski: {count} nepojavljivanja u posljednjih {days} dana",
-    "guest_ages_required": "Lokal zahtijeva godine za sve goste. Unesite {count} godina.",
+    "guest_ages_required": "Unesite godine za svakog gosta. Potrebno: {count}.",
     "guest_ages_below_minimum": "Lokal ima minimalnu starost gostiju od {min}. Sve godine moraju biti najmanje {min}.",
     "closed_day": "Lokal ne radi tog datuma."
   },

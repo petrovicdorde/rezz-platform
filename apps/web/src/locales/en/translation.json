@@ -242,6 +242,8 @@
     "venue_label": "Venue",
     "guest_ages_label": "Guest ages (minimum age: {{min}})",
     "guest_ages_hint": "This venue requires every guest to be at least {{min}} years old.",
+    "guest_ages_label_simple": "Guest ages",
+    "guest_ages_hint_simple": "Enter how many years each guest in the reservation is.",
     "guest_age_n": "Guest {{n}}",
     "guest_age_required": "Age is required",
     "guest_age_below_min": "Must be at least {{min}}",

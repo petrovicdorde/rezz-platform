@@ -143,12 +143,7 @@ export class ReservationsService {
     venueId: string,
     dto: { numberOfGuests: number; guestAges?: number[] },
     lang: string,
-  ): Promise<number[] | null> {
-    const venue = await this.venueRepo.findOne({ where: { id: venueId } });
-    if (!venue || venue.minGuestAge == null) {
-      return null;
-    }
-    const min = venue.minGuestAge;
+  ): Promise<number[]> {
     const ages = dto.guestAges;
     if (!ages || ages.length !== dto.numberOfGuests) {
       throw new BadRequestException(
@@ -159,7 +154,9 @@ export class ReservationsService {
       );
     }
     const parsed = ages.map((a) => Number(a));
-    if (parsed.some((a) => a < min)) {
+    const venue = await this.venueRepo.findOne({ where: { id: venueId } });
+    const min = venue?.minGuestAge ?? null;
+    if (min != null && parsed.some((a) => a < min)) {
       throw new BadRequestException(
         this.i18n.t('reservation.guest_ages_below_minimum', {
           lang,
@@ -310,6 +307,7 @@ export class ReservationsService {
       dateTo?: string;
       source?: ReservationSource;
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _lang: string = 'sr',
   ): Promise<Reservation[]> {
     const qb = this.reservationRepo
@@ -607,6 +605,7 @@ export class ReservationsService {
 
   async getGuestScore(
     guestPhone: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _venueId: string,
   ): Promise<{
     averageRating: number | null;
