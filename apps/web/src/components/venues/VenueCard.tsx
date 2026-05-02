@@ -42,7 +42,7 @@ export function VenueCard({
       className={cn(
         'group relative h-[320px] cursor-pointer overflow-hidden rounded-[22px] shadow-[0_1px_2px_rgba(20,11,0,0.06),0_4px_12px_rgba(20,11,0,0.07),0_12px_28px_rgba(20,11,0,0.07)] transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]',
         isGuest &&
-          'hover:-translate-y-2 hover:shadow-[0_2px_4px_rgba(20,11,0,0.06),0_8px_24px_rgba(20,11,0,0.1),0_24px_56px_rgba(20,11,0,0.14),0_0_0_1px_rgba(249,133,19,0.1)]',
+          'hover:-translate-y-1 hover:shadow-[0_2px_4px_rgba(20,11,0,0.06),0_8px_24px_rgba(20,11,0,0.1),0_24px_56px_rgba(20,11,0,0.14),0_0_0_1px_rgba(249,133,19,0.1)]',
         className,
       )}
     >
