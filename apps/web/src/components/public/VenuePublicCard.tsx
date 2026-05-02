@@ -34,7 +34,7 @@ export function VenuePublicCard({
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-secondary-600 to-secondary-400">
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-secondary-500 to-secondary-400">
             <Building2 className="size-10 text-white/40" />
           </div>
         )}
@@ -45,7 +45,7 @@ export function VenuePublicCard({
       </div>
 
       <div className="p-4">
-        <h3 className="truncate text-base font-bold text-secondary-600">
+        <h3 className="truncate text-base font-bold text-secondary-500">
           {venue.name}
         </h3>
 

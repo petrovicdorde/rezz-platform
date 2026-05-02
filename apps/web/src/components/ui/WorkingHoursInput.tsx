@@ -55,7 +55,7 @@ export function WorkingHoursInput({
             key={day}
             className={`flex h-14 items-center gap-3 border-b border-tertiary-200 last:border-0 ${disabled ? 'opacity-60' : ''}`}
           >
-            <span className="w-6 text-sm font-medium text-secondary-600 md:w-28">
+            <span className="w-6 text-sm font-medium text-secondary-500 md:w-28">
               <span className="hidden md:inline">{t(`venue.day_${day}`)}</span>
               <span className="md:hidden">{t(`venue.day_${day}`).charAt(0)}</span>
             </span>

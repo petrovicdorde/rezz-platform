@@ -220,7 +220,7 @@ export function SearchFilterWidget({
         <button
           type="button"
           onClick={() => onSearch({ type, city, date, time })}
-          className="group relative mt-1.5 w-full overflow-hidden rounded-[15px] bg-gradient-to-br from-secondary-400 to-secondary-600 px-4 py-4 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)]"
+          className="group relative mt-1.5 w-full overflow-hidden rounded-[15px] bg-gradient-to-br from-secondary-400 to-secondary-500 px-4 py-4 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)]"
         >
           <span
             aria-hidden

@@ -80,7 +80,7 @@ export function ClosedDaysPicker({
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
-        <span className="text-sm font-medium text-secondary-600">
+        <span className="text-sm font-medium text-secondary-500">
           {monthLabel}
         </span>
         <button
@@ -117,7 +117,7 @@ export function ClosedDaysPicker({
                 'flex h-9 w-9 items-center justify-center rounded-lg text-sm transition-colors',
                 !disabled && inMonth && 'cursor-pointer',
                 !inMonth && 'text-tertiary-300',
-                inMonth && !isSelected && 'text-secondary-600 hover:bg-tertiary-100',
+                inMonth && !isSelected && 'text-secondary-500 hover:bg-tertiary-100',
                 isSelected && 'bg-red-500 font-medium text-white hover:bg-red-600',
                 disabled && 'cursor-not-allowed',
               )}

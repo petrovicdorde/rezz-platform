@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   addDays,
   addMonths,
@@ -16,13 +16,13 @@ import {
   startOfMonth,
   startOfWeek,
   subMonths,
-} from 'date-fns';
+} from "date-fns";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface DatePickerProps {
   value?: string;
@@ -34,7 +34,7 @@ interface DatePickerProps {
   className?: string;
 }
 
-const ISO = 'yyyy-MM-dd';
+const ISO = "yyyy-MM-dd";
 
 export function DatePicker({
   value,
@@ -88,7 +88,7 @@ export function DatePicker({
     return isBefore(day, min) || isAfter(day, max);
   }
 
-  const display = selectedDate ? format(selectedDate, 'dd.MM.yyyy') : '';
+  const display = selectedDate ? format(selectedDate, "dd.MM.yyyy") : "";
   const showPlaceholder = !display;
 
   const canGoPrev = !isBefore(
@@ -107,15 +107,15 @@ export function DatePicker({
           type="button"
           disabled={disabled}
           className={cn(
-            'flex h-10 w-full cursor-pointer items-center justify-start rounded-md border border-tertiary-400 bg-white px-3 text-left text-sm shadow-xs transition-colors outline-none',
-            'hover:border-primary-200 focus-visible:border-primary-400',
-            'disabled:cursor-not-allowed disabled:opacity-50',
+            "flex h-10 w-full cursor-pointer items-center justify-start rounded-md border border-tertiary-400 bg-white px-3 text-left text-sm shadow-xs transition-colors outline-none",
+            "hover:border-primary-200 focus-visible:border-primary-400",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
         >
           <span
             className={cn(
-              showPlaceholder ? 'text-tertiary-600' : 'text-secondary-600',
+              showPlaceholder ? "text-tertiary-600" : "text-secondary-500",
             )}
           >
             {display || placeholder}
@@ -123,30 +123,30 @@ export function DatePicker({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-72">
+      <PopoverContent className="w-72 !rounded-2xl !border-[rgba(20,11,0,0.06)] !bg-[rgba(253,249,244,0.98)] !shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_8px_16px_rgba(20,11,0,0.08),0_24px_48px_rgba(20,11,0,0.18),0_48px_72px_rgba(20,11,0,0.16)] backdrop-blur-md">
         <div className="mb-2 flex items-center justify-between">
           <button
             type="button"
             onClick={() => setViewMonth((m) => subMonths(m, 1))}
             disabled={!canGoPrev}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-tertiary-600 transition-colors hover:bg-tertiary-100 disabled:cursor-not-allowed disabled:opacity-30"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-secondary-400 transition-colors hover:bg-[rgba(249,133,19,0.1)] disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-semibold text-secondary-400">
             {monthLabel}
           </span>
           <button
             type="button"
             onClick={() => setViewMonth((m) => addMonths(m, 1))}
             disabled={!canGoNext}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-tertiary-600 transition-colors hover:bg-tertiary-100 disabled:cursor-not-allowed disabled:opacity-30"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-secondary-400 transition-colors hover:bg-[rgba(249,133,19,0.1)] disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="mb-1 grid grid-cols-7 gap-1 text-center text-xs font-medium text-tertiary-500">
+        <div className="mb-1 grid grid-cols-7 gap-1 text-center text-xs font-semibold text-secondary-400">
           {[1, 2, 3, 4, 5, 6, 7].map((d) => (
             <div key={d} className="py-1">
               {t(`common.weekdays_short.${d}`)}
@@ -168,17 +168,23 @@ export function DatePicker({
                 disabled={dayDisabled}
                 onClick={() => handleSelect(day)}
                 className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-lg text-sm transition-colors',
-                  !dayDisabled && 'cursor-pointer',
-                  !inMonth && !dayDisabled && 'text-tertiary-400',
-                  inMonth && !isSelected && !dayDisabled && 'text-secondary-600',
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-sm transition-all",
+                  !dayDisabled && "cursor-pointer",
+                  !inMonth && !dayDisabled && "text-tertiary-400",
+                  inMonth &&
+                    !isSelected &&
+                    !dayDisabled &&
+                    "text-secondary-400",
                   isToday &&
                     !isSelected &&
                     !dayDisabled &&
-                    'border border-primary-200 font-medium',
-                  isSelected && 'bg-primary-400 font-medium text-white',
-                  !isSelected && !dayDisabled && 'hover:bg-tertiary-100',
-                  dayDisabled && 'cursor-not-allowed text-tertiary-400',
+                    "border border-secondary-200 font-medium",
+                  isSelected &&
+                    "bg-secondary-400 font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.35),0_6px_20px_rgba(249,133,19,0.25)]",
+                  !isSelected &&
+                    !dayDisabled &&
+                    "hover:bg-[rgba(249,133,19,0.1)]",
+                  dayDisabled && "cursor-not-allowed text-tertiary-400",
                 )}
               >
                 {day.getDate()}

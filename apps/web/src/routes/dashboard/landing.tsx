@@ -168,7 +168,7 @@ function LandingAdminForm({ config }: LandingAdminFormProps): React.JSX.Element 
     <DashboardLayout>
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-secondary-600">
+        <h1 className="text-2xl font-bold text-secondary-500">
           {t("landing_admin.title")}
         </h1>
         <div className="flex flex-wrap items-center gap-2">
@@ -214,7 +214,7 @@ function LandingAdminForm({ config }: LandingAdminFormProps): React.JSX.Element 
       <div className="mt-6 rounded-xl border border-tertiary-200 bg-white p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-medium text-secondary-600">
+            <h2 className="text-lg font-medium text-secondary-500">
               {t("landing_admin.featured_venues_section")}
             </h2>
             <p className="mt-1 text-xs text-tertiary-400">
@@ -264,7 +264,7 @@ function LandingAdminForm({ config }: LandingAdminFormProps): React.JSX.Element 
       <div className="mt-4 rounded-xl border border-tertiary-200 bg-white p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-medium text-secondary-600">
+            <h2 className="text-lg font-medium text-secondary-500">
               {t("landing_admin.featured_events_section")}
             </h2>
             <p className="mt-1 text-xs text-tertiary-400">

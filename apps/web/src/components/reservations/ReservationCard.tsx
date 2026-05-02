@@ -56,7 +56,7 @@ export function ReservationCard({
 
       {/* Name + phone */}
       <div className="mt-2 flex items-center">
-        <span className="font-medium text-secondary-600">
+        <span className="font-medium text-secondary-500">
           {reservation.firstName} {reservation.lastName}
         </span>
         <span className="ml-3 flex items-center gap-1 text-sm text-tertiary-500">
@@ -153,7 +153,7 @@ export function ReservationCard({
               className="rounded-lg border border-tertiary-200 bg-tertiary-50 p-3"
               onClick={(e) => e.stopPropagation()}
             >
-              <p className="mb-2 text-sm text-secondary-600">
+              <p className="mb-2 text-sm text-secondary-500">
                 {confirmAction === 'arrival'
                   ? t('reservation.arrival_confirm_question')
                   : t('reservation.no_show_confirm_question')}

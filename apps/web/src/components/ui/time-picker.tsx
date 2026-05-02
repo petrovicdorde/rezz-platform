@@ -88,7 +88,7 @@ export function TimePicker({
         >
           <span
             className={cn(
-              showPlaceholder ? 'text-tertiary-600' : 'text-secondary-600',
+              showPlaceholder ? 'text-tertiary-600' : 'text-secondary-500',
             )}
           >
             {display || placeholder}
@@ -96,7 +96,7 @@ export function TimePicker({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-64 max-h-72 overflow-y-auto">
+      <PopoverContent className="scrollbar-orange max-h-72 w-64 overflow-y-auto !rounded-2xl !border-[rgba(20,11,0,0.06)] !bg-[rgba(253,249,244,0.98)] !shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_8px_16px_rgba(20,11,0,0.08),0_24px_48px_rgba(20,11,0,0.18),0_48px_72px_rgba(20,11,0,0.16)] backdrop-blur-md">
         <div className="grid grid-cols-3 gap-2">
           {slots.map((slot) => {
             const slotDisabled = disabledSet.has(slot);
@@ -108,12 +108,12 @@ export function TimePicker({
                 disabled={slotDisabled}
                 onClick={() => handleSelect(slot)}
                 className={cn(
-                  'flex h-9 cursor-pointer items-center justify-center rounded-lg border text-sm transition-colors',
+                  'flex h-9 cursor-pointer items-center justify-center rounded-lg border text-sm transition-all',
                   selected &&
-                    'border-primary-400 bg-primary-400 font-medium text-white',
+                    'border-secondary-400 bg-secondary-400 font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.35),0_6px_20px_rgba(249,133,19,0.25)]',
                   !selected &&
                     !slotDisabled &&
-                    'border-tertiary-200 text-secondary-600 hover:border-primary-200 hover:bg-tertiary-50',
+                    'border-tertiary-200 text-secondary-400 hover:border-[rgba(249,133,19,0.4)] hover:bg-[rgba(249,133,19,0.08)]',
                   slotDisabled &&
                     'cursor-not-allowed border-tertiary-100 bg-tertiary-50 text-tertiary-400 line-through',
                 )}

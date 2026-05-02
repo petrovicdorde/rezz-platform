@@ -81,7 +81,7 @@ export function EditProfileDrawer({
         className="w-full max-w-sm p-0"
       >
         <div className="border-b border-tertiary-100 px-5 pt-5 pb-4">
-          <SheetTitle className="text-base font-medium text-secondary-600">
+          <SheetTitle className="text-base font-medium text-secondary-500">
             {t('profile.edit_profile')}
           </SheetTitle>
         </div>
@@ -154,7 +154,7 @@ export function EditProfileDrawer({
               type="button"
               onClick={handleCancel}
               disabled={updateProfile.isPending}
-              className="cursor-pointer rounded-xl border border-tertiary-200 py-3 font-medium text-secondary-600 transition-colors hover:bg-tertiary-50 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-xl border border-tertiary-200 py-3 font-medium text-secondary-500 transition-colors hover:bg-tertiary-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {t('common.cancel')}
             </button>

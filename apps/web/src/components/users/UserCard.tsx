@@ -23,7 +23,7 @@ function getInitials(user: AdminUser): string {
 function getAvatarClass(user: AdminUser): string {
   if (user.isBlacklisted) return 'bg-red-100 text-red-600';
   if (!user.isActive) return 'bg-gray-100 text-gray-400';
-  return 'bg-secondary-100 text-secondary-600';
+  return 'bg-secondary-100 text-secondary-500';
 }
 
 export function UserCard({ user, onClick }: UserCardProps): React.JSX.Element {
@@ -43,7 +43,7 @@ export function UserCard({ user, onClick }: UserCardProps): React.JSX.Element {
           {getInitials(user)}
         </div>
         <div>
-          <p className="text-sm font-medium text-secondary-600">
+          <p className="text-sm font-medium text-secondary-500">
             {user.firstName && user.lastName
               ? `${user.firstName} ${user.lastName}`
               : t('users.no_name')}

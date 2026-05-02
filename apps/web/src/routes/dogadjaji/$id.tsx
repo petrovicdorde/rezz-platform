@@ -33,7 +33,7 @@ function SectionHeading({
   children: React.ReactNode;
 }): React.JSX.Element {
   return (
-    <h2 className="mt-8 mb-4 border-b border-tertiary-200 pb-2 text-lg font-bold text-secondary-600 first:mt-0">
+    <h2 className="mt-8 mb-4 border-b border-tertiary-200 pb-2 text-lg font-bold text-secondary-500 first:mt-0">
       {children}
     </h2>
   );
@@ -68,7 +68,7 @@ function EventDetailPage(): React.JSX.Element {
       <PublicLayout>
         <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20 text-center">
           <PartyPopper className="size-16 text-tertiary-200" />
-          <p className="mt-4 text-xl font-medium text-secondary-600">
+          <p className="mt-4 text-xl font-medium text-secondary-500">
             {t('event_detail.not_found')}
           </p>
           <Button
@@ -111,7 +111,7 @@ function EventDetailPage(): React.JSX.Element {
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="h-full w-full bg-linear-to-br from-secondary-600 to-secondary-400" />
+          <div className="h-full w-full bg-linear-to-br from-secondary-500 to-secondary-400" />
         )}
         <div className="absolute inset-0 bg-black/40" />
 
@@ -166,7 +166,7 @@ function EventDetailPage(): React.JSX.Element {
                 >
                   <div className="flex items-center gap-3">
                     <PartyPopper className="size-4 text-secondary-400" />
-                    <span className="font-medium text-secondary-600">
+                    <span className="font-medium text-secondary-500">
                       {promo.name}
                     </span>
                   </div>
@@ -185,7 +185,7 @@ function EventDetailPage(): React.JSX.Element {
           <div className="flex items-start gap-3">
             <Building2 className="mt-0.5 size-5 text-tertiary-400" />
             <div className="min-w-0 flex-1">
-              <p className="font-medium text-secondary-600">{venue.name}</p>
+              <p className="font-medium text-secondary-500">{venue.name}</p>
               <p className="text-sm text-tertiary-500">
                 {venue.city} · {venue.address}
               </p>
@@ -206,7 +206,7 @@ function EventDetailPage(): React.JSX.Element {
             id="booking"
             className="mt-8 rounded-2xl border border-tertiary-200 bg-white p-6"
           >
-            <h2 className="mb-2 text-xl font-bold text-secondary-600">
+            <h2 className="mb-2 text-xl font-bold text-secondary-500">
               {t('event_detail.book_for_event')}
             </h2>
             <p className="mb-6 text-sm text-tertiary-500">

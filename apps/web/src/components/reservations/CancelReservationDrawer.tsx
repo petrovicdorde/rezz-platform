@@ -67,7 +67,7 @@ export function CancelReservationDrawer({
           <p className="mt-1 text-sm text-tertiary-500">{guestName}</p>
         </SheetHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <p className="text-sm font-medium text-secondary-600">
+          <p className="text-sm font-medium text-secondary-500">
             {t('reservation.cancel_confirm_question')}
           </p>
           <div>

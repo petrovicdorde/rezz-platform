@@ -114,7 +114,7 @@ function LokaliPage(): React.JSX.Element {
             <button
               type="button"
               onClick={clearFilters}
-              className="flex items-center gap-1 text-sm text-tertiary-500 hover:text-secondary-600"
+              className="flex items-center gap-1 text-sm text-tertiary-500 hover:text-secondary-500"
             >
               <X className="size-3.5" />
               {t("venues_page.clear_filters")}
@@ -145,7 +145,7 @@ function LokaliPage(): React.JSX.Element {
         {!isLoading && isFiltered && venues && venues.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Building2 className="mx-auto size-16 text-tertiary-200" />
-            <p className="mt-4 text-xl font-medium text-secondary-600">
+            <p className="mt-4 text-xl font-medium text-secondary-500">
               {t("venues_page.no_results")}
             </p>
             <p className="mt-2 text-tertiary-500">

@@ -71,7 +71,7 @@ export function ProfileReservationCard({
       }`}
     >
       <div className="flex items-center justify-between">
-        <span className="font-medium text-secondary-600">{venueName}</span>
+        <span className="font-medium text-secondary-500">{venueName}</span>
         <ReservationStatusBadge status={reservation.status} />
       </div>
 
@@ -92,13 +92,13 @@ export function ProfileReservationCard({
             <span className="text-tertiary-500">
               {t('profile.venue_label')}
             </span>
-            <span className="font-medium text-secondary-600">{venueName}</span>
+            <span className="font-medium text-secondary-500">{venueName}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-tertiary-500">
               {t('profile.date_label')}
             </span>
-            <span className="text-secondary-600">
+            <span className="text-secondary-500">
               {format(dateObj, 'dd.MM.yyyy')}
             </span>
           </div>
@@ -106,13 +106,13 @@ export function ProfileReservationCard({
             <span className="text-tertiary-500">
               {t('profile.time_label')}
             </span>
-            <span className="text-secondary-600">{reservation.time}</span>
+            <span className="text-secondary-500">{reservation.time}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-tertiary-500">
               {t('profile.table_label')}
             </span>
-            <span className="text-secondary-600">
+            <span className="text-secondary-500">
               {tableTypeLabel(reservation.tableType)}
             </span>
           </div>
@@ -120,7 +120,7 @@ export function ProfileReservationCard({
             <span className="text-tertiary-500">
               {t('profile.guests_label')}
             </span>
-            <span className="text-secondary-600">
+            <span className="text-secondary-500">
               {reservation.numberOfGuests}
             </span>
           </div>
@@ -129,7 +129,7 @@ export function ProfileReservationCard({
               <p className="text-tertiary-500">
                 {t('profile.special_request_label')}
               </p>
-              <p className="italic text-secondary-600">
+              <p className="italic text-secondary-500">
                 {reservation.specialRequest}
               </p>
             </div>
@@ -141,7 +141,7 @@ export function ProfileReservationCard({
               onClick={closeDetails}
               aria-label={t('profile.hide_details')}
               title={t('profile.hide_details')}
-              className="group flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-tertiary-200 bg-tertiary-50 text-tertiary-600 shadow-sm transition-all duration-300 hover:border-secondary-200 hover:bg-secondary-50 hover:text-secondary-600 hover:shadow-md"
+              className="group flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-tertiary-200 bg-tertiary-50 text-tertiary-600 shadow-sm transition-all duration-300 hover:border-secondary-200 hover:bg-secondary-50 hover:text-secondary-500 hover:shadow-md"
             >
               <ChevronUp
                 className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5"
@@ -169,7 +169,7 @@ export function ProfileReservationCard({
             <button
               type="button"
               onClick={openDetails}
-              className="cursor-pointer rounded-lg border border-tertiary-200 py-2 text-sm text-secondary-600 transition-colors hover:bg-tertiary-50"
+              className="cursor-pointer rounded-lg border border-tertiary-200 py-2 text-sm text-secondary-500 transition-colors hover:bg-tertiary-50"
             >
               {t('profile.reservation_details')}
             </button>
@@ -190,11 +190,11 @@ export function ProfileReservationCard({
       {/* Cancel form accordion */}
       <Collapsible open={isCancel}>
         <div className="mt-3 border-t border-tertiary-100 pt-3">
-          <p className="mb-3 text-sm font-medium text-secondary-600">
+          <p className="mb-3 text-sm font-medium text-secondary-500">
             {t('profile.cancel_confirm_question')}
           </p>
 
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t('profile.cancel_reason_label')} *
           </label>
           <textarea
@@ -209,7 +209,7 @@ export function ProfileReservationCard({
             <button
               type="button"
               onClick={closeCancel}
-              className="cursor-pointer rounded-xl border border-tertiary-200 py-2 text-sm text-secondary-600 transition-colors hover:bg-tertiary-50"
+              className="cursor-pointer rounded-xl border border-tertiary-200 py-2 text-sm text-secondary-500 transition-colors hover:bg-tertiary-50"
             >
               {t('profile.cancel_back_btn')}
             </button>

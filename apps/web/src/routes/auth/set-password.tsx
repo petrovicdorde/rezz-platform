@@ -45,7 +45,7 @@ function SetPasswordPage(): React.JSX.Element {
       <div className="w-full max-w-sm">
         <div className="mb-6 flex flex-col items-center">
           <KeyRound className="mb-4 size-16 text-primary-400" />
-          <h1 className="text-2xl font-bold text-secondary-600">
+          <h1 className="text-2xl font-bold text-secondary-500">
             {t('auth.set_password_title')}
           </h1>
           <p className="mt-2 text-center text-tertiary-600">

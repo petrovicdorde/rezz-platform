@@ -43,7 +43,7 @@ export function HistoryCard({
 
       {/* Name + phone */}
       <div className="mt-2 flex items-center">
-        <span className="font-medium text-secondary-600">
+        <span className="font-medium text-secondary-500">
           {reservation.firstName} {reservation.lastName}
         </span>
         <span className="ml-3 flex items-center gap-1 text-sm text-tertiary-500">

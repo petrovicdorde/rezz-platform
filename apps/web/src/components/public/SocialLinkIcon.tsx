@@ -92,7 +92,7 @@ export function SocialLinkIcon({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex h-10 w-10 items-center justify-center rounded-full bg-tertiary-100 text-secondary-600 transition-all duration-200 hover:bg-primary-400 hover:text-white"
+      className="flex h-10 w-10 items-center justify-center rounded-full bg-tertiary-100 text-secondary-500 transition-all duration-200 hover:bg-primary-400 hover:text-white"
     >
       {renderIcon(resolved)}
     </a>

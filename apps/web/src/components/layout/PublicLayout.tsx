@@ -83,7 +83,7 @@ export function PublicLayout({
             <button
               type="button"
               onClick={open}
-              className="rounded-full bg-secondary-400 px-6 py-2.5 text-sm font-semibold tracking-[0.1px] text-white shadow-[0_2px_8px_rgba(249,133,19,0.25),0_6px_20px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-px hover:bg-secondary-600 hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
+              className="rounded-full bg-secondary-400 px-6 py-2.5 text-sm font-semibold tracking-[0.1px] text-white shadow-[0_2px_8px_rgba(249,133,19,0.25),0_6px_20px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-px hover:bg-secondary-500 hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
             >
               {t('nav.login')}
             </button>
@@ -95,7 +95,7 @@ export function PublicLayout({
       <main className="flex-1 pt-[68px]">{children}</main>
 
       {/* Footer */}
-      <footer className="bg-secondary-600 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">
+      <footer className="bg-secondary-500 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">
         &copy; 2026 Table.ba. Sva prava zadržana.
       </footer>
 

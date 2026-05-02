@@ -32,7 +32,7 @@ export function GuestScoreBadge({
     return (
       <span className="ml-2 flex items-center gap-1">
         <Star size={12} className="fill-primary-400 text-primary-400" />
-        <span className="text-xs font-medium text-secondary-600">
+        <span className="text-xs font-medium text-secondary-500">
           {data.averageRating.toFixed(1)}
         </span>
         <span className="text-xs text-tertiary-400">({data.totalRatings})</span>
@@ -47,7 +47,7 @@ export function GuestScoreBadge({
       </span>
       <div className="flex items-center gap-2">
         <StarRating value={Math.round(data.averageRating)} readonly size={14} />
-        <span className="text-sm font-medium text-secondary-600">
+        <span className="text-sm font-medium text-secondary-500">
           {data.averageRating.toFixed(1)}
         </span>
       </div>

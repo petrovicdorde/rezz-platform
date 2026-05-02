@@ -30,7 +30,7 @@ function ProfilePage(): React.JSX.Element {
   return (
     <DashboardLayout>
       <div className="max-w-2xl">
-        <h1 className="mb-4 text-2xl font-semibold text-secondary-600">
+        <h1 className="mb-4 text-2xl font-semibold text-secondary-500">
           {t('dashboard.menu_profile')}
         </h1>
 
@@ -45,7 +45,7 @@ function ProfilePage(): React.JSX.Element {
                 {initials || '?'}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-lg font-medium text-secondary-600">
+                <p className="truncate text-lg font-medium text-secondary-500">
                   {fullName || profile.email}
                 </p>
                 <p className="truncate text-sm text-tertiary-500">
@@ -61,14 +61,14 @@ function ProfilePage(): React.JSX.Element {
                   <dt className="text-tertiary-500">
                     {t('profile.email_label')}
                   </dt>
-                  <dd className="ml-auto text-secondary-600">{profile.email}</dd>
+                  <dd className="ml-auto text-secondary-500">{profile.email}</dd>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-tertiary-400" />
                   <dt className="text-tertiary-500">
                     {t('profile.phone_label')}
                   </dt>
-                  <dd className="ml-auto text-secondary-600">
+                  <dd className="ml-auto text-secondary-500">
                     {profile.phone || '—'}
                   </dd>
                 </div>

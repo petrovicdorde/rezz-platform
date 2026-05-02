@@ -40,7 +40,7 @@ export function SearchVenueCard({
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-bold text-secondary-600">{venue.name}</h3>
+        <h3 className="font-bold text-secondary-500">{venue.name}</h3>
         <div className="mt-1 flex items-center gap-1 text-sm text-tertiary-500">
           <span>{venue.type}</span>
           <span>·</span>

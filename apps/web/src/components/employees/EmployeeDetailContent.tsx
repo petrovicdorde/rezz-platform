@@ -55,13 +55,13 @@ export function EmployeeDetailContent({
           className={`flex h-14 w-14 items-center justify-center rounded-full text-lg font-medium ${
             employee.type === 'INVITED'
               ? 'border border-dashed border-tertiary-300 bg-tertiary-50 text-tertiary-400'
-              : 'bg-secondary-100 text-secondary-600'
+              : 'bg-secondary-100 text-secondary-500'
           }`}
         >
           {getInitials(employee)}
         </div>
         <div>
-          <p className="font-medium text-secondary-600">{displayName}</p>
+          <p className="font-medium text-secondary-500">{displayName}</p>
           <span
             className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
               employee.role === 'MANAGER'
@@ -78,15 +78,15 @@ export function EmployeeDetailContent({
       <div className="mt-4 space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-tertiary-500">Email</span>
-          <span className="text-secondary-600">{employee.email}</span>
+          <span className="text-secondary-500">{employee.email}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tertiary-500">{t('reservation.phone_label')}</span>
-          <span className="text-secondary-600">{employee.phone ?? '—'}</span>
+          <span className="text-secondary-500">{employee.phone ?? '—'}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tertiary-500">{t('employees.invite_role_label')}</span>
-          <span className="text-secondary-600">
+          <span className="text-secondary-500">
             {t(`employees.role_${employee.role.toLowerCase()}`)}
           </span>
         </div>
@@ -112,7 +112,7 @@ export function EmployeeDetailContent({
             <div className="space-y-2">
               <Button
                 variant="outline"
-                className="w-full border-secondary-300 text-secondary-600 hover:bg-secondary-50"
+                className="w-full border-secondary-300 text-secondary-500 hover:bg-secondary-50"
                 onClick={() => setConfirmAction('change_role')}
               >
                 {employee.role === 'WORKER'
@@ -145,7 +145,7 @@ export function EmployeeDetailContent({
 
       {confirmAction === 'remove' && (
         <div>
-          <p className="mb-3 text-center text-sm text-secondary-600">
+          <p className="mb-3 text-center text-sm text-secondary-500">
             {t('employees.remove_confirm', { name: displayName })}
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -169,7 +169,7 @@ export function EmployeeDetailContent({
 
       {confirmAction === 'cancel_invite' && (
         <div>
-          <p className="mb-3 text-center text-sm text-secondary-600">
+          <p className="mb-3 text-center text-sm text-secondary-500">
             {t('employees.cancel_invitation_confirm', {
               email: employee.email,
             })}
@@ -195,7 +195,7 @@ export function EmployeeDetailContent({
 
       {confirmAction === 'change_role' && (
         <div>
-          <p className="mb-3 text-center text-sm text-secondary-600">
+          <p className="mb-3 text-center text-sm text-secondary-500">
             {t(
               employee.role === 'MANAGER'
                 ? 'employees.change_role_to_worker_confirm'

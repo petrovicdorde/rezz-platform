@@ -43,7 +43,7 @@ export function SelectableVenueCard({
         </div>
       )}
 
-      <p className="truncate text-sm font-medium text-secondary-600">
+      <p className="truncate text-sm font-medium text-secondary-500">
         {venue.name}
       </p>
       <p className="text-xs text-tertiary-500">{venue.city}</p>

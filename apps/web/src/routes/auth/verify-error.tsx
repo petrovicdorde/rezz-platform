@@ -14,7 +14,7 @@ function VerifyErrorPage(): React.JSX.Element {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-tertiary-50 px-4">
       <XCircle className="mb-4 size-16 text-red-500" />
-      <h1 className="text-2xl font-bold text-secondary-600">
+      <h1 className="text-2xl font-bold text-secondary-500">
         {t('auth.verify_error_title')}
       </h1>
       <p className="mt-2 text-center text-tertiary-600">

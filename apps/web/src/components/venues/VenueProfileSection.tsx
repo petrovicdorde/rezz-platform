@@ -176,7 +176,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
   return (
     <section className="mt-6 rounded-2xl border border-tertiary-200 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-secondary-600">
+        <h2 className="text-lg font-semibold text-secondary-500">
           {t('my_venue.title')}
         </h2>
         <span className="text-sm text-tertiary-500">{venue.name}</span>
@@ -185,7 +185,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* About */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t('my_venue.about_label')}
           </label>
           <Textarea
@@ -205,7 +205,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
 
         {/* Address */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t('venue.address_label')}
           </label>
           <Input
@@ -261,7 +261,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
 
         {/* Payment methods */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t('venue.payment_methods_label')}
           </label>
           <Controller
@@ -312,7 +312,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
 
         {/* Minimum guest age */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t('venue.min_guest_age_label')}
           </label>
           <Input
@@ -442,7 +442,7 @@ export function VenueProfileSection(): React.JSX.Element | null {
 
         {/* Tags */}
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t('venue.tags_label')}
           </label>
           <Controller

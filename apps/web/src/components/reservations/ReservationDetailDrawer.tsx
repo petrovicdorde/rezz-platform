@@ -82,7 +82,7 @@ export function ReservationDetailDrawer({
         </SheetTitle>
         <div className="flex h-full flex-col overflow-y-auto p-4">
           {/* Header */}
-          <h2 className="text-lg font-medium text-secondary-600">
+          <h2 className="text-lg font-medium text-secondary-500">
             {t("notifications.reservation_details")}
           </h2>
           {status && (
@@ -101,7 +101,7 @@ export function ReservationDetailDrawer({
                   <span className="text-tertiary-500">
                     {t("reservation.first_name_label")}
                   </span>
-                  <span className="font-medium text-secondary-600">
+                  <span className="font-medium text-secondary-500">
                     {res.firstName} {res.lastName}
                   </span>
                 </div>
@@ -135,7 +135,7 @@ export function ReservationDetailDrawer({
                         ? `tel:${res.phone.replace(/\s+/g, "")}`
                         : undefined
                     }
-                    className="flex items-center gap-1 text-secondary-600 hover:text-primary-600"
+                    className="flex items-center gap-1 text-secondary-500 hover:text-primary-600"
                   >
                     <Phone className="h-3.5 w-3.5" />
                     {res.phone ||
@@ -148,7 +148,7 @@ export function ReservationDetailDrawer({
                   <span className="text-tertiary-500">
                     {t("reservation.date_label")}
                   </span>
-                  <span className="text-secondary-600">
+                  <span className="text-secondary-500">
                     {format(new Date(res.date), "dd.MM.yyyy")}
                   </span>
                 </div>
@@ -156,13 +156,13 @@ export function ReservationDetailDrawer({
                   <span className="text-tertiary-500">
                     {t("reservation.time_label")}
                   </span>
-                  <span className="text-secondary-600">{res.time}</span>
+                  <span className="text-secondary-500">{res.time}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-tertiary-500">
                     {t("reservation.table_type_label")}
                   </span>
-                  <span className="text-secondary-600">
+                  <span className="text-secondary-500">
                     {tableTypeLabel(res.tableType)}
                   </span>
                 </div>
@@ -170,7 +170,7 @@ export function ReservationDetailDrawer({
                   <span className="text-tertiary-500">
                     {t("reservation.guests_label")}
                   </span>
-                  <span className="text-secondary-600">
+                  <span className="text-secondary-500">
                     {t("reservation.guests_count", {
                       count: res.numberOfGuests,
                     })}
@@ -226,7 +226,7 @@ export function ReservationDetailDrawer({
 
                   {action === "confirm" && (
                     <div>
-                      <p className="mb-3 text-center text-sm text-secondary-600">
+                      <p className="mb-3 text-center text-sm text-secondary-500">
                         {t("reservation.confirm_question")}
                       </p>
                       <div className="grid grid-cols-2 gap-3">
@@ -256,7 +256,7 @@ export function ReservationDetailDrawer({
 
                   {action === "reject" && (
                     <div>
-                      <p className="mb-3 text-center text-sm text-secondary-600">
+                      <p className="mb-3 text-center text-sm text-secondary-500">
                         {t("reservation.reject_question")}
                       </p>
                       <div className="grid grid-cols-2 gap-3">
@@ -314,7 +314,7 @@ export function ReservationDetailDrawer({
 
                   {(action === "arrival" || action === "noShow") && (
                     <div>
-                      <p className="mb-3 text-center text-sm text-secondary-600">
+                      <p className="mb-3 text-center text-sm text-secondary-500">
                         {action === "arrival"
                           ? t("reservation.arrival_confirm_question")
                           : t("reservation.no_show_confirm_question")}

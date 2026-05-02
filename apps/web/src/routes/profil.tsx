@@ -58,7 +58,7 @@ function ProfilPage(): React.JSX.Element {
               {profileLoading ? '' : initials || '?'}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-medium text-secondary-600">
+              <p className="truncate font-medium text-secondary-500">
                 {fullName || (profileLoading ? '...' : '')}
               </p>
               <p className="truncate text-sm text-tertiary-500">

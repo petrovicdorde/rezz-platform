@@ -11,8 +11,8 @@ export function NotFoundPage(): React.JSX.Element {
     <PublicLayout>
       <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20 text-center">
         <FileQuestion className="size-16 text-tertiary-300" />
-        <p className="mt-6 text-5xl font-bold text-secondary-600">404</p>
-        <p className="mt-4 text-xl font-medium text-secondary-600">
+        <p className="mt-6 text-5xl font-bold text-secondary-500">404</p>
+        <p className="mt-4 text-xl font-medium text-secondary-500">
           {t('not_found.title')}
         </p>
         <p className="mt-2 max-w-md text-tertiary-500">

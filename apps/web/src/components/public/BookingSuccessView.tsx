@@ -23,7 +23,7 @@ export function BookingSuccessView({
   return (
     <div className="flex flex-col items-center text-center">
       <CheckCircle2 className="size-14 text-primary-400" />
-      <h3 className="mt-4 text-xl font-bold text-secondary-600">
+      <h3 className="mt-4 text-xl font-bold text-secondary-500">
         {t('booking.success_title')}
       </h3>
       <p className="mt-2 text-sm text-tertiary-500">
@@ -35,7 +35,7 @@ export function BookingSuccessView({
           <span className="text-xs text-tertiary-500">
             {t('booking.venue_label')}
           </span>
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-medium text-secondary-500">
             {venueName}
           </span>
         </div>
@@ -45,7 +45,7 @@ export function BookingSuccessView({
             <Calendar className="size-3.5" />
             {t('booking.date_label')}
           </span>
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-medium text-secondary-500">
             {formattedDate}
           </span>
         </div>
@@ -55,7 +55,7 @@ export function BookingSuccessView({
             <Clock className="size-3.5" />
             {t('booking.time_label')}
           </span>
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-medium text-secondary-500">
             {reservation.time}
           </span>
         </div>
@@ -65,7 +65,7 @@ export function BookingSuccessView({
             <Users className="size-3.5" />
             {t('booking.guests_label')}
           </span>
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-medium text-secondary-500">
             {reservation.numberOfGuests}
           </span>
         </div>
@@ -75,13 +75,13 @@ export function BookingSuccessView({
             <Utensils className="size-3.5" />
             {t('booking.table_type_label')}
           </span>
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-medium text-secondary-500">
             {tableTypeLabel(reservation.tableType)}
           </span>
         </div>
       </div>
 
-      <span className="mt-4 rounded-full bg-secondary-100 px-3 py-1 text-xs font-medium text-secondary-600">
+      <span className="mt-4 rounded-full bg-secondary-100 px-3 py-1 text-xs font-medium text-secondary-500">
         {t('booking.status_pending')}
       </span>
 

@@ -28,7 +28,7 @@ export function SettingRow({
           }`}
         />
         <div className="flex flex-col">
-          <span className="text-sm font-medium text-secondary-600">
+          <span className="text-sm font-medium text-secondary-500">
             {setting.label}
           </span>
           {setting.labelEn ? (

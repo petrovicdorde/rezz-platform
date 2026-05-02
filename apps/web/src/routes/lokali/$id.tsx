@@ -44,7 +44,7 @@ function SectionHeading({
   children: React.ReactNode;
 }): React.JSX.Element {
   return (
-    <h2 className="mt-8 mb-4 border-b border-tertiary-200 pb-2 text-lg font-bold text-secondary-600 first:mt-0">
+    <h2 className="mt-8 mb-4 border-b border-tertiary-200 pb-2 text-lg font-bold text-secondary-500 first:mt-0">
       {children}
     </h2>
   );
@@ -80,7 +80,7 @@ function VenueDetailPage(): React.JSX.Element {
       <PublicLayout>
         <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20 text-center">
           <Building2 className="size-16 text-tertiary-200" />
-          <p className="mt-4 text-xl font-medium text-secondary-600">
+          <p className="mt-4 text-xl font-medium text-secondary-500">
             {t('venue_detail.not_found')}
           </p>
           <p className="mt-2 text-tertiary-500">
@@ -133,7 +133,7 @@ function VenueDetailPage(): React.JSX.Element {
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="h-full w-full bg-linear-to-br from-secondary-600 to-secondary-400" />
+          <div className="h-full w-full bg-linear-to-br from-secondary-500 to-secondary-400" />
         )}
 
         <div className="absolute inset-0 bg-black/40" />
@@ -255,7 +255,7 @@ function VenueDetailPage(): React.JSX.Element {
             id="booking"
             className="mt-8 rounded-2xl border border-tertiary-200 bg-white p-6"
           >
-            <h2 className="mb-6 text-xl font-bold text-secondary-600">
+            <h2 className="mb-6 text-xl font-bold text-secondary-500">
               {t('booking.title')}
             </h2>
             {isUserCurrentlyBlocked(user) ? (

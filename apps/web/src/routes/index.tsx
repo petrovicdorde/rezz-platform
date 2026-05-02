@@ -86,7 +86,7 @@ function HomePage(): React.JSX.Element {
       {showVenues && (
         <section className="bg-white px-4 py-16">
           <div className="mx-auto w-full max-w-384">
-            <h2 className="text-center text-3xl font-bold text-secondary-600">
+            <h2 className="text-center text-3xl font-bold text-secondary-500">
               {t("home.featured_venues_title")}
             </h2>
             <p className="mt-2 text-center text-tertiary-500">
@@ -123,7 +123,7 @@ function HomePage(): React.JSX.Element {
       {showEvents && (isLoading || featuredEvents.length > 0) && (
         <section className="bg-white px-4 py-16">
           <div className="mx-auto w-full max-w-384">
-            <h2 className="text-center text-3xl font-bold text-secondary-600">
+            <h2 className="text-center text-3xl font-bold text-secondary-500">
               {t("home.featured_events_title")}
             </h2>
             <p className="mt-2 text-center text-tertiary-500">

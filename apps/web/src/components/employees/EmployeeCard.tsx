@@ -46,7 +46,7 @@ export function EmployeeCard({
           className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium ${
             employee.type === 'INVITED'
               ? 'border border-dashed border-tertiary-300 bg-tertiary-50 text-tertiary-400'
-              : 'bg-secondary-100 text-secondary-600'
+              : 'bg-secondary-100 text-secondary-500'
           }`}
         >
           {getInitials(employee)}
@@ -54,7 +54,7 @@ export function EmployeeCard({
 
         {/* Info */}
         <div>
-          <p className="text-sm font-medium text-secondary-600">
+          <p className="text-sm font-medium text-secondary-500">
             {displayName ?? employee.email}
           </p>
           {displayName && (

@@ -170,7 +170,7 @@ export function EventForm({
 
       {/* Promotions */}
       <div>
-        <h3 className="mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+        <h3 className="mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
           {t('events.promotions_section')}
         </h3>
 

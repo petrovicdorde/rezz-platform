@@ -25,7 +25,7 @@ export function VenueSliderCard({
           className="h-full w-full object-cover"
         />
       ) : (
-        <div className="h-full w-full bg-gradient-to-br from-secondary-600 to-secondary-400" />
+        <div className="h-full w-full bg-gradient-to-br from-secondary-500 to-secondary-400" />
       )}
 
       {/* Overlay */}

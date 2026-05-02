@@ -17,7 +17,7 @@ export function VenueCategorySlider({
   return (
     <section>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-secondary-600">
+        <h2 className="text-lg font-bold text-secondary-500">
           {categoryLabel}
         </h2>
       </div>

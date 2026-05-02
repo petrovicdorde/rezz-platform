@@ -204,7 +204,7 @@ export function VenueForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
       {/* Section 1 — Basic info */}
-      <h3 className="mt-0 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+      <h3 className="mt-0 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
         {t("venue.name_label")}
       </h3>
 
@@ -516,7 +516,7 @@ export function VenueForm({
       )}
 
       {/* Section 3 — Working hours */}
-      <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+      <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
         {t("venue.working_hours_label")}
       </h3>
 
@@ -533,7 +533,7 @@ export function VenueForm({
       />
 
       {/* Section — Closed days */}
-      <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+      <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
         {t("venue.closed_days_label")}
       </h3>
       <p className="mb-2 text-xs text-tertiary-500">
@@ -553,7 +553,7 @@ export function VenueForm({
 
       {/* Section 4 — Tables */}
       {!(isReadOnly && fields.length === 0) && (
-        <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+        <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
           {t("venue.tables_label")}
         </h3>
       )}
@@ -662,7 +662,7 @@ export function VenueForm({
       {/* Section 5 — Social links */}
       {!(isReadOnly && socialLinks.length === 0) && (
         <>
-          <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+          <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
             {t("venue.social_links_label")}
           </h3>
 
@@ -719,7 +719,7 @@ export function VenueForm({
       {/* Section 6 — Manager (create mode only) */}
       {!initialData && (
         <>
-          <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-600">
+          <h3 className="mt-6 mb-3 text-sm font-medium uppercase tracking-wide text-secondary-500">
             {t("venue.manager_section")}
           </h3>
 

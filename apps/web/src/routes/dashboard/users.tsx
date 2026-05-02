@@ -61,7 +61,7 @@ function UsersPage(): React.JSX.Element {
 
   return (
     <DashboardLayout>
-      <h1 className="text-2xl font-bold text-secondary-600">
+      <h1 className="text-2xl font-bold text-secondary-500">
         {t('users.title')}
       </h1>
 

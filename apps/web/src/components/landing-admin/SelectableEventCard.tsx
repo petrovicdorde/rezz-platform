@@ -44,7 +44,7 @@ export function SelectableEventCard({
         </div>
       )}
 
-      <p className="truncate text-sm font-medium text-secondary-600">
+      <p className="truncate text-sm font-medium text-secondary-500">
         {event.name}
       </p>
       <p className="text-xs text-tertiary-500">

@@ -59,7 +59,7 @@ export function WorkingHoursDisplay({
                 <span className="inline-block h-2 w-2 rounded-full bg-primary-400" />
               )}
               <span
-                className={`text-sm text-secondary-600 ${
+                className={`text-sm text-secondary-500 ${
                   isToday ? 'font-semibold' : ''
                 }`}
               >
@@ -72,7 +72,7 @@ export function WorkingHoursDisplay({
                 {t('venue_detail.closed')}
               </span>
             ) : (
-              <span className="text-sm font-medium text-secondary-600">
+              <span className="text-sm font-medium text-secondary-500">
                 {entry.open} - {entry.close}
               </span>
             )}

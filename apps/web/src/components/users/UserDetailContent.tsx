@@ -31,7 +31,7 @@ function getInitials(user: AdminUser): string {
 function getAvatarClass(user: AdminUser): string {
   if (user.isBlacklisted) return 'bg-red-100 text-red-600';
   if (!user.isActive) return 'bg-gray-100 text-gray-400';
-  return 'bg-secondary-100 text-secondary-600';
+  return 'bg-secondary-100 text-secondary-500';
 }
 
 export function UserDetailContent({
@@ -53,7 +53,7 @@ export function UserDetailContent({
         >
           {getInitials(user)}
         </div>
-        <p className="mt-3 text-lg font-medium text-secondary-600">
+        <p className="mt-3 text-lg font-medium text-secondary-500">
           {user.firstName && user.lastName
             ? `${user.firstName} ${user.lastName}`
             : t('users.no_name')}
@@ -75,7 +75,7 @@ export function UserDetailContent({
       <div className="mt-4 space-y-3">
         <div className="flex justify-between text-sm">
           <span className="text-tertiary-500">{t('users.role_label')}</span>
-          <span className="text-secondary-600">{user.role}</span>
+          <span className="text-secondary-500">{user.role}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-tertiary-500">{t('users.status_label')}</span>
@@ -83,13 +83,13 @@ export function UserDetailContent({
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-tertiary-500">{t('users.venue_label')}</span>
-          <span className="text-secondary-600">{user.venueId ?? '—'}</span>
+          <span className="text-secondary-500">{user.venueId ?? '—'}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-tertiary-500">
             {t('users.registered_label')}
           </span>
-          <span className="text-secondary-600">
+          <span className="text-secondary-500">
             {format(parseISO(user.createdAt), 'dd.MM.yyyy')}
           </span>
         </div>
@@ -177,7 +177,7 @@ export function UserDetailContent({
             rows={2}
             className="w-full rounded-lg border border-tertiary-200 p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400"
           />
-          <p className="mt-2 text-center text-sm text-secondary-600">
+          <p className="mt-2 text-center text-sm text-secondary-500">
             {t('users.blacklist_confirm')}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-3">
@@ -208,7 +208,7 @@ export function UserDetailContent({
 
       {confirmAction === 'unblacklist' && (
         <div>
-          <p className="text-center text-sm text-secondary-600">
+          <p className="text-center text-sm text-secondary-500">
             {t('users.unblacklist_confirm')}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-3">
@@ -235,7 +235,7 @@ export function UserDetailContent({
 
       {confirmAction === 'delete' && (
         <div>
-          <p className="text-center text-sm text-secondary-600">
+          <p className="text-center text-sm text-secondary-500">
             {t('users.delete_confirm')}
           </p>
           <p className="mt-1 text-center text-xs text-tertiary-500">

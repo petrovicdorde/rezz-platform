@@ -45,7 +45,7 @@ export function EventCard({
           {event.isActive ? t('venue.status_active') : t('venue.status_inactive')}
         </span>
 
-        <p className="pr-16 text-sm font-medium text-secondary-600">
+        <p className="pr-16 text-sm font-medium text-secondary-500">
           {event.name}
         </p>
 

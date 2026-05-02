@@ -34,7 +34,7 @@ export function EventDetailContent({
       )}
 
       {/* Info */}
-      <h2 className="text-lg font-medium text-secondary-600">{event.name}</h2>
+      <h2 className="text-lg font-medium text-secondary-500">{event.name}</h2>
 
       <div className="mt-2 flex items-center gap-1.5 text-sm text-tertiary-500">
         <MapPin className="h-3.5 w-3.5" />
@@ -57,7 +57,7 @@ export function EventDetailContent({
 
       {/* Promotions */}
       <Separator className="my-4" />
-      <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-secondary-600">
+      <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-secondary-500">
         {t('events.promotions_section')}
       </h3>
 
@@ -70,7 +70,7 @@ export function EventDetailContent({
               key={promo.id}
               className="flex items-center justify-between border-b border-tertiary-100 py-2 last:border-0"
             >
-              <span className="text-sm text-secondary-600">{promo.name}</span>
+              <span className="text-sm text-secondary-500">{promo.name}</span>
               <span className="text-sm font-medium text-primary-600">
                 {Number(promo.price).toFixed(2)} KM
               </span>
@@ -103,7 +103,7 @@ export function EventDetailContent({
 
         {confirmDelete && (
           <div>
-            <p className="mb-3 text-center text-sm text-secondary-600">
+            <p className="mb-3 text-center text-sm text-secondary-500">
               {t('events.delete_confirm', { name: event.name })}
             </p>
             <div className="grid grid-cols-2 gap-3">

@@ -30,7 +30,7 @@ export function Navbar(): React.JSX.Element {
         <button
           type="button"
           onClick={open}
-          className="rounded-full bg-secondary-400 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.25),0_6px_20px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-px hover:bg-secondary-600 hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
+          className="rounded-full bg-secondary-400 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.25),0_6px_20px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-px hover:bg-secondary-500 hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
         >
           {t('auth.login_button')}
         </button>

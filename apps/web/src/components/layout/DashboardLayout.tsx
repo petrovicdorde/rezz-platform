@@ -144,7 +144,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps): React.JSX.E
         <div className="flex h-14 items-center justify-end border-b border-tertiary-200 bg-white px-4 md:px-8">
           {user && (
             <div className="flex items-center gap-3">
-              <span className="text-sm text-secondary-600">
+              <span className="text-sm text-secondary-500">
                 {t('nav.welcome', { name: user.firstName })}
               </span>
               <button

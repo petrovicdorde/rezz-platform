@@ -169,7 +169,7 @@ export function BookingForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.first_name_label")}
           </label>
           <Input
@@ -183,7 +183,7 @@ export function BookingForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.last_name_label")}
           </label>
           <Input
@@ -198,7 +198,7 @@ export function BookingForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-secondary-600">
+        <label className="mb-1 block text-sm font-medium text-secondary-500">
           {t("booking.phone_label")}
         </label>
         <Input
@@ -212,7 +212,7 @@ export function BookingForm({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.date_label")}
           </label>
           {lockedDate ? (
@@ -247,7 +247,7 @@ export function BookingForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.time_label")}
           </label>
           <Controller
@@ -276,7 +276,7 @@ export function BookingForm({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.guests_label")}
           </label>
           <Input
@@ -296,7 +296,7 @@ export function BookingForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.table_type_label")}
           </label>
           {hasTables ? (
@@ -339,7 +339,7 @@ export function BookingForm({
 
       {requiresAges && (
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-600">
+          <label className="mb-1 block text-sm font-medium text-secondary-500">
             {t("booking.guest_ages_label", { min: minGuestAge })}
           </label>
           <p className="mb-2 text-xs text-tertiary-500">
@@ -428,7 +428,7 @@ export function BookingForm({
       )}
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-secondary-600">
+        <label className="mb-1 block text-sm font-medium text-secondary-500">
           {t("booking.special_request_label")}
         </label>
         <Textarea

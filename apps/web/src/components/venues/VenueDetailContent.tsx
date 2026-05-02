@@ -139,7 +139,7 @@ export function VenueDetailContent({
           {/* Status confirm */}
           {isStatusConfirm && (
             <div className="mt-4">
-              <p className="mb-3 text-center text-sm font-medium text-secondary-600">
+              <p className="mb-3 text-center text-sm font-medium text-secondary-500">
                 {venue.isActive
                   ? t('venue.deactivate_confirm')
                   : t('venue.activate_confirm')}
@@ -173,7 +173,7 @@ export function VenueDetailContent({
           {/* Delete confirm */}
           {isDeleteConfirm && (
             <div className="mt-4">
-              <p className="mb-3 text-center text-sm font-medium text-secondary-600">
+              <p className="mb-3 text-center text-sm font-medium text-secondary-500">
                 Da li ste sigurni?
               </p>
               <div className="grid grid-cols-2 gap-3">

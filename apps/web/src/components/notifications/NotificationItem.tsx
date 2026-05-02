@@ -28,7 +28,7 @@ export function NotificationItem({
       {/* Content */}
       <div className="flex-1">
         <p
-          className={`text-sm text-secondary-600 ${
+          className={`text-sm text-secondary-500 ${
             !notification.isRead ? 'font-medium' : 'font-normal'
           }`}
         >
