@@ -1,112 +1,104 @@
-import { useTranslation } from "react-i18next";
-import { Car, CreditCard, Banknote, Smartphone, MapPin } from "lucide-react";
-import type { PaymentMethod } from "@rezz/shared";
-import { useSettingValueLabel } from "@/hooks/useSettings";
-import type { AdminVenue } from "@/lib/types/venue.types";
+import { useTranslation } from 'react-i18next';
+import { useSettingValueLabel } from '@/hooks/useSettings';
+import { cn } from '@/lib/utils';
 
-interface VenueCardProps {
-  venue: AdminVenue;
-  onClick: () => void;
+const VENUE_PLACEHOLDER_IMG =
+  'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80&auto=format&fit=crop';
+
+interface VenueCardData {
+  id: string;
+  name: string;
+  type: string;
+  city: string;
+  tags: string[];
+  imageUrl: string | null;
+  isActive?: boolean;
 }
 
-const PAYMENT_ICONS: Record<PaymentMethod, React.ElementType> = {
-  CASH: Banknote,
-  CARD: CreditCard,
-  MOBILE: Smartphone,
-};
-
-const PAYMENT_KEYS: Record<PaymentMethod, string> = {
-  CASH: "venue.payment_cash",
-  CARD: "venue.payment_card",
-  MOBILE: "venue.payment_mobile",
-};
+interface VenueCardProps {
+  venue: VenueCardData;
+  /** `guest` lifts + zooms on hover. `admin` is static and shows a status pill. */
+  variant?: 'guest' | 'admin';
+  onClick?: () => void;
+  className?: string;
+}
 
 export function VenueCard({
   venue,
+  variant = 'guest',
   onClick,
+  className,
 }: VenueCardProps): React.JSX.Element {
   const { t } = useTranslation();
-  const venueTypeLabel = useSettingValueLabel("VENUE_TYPE");
-  const visibleTags = venue.tags.slice(0, 3);
-  const extraTagCount = venue.tags.length - 3;
+  const venueTypeLabel = useSettingValueLabel('VENUE_TYPE');
+  const tags = venue.tags.slice(0, 2);
+  const typeLabel = venueTypeLabel(venue.type);
+  const imgSrc = venue.imageUrl ?? VENUE_PLACEHOLDER_IMG;
+  const isGuest = variant === 'guest';
 
   return (
     <div
-      className="cursor-pointer rounded-xl border border-primary-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
       onClick={onClick}
+      className={cn(
+        'group relative h-[320px] cursor-pointer overflow-hidden rounded-[22px] shadow-[0_1px_2px_rgba(20,11,0,0.06),0_4px_12px_rgba(20,11,0,0.07),0_12px_28px_rgba(20,11,0,0.07)] transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]',
+        isGuest &&
+          'hover:-translate-y-2 hover:shadow-[0_2px_4px_rgba(20,11,0,0.06),0_8px_24px_rgba(20,11,0,0.1),0_24px_56px_rgba(20,11,0,0.14),0_0_0_1px_rgba(249,133,19,0.1)]',
+        className,
+      )}
     >
-      {/* Top row */}
-      <div className="flex items-center justify-between">
-        <span className="font-medium text-primary-400">{venue.name}</span>
+      {/* Background image */}
+      <div
+        aria-hidden
+        className={cn(
+          'absolute inset-0 bg-cover bg-center transition-transform duration-[600ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]',
+          isGuest && 'group-hover:scale-[1.07]',
+        )}
+        style={{ backgroundImage: `url('${imgSrc}')` }}
+      />
+
+      {/* Dark gradient overlay */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[linear-gradient(0deg,rgba(20,11,0,0.9)_0%,rgba(20,11,0,0.45)_40%,rgba(20,11,0,0.05)_75%,transparent_100%)]"
+      />
+
+      {/* Admin status pill (top-right) */}
+      {variant === 'admin' && venue.isActive !== undefined && (
         <span
-          className={`rounded-full px-2 py-0.5 text-xs ${
+          className={cn(
+            'absolute top-3.5 right-3.5 z-[1] rounded-full border px-3 py-1 text-[0.68rem] font-semibold tracking-[0.5px] uppercase backdrop-blur-md',
             venue.isActive
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
+              ? 'border-emerald-400/40 bg-emerald-500/25 text-emerald-50'
+              : 'border-red-400/40 bg-red-500/25 text-red-50',
+          )}
         >
           {venue.isActive
-            ? t("venue.status_active")
-            : t("venue.status_inactive")}
+            ? t('venue.status_active')
+            : t('venue.status_inactive')}
         </span>
-      </div>
-
-      {/* Type + phone */}
-      <div className="mt-1 flex items-center gap-2 text-sm text-tertiary-600">
-        <span>{venueTypeLabel(venue.type)}</span>
-        <span>·</span>
-        <span>{venue.reservationPhone}</span>
-      </div>
-
-      {/* City + Address */}
-      <div className="mt-1 flex items-center gap-1 text-sm text-tertiary-500">
-        <MapPin className="h-3.5 w-3.5 shrink-0 text-tertiary-400" />
-        <span>{venue.city}</span>
-      </div>
-
-      {/* Tags */}
-      {venue.tags.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1">
-          {visibleTags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-primary-50 px-2 py-0.5 text-xs text-primary-800"
-            >
-              {tag}
-            </span>
-          ))}
-          {extraTagCount > 0 && (
-            <span className="rounded-full bg-tertiary-100 px-2 py-0.5 text-xs text-tertiary-600">
-              +{extraTagCount} {t("venue.tags_more")}
-            </span>
-          )}
-        </div>
       )}
 
-      {/* Bottom row */}
-      <div className="mt-3 flex items-center justify-between text-sm text-tertiary-600">
-        <div className="flex items-center gap-3">
-          {venue.hasParking && (
-            <span className="flex items-center gap-1">
-              <Car className="h-4 w-4" />
-            </span>
-          )}
-          {venue.paymentMethods.map((pm) => {
-            const Icon = PAYMENT_ICONS[pm];
-            return (
+      {/* Content (overlaid on bottom) */}
+      <div className="absolute right-0 bottom-0 left-0 p-5 pt-4">
+        {tags.length > 0 && (
+          <div className="mb-2.5 flex flex-wrap gap-1.5">
+            {tags.map((tag) => (
               <span
-                key={pm}
-                className="flex items-center gap-1"
-                title={t(PAYMENT_KEYS[pm])}
+                key={tag}
+                className="rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-[0.68rem] font-medium text-white/65 backdrop-blur-sm"
               >
-                <Icon className="h-4 w-4" />
+                #{tag}
               </span>
-            );
-          })}
+            ))}
+          </div>
+        )}
+        <h3 className="truncate font-serif text-[1.25rem] font-bold tracking-[-0.4px] text-white [text-shadow:0_1px_8px_rgba(20,11,0,0.5)]">
+          {venue.name}
+        </h3>
+        <div className="mt-1.5 text-[0.77rem] text-white/45">
+          {typeLabel} ·{' '}
+          <strong className="font-medium text-white/70">{venue.city}</strong>
         </div>
-        <span className="text-xs text-tertiary-400">
-          {venue.tables.length} {t("venue.tables_label").toLowerCase()}
-        </span>
       </div>
     </div>
   );

@@ -71,6 +71,7 @@ function VenuesDashboardPage(): React.JSX.Element {
             <VenueCard
               key={venue.id}
               venue={venue}
+              variant="admin"
               onClick={() => setSelectedVenue(venue)}
             />
           ))}
