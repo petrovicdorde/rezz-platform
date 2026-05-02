@@ -30,6 +30,60 @@
 
   /* Default font */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes hero-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-dropdown-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+}
+
+[data-slot='select-content'][data-hero-dropdown='true'][data-state='open'] {
+  animation: hero-dropdown-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: var(--radix-select-content-transform-origin);
+}
+
+[data-slot='select-content'][data-hero-dropdown='true'][data-state='closed'] {
+  animation: hero-dropdown-out 0.16s cubic-bezier(0.4, 0, 1, 1) both;
+  transform-origin: var(--radix-select-content-transform-origin);
 }
 
 @layer base {

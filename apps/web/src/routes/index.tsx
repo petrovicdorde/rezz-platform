@@ -36,31 +36,70 @@ function HomePage(): React.JSX.Element {
   return (
     <PublicLayout>
       {/* Hero section */}
-      <section className="relative flex min-h-dvh flex-col items-center justify-center bg-secondary-600 px-4 pt-20 pb-32">
-        <div className="mx-auto flex w-full max-w-384 flex-col items-center">
-          <h1 className="text-center text-4xl font-bold text-white md:text-6xl">
-            {t("home.hero_title")}
+      <section className="relative -mt-16 flex h-[100svh] min-h-[640px] flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16">
+        {/* Background image */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-0 scale-[1.04] bg-cover bg-center bg-no-repeat opacity-75"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1800&q=90&auto=format&fit=crop')",
+          }}
+        />
+        {/* Dark gradient overlay */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-[1] bg-[linear-gradient(to_bottom,rgba(20,11,0,0.35)_0%,rgba(20,11,0,0.05)_25%,rgba(20,11,0,0.4)_60%,rgba(20,11,0,1)_100%)]"
+        />
+        {/* Orange radial glow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_80%_55%_at_50%_-5%,rgba(249,133,19,0.22)_0%,transparent_65%),radial-gradient(ellipse_60%_40%_at_100%_100%,rgba(249,133,19,0.08)_0%,transparent_60%)]"
+        />
+
+        <div className="relative z-[2] mx-auto flex w-full max-w-3xl flex-col items-center">
+          {/* Badge */}
+          <div
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-secondary-400/30 bg-secondary-400/10 px-5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-secondary-400 backdrop-blur-sm sm:mb-7"
+            style={{ animation: 'hero-fade-up 0.55s 0.1s both' }}
+          >
+            <span
+              aria-hidden
+              className="h-1.5 w-1.5 rounded-full bg-secondary-400 shadow-[0_0_6px_rgba(249,133,19,0.6)]"
+              style={{ animation: 'hero-blink 2.5s ease-in-out infinite' }}
+            />
+            {t('home.hero_badge')}
+          </div>
+
+          {/* Title */}
+          <h1
+            className="text-center font-serif text-[clamp(3rem,6vw,5.8rem)] leading-[1] font-black tracking-[-0.025em] text-tertiary-50 [text-shadow:0_2px_40px_rgba(20,11,0,0.4)]"
+            style={{ animation: 'hero-fade-up 0.65s 0.2s both' }}
+          >
+            {t('home.hero_title_line1')}
+            <br />
+            {t('home.hero_title_line2')}
+            <br />
+            <em className="italic font-black text-secondary-400">
+              {t('home.hero_title_line3')}
+            </em>
           </h1>
-          <p className="mt-4 max-w-md text-center text-lg text-white/70">
-            {t("home.hero_subtitle")}
+
+          {/* Subtitle */}
+          <p
+            className="mx-auto mt-5 mb-10 max-w-md text-center text-[1.02rem] leading-[1.8] font-light text-white/55 sm:mb-12"
+            style={{ animation: 'hero-fade-up 0.65s 0.32s both' }}
+          >
+            {t('home.hero_subtitle')}
           </p>
 
-          <div className="mt-12 w-full">
+          {/* Search card */}
+          <div
+            className="w-full"
+            style={{ animation: 'hero-fade-up 0.7s 0.42s both' }}
+          >
             <SearchFilterWidget onSearch={handleSearch} />
           </div>
-        </div>
-
-        {/* Curved bottom */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1440 80"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="block w-full"
-            preserveAspectRatio="none"
-          >
-            <path d="M0 80V40C360 0 1080 0 1440 40V80H0Z" fill="white" />
-          </svg>
         </div>
       </section>
 

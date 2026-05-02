@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
@@ -19,11 +19,34 @@ export function PublicLayout({
   const { open } = useLoginStore();
   const { isAuthenticated, user } = useAuthStore();
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    function onScroll(): void {
+      const y = window.scrollY;
+      const delta = y - lastScrollY.current;
+
+      if (y < 80) {
+        setNavVisible(true);
+      } else if (delta > 6) {
+        setNavVisible(false);
+      } else if (delta < -6) {
+        setNavVisible(true);
+      }
+      lastScrollY.current = y;
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 flex h-16 items-center justify-between bg-secondary-600 px-4 md:px-8">
+      <nav
+        data-visible={navVisible}
+        className="fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between bg-secondary-600 px-4 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] data-[visible=false]:-translate-y-full data-[visible=false]:opacity-0 md:px-8">
         <div className="flex-1" />
         <Link to="/">
           <img
@@ -74,7 +97,7 @@ export function PublicLayout({
       </nav>
 
       {/* Main */}
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pt-16">{children}</main>
 
       {/* Footer */}
       <footer className="bg-secondary-600 px-4 py-8 text-center text-sm text-tertiary-300 md:px-8">
