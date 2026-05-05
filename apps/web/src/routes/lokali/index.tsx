@@ -120,12 +120,6 @@ function LokaliPage(): React.JSX.Element {
               {t("venues_page.clear_filters")}
             </button>
           )}
-
-          {!isLoading && venues && (
-            <div className="ml-auto text-sm text-tertiary-500">
-              {t("venues_page.results_count", { count: venues.length })}
-            </div>
-          )}
         </div>
       </div>
 

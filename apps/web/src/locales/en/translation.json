@@ -153,7 +153,6 @@
     "title": "Venues",
     "filter_all_types": "All types",
     "filter_all_cities": "All locations",
-    "results_count": "{{count}} venues",
     "no_results": "No venues found for the selected filters.",
     "no_results_subtitle": "Try different search criteria.",
     "category_see_all": "See all",

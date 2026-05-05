@@ -153,7 +153,6 @@
     "title": "Lokali",
     "filter_all_types": "Svi tipovi",
     "filter_all_cities": "Sve lokacije",
-    "results_count": "{{count}} lokala",
     "no_results": "Nema lokala za odabrane filtere.",
     "no_results_subtitle": "Pokušajte sa drugačijim kriterijima pretrage.",
     "category_see_all": "Pogledaj sve",
