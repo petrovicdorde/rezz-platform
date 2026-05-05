@@ -1,36 +1,36 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useForm, Controller } from 'react-hook-form';
-import { ArrowLeft, X } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useForm, Controller } from "react-hook-form";
+import { ArrowLeft, X } from "lucide-react";
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { DatePicker } from '@/components/ui/date-picker';
-import { TimePicker } from '@/components/ui/time-picker';
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useAuthStore } from '@/store/auth.store';
+} from "@/components/ui/select";
+import { useAuthStore } from "@/store/auth.store";
 import {
   useCreateGuestReservation,
   usePublicAvailableSlots,
-} from '@/hooks/useReservations';
-import { useMyProfile } from '@/hooks/useProfile';
-import { useSettingValueLabel } from '@/hooks/useSettings';
-import type { PublicVenue } from '@/lib/types/venue.types';
+} from "@/hooks/useReservations";
+import { useMyProfile } from "@/hooks/useProfile";
+import { useSettingValueLabel } from "@/hooks/useSettings";
+import type { PublicVenue } from "@/lib/types/venue.types";
 import type {
   CreateReservationRequest,
   Reservation,
-} from '@/lib/types/reservation.types';
+} from "@/lib/types/reservation.types";
 
 interface BookingDrawerProps {
   open: boolean;
@@ -54,33 +54,33 @@ interface BookingFormValues {
 }
 
 const FIELD_INPUT =
-  'h-11 rounded-xl border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 text-[#140B00] shadow-none transition-all placeholder:text-[rgba(20,11,0,0.42)] hover:bg-white hover:border-[rgba(249,133,19,0.35)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]';
+  "h-11 rounded-xl border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 text-[#140B00] shadow-none transition-all placeholder:text-[rgba(20,11,0,0.42)] hover:bg-white hover:border-[rgba(249,133,19,0.35)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]";
 
 const FIELD_TEXTAREA =
-  'rounded-xl border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 py-3 text-[#140B00] shadow-none transition-all placeholder:text-[rgba(20,11,0,0.42)] hover:bg-white hover:border-[rgba(249,133,19,0.35)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]';
+  "rounded-xl border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 py-3 text-[#140B00] shadow-none transition-all placeholder:text-[rgba(20,11,0,0.42)] hover:bg-white hover:border-[rgba(249,133,19,0.35)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]";
 
 const ORANGE_CTA =
-  'group relative w-full overflow-hidden rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-3.5 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0';
+  "group relative w-full overflow-hidden rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-3.5 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0";
 
-const LABEL = 'mb-1.5 block text-sm font-medium text-[#140B00]';
+const LABEL = "mb-1.5 block text-sm font-medium text-[#140B00]";
 
 // JS Date.getDay() index → WorkingHours key (Sun = 0).
 const WEEKDAYS = [
-  'sunday',
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
 ] as const;
 
 type Step = 0 | 1 | 2 | 3 | 4;
 
 const STEP_FIELDS: Record<Step, (keyof BookingFormValues)[]> = {
-  0: ['firstName', 'lastName', 'phone'],
-  1: ['date', 'time', 'numberOfGuests', 'tableType'],
-  2: ['guestAges'],
+  0: ["firstName", "lastName", "phone"],
+  1: ["date", "time", "numberOfGuests", "tableType"],
+  2: ["guestAges"],
   3: [],
   4: [],
 };
@@ -97,10 +97,10 @@ export function BookingDrawer({
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useMyProfile();
   const mutation = useCreateGuestReservation(venue.id);
-  const tableTypeLabel = useSettingValueLabel('TABLE_TYPE');
+  const tableTypeLabel = useSettingValueLabel("TABLE_TYPE");
 
   const [step, setStep] = useState<Step>(0);
-  const [direction, setDirection] = useState<'forward' | 'back'>('forward');
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
   // Disable submit after a failed attempt; reset on any field change so the
   // user must edit something before retrying. Prevents blind resubmits of
   // the same broken payload.
@@ -117,23 +117,30 @@ export function BookingDrawer({
     reset,
     formState: { errors },
   } = useForm<BookingFormValues>({
+    // `onChange` so per-field errors clear the moment a value becomes valid;
+    // otherwise stale errors stick around until the next submit attempt.
+    mode: "onChange",
     defaultValues: {
-      firstName: user?.firstName ?? '',
-      lastName: user?.lastName ?? '',
-      phone: user?.phone ?? '',
-      date: lockedDate ?? '',
-      time: '',
+      firstName: user?.firstName ?? "",
+      lastName: user?.lastName ?? "",
+      phone: user?.phone ?? "",
+      date: lockedDate ?? "",
+      time: "",
       numberOfGuests: 2,
-      tableType: '',
-      specialRequest: '',
+      tableType: "",
+      specialRequest: "",
       guestAges: [null, null],
     },
   });
 
-  const selectedDate = watch('date');
-  const selectedTableType = watch('tableType');
-  const numberOfGuests = watch('numberOfGuests');
-  const guestAges = watch('guestAges');
+  const selectedDate = watch("date");
+  const selectedTime = watch("time");
+  const selectedTableType = watch("tableType");
+  const numberOfGuests = watch("numberOfGuests");
+  const guestAges = watch("guestAges");
+  const firstName = watch("firstName");
+  const lastName = watch("lastName");
+  const phone = watch("phone");
 
   const { data: slots, isLoading: slotsLoading } = usePublicAvailableSlots(
     venue.id,
@@ -158,6 +165,41 @@ export function BookingDrawer({
     );
   })();
 
+  // Per-step "all required fields filled and valid" — drives the Next CTA's
+  // disabled state so the user can't try to advance from an empty step.
+  const canAdvance = (() => {
+    if (step === 0) {
+      return Boolean(firstName?.trim() && lastName?.trim() && phone?.trim());
+    }
+    if (step === 1) {
+      const guestCount = Number(numberOfGuests);
+      return Boolean(
+        selectedDate &&
+        /^([01]\d|2[0-3]):([0-5]\d)$/.test(selectedTime ?? "") &&
+        Number.isFinite(guestCount) &&
+        guestCount >= 1 &&
+        selectedTableType &&
+        !isClosedDay &&
+        hasTables,
+      );
+    }
+    if (step === 2) {
+      const guestCount = Math.max(1, Number(numberOfGuests) || 0);
+      const ages = (guestAges ?? []).slice(0, guestCount);
+      if (ages.length !== guestCount) return false;
+      return ages.every((a) => {
+        if (a === null || a === undefined) return false;
+        const n = Number(a);
+        if (!Number.isFinite(n)) return false;
+        if (n < 0 || n > 120) return false;
+        if (minGuestAge != null && n < minGuestAge) return false;
+        return true;
+      });
+    }
+    // step 3: special request is optional → always allowed to proceed.
+    return true;
+  })();
+
   // Disabled-date predicate for the date picker — combines closed-day
   // exceptions with weekly working hours.
   const isDateDisabled = (date: Date): boolean => {
@@ -174,13 +216,14 @@ export function BookingDrawer({
   useEffect(() => {
     if (open) {
       setStep(0);
-      setDirection('forward');
+      setDirection("forward");
       setLockSubmit(false);
     }
   }, [open]);
 
   // Re-enable submit on any field change after a failure.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/incompatible-library
     const sub = watch(() => setLockSubmit(false));
     return () => sub.unsubscribe();
   }, [watch]);
@@ -190,10 +233,10 @@ export function BookingDrawer({
     if (!profile) return;
     const current = getValues();
     if (!current.firstName && profile.firstName)
-      setValue('firstName', profile.firstName);
+      setValue("firstName", profile.firstName);
     if (!current.lastName && profile.lastName)
-      setValue('lastName', profile.lastName);
-    if (!current.phone && profile.phone) setValue('phone', profile.phone);
+      setValue("lastName", profile.lastName);
+    if (!current.phone && profile.phone) setValue("phone", profile.phone);
   }, [profile, getValues, setValue]);
 
   // Keep guest-ages array in sync with guest count.
@@ -201,22 +244,23 @@ export function BookingDrawer({
     const desired = Math.max(1, Number(numberOfGuests) || 0);
     const current = guestAges ?? [];
     if (current.length === desired) return;
-    const next: (number | null)[] = Array.from({ length: desired }, (_, i) =>
-      current[i] ?? null,
+    const next: (number | null)[] = Array.from(
+      { length: desired },
+      (_, i) => current[i] ?? null,
     );
-    setValue('guestAges', next, { shouldDirty: false, shouldValidate: false });
+    setValue("guestAges", next, { shouldDirty: false, shouldValidate: false });
   }, [numberOfGuests, guestAges, setValue]);
 
   async function goNext(): Promise<void> {
     const fields = STEP_FIELDS[step];
     const valid = fields.length === 0 ? true : await trigger(fields);
     if (!valid) return;
-    setDirection('forward');
+    setDirection("forward");
     setStep((s) => Math.min(4, s + 1) as Step);
   }
 
   function goBack(): void {
-    setDirection('back');
+    setDirection("back");
     setStep((s) => Math.max(0, s - 1) as Step);
   }
 
@@ -256,27 +300,27 @@ export function BookingDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="bottom">
-      <DrawerContent className="bg-[rgba(253,249,244,0.98)]">
+      <DrawerContent className="max-h-[85svh]! h-[85svh] bg-[rgba(253,249,244,0.98)]">
         {/* Close */}
         <button
           type="button"
           onClick={() => onOpenChange(false)}
           className="absolute top-4 right-4 z-10 rounded-md p-1.5 text-[rgba(20,11,0,0.45)] transition-colors hover:bg-[rgba(20,11,0,0.05)] hover:text-[#140B00]"
-          aria-label={t('common.close')}
+          aria-label={t("common.close")}
         >
           <X className="size-5" />
         </button>
 
-        <DrawerHeader className="!text-left">
+        <DrawerHeader className="text-left!">
           <DrawerTitle className="font-serif text-2xl font-bold tracking-[-0.4px] text-[#140B00]">
             {step === 4
-              ? t('booking.preview_title')
-              : t('booking.drawer_title')}
+              ? t("booking.preview_title")
+              : t("booking.drawer_title")}
           </DrawerTitle>
           <p className="mt-0.5 text-sm text-[rgba(20,11,0,0.55)]">
             {step === 4
-              ? t('booking.preview_subtitle')
-              : t('booking.step_indicator', { current: step + 1, total: 4 })}
+              ? t("booking.preview_subtitle")
+              : t("booking.step_indicator", { current: step + 1, total: 4 })}
           </p>
 
           {/* Step dots */}
@@ -287,10 +331,10 @@ export function BookingDrawer({
                 aria-hidden
                 className={`h-1.5 rounded-full transition-all ${
                   i < step
-                    ? 'w-6 bg-secondary-400'
+                    ? "w-6 bg-secondary-400"
                     : i === step
-                      ? 'w-8 bg-secondary-400 shadow-[0_0_0_3px_rgba(249,133,19,0.18)]'
-                      : 'w-4 bg-[rgba(20,11,0,0.12)]'
+                      ? "w-8 bg-secondary-400 shadow-[0_0_0_3px_rgba(249,133,19,0.18)]"
+                      : "w-4 bg-[rgba(20,11,0,0.12)]"
                 }`}
               />
             ))}
@@ -299,22 +343,18 @@ export function BookingDrawer({
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-4 pb-4">
-          <div
-            key={step}
-            className="booking-step"
-            data-direction={direction}
-          >
+          <div key={step} className="booking-step" data-direction={direction}>
             {step === 0 && (
               <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <label className={LABEL}>
-                      {t('booking.first_name_label')}
+                      {t("booking.first_name_label")}
                     </label>
                     <Input
                       className={FIELD_INPUT}
-                      {...register('firstName', {
-                        required: t('booking.required'),
+                      {...register("firstName", {
+                        required: t("booking.required"),
                       })}
                     />
                     {errors.firstName && (
@@ -325,12 +365,12 @@ export function BookingDrawer({
                   </div>
                   <div>
                     <label className={LABEL}>
-                      {t('booking.last_name_label')}
+                      {t("booking.last_name_label")}
                     </label>
                     <Input
                       className={FIELD_INPUT}
-                      {...register('lastName', {
-                        required: t('booking.required'),
+                      {...register("lastName", {
+                        required: t("booking.required"),
                       })}
                     />
                     {errors.lastName && (
@@ -341,12 +381,12 @@ export function BookingDrawer({
                   </div>
                 </div>
                 <div>
-                  <label className={LABEL}>{t('booking.phone_label')}</label>
+                  <label className={LABEL}>{t("booking.phone_label")}</label>
                   <Input
                     type="tel"
                     className={FIELD_INPUT}
-                    {...register('phone', {
-                      required: t('booking.required'),
+                    {...register("phone", {
+                      required: t("booking.required"),
                     })}
                   />
                   {errors.phone && (
@@ -361,7 +401,7 @@ export function BookingDrawer({
             {step === 1 && (
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className={LABEL}>{t('booking.date_label')}</label>
+                  <label className={LABEL}>{t("booking.date_label")}</label>
                   {lockedDate ? (
                     <>
                       <Input
@@ -371,19 +411,19 @@ export function BookingDrawer({
                       />
                       <input
                         type="hidden"
-                        {...register('date', { required: true })}
+                        {...register("date", { required: true })}
                       />
                     </>
                   ) : (
                     <Controller
                       control={control}
                       name="date"
-                      rules={{ required: t('booking.required') }}
+                      rules={{ required: t("booking.required") }}
                       render={({ field }) => (
                         <DatePicker
                           value={field.value}
                           onChange={field.onChange}
-                          placeholder={t('common.select_date')}
+                          placeholder={t("common.select_date")}
                           isDateDisabled={isDateDisabled}
                         />
                       )}
@@ -396,22 +436,22 @@ export function BookingDrawer({
                   )}
                 </div>
                 <div>
-                  <label className={LABEL}>{t('booking.time_label')}</label>
+                  <label className={LABEL}>{t("booking.time_label")}</label>
                   <Controller
                     control={control}
                     name="time"
                     rules={{
-                      required: t('booking.required'),
+                      required: t("booking.required"),
                       pattern: {
                         value: /^([01]\d|2[0-3]):([0-5]\d)$/,
-                        message: t('booking.invalid_time'),
+                        message: t("booking.invalid_time"),
                       },
                     }}
                     render={({ field }) => (
                       <TimePicker
                         value={field.value}
                         onChange={field.onChange}
-                        placeholder={t('common.select_time')}
+                        placeholder={t("common.select_time")}
                       />
                     )}
                   />
@@ -423,17 +463,15 @@ export function BookingDrawer({
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className={LABEL}>
-                      {t('booking.guests_label')}
-                    </label>
+                    <label className={LABEL}>{t("booking.guests_label")}</label>
                     <Input
                       type="number"
                       min={1}
                       className={FIELD_INPUT}
-                      {...register('numberOfGuests', {
-                        required: t('booking.required'),
+                      {...register("numberOfGuests", {
+                        required: t("booking.required"),
                         valueAsNumber: true,
-                        min: { value: 1, message: t('booking.min_guests') },
+                        min: { value: 1, message: t("booking.min_guests") },
                       })}
                     />
                     {errors.numberOfGuests && (
@@ -444,13 +482,13 @@ export function BookingDrawer({
                   </div>
                   <div>
                     <label className={LABEL}>
-                      {t('booking.table_type_label')}
+                      {t("booking.table_type_label")}
                     </label>
                     {hasTables ? (
                       <Controller
                         control={control}
                         name="tableType"
-                        rules={{ required: t('booking.required') }}
+                        rules={{ required: t("booking.required") }}
                         render={({ field }) => (
                           <Select
                             value={field.value || undefined}
@@ -459,7 +497,7 @@ export function BookingDrawer({
                             <SelectTrigger>
                               <SelectValue
                                 placeholder={t(
-                                  'booking.table_type_placeholder',
+                                  "booking.table_type_placeholder",
                                 )}
                               />
                             </SelectTrigger>
@@ -475,7 +513,7 @@ export function BookingDrawer({
                       />
                     ) : (
                       <p className="rounded-xl border border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 py-3 text-sm text-[rgba(20,11,0,0.55)]">
-                        {t('booking.no_tables_configured')}
+                        {t("booking.no_tables_configured")}
                       </p>
                     )}
                     {errors.tableType && (
@@ -490,18 +528,18 @@ export function BookingDrawer({
                   <div className="text-sm">
                     {slotsLoading ? (
                       <span className="text-[rgba(20,11,0,0.55)]">
-                        {t('booking.availability_checking')}
+                        {t("booking.availability_checking")}
                       </span>
                     ) : slots && slots.available > 0 ? (
                       <span className="font-medium text-emerald-700">
-                        {t('booking.availability_available', {
+                        {t("booking.availability_available", {
                           count: slots.available,
                         })}
                       </span>
                     ) : (
                       slots && (
                         <span className="text-red-500">
-                          {t('booking.availability_none')}
+                          {t("booking.availability_none")}
                         </span>
                       )
                     )}
@@ -514,13 +552,13 @@ export function BookingDrawer({
               <div>
                 <label className={LABEL}>
                   {minGuestAge != null
-                    ? t('booking.guest_ages_label', { min: minGuestAge })
-                    : t('booking.guest_ages_label_simple')}
+                    ? t("booking.guest_ages_label", { min: minGuestAge })
+                    : t("booking.guest_ages_label_simple")}
                 </label>
                 <p className="mb-3 text-xs text-[rgba(20,11,0,0.55)]">
                   {minGuestAge != null
-                    ? t('booking.guest_ages_hint', { min: minGuestAge })
-                    : t('booking.guest_ages_hint_simple')}
+                    ? t("booking.guest_ages_hint", { min: minGuestAge })
+                    : t("booking.guest_ages_hint_simple")}
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {Array.from({
@@ -536,35 +574,35 @@ export function BookingDrawer({
                     return (
                       <div key={index}>
                         <label className="mb-1 block text-xs text-[rgba(20,11,0,0.55)]">
-                          {t('booking.guest_age_n', { n: index + 1 })}
+                          {t("booking.guest_age_n", { n: index + 1 })}
                         </label>
                         <Input
                           type="number"
                           min={0}
                           max={120}
                           aria-invalid={
-                            belowMin || !!fieldError ? 'true' : 'false'
+                            belowMin || !!fieldError ? "true" : "false"
                           }
                           className={
                             belowMin || fieldError
-                              ? `${FIELD_INPUT} !border-red-500`
+                              ? `${FIELD_INPUT} border-red-500!`
                               : FIELD_INPUT
                           }
                           {...register(`guestAges.${index}` as const, {
-                            required: t('booking.guest_age_required'),
+                            required: t("booking.guest_age_required"),
                             setValueAs: (v) => {
-                              if (v === '' || v === null || v === undefined)
+                              if (v === "" || v === null || v === undefined)
                                 return null;
                               const n = Number(v);
                               return Number.isFinite(n) ? Math.floor(n) : null;
                             },
                             validate: (value) => {
                               if (value === null || value === undefined) {
-                                return t('booking.guest_age_required');
+                                return t("booking.guest_age_required");
                               }
                               const n = Number(value);
                               if (minGuestAge != null && n < minGuestAge) {
-                                return t('booking.guest_age_below_min', {
+                                return t("booking.guest_age_below_min", {
                                   min: minGuestAge,
                                 });
                               }
@@ -575,7 +613,7 @@ export function BookingDrawer({
                         {(belowMin || fieldError) && (
                           <p className="mt-1 text-xs text-red-500">
                             {fieldError?.message ??
-                              t('booking.guest_age_below_min', {
+                              t("booking.guest_age_below_min", {
                                 min: minGuestAge,
                               })}
                           </p>
@@ -590,13 +628,13 @@ export function BookingDrawer({
             {step === 3 && (
               <div>
                 <label className={LABEL}>
-                  {t('booking.special_request_label')}
+                  {t("booking.special_request_label")}
                 </label>
                 <Textarea
                   className={FIELD_TEXTAREA}
                   rows={5}
-                  {...register('specialRequest')}
-                  placeholder={t('booking.special_request_placeholder')}
+                  {...register("specialRequest")}
+                  placeholder={t("booking.special_request_placeholder")}
                 />
               </div>
             )}
@@ -620,7 +658,7 @@ export function BookingDrawer({
                 className="inline-flex h-12 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-[rgba(20,11,0,0.1)] bg-white px-5 text-sm font-semibold text-[#140B00] transition-all hover:border-[rgba(249,133,19,0.35)]"
               >
                 <ArrowLeft className="size-4" />
-                {t('booking.back')}
+                {t("booking.back")}
               </button>
             )}
 
@@ -628,14 +666,14 @@ export function BookingDrawer({
               <button
                 type="button"
                 onClick={goNext}
-                disabled={isClosedDay && step === 1}
+                disabled={!canAdvance}
                 className={ORANGE_CTA}
               >
                 <span
                   aria-hidden
                   className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-550 group-hover:translate-x-full"
                 />
-                <span className="relative">{t('booking.next')}</span>
+                <span className="relative">{t("booking.next")}</span>
               </button>
             )}
 
@@ -643,7 +681,7 @@ export function BookingDrawer({
               <button
                 type="button"
                 onClick={goNext}
-                disabled={isClosedDay}
+                disabled={!canAdvance || isClosedDay}
                 className={ORANGE_CTA}
               >
                 <span
@@ -652,8 +690,8 @@ export function BookingDrawer({
                 />
                 <span className="relative">
                   {isClosedDay
-                    ? t('booking.closed_day')
-                    : t('booking.reserve_cta')}
+                    ? t("booking.closed_day")
+                    : t("booking.reserve_cta")}
                 </span>
               </button>
             )}
@@ -663,10 +701,7 @@ export function BookingDrawer({
                 type="button"
                 onClick={handleSubmit(onSubmit)}
                 disabled={
-                  mutation.isPending ||
-                  !hasTables ||
-                  isClosedDay ||
-                  lockSubmit
+                  mutation.isPending || !hasTables || isClosedDay || lockSubmit
                 }
                 className={ORANGE_CTA}
               >
@@ -676,8 +711,8 @@ export function BookingDrawer({
                 />
                 <span className="relative">
                   {mutation.isPending
-                    ? t('booking.submitting')
-                    : t('booking.submit')}
+                    ? t("booking.submitting")
+                    : t("booking.submit")}
                 </span>
               </button>
             )}
@@ -701,36 +736,36 @@ function PreviewBlock({
   const guestCount = Number(values.numberOfGuests) || 0;
   const ages = (values.guestAges ?? [])
     .slice(0, guestCount)
-    .filter((a): a is number => typeof a === 'number');
+    .filter((a): a is number => typeof a === "number");
 
   return (
     <div className="rounded-2xl border border-[rgba(20,11,0,0.06)] bg-white/60 backdrop-blur-sm">
       <PreviewRow
-        label={t('booking.first_name_label')}
+        label={t("booking.first_name_label")}
         value={values.firstName}
       />
       <PreviewRow
-        label={t('booking.last_name_label')}
+        label={t("booking.last_name_label")}
         value={values.lastName}
       />
-      <PreviewRow label={t('booking.phone_label')} value={values.phone} />
-      <PreviewRow label={t('booking.date_label')} value={values.date} />
-      <PreviewRow label={t('booking.time_label')} value={values.time} />
+      <PreviewRow label={t("booking.phone_label")} value={values.phone} />
+      <PreviewRow label={t("booking.date_label")} value={values.date} />
+      <PreviewRow label={t("booking.time_label")} value={values.time} />
       <PreviewRow
-        label={t('booking.guests_label')}
+        label={t("booking.guests_label")}
         value={String(guestCount)}
       />
       <PreviewRow
-        label={t('booking.table_type_label')}
-        value={values.tableType ? tableTypeLabel(values.tableType) : '—'}
+        label={t("booking.table_type_label")}
+        value={values.tableType ? tableTypeLabel(values.tableType) : "—"}
       />
       <PreviewRow
-        label={t('booking.guest_ages_label_simple')}
-        value={ages.length > 0 ? ages.join(', ') : '—'}
+        label={t("booking.guest_ages_label_simple")}
+        value={ages.length > 0 ? ages.join(", ") : "—"}
       />
       {values.specialRequest && (
         <PreviewRow
-          label={t('booking.special_request_label')}
+          label={t("booking.special_request_label")}
           value={values.specialRequest}
         />
       )}
@@ -751,7 +786,7 @@ function PreviewRow({
         {label}
       </span>
       <span className="text-right text-sm font-medium text-[#140B00]">
-        {value || '—'}
+        {value || "—"}
       </span>
     </div>
   );
