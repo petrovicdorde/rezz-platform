@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Select,
@@ -49,16 +49,15 @@ export function SearchFilterWidget({
   const onlyCity = cities?.length === 1 ? cities[0] : null;
   const cityLocked = onlyCity !== null;
 
-  // When the platform has a single city, lock the field to that city.
-  useEffect(() => {
-    if (onlyCity && city !== onlyCity.label) {
-      setCity(onlyCity.label);
-    }
-  }, [onlyCity, city]);
+  // When the platform has only one city, the field is rendered as a locked
+  // pill and we always submit that city — regardless of whatever the local
+  // `city` state happens to hold (e.g. a stale value from `initialValues`).
+  // Deriving this at render time avoids a cascading-render useEffect.
+  const effectiveCity = cityLocked && onlyCity ? onlyCity.label : city;
 
   return (
     <div
-      className="mx-auto w-full max-w-[640px] rounded-[26px] border border-white/90 bg-[rgba(253,249,244,0.97)] p-5 shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_4px_6px_rgba(20,11,0,0.04),0_12px_32px_rgba(20,11,0,0.12),0_32px_64px_rgba(20,11,0,0.18),0_64px_80px_rgba(20,11,0,0.12)] backdrop-blur-md sm:p-7"
+      className="mx-auto w-full max-w-160 rounded-[26px] border border-white/90 bg-[rgba(253,249,244,0.97)] p-5 shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_4px_6px_rgba(20,11,0,0.04),0_12px_32px_rgba(20,11,0,0.12),0_32px_64px_rgba(20,11,0,0.18),0_64px_80px_rgba(20,11,0,0.12)] backdrop-blur-md sm:p-7"
       style={{ WebkitBackdropFilter: "blur(20px)" }}
     >
       {/* Tabs — Lokali / Događaji. Commented out until events search is wired up.
@@ -168,7 +167,7 @@ export function SearchFilterWidget({
           {/* Date */}
           <div className={FIELD_WRAPPER}>
             <span className={FIELD_LABEL}>{t("home.filter_date_label")}</span>
-            <div className="mt-0.5 flex justify-center [&>button]:!h-auto [&>button]:!min-h-0 [&>button]:!justify-center [&>button]:!rounded-none [&>button]:!border-0 [&>button]:!bg-transparent [&>button]:!px-0 [&>button]:!py-0 [&>button]:!shadow-none [&>button>span]:!text-[0.92rem] [&>button>span]:!font-medium [&>button>span]:!text-[#140B00]">
+            <div className="mt-0.5 flex justify-center [&>button]:h-auto! [&>button]:min-h-0! [&>button]:justify-center! [&>button]:rounded-none! [&>button]:border-0! [&>button]:bg-transparent! [&>button]:px-0! [&>button]:py-0! [&>button]:shadow-none! [&>button>span]:text-[0.92rem]! [&>button>span]:font-medium! [&>button>span]:text-[#140B00]!">
               <DatePicker
                 value={date}
                 onChange={setDate}
@@ -180,7 +179,7 @@ export function SearchFilterWidget({
           {/* Time */}
           <div className={FIELD_WRAPPER}>
             <span className={FIELD_LABEL}>{t("home.filter_time_label")}</span>
-            <div className="mt-0.5 flex justify-center [&>button]:!h-auto [&>button]:!min-h-0 [&>button]:!justify-center [&>button]:!rounded-none [&>button]:!border-0 [&>button]:!bg-transparent [&>button]:!px-0 [&>button]:!py-0 [&>button]:!shadow-none [&>button>span]:!text-[0.92rem] [&>button>span]:!font-medium [&>button>span]:!text-[#140B00]">
+            <div className="mt-0.5 flex justify-center [&>button]:h-auto! [&>button]:min-h-0! [&>button]:justify-center! [&>button]:rounded-none! [&>button]:border-0! [&>button]:bg-transparent! [&>button]:px-0! [&>button]:py-0! [&>button]:shadow-none! [&>button>span]:text-[0.92rem]! [&>button>span]:font-medium! [&>button>span]:text-[#140B00]!">
               <TimePicker
                 value={time}
                 onChange={setTime}
@@ -193,12 +192,12 @@ export function SearchFilterWidget({
         {/* Search button */}
         <button
           type="button"
-          onClick={() => onSearch({ type, city, date, time })}
-          className="group relative mt-1.5 w-full overflow-hidden rounded-[15px] bg-gradient-to-br from-secondary-400 to-secondary-500 px-4 py-4 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)]"
+          onClick={() => onSearch({ type, city: effectiveCity, date, time })}
+          className="group relative mt-1.5 w-full overflow-hidden rounded-[15px] bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-4 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)]"
         >
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-[550ms] group-hover:translate-x-full"
+            className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-550 group-hover:translate-x-full"
           />
           <span className="relative">{t("home.search_button")}</span>
         </button>
