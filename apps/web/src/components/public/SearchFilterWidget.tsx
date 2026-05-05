@@ -20,13 +20,13 @@ interface SearchFilterWidgetProps {
 }
 
 const FIELD_WRAPPER =
-  "group rounded-2xl border border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 py-2.5 transition-all hover:border-[rgba(249,133,19,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(249,133,19,0.08)] focus-within:border-[rgba(249,133,19,0.55)] focus-within:bg-white has-[[data-state=open]]:border-[rgba(249,133,19,0.55)] has-[[data-state=open]]:bg-white has-[[data-state=open]]:shadow-[0_2px_12px_rgba(249,133,19,0.12)]";
+  "group rounded-2xl border border-white/45 bg-white/30 px-4 py-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.08)] backdrop-blur-2xl transition-all hover:border-[rgba(249,133,19,0.55)] hover:bg-white/45 hover:shadow-[0_2px_12px_rgba(249,133,19,0.18)] focus-within:border-[rgba(249,133,19,0.65)] focus-within:bg-white/55 has-[[data-state=open]]:border-[rgba(249,133,19,0.65)] has-[[data-state=open]]:bg-white/55 has-[[data-state=open]]:shadow-[0_2px_12px_rgba(249,133,19,0.22)]";
 
 const FIELD_WRAPPER_DISABLED =
-  "group rounded-2xl border border-[rgba(20,11,0,0.06)] bg-[#F5F1EB] px-4 py-2.5 opacity-95";
+  "group rounded-2xl border border-white/40 bg-white/25 px-4 py-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.06)] backdrop-blur-2xl opacity-95";
 
 const FIELD_LABEL =
-  "block text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[rgba(20,11,0,0.45)] text-center";
+  "block text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-white/75 text-center [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]";
 
 const PICKER_RESET =
   "!h-auto !min-h-0 !rounded-none !border-0 !bg-transparent !px-0 !py-0 !shadow-none !text-center";
@@ -57,8 +57,8 @@ export function SearchFilterWidget({
 
   return (
     <div
-      className="mx-auto w-full max-w-160 rounded-[26px] border border-white/90 bg-[rgba(253,249,244,0.97)] p-5 shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_4px_6px_rgba(20,11,0,0.04),0_12px_32px_rgba(20,11,0,0.12),0_32px_64px_rgba(20,11,0,0.18),0_64px_80px_rgba(20,11,0,0.12)] backdrop-blur-md sm:p-7"
-      style={{ WebkitBackdropFilter: "blur(20px)" }}
+      className="mx-auto w-full max-w-160 rounded-2xl border border-white/30 bg-white/20 p-5 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md sm:p-7"
+      style={{ WebkitBackdropFilter: "blur(5px)" }}
     >
       {/* Tabs — Lokali / Događaji. Commented out until events search is wired up.
       <div className="mb-5 flex gap-1 rounded-[13px] bg-[rgba(20,11,0,0.055)] p-1">
@@ -99,7 +99,7 @@ export function SearchFilterWidget({
             <span className={FIELD_LABEL}>
               {t("home.filter_city_label_short")}
             </span>
-            <div className="mt-0.5 text-center text-[0.92rem] font-medium text-[#140B00]">
+            <div className="mt-0.5 text-center text-[0.92rem] font-semibold text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               {settingLabel(onlyCity)}
             </div>
           </div>
@@ -113,10 +113,10 @@ export function SearchFilterWidget({
               onValueChange={(v) => setCity(v === ALL_SENTINEL ? "" : v)}
             >
               <SelectTrigger
-                className={`${PICKER_RESET} mt-0.5 [&>svg]:hidden [&>span]:mx-auto [&>span]:text-[0.92rem] [&>span]:font-medium [&>span]:text-[#140B00] [&>span[data-placeholder]]:text-[rgba(20,11,0,0.5)]`}
+                className={`${PICKER_RESET} mt-0.5 [&>svg]:hidden [&>span]:mx-auto [&>span]:text-[0.92rem] [&>span]:font-semibold [&>span]:text-white [&>span]:[text-shadow:0_1px_2px_rgba(0,0,0,0.3)] [&>span[data-placeholder]]:font-medium [&>span[data-placeholder]]:text-white/70`}
               >
                 {city === "" ? (
-                  <span className="mx-auto text-[0.92rem] font-medium text-[rgba(20,11,0,0.5)]">
+                  <span className="mx-auto text-[0.92rem] font-medium text-white/70 [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]">
                     {t("home.filter_city_placeholder_full")}
                   </span>
                 ) : (
@@ -147,7 +147,7 @@ export function SearchFilterWidget({
               onValueChange={(v) => setType(v === ALL_SENTINEL ? "" : v)}
             >
               <SelectTrigger
-                className={`${PICKER_RESET} mt-0.5 [&>svg]:hidden [&>span]:mx-auto [&>span]:text-[0.92rem] [&>span]:font-medium [&>span]:text-[#140B00] [&>span[data-placeholder]]:text-[rgba(20,11,0,0.5)]`}
+                className={`${PICKER_RESET} mt-0.5 [&>svg]:hidden [&>span]:mx-auto [&>span]:text-[0.92rem] [&>span]:font-semibold [&>span]:text-white [&>span]:[text-shadow:0_1px_2px_rgba(0,0,0,0.3)] [&>span[data-placeholder]]:font-medium [&>span[data-placeholder]]:text-white/70`}
               >
                 <SelectValue />
               </SelectTrigger>
@@ -167,7 +167,7 @@ export function SearchFilterWidget({
           {/* Date */}
           <div className={FIELD_WRAPPER}>
             <span className={FIELD_LABEL}>{t("home.filter_date_label")}</span>
-            <div className="mt-0.5 flex justify-center [&>button]:h-auto! [&>button]:min-h-0! [&>button]:justify-center! [&>button]:rounded-none! [&>button]:border-0! [&>button]:bg-transparent! [&>button]:px-0! [&>button]:py-0! [&>button]:shadow-none! [&>button>span]:text-[0.92rem]! [&>button>span]:font-medium! [&>button>span]:text-[#140B00]!">
+            <div className="mt-0.5 flex justify-center [&>button]:h-auto! [&>button]:min-h-0! [&>button]:justify-center! [&>button]:rounded-none! [&>button]:border-0! [&>button]:bg-transparent! [&>button]:px-0! [&>button]:py-0! [&>button]:shadow-none! [&>button>span]:text-[0.92rem]! [&>button>span]:font-medium! [&>button>span]:text-white! [&>button>span]:[text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               <DatePicker
                 value={date}
                 onChange={setDate}
@@ -179,7 +179,7 @@ export function SearchFilterWidget({
           {/* Time */}
           <div className={FIELD_WRAPPER}>
             <span className={FIELD_LABEL}>{t("home.filter_time_label")}</span>
-            <div className="mt-0.5 flex justify-center [&>button]:h-auto! [&>button]:min-h-0! [&>button]:justify-center! [&>button]:rounded-none! [&>button]:border-0! [&>button]:bg-transparent! [&>button]:px-0! [&>button]:py-0! [&>button]:shadow-none! [&>button>span]:text-[0.92rem]! [&>button>span]:font-medium! [&>button>span]:text-[#140B00]!">
+            <div className="mt-0.5 flex justify-center [&>button]:h-auto! [&>button]:min-h-0! [&>button]:justify-center! [&>button]:rounded-none! [&>button]:border-0! [&>button]:bg-transparent! [&>button]:px-0! [&>button]:py-0! [&>button]:shadow-none! [&>button>span]:text-[0.92rem]! [&>button>span]:font-medium! [&>button>span]:text-white! [&>button>span]:[text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
               <TimePicker
                 value={time}
                 onChange={setTime}
