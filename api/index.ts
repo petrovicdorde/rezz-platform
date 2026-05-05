@@ -1,4 +1,3 @@
-// Bundle marker: 2026-05-05 — fix guestAges DTO whitelist on Vercel.
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { ExpressAdapter } from "@nestjs/platform-express";

@@ -1,5 +1,4 @@
 import {
-  Allow,
   IsNotEmpty,
   IsString,
   IsInt,
@@ -50,7 +49,6 @@ export class CreateReservationDto {
   @IsString()
   specialRequest?: string;
 
-  @Allow()
   @IsArray()
   @ArrayMinSize(1)
   @ArrayMaxSize(50)
