@@ -170,3 +170,97 @@
 .scrollbar-orange::-webkit-scrollbar-thumb:hover {
   background: var(--color-secondary-500);
 }
+
+/* ─── React-Toastify overrides — match the hero cream / orange aesthetic ─── */
+
+.Toastify__toast-container {
+  --toastify-font-family: var(--font-sans);
+  padding: 0;
+}
+
+.Toastify__toast-container--top-right {
+  top: 1.25rem;
+  right: 1.25rem;
+}
+
+.Toastify__toast {
+  font-family: var(--font-sans);
+  border-radius: 16px;
+  border: 1px solid rgba(20, 11, 0, 0.06);
+  background: rgba(253, 249, 244, 0.98);
+  color: #140b00;
+  padding: 14px 14px 14px 16px;
+  min-height: auto;
+  box-shadow:
+    0 0 0 1px rgba(20, 11, 0, 0.04),
+    0 8px 16px rgba(20, 11, 0, 0.08),
+    0 24px 48px rgba(20, 11, 0, 0.18),
+    0 48px 72px rgba(20, 11, 0, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.Toastify__toast-body {
+  padding: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #140b00;
+}
+
+.Toastify__toast-icon {
+  margin-inline-end: 12px;
+  width: 22px;
+  height: 22px;
+}
+
+.Toastify__close-button {
+  align-self: center;
+  color: rgba(20, 11, 0, 0.45);
+  opacity: 1;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.Toastify__close-button:hover {
+  background: rgba(20, 11, 0, 0.05);
+  color: #140b00;
+}
+
+.Toastify__close-button > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.Toastify__progress-bar {
+  height: 3px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Variant accents — keep semantic colors but warm them slightly. */
+.Toastify__toast--success .Toastify__progress-bar {
+  background: #22c55e;
+}
+.Toastify__toast--error .Toastify__progress-bar {
+  background: #ef4444;
+}
+.Toastify__toast--warning .Toastify__progress-bar {
+  background: var(--color-secondary-400);
+}
+.Toastify__toast--info .Toastify__progress-bar {
+  background: var(--color-primary-400);
+}
+
+@media (max-width: 480px) {
+  .Toastify__toast-container--top-right {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+  }
+  .Toastify__toast {
+    margin-bottom: 0.5rem;
+  }
+}
