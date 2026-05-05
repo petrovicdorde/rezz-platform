@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Building2, MapPin, Utensils, X } from "lucide-react";
+import { Building2, MapPin, Tag, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -85,7 +85,7 @@ function LokaliPage(): React.JSX.Element {
                   : ""
               }`}
             >
-              <Utensils
+              <Tag
                 className={`size-4 sm:hidden ${
                   activeType !== ""
                     ? "text-secondary-400"
