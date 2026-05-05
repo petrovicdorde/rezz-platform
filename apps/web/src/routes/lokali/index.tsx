@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Building2, X } from "lucide-react";
+import { Building2, MapPin, Utensils, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -71,12 +71,30 @@ function LokaliPage(): React.JSX.Element {
       {/* Filter bar */}
       <div className="sticky top-16 z-40 border-b border-tertiary-200 bg-white px-4 py-4 md:px-8">
         <div className="mx-auto flex max-w-384 flex-wrap items-center gap-3">
+          {/* Type filter — icon-only on mobile, text on sm+ */}
           <Select
             value={activeType === "" ? ALL_SENTINEL : activeType}
             onValueChange={(v) => setActiveType(v === ALL_SENTINEL ? "" : v)}
           >
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder={t("venues_page.filter_all_types")} />
+            <SelectTrigger
+              aria-label={t("venues_page.filter_all_types")}
+              title={t("venues_page.filter_all_types")}
+              className={`size-11 justify-center !px-0 sm:h-11 sm:w-48 sm:!px-4 sm:justify-between [&_[data-slot=select-chevron]]:hidden sm:[&_[data-slot=select-chevron]]:block ${
+                activeType !== ""
+                  ? "!border-[rgba(249,133,19,0.55)] !bg-white !text-secondary-400 !shadow-[0_2px_12px_rgba(249,133,19,0.12)]"
+                  : ""
+              }`}
+            >
+              <Utensils
+                className={`size-4 sm:hidden ${
+                  activeType !== ""
+                    ? "text-secondary-400"
+                    : "text-[rgba(20,11,0,0.55)]"
+                }`}
+              />
+              <span className="hidden sm:inline">
+                <SelectValue placeholder={t("venues_page.filter_all_types")} />
+              </span>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL_SENTINEL}>
@@ -90,12 +108,30 @@ function LokaliPage(): React.JSX.Element {
             </SelectContent>
           </Select>
 
+          {/* City filter — icon-only on mobile, text on sm+ */}
           <Select
             value={activeCity === "" ? ALL_SENTINEL : activeCity}
             onValueChange={(v) => setActiveCity(v === ALL_SENTINEL ? "" : v)}
           >
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder={t("venues_page.filter_all_cities")} />
+            <SelectTrigger
+              aria-label={t("venues_page.filter_all_cities")}
+              title={t("venues_page.filter_all_cities")}
+              className={`size-11 justify-center !px-0 sm:h-11 sm:w-48 sm:!px-4 sm:justify-between [&_[data-slot=select-chevron]]:hidden sm:[&_[data-slot=select-chevron]]:block ${
+                activeCity !== ""
+                  ? "!border-[rgba(249,133,19,0.55)] !bg-white !text-secondary-400 !shadow-[0_2px_12px_rgba(249,133,19,0.12)]"
+                  : ""
+              }`}
+            >
+              <MapPin
+                className={`size-4 sm:hidden ${
+                  activeCity !== ""
+                    ? "text-secondary-400"
+                    : "text-[rgba(20,11,0,0.55)]"
+                }`}
+              />
+              <span className="hidden sm:inline">
+                <SelectValue placeholder={t("venues_page.filter_all_cities")} />
+              </span>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL_SENTINEL}>
@@ -109,14 +145,19 @@ function LokaliPage(): React.JSX.Element {
             </SelectContent>
           </Select>
 
+          {/* Clear filters — icon-only on mobile (square pill), full text on sm+ */}
           {isFiltered && (
             <button
               type="button"
               onClick={clearFilters}
-              className="group inline-flex h-11 cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(20,11,0,0.08)] bg-white/60 px-4 text-sm font-medium text-[rgba(20,11,0,0.55)] backdrop-blur-sm transition-all hover:-translate-y-px hover:border-[rgba(249,133,19,0.4)] hover:bg-[rgba(249,133,19,0.08)] hover:text-secondary-400 hover:shadow-[0_2px_12px_rgba(249,133,19,0.15)]"
+              aria-label={t("venues_page.clear_filters")}
+              title={t("venues_page.clear_filters")}
+              className="group inline-flex size-11 cursor-pointer items-center justify-center gap-1.5 rounded-full border border-[rgba(20,11,0,0.08)] bg-white/60 text-sm font-medium text-[rgba(20,11,0,0.55)] backdrop-blur-sm transition-all hover:-translate-y-px hover:border-[rgba(249,133,19,0.4)] hover:bg-[rgba(249,133,19,0.08)] hover:text-secondary-400 hover:shadow-[0_2px_12px_rgba(249,133,19,0.15)] sm:w-auto sm:px-4"
             >
               <X className="size-3.5 transition-transform duration-200 group-hover:rotate-90" />
-              {t("venues_page.clear_filters")}
+              <span className="hidden sm:inline">
+                {t("venues_page.clear_filters")}
+              </span>
             </button>
           )}
         </div>
