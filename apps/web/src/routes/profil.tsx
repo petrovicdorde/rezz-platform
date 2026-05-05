@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { format } from 'date-fns';
 import { CalendarX, Pencil } from 'lucide-react';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { EditProfileDrawer } from '@/components/profile/EditProfileDrawer';
@@ -35,6 +36,21 @@ function ProfilPage(): React.JSX.Element {
   const { data: reservations, isLoading: resLoading } = useMyReservations();
   const [activeTab, setActiveTab] = useState<TabKey>('upcoming');
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  // Re-bucket: a PENDING reservation whose date has already passed gets shown
+  // in History as "Bez odgovora" (no response from the venue) — not in
+  // Upcoming, where the user could otherwise still try to cancel a request
+  // that the venue already silently let lapse.
+  const todayIso = format(new Date(), 'yyyy-MM-dd');
+  const upcomingActive = (reservations?.upcoming ?? []).filter(
+    (r) => r.date >= todayIso,
+  );
+  const stalePending = (reservations?.upcoming ?? []).filter(
+    (r) => r.date < todayIso,
+  );
+  const historyAll = [...(reservations?.history ?? []), ...stalePending].sort(
+    (a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0),
+  );
 
   const initials = (
     (profile?.firstName?.[0] ?? '') + (profile?.lastName?.[0] ?? '')
@@ -117,7 +133,7 @@ function ProfilPage(): React.JSX.Element {
             <div className="h-28 animate-pulse rounded-2xl bg-tertiary-100" />
           </div>
         ) : activeTab === 'upcoming' ? (
-          reservations?.upcoming.length === 0 ? (
+          upcomingActive.length === 0 ? (
             <div className="mt-6 flex flex-col items-center">
               <CalendarX className="mx-auto size-10 text-tertiary-300" />
               <p className="mt-2 text-center text-sm text-tertiary-500">
@@ -126,7 +142,7 @@ function ProfilPage(): React.JSX.Element {
             </div>
           ) : (
             <div className="flex flex-col gap-3">
-              {reservations?.upcoming.map((res) => (
+              {upcomingActive.map((res) => (
                 <ProfileReservationCard
                   key={res.id}
                   reservation={res}
@@ -135,7 +151,7 @@ function ProfilPage(): React.JSX.Element {
               ))}
             </div>
           )
-        ) : reservations?.history.length === 0 ? (
+        ) : historyAll.length === 0 ? (
           <div className="mt-6 flex flex-col items-center">
             <CalendarX className="mx-auto size-10 text-tertiary-300" />
             <p className="mt-2 text-center text-sm text-tertiary-500">
@@ -144,7 +160,7 @@ function ProfilPage(): React.JSX.Element {
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {reservations?.history.map((res) => (
+            {historyAll.map((res) => (
               <ProfileReservationCard
                 key={res.id}
                 reservation={res}

@@ -410,6 +410,7 @@
     "status_cancelled": "Otkazana",
     "status_completed": "Završena",
     "status_no_show": "Nije došao",
+    "status_no_response": "Bez odgovora",
     "source_manager": "Ručna rezervacija",
     "guests_count": "{{count}} osoba",
     "special_request": "Poseban zahtjev",

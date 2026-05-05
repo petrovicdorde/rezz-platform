@@ -28,6 +28,13 @@ export function ProfileReservationCard({
   const dateObj = parseISO(reservation.date);
   const venueName = reservation.venue?.name ?? t('profile.venue_label');
 
+  // A PENDING reservation whose date is already in the past = the venue never
+  // responded. We surface this as a neutral "Bez odgovora" state so the user
+  // sees the lapse explicitly instead of a stale "pending" badge.
+  const todayIso = format(new Date(), 'yyyy-MM-dd');
+  const isNoResponse =
+    reservation.status === 'PENDING' && reservation.date < todayIso;
+
   const isDetails = expanded === 'details';
   const isCancel = expanded === 'cancel';
   const showActions = expanded === 'none';
@@ -72,7 +79,13 @@ export function ProfileReservationCard({
     >
       <div className="flex items-center justify-between">
         <span className="font-medium text-secondary-500">{venueName}</span>
-        <ReservationStatusBadge status={reservation.status} />
+        {isNoResponse ? (
+          <span className="rounded-full bg-[rgba(20,11,0,0.06)] px-2 py-0.5 text-xs font-medium text-[rgba(20,11,0,0.55)]">
+            {t('reservation.status_no_response')}
+          </span>
+        ) : (
+          <ReservationStatusBadge status={reservation.status} />
+        )}
       </div>
 
       <div className="mt-1 flex flex-wrap items-center gap-1 text-sm text-tertiary-500">

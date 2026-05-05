@@ -410,6 +410,7 @@
     "status_cancelled": "Cancelled",
     "status_completed": "Completed",
     "status_no_show": "No show",
+    "status_no_response": "No response",
     "source_manager": "Manual reservation",
     "guests_count": "{{count}} guests",
     "special_request": "Special request",
