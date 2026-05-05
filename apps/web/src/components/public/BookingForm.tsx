@@ -4,7 +4,6 @@ import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/ui/date-picker";
 import { TimePicker } from "@/components/ui/time-picker";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -44,6 +43,15 @@ interface BookingFormValues {
   specialRequest: string;
   guestAges: (number | null)[];
 }
+
+const FIELD_INPUT =
+  "h-11 rounded-xl border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 text-[#140B00] shadow-none transition-all placeholder:text-[rgba(20,11,0,0.42)] hover:bg-white hover:border-[rgba(249,133,19,0.35)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]";
+
+const FIELD_TEXTAREA =
+  "rounded-xl border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 py-3 text-[#140B00] shadow-none transition-all placeholder:text-[rgba(20,11,0,0.42)] hover:bg-white hover:border-[rgba(249,133,19,0.35)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]";
+
+const ORANGE_CTA =
+  "group relative w-full overflow-hidden rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-3.5 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0";
 
 export function BookingForm({
   venue,
@@ -162,13 +170,14 @@ export function BookingForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
+          <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
             {t("booking.first_name_label")}
           </label>
           <Input
+            className={FIELD_INPUT}
             {...register("firstName", { required: t("booking.required") })}
           />
           {errors.firstName && (
@@ -179,10 +188,11 @@ export function BookingForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
+          <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
             {t("booking.last_name_label")}
           </label>
           <Input
+            className={FIELD_INPUT}
             {...register("lastName", { required: t("booking.required") })}
           />
           {errors.lastName && (
@@ -194,11 +204,12 @@ export function BookingForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-secondary-500">
+        <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
           {t("booking.phone_label")}
         </label>
         <Input
           type="tel"
+          className={FIELD_INPUT}
           {...register("phone", { required: t("booking.required") })}
         />
         {errors.phone && (
@@ -208,7 +219,7 @@ export function BookingForm({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
+          <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
             {t("booking.date_label")}
           </label>
           {lockedDate ? (
@@ -216,10 +227,10 @@ export function BookingForm({
               <Input
                 value={lockedDate}
                 readOnly
-                className="bg-tertiary-50 text-tertiary-700"
+                className={`${FIELD_INPUT} cursor-default opacity-80`}
               />
               <input type="hidden" {...register("date", { required: true })} />
-              <p className="mt-1 text-xs text-tertiary-500">
+              <p className="mt-1 text-xs text-[rgba(20,11,0,0.42)]">
                 {t("booking.date_locked_by_event")}
               </p>
             </>
@@ -243,7 +254,7 @@ export function BookingForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
+          <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
             {t("booking.time_label")}
           </label>
           <Controller
@@ -272,12 +283,13 @@ export function BookingForm({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
+          <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
             {t("booking.guests_label")}
           </label>
           <Input
             type="number"
             min={1}
+            className={FIELD_INPUT}
             {...register("numberOfGuests", {
               required: t("booking.required"),
               valueAsNumber: true,
@@ -292,7 +304,7 @@ export function BookingForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-secondary-500">
+          <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
             {t("booking.table_type_label")}
           </label>
           {hasTables ? (
@@ -321,7 +333,7 @@ export function BookingForm({
               )}
             />
           ) : (
-            <p className="rounded-md border border-tertiary-200 bg-tertiary-50 px-3 py-2 text-sm text-tertiary-500">
+            <p className="rounded-xl border border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 py-3 text-sm text-[rgba(20,11,0,0.55)]">
               {t("booking.no_tables_configured")}
             </p>
           )}
@@ -334,12 +346,12 @@ export function BookingForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-secondary-500">
+        <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
           {minGuestAge != null
             ? t("booking.guest_ages_label", { min: minGuestAge })
             : t("booking.guest_ages_label_simple")}
         </label>
-        <p className="mb-2 text-xs text-tertiary-500">
+        <p className="mb-2 text-xs text-[rgba(20,11,0,0.55)]">
           {minGuestAge != null
             ? t("booking.guest_ages_hint", { min: minGuestAge })
             : t("booking.guest_ages_hint_simple")}
@@ -357,7 +369,7 @@ export function BookingForm({
               Number(currentValue) < minGuestAge;
             return (
               <div key={index}>
-                <label className="mb-1 block text-xs text-tertiary-500">
+                <label className="mb-1 block text-xs text-[rgba(20,11,0,0.55)]">
                   {t("booking.guest_age_n", { n: index + 1 })}
                 </label>
                 <Input
@@ -367,8 +379,8 @@ export function BookingForm({
                   aria-invalid={belowMin || !!fieldError ? "true" : "false"}
                   className={
                     belowMin || fieldError
-                      ? "border-red-500 focus-visible:ring-red-500"
-                      : undefined
+                      ? `${FIELD_INPUT} !border-red-500 focus-visible:!border-red-500 focus-visible:!shadow-[0_2px_12px_rgba(239,68,68,0.18)]`
+                      : FIELD_INPUT
                   }
                   {...register(`guestAges.${index}` as const, {
                     required: t("booking.guest_age_required"),
@@ -406,15 +418,14 @@ export function BookingForm({
         </div>
       </div>
 
-
       {selectedDate && selectedTableType && (
         <div className="text-sm">
           {slotsLoading ? (
-            <span className="text-tertiary-500">
+            <span className="text-[rgba(20,11,0,0.55)]">
               {t("booking.availability_checking")}
             </span>
           ) : slots && slots.available > 0 ? (
-            <span className="text-primary-600">
+            <span className="font-medium text-emerald-700">
               {t("booking.availability_available", { count: slots.available })}
             </span>
           ) : (
@@ -428,27 +439,34 @@ export function BookingForm({
       )}
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-secondary-500">
+        <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
           {t("booking.special_request_label")}
         </label>
         <Textarea
+          className={FIELD_TEXTAREA}
           {...register("specialRequest")}
           placeholder={t("booking.special_request_placeholder")}
           rows={3}
         />
       </div>
 
-      <Button
+      <button
         type="submit"
         disabled={mutation.isPending || !hasTables || isClosedDay}
-        className="w-full bg-primary-400 py-3 font-medium text-white hover:bg-primary-600"
+        className={`${ORANGE_CTA} mt-2`}
       >
-        {isClosedDay
-          ? t("booking.closed_day")
-          : mutation.isPending
-          ? t("booking.submitting")
-          : t("booking.submit")}
-      </Button>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-550 group-hover:translate-x-full"
+        />
+        <span className="relative">
+          {isClosedDay
+            ? t("booking.closed_day")
+            : mutation.isPending
+              ? t("booking.submitting")
+              : t("booking.submit")}
+        </span>
+      </button>
     </form>
   );
 }

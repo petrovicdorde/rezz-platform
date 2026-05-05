@@ -187,6 +187,7 @@
     "tables": "Dostupni stolovi",
     "check_availability": "Provjeri dostupnost",
     "login_to_reserve": "Prijavite se za rezervaciju",
+    "reserve_cta": "Rezerviši",
     "reserve": "Rezerviši",
     "parking_available": "Parking dostupan",
     "no_parking": "Nema parkinga",
@@ -255,7 +256,14 @@
     "guest_age_n": "Gost {{n}}",
     "guest_age_required": "Godine su obavezne",
     "guest_age_below_min": "Mora biti najmanje {{min}}",
-    "closed_day": "Neradni dan"
+    "closed_day": "Neradni dan",
+    "drawer_title": "Rezerviši sto",
+    "step_indicator": "Korak {{current}} od {{total}}",
+    "preview_title": "Pregled rezervacije",
+    "preview_subtitle": "Provjerite podatke prije slanja.",
+    "next": "Dalje",
+    "back": "Nazad",
+    "reserve_cta": "Rezerviši"
   },
   "my_venue": {
     "title": "Profil lokala",

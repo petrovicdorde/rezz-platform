@@ -19,6 +19,7 @@ import { WorkingHoursDisplay } from "@/components/public/WorkingHoursDisplay";
 import { VenueGallery } from "@/components/public/VenueGallery";
 import { GoogleMapEmbed } from "@/components/public/GoogleMapEmbed";
 import { BookingForm } from "@/components/public/BookingForm";
+import { BookingDrawer } from "@/components/public/BookingDrawer";
 import { BookingSuccessView } from "@/components/public/BookingSuccessView";
 import { BlacklistedBanner } from "@/components/profile/BlacklistedBanner";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ import { usePublicVenue } from "@/hooks/useVenues";
 import { useSettingValueLabel } from "@/hooks/useSettings";
 import { useAuthStore, isUserCurrentlyBlocked } from "@/store/auth.store";
 import { useLoginStore } from "@/store/login-ui.store";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import type { Reservation } from "@/lib/types/reservation.types";
 
 export const Route = createFileRoute("/lokali/$id")({
@@ -68,6 +70,8 @@ function VenueDetailPage(): React.JSX.Element {
   const { data: venue, isLoading, isError } = usePublicVenue(id);
   const [completedReservation, setCompletedReservation] =
     useState<Reservation | null>(null);
+  const [bookingDrawerOpen, setBookingDrawerOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isLoading) {
     return (
@@ -272,7 +276,13 @@ function VenueDetailPage(): React.JSX.Element {
             {isGuest && (
               <button
                 type="button"
-                onClick={scrollToBooking}
+                onClick={() => {
+                  if (isDesktop) {
+                    scrollToBooking();
+                  } else {
+                    setBookingDrawerOpen(true);
+                  }
+                }}
                 className="group relative w-full overflow-hidden rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-3.5 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)]"
               >
                 <span
@@ -280,7 +290,7 @@ function VenueDetailPage(): React.JSX.Element {
                   className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-550 group-hover:translate-x-full"
                 />
                 <span className="relative">
-                  {t("venue_detail.check_availability")}
+                  {t("venue_detail.reserve_cta")}
                 </span>
               </button>
             )}
@@ -303,13 +313,14 @@ function VenueDetailPage(): React.JSX.Element {
           </>
         )}
 
-        {/* Booking */}
-        {isGuest && (
+        {/* Booking — inline form on desktop only. Mobile uses the multi-step
+            drawer triggered from the sticky CTA above. */}
+        {isGuest && isDesktop && (
           <div
             id="booking"
-            className="mt-8 rounded-2xl border border-tertiary-200 bg-white p-6"
+            className="mt-8 rounded-2xl border border-[rgba(20,11,0,0.06)] bg-white p-6 shadow-[0_1px_2px_rgba(20,11,0,0.04),0_4px_12px_rgba(20,11,0,0.05)]"
           >
-            <h2 className="mb-6 text-xl font-bold text-secondary-500">
+            <h2 className="mb-6 font-serif text-2xl font-bold tracking-[-0.4px] text-primary-400">
               {t("booking.title")}
             </h2>
             {isUserCurrentlyBlocked(user) ? (
@@ -326,6 +337,17 @@ function VenueDetailPage(): React.JSX.Element {
           </div>
         )}
       </div>
+
+      {/* Mobile booking drawer — multi-step. Only mounted while `isGuest`
+          and the user is on a small viewport. */}
+      {isGuest && !isDesktop && !isUserCurrentlyBlocked(user) && (
+        <BookingDrawer
+          open={bookingDrawerOpen}
+          onOpenChange={setBookingDrawerOpen}
+          venue={venue}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </PublicLayout>
   );
 }

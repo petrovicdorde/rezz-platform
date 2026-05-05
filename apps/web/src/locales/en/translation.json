@@ -187,6 +187,7 @@
     "tables": "Available tables",
     "check_availability": "Check availability",
     "login_to_reserve": "Log in to reserve",
+    "reserve_cta": "Reserve",
     "reserve": "Reserve",
     "parking_available": "Parking available",
     "no_parking": "No parking",
@@ -255,7 +256,14 @@
     "guest_age_n": "Guest {{n}}",
     "guest_age_required": "Age is required",
     "guest_age_below_min": "Must be at least {{min}}",
-    "closed_day": "Closed day"
+    "closed_day": "Closed day",
+    "drawer_title": "Reserve a table",
+    "step_indicator": "Step {{current}} of {{total}}",
+    "preview_title": "Reservation preview",
+    "preview_subtitle": "Check your details before sending.",
+    "next": "Next",
+    "back": "Back",
+    "reserve_cta": "Reserve"
   },
   "my_venue": {
     "title": "Venue profile",

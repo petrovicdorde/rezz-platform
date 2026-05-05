@@ -95,6 +95,37 @@
   transform: rotate(180deg);
 }
 
+/* Booking drawer step transitions */
+@keyframes booking-step-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes booking-step-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.booking-step[data-direction="forward"] {
+  animation: booking-step-in-right 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.booking-step[data-direction="back"] {
+  animation: booking-step-in-left 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);
