@@ -36,8 +36,10 @@ function HomePage(): React.JSX.Element {
 
   return (
     <PublicLayout>
-      {/* Hero section */}
-      <section className="relative -mt-[68px] flex h-[100svh] min-h-[640px] flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16">
+      {/* Hero section — `h-svh` is the small-viewport unit: it's spec'd to be
+          static (doesn't change when the mobile address bar collapses), so the
+          background image never resizes mid-scroll. */}
+      <section className="relative -mt-17 flex h-svh flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16">
         {/* Background image */}
         <div
           aria-hidden
@@ -50,33 +52,33 @@ function HomePage(): React.JSX.Element {
         {/* Dark gradient overlay */}
         <div
           aria-hidden
-          className="absolute inset-0 z-[1] bg-[linear-gradient(to_bottom,rgba(20,11,0,0.35)_0%,rgba(20,11,0,0.05)_25%,rgba(20,11,0,0.4)_60%,rgba(20,11,0,1)_100%)]"
+          className="absolute inset-0 z-1 bg-[linear-gradient(to_bottom,rgba(20,11,0,0.35)_0%,rgba(20,11,0,0.05)_25%,rgba(20,11,0,0.4)_60%,rgba(20,11,0,1)_100%)]"
         />
         {/* Orange radial glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_80%_55%_at_50%_-5%,rgba(249,133,19,0.22)_0%,transparent_65%),radial-gradient(ellipse_60%_40%_at_100%_100%,rgba(249,133,19,0.08)_0%,transparent_60%)]"
+          className="pointer-events-none absolute inset-0 z-1 bg-[radial-gradient(ellipse_80%_55%_at_50%_-5%,rgba(249,133,19,0.22)_0%,transparent_65%),radial-gradient(ellipse_60%_40%_at_100%_100%,rgba(249,133,19,0.08)_0%,transparent_60%)]"
         />
 
-        <div className="relative z-[2] mx-auto flex w-full max-w-3xl flex-col items-center">
+        <div className="relative z-2 mx-auto flex w-full max-w-3xl flex-col items-center">
           {/* Title */}
           <h1
-            className="mb-10 text-center font-serif text-[clamp(3rem,6vw,5.8rem)] leading-[1] font-black tracking-[-0.025em] text-tertiary-50 [text-shadow:0_2px_40px_rgba(20,11,0,0.4)] sm:mb-12"
-            style={{ animation: 'hero-fade-up 0.65s 0.2s both' }}
+            className="mb-10 text-center font-serif text-[clamp(3rem,6vw,5.8rem)] leading-none font-black tracking-[-0.025em] text-tertiary-50 [text-shadow:0_2px_40px_rgba(20,11,0,0.4)] sm:mb-12"
+            style={{ animation: "hero-fade-up 0.65s 0.2s both" }}
           >
-            {t('home.hero_title_line1')}
+            {t("home.hero_title_line1")}
             <br />
-            {t('home.hero_title_line2')}
+            {t("home.hero_title_line2")}
             <br />
             <em className="italic font-black text-secondary-400">
-              {t('home.hero_title_line3')}
+              {t("home.hero_title_line3")}
             </em>
           </h1>
 
           {/* Search card */}
           <div
             className="w-full"
-            style={{ animation: 'hero-fade-up 0.7s 0.42s both' }}
+            style={{ animation: "hero-fade-up 0.7s 0.42s both" }}
           >
             <SearchFilterWidget onSearch={handleSearch} />
           </div>
@@ -92,7 +94,7 @@ function HomePage(): React.JSX.Element {
               <div className="mb-1.5 text-[0.68rem] font-bold uppercase tracking-[3px] text-secondary-400">
                 {t("home.featured_venues_label")}
               </div>
-              <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-1px] text-[#140B00]">
+              <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-none tracking-[-1px] text-[#140B00]">
                 {t("home.featured_venues_title")}
               </h2>
             </div>
@@ -103,7 +105,7 @@ function HomePage(): React.JSX.Element {
                 {[0, 1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="h-[320px] w-[78vw] max-w-[320px] flex-shrink-0 animate-pulse rounded-[22px] bg-tertiary-200 md:w-[44%] lg:w-[31%] xl:w-[23.5%]"
+                    className="h-80 w-[78vw] max-w-[320px] shrink-0 animate-pulse rounded-[22px] bg-tertiary-200 md:w-[44%] lg:w-[31%] xl:w-[23.5%]"
                   />
                 ))}
               </div>
@@ -128,7 +130,7 @@ function HomePage(): React.JSX.Element {
           {/* Orange radial glow (top-right) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-24 -right-24 h-[500px] w-[700px] bg-[radial-gradient(ellipse,rgba(249,133,19,0.08)_0%,transparent_65%)]"
+            className="pointer-events-none absolute -top-24 -right-24 h-125 w-175 bg-[radial-gradient(ellipse,rgba(249,133,19,0.08)_0%,transparent_65%)]"
           />
 
           <div className="relative mx-auto w-full max-w-(--breakpoint-2xl)">
@@ -137,7 +139,7 @@ function HomePage(): React.JSX.Element {
               <div className="mb-1.5 text-[0.68rem] font-bold uppercase tracking-[3px] text-secondary-400">
                 {t("home.featured_events_label")}
               </div>
-              <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-1px] text-white">
+              <h2 className="font-serif text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-none tracking-[-1px] text-white">
                 {t("home.featured_events_title")}
               </h2>
             </div>
@@ -148,7 +150,7 @@ function HomePage(): React.JSX.Element {
                 {[0, 1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="h-[320px] w-[78vw] max-w-[320px] flex-shrink-0 animate-pulse rounded-[22px] bg-white/5 md:w-[44%] lg:w-[31%] xl:w-[23.5%]"
+                    className="h-80 w-[78vw] max-w-[320px] shrink-0 animate-pulse rounded-[22px] bg-white/5 md:w-[44%] lg:w-[31%] xl:w-[23.5%]"
                   />
                 ))}
               </div>
