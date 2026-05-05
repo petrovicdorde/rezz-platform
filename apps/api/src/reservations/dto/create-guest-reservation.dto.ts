@@ -1,4 +1,5 @@
 import {
+  Allow,
   IsArray,
   ArrayMinSize,
   ArrayMaxSize,
@@ -54,6 +55,7 @@ export class CreateGuestReservationDto {
   @IsUUID()
   eventId?: string;
 
+  @Allow()
   @IsArray()
   @ArrayMinSize(1)
   @ArrayMaxSize(50)
