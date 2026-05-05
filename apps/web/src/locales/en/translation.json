@@ -204,6 +204,7 @@
     "day_saturday": "Saturday",
     "day_sunday": "Sunday",
     "closed": "Closed",
+    "day_off": "Day off",
     "working_hours_not_set": "Working hours not set.",
     "open_until": "Open until {{time}}",
     "photos_count": "{{count}} photos",

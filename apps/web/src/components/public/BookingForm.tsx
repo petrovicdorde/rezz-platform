@@ -53,6 +53,17 @@ const FIELD_TEXTAREA =
 const ORANGE_CTA =
   "group relative w-full overflow-hidden rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-3.5 text-base font-bold tracking-[0.3px] text-white shadow-[0_4px_12px_rgba(249,133,19,0.3),0_8px_28px_rgba(249,133,19,0.2)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(249,133,19,0.4),0_16px_40px_rgba(249,133,19,0.2)] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0";
 
+// JS Date.getDay() index → WorkingHours key (Sun = 0).
+const WEEKDAYS = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+] as const;
+
 export function BookingForm({
   venue,
   onSuccess,
@@ -119,6 +130,19 @@ export function BookingForm({
   const hasTables = availableTableTypes.length > 0;
 
   const minGuestAge = venue.minGuestAge;
+
+  // Disabled-date predicate for the date picker — combines the venue's
+  // year-agnostic closed-day exceptions with weekly working hours so days
+  // the venue isn't operating cannot be picked at all.
+  const isDateDisabled = (date: Date): boolean => {
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    if ((venue.closedDays ?? []).some((cd) => cd.month === m && cd.day === d))
+      return true;
+    const weekdayKey = WEEKDAYS[date.getDay()];
+    const entry = venue.workingHours[weekdayKey];
+    return !entry || entry.isClosed === true;
+  };
 
   // Disable submit after a failed attempt; re-enable as soon as the user
   // edits any field, so they don't blindly resubmit the same broken payload.
@@ -256,6 +280,7 @@ export function BookingForm({
                   value={field.value}
                   onChange={field.onChange}
                   placeholder={t("common.select_date")}
+                  isDateDisabled={isDateDisabled}
                 />
               )}
             />

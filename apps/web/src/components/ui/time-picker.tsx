@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface TimePickerProps {
   value?: string;
@@ -23,11 +23,11 @@ interface TimePickerProps {
 }
 
 function pad(n: number): string {
-  return n.toString().padStart(2, '0');
+  return n.toString().padStart(2, "0");
 }
 
 function toMinutes(value: string): number {
-  const [h, m] = value.split(':').map(Number);
+  const [h, m] = value.split(":").map(Number);
   return h * 60 + m;
 }
 
@@ -43,8 +43,8 @@ export function TimePicker({
   placeholder,
   disabled,
   intervalMinutes = 30,
-  startTime = '08:00',
-  endTime = '24:00',
+  startTime = "08:00",
+  endTime = "24:00",
   disabledSlots,
   className,
 }: TimePickerProps): React.JSX.Element {
@@ -70,7 +70,7 @@ export function TimePicker({
     setOpen(false);
   }
 
-  const display = value ?? '';
+  const display = value ?? "";
   const showPlaceholder = !display;
 
   return (
@@ -79,16 +79,21 @@ export function TimePicker({
         <button
           type="button"
           disabled={disabled}
+          data-state={open ? "open" : "closed"}
           className={cn(
-            'flex h-10 w-full cursor-pointer items-center justify-start rounded-md border border-tertiary-400 bg-white px-3 text-left text-sm shadow-xs transition-colors outline-none',
-            'hover:border-primary-200 focus-visible:border-primary-400',
-            'disabled:cursor-not-allowed disabled:opacity-50',
+            "flex h-11 w-full cursor-pointer items-center justify-start rounded-xl border border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 text-left text-sm font-medium text-[#140B00] outline-none transition-all",
+            "hover:border-[rgba(249,133,19,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(249,133,19,0.08)]",
+            "focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]",
+            "data-[state=open]:border-[rgba(249,133,19,0.55)] data-[state=open]:bg-white data-[state=open]:shadow-[0_2px_12px_rgba(249,133,19,0.12)]",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
         >
           <span
             className={cn(
-              showPlaceholder ? 'text-tertiary-600' : 'text-secondary-500',
+              showPlaceholder
+                ? "font-normal text-[rgba(20,11,0,0.42)]"
+                : "text-[#140B00]",
             )}
           >
             {display || placeholder}
@@ -96,7 +101,7 @@ export function TimePicker({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="scrollbar-orange max-h-72 w-64 overflow-y-auto !rounded-2xl !border-[rgba(20,11,0,0.06)] !bg-[rgba(253,249,244,0.98)] !shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_8px_16px_rgba(20,11,0,0.08),0_24px_48px_rgba(20,11,0,0.18),0_48px_72px_rgba(20,11,0,0.16)] backdrop-blur-md">
+      <PopoverContent className="scrollbar-orange max-h-72 w-64 overflow-y-auto rounded-2xl! border-[rgba(20,11,0,0.06)]! bg-[rgba(253,249,244,0.98)]! shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_8px_16px_rgba(20,11,0,0.08),0_24px_48px_rgba(20,11,0,0.18),0_48px_72px_rgba(20,11,0,0.16)]! backdrop-blur-md">
         <div className="grid grid-cols-3 gap-2">
           {slots.map((slot) => {
             const slotDisabled = disabledSet.has(slot);
@@ -108,14 +113,14 @@ export function TimePicker({
                 disabled={slotDisabled}
                 onClick={() => handleSelect(slot)}
                 className={cn(
-                  'flex h-9 cursor-pointer items-center justify-center rounded-lg border text-sm transition-all',
+                  "flex h-9 cursor-pointer items-center justify-center rounded-lg border text-sm transition-all",
                   selected &&
-                    'border-secondary-400 bg-secondary-400 font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.35),0_6px_20px_rgba(249,133,19,0.25)]',
+                    "border-secondary-400 bg-secondary-400 font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.35),0_6px_20px_rgba(249,133,19,0.25)]",
                   !selected &&
                     !slotDisabled &&
-                    'border-tertiary-200 text-secondary-400 hover:border-[rgba(249,133,19,0.4)] hover:bg-[rgba(249,133,19,0.08)]',
+                    "border-tertiary-200 text-secondary-400 hover:border-[rgba(249,133,19,0.4)] hover:bg-[rgba(249,133,19,0.08)]",
                   slotDisabled &&
-                    'cursor-not-allowed border-tertiary-100 bg-tertiary-50 text-tertiary-400 line-through',
+                    "cursor-not-allowed border-tertiary-100 bg-tertiary-50 text-tertiary-400 line-through",
                 )}
               >
                 {slot}

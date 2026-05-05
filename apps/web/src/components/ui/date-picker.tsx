@@ -31,6 +31,13 @@ interface DatePickerProps {
   disabled?: boolean;
   minDate?: Date;
   maxDate?: Date;
+  /**
+   * Optional per-day predicate. Return `true` to render a date as disabled
+   * (un-clickable, muted) on top of the min/max range check. Use for
+   * venue-specific blackout days like closed-day exceptions or weekly off
+   * days.
+   */
+  isDateDisabled?: (date: Date) => boolean;
   className?: string;
 }
 
@@ -43,6 +50,7 @@ export function DatePicker({
   disabled,
   minDate,
   maxDate,
+  isDateDisabled,
   className,
 }: DatePickerProps): React.JSX.Element {
   const { t } = useTranslation();
@@ -85,7 +93,9 @@ export function DatePicker({
   }
 
   function isDisabled(day: Date): boolean {
-    return isBefore(day, min) || isAfter(day, max);
+    if (isBefore(day, min) || isAfter(day, max)) return true;
+    if (isDateDisabled?.(day)) return true;
+    return false;
   }
 
   const display = selectedDate ? format(selectedDate, "dd.MM.yyyy") : "";
@@ -106,16 +116,21 @@ export function DatePicker({
         <button
           type="button"
           disabled={disabled}
+          data-state={open ? "open" : "closed"}
           className={cn(
-            "flex h-10 w-full cursor-pointer items-center justify-start rounded-md border border-tertiary-400 bg-white px-3 text-left text-sm shadow-xs transition-colors outline-none",
-            "hover:border-primary-200 focus-visible:border-primary-400",
+            "flex h-11 w-full cursor-pointer items-center justify-start rounded-xl border border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 text-left text-sm font-medium text-[#140B00] outline-none transition-all",
+            "hover:border-[rgba(249,133,19,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(249,133,19,0.08)]",
+            "focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)]",
+            "data-[state=open]:border-[rgba(249,133,19,0.55)] data-[state=open]:bg-white data-[state=open]:shadow-[0_2px_12px_rgba(249,133,19,0.12)]",
             "disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
         >
           <span
             className={cn(
-              showPlaceholder ? "text-tertiary-600" : "text-secondary-500",
+              showPlaceholder
+                ? "font-normal text-[rgba(20,11,0,0.42)]"
+                : "text-[#140B00]",
             )}
           >
             {display || placeholder}
@@ -123,7 +138,7 @@ export function DatePicker({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-72 !rounded-2xl !border-[rgba(20,11,0,0.06)] !bg-[rgba(253,249,244,0.98)] !shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_8px_16px_rgba(20,11,0,0.08),0_24px_48px_rgba(20,11,0,0.18),0_48px_72px_rgba(20,11,0,0.16)] backdrop-blur-md">
+      <PopoverContent className="w-72 rounded-2xl! border-[rgba(20,11,0,0.06)]! bg-[rgba(253,249,244,0.98)]! shadow-[0_0_0_1px_rgba(20,11,0,0.04),0_8px_16px_rgba(20,11,0,0.08),0_24px_48px_rgba(20,11,0,0.18),0_48px_72px_rgba(20,11,0,0.16)]! backdrop-blur-md">
         <div className="mb-2 flex items-center justify-between">
           <button
             type="button"

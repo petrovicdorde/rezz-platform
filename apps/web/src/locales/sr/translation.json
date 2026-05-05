@@ -204,6 +204,7 @@
     "day_saturday": "Subota",
     "day_sunday": "Nedjelja",
     "closed": "Zatvoreno",
+    "day_off": "Neradni dan",
     "working_hours_not_set": "Radno vrijeme nije postavljeno.",
     "open_until": "Otvoreno do {{time}}",
     "photos_count": "{{count}} fotografija",

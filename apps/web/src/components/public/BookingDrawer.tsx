@@ -64,6 +64,17 @@ const ORANGE_CTA =
 
 const LABEL = 'mb-1.5 block text-sm font-medium text-[#140B00]';
 
+// JS Date.getDay() index → WorkingHours key (Sun = 0).
+const WEEKDAYS = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+] as const;
+
 type Step = 0 | 1 | 2 | 3 | 4;
 
 const STEP_FIELDS: Record<Step, (keyof BookingFormValues)[]> = {
@@ -146,6 +157,18 @@ export function BookingDrawer({
       (cd) => cd.month === m && cd.day === d,
     );
   })();
+
+  // Disabled-date predicate for the date picker — combines closed-day
+  // exceptions with weekly working hours.
+  const isDateDisabled = (date: Date): boolean => {
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    if ((venue.closedDays ?? []).some((cd) => cd.month === m && cd.day === d))
+      return true;
+    const weekdayKey = WEEKDAYS[date.getDay()];
+    const entry = venue.workingHours[weekdayKey];
+    return !entry || entry.isClosed === true;
+  };
 
   // Reset to step 0 every time the drawer is reopened.
   useEffect(() => {
@@ -361,6 +384,7 @@ export function BookingDrawer({
                           value={field.value}
                           onChange={field.onChange}
                           placeholder={t('common.select_date')}
+                          isDateDisabled={isDateDisabled}
                         />
                       )}
                     />

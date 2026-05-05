@@ -219,7 +219,10 @@ function VenueDetailPage(): React.JSX.Element {
 
         {/* Working hours */}
         <SectionHeading>{t("venue_detail.working_hours")}</SectionHeading>
-        <WorkingHoursDisplay workingHours={venue.workingHours} />
+        <WorkingHoursDisplay
+          workingHours={venue.workingHours}
+          closedDays={venue.closedDays}
+        />
 
         {/* Payment + parking */}
         <SectionHeading>{t("venue_detail.payment_methods")}</SectionHeading>
