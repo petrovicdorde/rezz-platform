@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PublicLayout } from "@/components/layout/PublicLayout";
-import { VenuePublicCard } from "@/components/public/VenuePublicCard";
 import { VenueCategorySlider } from "@/components/public/VenueCategorySlider";
 import { usePublicVenues } from "@/hooks/useVenues";
 import { usePublicSettings } from "@/hooks/useSettings";
@@ -136,7 +135,7 @@ function LokaliPage(): React.JSX.Element {
           </div>
         )}
 
-        {!isLoading && isFiltered && venues && venues.length === 0 && (
+        {!isLoading && venues && venues.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <Building2 className="mx-auto size-16 text-tertiary-200" />
             <p className="mt-4 text-xl font-medium text-secondary-500">
@@ -148,19 +147,7 @@ function LokaliPage(): React.JSX.Element {
           </div>
         )}
 
-        {!isLoading && isFiltered && venues && venues.length > 0 && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {venues.map((venue) => (
-              <VenuePublicCard
-                key={venue.id}
-                venue={venue}
-                onClick={handleVenueClick}
-              />
-            ))}
-          </div>
-        )}
-
-        {!isLoading && !isFiltered && groupedEntries.length > 0 && (
+        {!isLoading && groupedEntries.length > 0 && (
           <div className="space-y-12">
             {groupedEntries.map(([type, list]) => {
               const label =

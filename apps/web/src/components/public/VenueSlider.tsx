@@ -14,12 +14,13 @@ export function VenueSlider({
   const navigate = useNavigate();
 
   return (
-    <div className="-mx-[5%]">
+    <div className="-mx-[5%] -my-4">
       <Swiper
         slidesPerView="auto"
         spaceBetween={14}
         grabCursor
-        className="!px-[5%] !pt-1 !pb-2"
+        loop={venues.length > 1}
+        className="!px-[5%] !py-4"
         breakpoints={{
           640: { spaceBetween: 16 },
           768: { spaceBetween: 20 },
