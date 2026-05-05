@@ -125,6 +125,36 @@ To make the blacklist stricter, change the three environment variables and redep
 
 If the policy needs to become editable by admins from inside the app rather than through environment variables, the natural next step is to migrate these three values into the existing settings table that already powers other admin-tunable lookups. Everything downstream — enforcement, stats, banner — would stay unchanged.
 
+## Blacklist appeals
+
+Blocked guests can ask a super admin to lift their block from inside the app, and the admin can approve or reject the request from a dedicated review queue. The flow exists so that an honest mistake — wrong account, wrong reason, or a one-off no-show that has since been resolved — does not require the guest to email support and wait. It also gives the platform a clean record of who asked, what they said, and how the admin responded.
+
+### How a guest submits an appeal
+
+When a guest is blocked, the booking form is replaced everywhere by a red banner explaining that their account is blocked. The banner shows a "Submit appeal" button when the guest can submit one. Clicking it opens a dialog with a single textarea where the guest types a short message (10–2000 characters) explaining the situation. The submit button is disabled while the message is too short or too long, and it becomes active only when the message validates. After submitting, the dialog closes, a confirmation toast says the appeal was sent, and the banner switches to a "Your request is being reviewed" pill.
+
+Each guest can have at most one open appeal at a time. If the previous appeal was rejected, the guest must wait 24 hours from the rejection timestamp before they can send a new one. During that cooldown the banner shows the admin's note (if any) and a countdown in hours, so the guest knows when they will be able to try again. After 24 hours the cooldown ends and the "Submit appeal" button reappears. Submitting while not blocked, while another appeal is pending, or during the cooldown returns a localized error.
+
+### How a super admin reviews and decides
+
+A new "Appeals" entry appears in the super-admin sidebar, leading to a dedicated review queue at `/dashboard/zalbe`. The queue has three filter chips — Pending, Approved, Rejected — and the page opens on Pending by default. Each card shows the guest's name and email, the original block reason, the guest's message, the submission timestamp, and (for decided appeals) the admin's note. While viewing pending appeals, each card has Approve and Reject buttons. Both buttons open a confirmation dialog with an optional admin-note textarea. Confirming runs the decision in a database transaction.
+
+Approving an appeal clears the three blacklist columns on the user (the flag, the timestamp, and the reason), marks the appeal as approved, marks any matching super-admin notification as read, and sends the guest the localized "Your account is active again" email. Rejecting an appeal marks the appeal as rejected, leaves the block in place, marks the related notifications read, and sends the guest a localized rejection email that includes the admin's note when one was provided. Both emails are best-effort — the database change always succeeds first, and an email failure is logged but never reverts the decision.
+
+Independently of the appeal flow, when an admin manually unblacklists a user from the user detail drawer, any pending appeal that user has is automatically marked approved against the admin who lifted the block. This keeps the queue consistent and avoids stale "pending" rows for accounts that have already been cleared.
+
+### Notifications to super admins
+
+When a guest submits an appeal, every active super-admin user receives an in-app notification with the guest's full name, so the queue does not have to be polled to know that something needs review. The notification carries a `BLACKLIST_APPEAL_NEW` type and is rendered with the same dropdown and unread-badge wiring as the rest of the in-app notifications. When a decision is made, those notifications are marked read so they no longer pile up after the appeal has been handled.
+
+### Implementation outline
+
+The feature lives in a self-contained `blacklist-appeals` module on the API side. It owns one new table that stores the message, status, optional admin note, the deciding admin, and timestamps for submission and decision. The status defaults to `PENDING` and moves to `APPROVED` or `REJECTED` on the admin's decision; statuses are never reset. Two indexes cover the two query paths — by user (for "does this guest already have an open appeal?") and by status (for the admin queue). Foreign keys cascade on user delete and set the deciding-admin reference to null on admin delete, so a removed admin does not break audit history.
+
+Four endpoints expose the flow: a guest endpoint to fetch the latest appeal for the current user (pending preferred, otherwise the latest closed one), a guest endpoint to submit a new appeal, a super-admin endpoint to list appeals filtered by status, and a super-admin endpoint to decide on an appeal. The decide endpoint runs in a TypeORM transaction so the appeal status change, the user's blacklist columns, and the notification-read updates either all succeed or all roll back. Email sending is intentionally deferred to after the transaction commits, which means a flaky email provider can never block or undo an admin decision.
+
+On the web side, a small set of TanStack Query hooks wraps the four endpoints and invalidates each other so the banner, the queue, and the toasts always agree on state. The banner reads its appeal state from the same hook the dialog uses, so submitting from the dialog updates the banner without a refresh. The admin queue invalidates itself on every decision so cards move out of Pending into Approved or Rejected immediately. The 24-hour cooldown is computed entirely client-side from the rejection timestamp, with a one-minute interval driving a state update that re-renders the countdown without re-fetching from the server.
+
 ## Guest ages on every reservation
 
 ### What it does

@@ -34,6 +34,8 @@ import { ProfileModule } from './profile/profile.module';
 import { BlacklistModule } from './blacklist/blacklist.module';
 import { CronModule } from './cron/cron.module';
 import { ContactModule } from './contact/contact.module';
+import { BlacklistAppealsModule } from './blacklist-appeals/blacklist-appeals.module';
+import { BlacklistAppeal } from './blacklist-appeals/entities/blacklist-appeal.entity';
 
 @Module({
   imports: [
@@ -60,6 +62,7 @@ import { ContactModule } from './contact/contact.module';
           EventPromotion,
           Setting,
           LandingConfig,
+          BlacklistAppeal,
         ],
         synchronize: configService.get('NODE_ENV') !== 'production',
         ssl:
@@ -91,6 +94,7 @@ import { ContactModule } from './contact/contact.module';
     BlacklistModule,
     CronModule,
     ContactModule,
+    BlacklistAppealsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

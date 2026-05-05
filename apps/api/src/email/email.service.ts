@@ -505,4 +505,99 @@ export class EmailService {
       );
     }
   }
+
+  async sendBlacklistAppealApprovedEmail(
+    email: string,
+    firstName: string,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const subject = this.i18n.t('email.blacklist_approved_subject', { lang });
+    const greeting = this.i18n.t('email.greeting', {
+      lang,
+      args: { firstName },
+    });
+    const body = this.i18n.t('email.blacklist_approved_body', { lang });
+    const footer = this.i18n.t('email.blacklist_approved_footer', { lang });
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#140B00;">
+      <h2 style="color:#F98513;margin:0 0 16px;">Table.ba</h2>
+      <p>${greeting}</p>
+      <p>${body}</p>
+      <p style="color:rgba(20,11,0,0.55);font-size:13px;margin-top:24px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send blacklist-appeal approved email to ${email}`,
+        error,
+      );
+    }
+  }
+
+  async sendBlacklistAppealRejectedEmail(
+    email: string,
+    firstName: string,
+    adminNote: string | null,
+    lang: string = 'sr',
+  ): Promise<void> {
+    const subject = this.i18n.t('email.blacklist_rejected_subject', { lang });
+    const greeting = this.i18n.t('email.greeting', {
+      lang,
+      args: { firstName },
+    });
+    const body = this.i18n.t('email.blacklist_rejected_body', { lang });
+    const reasonLabel = this.i18n.t('email.blacklist_rejected_reason_label', {
+      lang,
+    });
+    const footer = this.i18n.t('email.blacklist_rejected_footer', { lang });
+
+    const safe = (s: string): string =>
+      s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    const reasonBlock = adminNote
+      ? `<div style="background:#F5F1EB;border-left:4px solid #F98513;padding:12px 14px;border-radius:8px;margin:16px 0;">
+           <p style="margin:0 0 6px;font-size:12px;color:rgba(20,11,0,0.55);text-transform:uppercase;letter-spacing:1.5px;">${reasonLabel}</p>
+           <p style="margin:0;white-space:pre-wrap;">${safe(adminNote)}</p>
+         </div>`
+      : '';
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#140B00;">
+      <h2 style="color:#F98513;margin:0 0 16px;">Table.ba</h2>
+      <p>${greeting}</p>
+      <p>${body}</p>
+      ${reasonBlock}
+      <p style="color:rgba(20,11,0,0.55);font-size:13px;margin-top:24px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send blacklist-appeal rejected email to ${email}`,
+        error,
+      );
+    }
+  }
 }

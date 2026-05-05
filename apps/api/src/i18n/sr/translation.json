@@ -26,6 +26,13 @@
     "last_name_too_short": "Prezime mora imati najmanje 2 karaktera."
   },
   "email": {
+    "blacklist_approved_subject": "Vaš nalog je ponovo aktivan – Table.ba",
+    "blacklist_approved_body": "Vaš zahtjev za odblokiranje je odobren. Vaš nalog je ponovo aktivan i možete praviti rezervacije kao i ranije.",
+    "blacklist_approved_footer": "Ako vam treba dodatna pomoć, slobodno nas kontaktirajte.",
+    "blacklist_rejected_subject": "Vaša žalba je razmotrena – Table.ba",
+    "blacklist_rejected_body": "Vaš zahtjev za odblokiranje je razmotren, ali u ovom trenutku nije odobren.",
+    "blacklist_rejected_reason_label": "Obrazloženje",
+    "blacklist_rejected_footer": "Možete podnijeti novi zahtjev za 24 sata. Ako imate dodatna pitanja, kontaktirajte podršku.",
     "contact_subject": "Nova poruka sa kontakt forme – {fullName}",
     "contact_intro": "Stigla je nova poruka sa kontakt forme na Table.ba.",
     "contact_from": "Od",
@@ -124,7 +131,16 @@
     "reservation_confirmed": "Rezervacija od {firstName} {lastName} je potvrđena.",
     "reservation_rejected": "Rezervacija od {firstName} {lastName} je odbijena.",
     "reservation_cancelled": "{firstName} {lastName} je otkazao/la rezervaciju za {date} u {time}.",
-    "reservation_reminder": "Podsjetnik: Rezervacija za {firstName} {lastName} je za {time}."
+    "reservation_reminder": "Podsjetnik: Rezervacija za {firstName} {lastName} je za {time}.",
+    "blacklist_appeal_new": "Novi zahtjev za odblokiranje od {guestFirstName} {guestLastName}."
+  },
+  "blacklist": {
+    "user_not_found": "Korisnik nije pronađen.",
+    "appeal_not_blacklisted": "Vaš nalog nije blokiran.",
+    "appeal_pending_already": "Već imate aktivan zahtjev koji se razmatra.",
+    "appeal_cooldown": "Možete poslati novi zahtjev tek 24 sata nakon prethodne odluke.",
+    "appeal_not_found": "Zahtjev nije pronađen.",
+    "appeal_already_decided": "Ovaj zahtjev je već razmotren."
   },
   "employee": {
     "not_found": "Zaposleni nije pronađen.",

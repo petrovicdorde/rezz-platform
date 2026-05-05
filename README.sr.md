@@ -127,6 +127,36 @@ Da bi crna lista postala stroža, promijenite tri environment varijable i redepl
 
 Ako politika treba da postane uređiva od strane admina iz same aplikacije umjesto kroz environment varijable, prirodan sljedeći korak je migracija ova tri broja u postojeću settings tabelu koja već pokreće druge admin-podesive vrijednosti. Sve nizvodno — provođenje, statistika, baner — bi ostalo nepromijenjeno.
 
+## Žalbe na blokadu naloga
+
+Blokirani gosti mogu da iz aplikacije zamole super admina da im skine blokadu, a admin može da odobri ili odbije zahtjev iz posvećenog reda za pregled. Tok postoji kako iskrena greška — pogrešan nalog, pogrešan razlog ili jednokratan nedolazak koji je u međuvremenu razjašnjen — ne bi tjerala gosta da šalje email podršci i čeka. Takođe daje platformi jasnu evidenciju ko je pitao, šta je rekao i kako je admin odgovorio.
+
+### Kako gost šalje žalbu
+
+Kada je gost blokiran, forma za rezervaciju je svuda zamijenjena crvenim banerom koji objašnjava da je nalog blokiran. Baner pokazuje dugme "Pošalji žalbu" kada gost može da je pošalje. Klikom se otvara dijalog sa jednom textarea u koju gost upisuje kratku poruku (10–2000 karaktera) koja objašnjava situaciju. Dugme za slanje je onemogućeno dok je poruka prekratka ili preduga, a postaje aktivno tek kad poruka prođe validaciju. Nakon slanja, dijalog se zatvara, toast potvrđuje da je žalba poslata, a baner prelazi u oznaku "Vaš zahtjev je u obradi".
+
+Svaki gost može da ima najviše jednu otvorenu žalbu u datom trenutku. Ako je prethodna žalba odbijena, gost mora da sačeka 24 sata od vremena odbijanja prije nego što može da pošalje novu. Tokom tog perioda mirovanja, baner pokazuje napomenu admina (ako je upisana) i odbrojavanje u satima, tako da gost zna kada će ponovo moći da pokuša. Posle 24 sata mirovanje istekne i dugme "Pošalji žalbu" se ponovo pojavljuje. Pokušaj slanja dok korisnik nije blokiran, dok je druga žalba u obradi ili tokom mirovanja, vraća lokalizovanu grešku.
+
+### Kako super admin pregleda i odlučuje
+
+Nova stavka "Žalbe" pojavljuje se u super-admin sidebar-u i vodi na posvećen red za pregled na `/dashboard/zalbe`. Red ima tri filter čipa — Na čekanju, Odobrene, Odbijene — i stranica se otvara podrazumijevano na "Na čekanju". Svaka kartica pokazuje ime i email gosta, izvorni razlog blokade, poruku gosta, vrijeme slanja i (za odlučene žalbe) napomenu admina. Tokom pregleda žalbi na čekanju, svaka kartica ima dugmad Odobri i Odbij. Oba dugmeta otvaraju dijalog za potvrdu sa opcionom textarea-om za napomenu admina. Potvrda izvršava odluku u transakciji baze.
+
+Odobravanje žalbe briše tri kolone crne liste na korisniku (zastavicu, vremensku oznaku i razlog), označava žalbu kao odobrenu, označava odgovarajuću super-admin notifikaciju kao pročitanu i šalje gostu lokalizovani email "Vaš nalog je ponovo aktivan". Odbijanje žalbe označava žalbu kao odbijenu, ostavlja blokadu na snazi, označava povezane notifikacije pročitanim i šalje gostu lokalizovani email o odbijanju koji uključuje napomenu admina kada je upisana. Oba email-a su best-effort — promjena u bazi uvijek prvo uspije, a neuspjeh email-a se loguje ali nikada ne poništava odluku.
+
+Nezavisno od toka žalbe, kada admin ručno odblokira korisnika iz drawer-a sa detaljima korisnika, svaka žalba tog korisnika koja je u obradi automatski se označava kao odobrena, sa adminom koji je skinuo blokadu kao donosiocem odluke. Ovo drži red konzistentnim i izbjegava zaostale "u obradi" zapise za naloge koji su već očišćeni.
+
+### Notifikacije super adminima
+
+Kada gost pošalje žalbu, svaki aktivni super-admin korisnik dobija in-app notifikaciju sa punim imenom gosta, tako da se red ne mora ručno provjeravati da bi se znalo da nešto čeka pregled. Notifikacija nosi tip `BLACKLIST_APPEAL_NEW` i renderuje se kroz isti dropdown i nepročitano-bedž sistem kao i ostale in-app notifikacije. Kada se donese odluka, te notifikacije se označavaju pročitanim tako da se ne gomilaju nakon što je žalba obrađena.
+
+### Tehnički okvir
+
+Funkcionalnost živi u samodovoljnom `blacklist-appeals` modulu na API strani. Posjeduje jednu novu tabelu koja čuva poruku, status, opcionu napomenu admina, admina koji odlučuje i vremenske oznake za slanje i odluku. Status je podrazumijevano `PENDING` i prelazi u `APPROVED` ili `REJECTED` na adminovu odluku; statusi se nikada ne resetuju. Dva indeksa pokrivaju dva upita — po korisniku (za "ima li ovaj gost otvorenu žalbu?") i po statusu (za admin red). Strani ključevi kaskadno brišu na brisanje korisnika i postavljaju referencu admina-donosioca odluke na null pri brisanju admina, pa uklonjen admin ne lomi istoriju.
+
+Četiri endpoint-a izlažu tok: gost endpoint koji vraća posljednju žalbu trenutnog korisnika (prednost ima ona u obradi, inače posljednja zatvorena), gost endpoint za slanje nove žalbe, super-admin endpoint za listanje žalbi po statusu i super-admin endpoint za odluku. Endpoint za odluku radi u TypeORM transakciji tako da promjena statusa žalbe, kolone crne liste korisnika i ažuriranje notifikacija ili sve uspiju ili se sve poništi. Slanje email-a je namjerno odloženo na vrijeme nakon što transakcija prođe, što znači da loš email provajder nikada ne može da blokira ili poništi adminovu odluku.
+
+Na web strani, mali set TanStack Query hook-ova omotava četiri endpoint-a i invalidira ih međusobno tako da baner, red i toast-ovi uvijek slažu stanje. Baner čita stanje žalbe iz istog hook-a koji koristi i dijalog, pa slanje iz dijaloga ažurira baner bez refresh-a. Admin red sebe invalidira pri svakoj odluci tako da kartice odmah prelaze iz "Na čekanju" u "Odobrene" ili "Odbijene". Period mirovanja od 24 sata računa se u potpunosti na klijentu iz vremena odbijanja, sa interval timer-om od jedne minute koji pokreće update stanja i ponovni render odbrojavanja bez ponovnog dohvatanja sa servera.
+
 ## Godine gostiju na svakoj rezervaciji
 
 ### Šta radi

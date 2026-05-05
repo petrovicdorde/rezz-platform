@@ -8,6 +8,7 @@ import { Repository, Not } from 'typeorm';
 import { I18nService } from 'nestjs-i18n';
 import { User, UserRole } from './entities/user.entity';
 import { UpdateUserAdminDto } from './dto/update-user-admin.dto';
+import { BlacklistAppealsService } from '../blacklist-appeals/blacklist-appeals.service';
 
 export interface SafeAdminUser {
   id: string;
@@ -32,6 +33,7 @@ export class UsersAdminService {
   constructor(
     @InjectRepository(User) private readonly userRepo: Repository<User>,
     private readonly i18n: I18nService,
+    private readonly blacklistAppeals: BlacklistAppealsService,
   ) {}
 
   private toSafeAdminUser(user: User): SafeAdminUser {
@@ -166,6 +168,15 @@ export class UsersAdminService {
     }
 
     await this.userRepo.save(user);
+
+    // If admin manually unblocked the user, auto-resolve any pending appeal
+    // so the queue stays clean.
+    if (!isBlacklisted) {
+      await this.blacklistAppeals.closePendingForUserAsAutoApproved(
+        user.id,
+        requestingUserId,
+      );
+    }
 
     return {
       message: isBlacklisted

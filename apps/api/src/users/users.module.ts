@@ -4,9 +4,10 @@ import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { UsersAdminService } from './users-admin.service';
 import { UsersAdminController } from './users-admin.controller';
+import { BlacklistAppealsModule } from '../blacklist-appeals/blacklist-appeals.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), BlacklistAppealsModule],
   controllers: [UsersAdminController],
   providers: [UsersService, UsersAdminService],
   exports: [UsersService, UsersAdminService],

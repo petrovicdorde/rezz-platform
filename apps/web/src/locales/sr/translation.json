@@ -176,7 +176,22 @@
     "description": "Ne možete slati rezervacije. Molimo kontaktirajte podršku da objasnite situaciju — super admin će razmotriti vaš slučaj.",
     "reason_label": "Razlog",
     "contact_support": "Pišite na {{email}}",
-    "support_subject": "Žalba na blokiran nalog — Table.ba"
+    "support_subject": "Žalba na blokiran nalog — Table.ba",
+    "appeal_button": "Pošalji žalbu",
+    "appeal_dialog_title": "Žalba na blokadu naloga",
+    "appeal_dialog_subtitle": "Objasnite situaciju u nekoliko rečenica. Super admin će razmotriti vaš zahtjev i obavijestiti vas email-om.",
+    "appeal_message_label": "Vaša poruka",
+    "appeal_message_placeholder": "Opišite šta se dogodilo...",
+    "appeal_submit": "Pošalji žalbu",
+    "appeal_required": "Poruka je obavezna",
+    "appeal_min_length": "Poruka mora imati najmanje 10 karaktera",
+    "appeal_submitted": "Vaša žalba je poslata. Odgovorićemo na email.",
+    "appeal_pending_banner": "Vaš zahtjev je u obradi. Odgovorićemo email-om.",
+    "appeal_rejected_banner": "Vaša prethodna žalba je odbijena.",
+    "appeal_admin_note": "Obrazloženje admina",
+    "appeal_cooldown_remaining": "Možete poslati novi zahtjev za {{hours}} h.",
+    "appeal_approved_toast": "Žalba odobrena. Korisnik je odblokiran.",
+    "appeal_rejected_toast": "Žalba odbijena."
   },
   "venue_detail": {
     "about": "O nama",
@@ -282,6 +297,7 @@
     "menu_employees": "Zaposleni",
     "menu_events": "Dogadjaji",
     "menu_users": "Korisnici",
+    "menu_appeals": "Žalbe",
     "menu_settings": "Postavke",
     "menu_landing": "Landing stranica",
     "menu_profile": "Profil"
@@ -725,5 +741,31 @@
     "min_length_2": "Minimalno 2 karaktera",
     "min_length_10": "Poruka mora imati najmanje 10 karaktera",
     "success": "Hvala! Vaša poruka je uspješno poslata."
+  },
+  "appeals": {
+    "title": "Žalbe na blokadu",
+    "subtitle": "Pregledajte i odlučite o žalbama blokiranih gostiju.",
+    "filter_pending": "Na čekanju",
+    "filter_approved": "Odobrene",
+    "filter_rejected": "Odbijene",
+    "empty_pending": "Nema žalbi na čekanju.",
+    "empty_approved": "Još nema odobrenih žalbi.",
+    "empty_rejected": "Još nema odbijenih žalbi.",
+    "unknown_guest": "Nepoznat gost",
+    "blacklist_reason": "Razlog blokade",
+    "guest_message": "Poruka gosta",
+    "submitted_at": "Poslato {{date}}",
+    "admin_note": "Napomena admina",
+    "approve_cta": "Odobri",
+    "reject_cta": "Odbij",
+    "confirm_approve_title": "Odobriti žalbu?",
+    "confirm_approve_subtitle": "Korisnik će biti odblokiran i obaviješten email-om.",
+    "confirm_approve_cta": "Odobri",
+    "confirm_reject_title": "Odbiti žalbu?",
+    "confirm_reject_subtitle": "Korisnik će biti obaviješten email-om i moći će ponovo poslati zahtjev za 24h.",
+    "confirm_reject_cta": "Odbij",
+    "admin_note_label": "Napomena admina (opciono)",
+    "admin_note_placeholder_approve": "Ostavite napomenu korisniku (opciono)...",
+    "admin_note_placeholder_reject": "Obrazložite odbijanje (opciono)..."
   }
 }

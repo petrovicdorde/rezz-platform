@@ -12,6 +12,7 @@ import {
   SlidersHorizontal,
   LayoutDashboard,
   LogOut,
+  ShieldAlert,
   User,
 } from 'lucide-react';
 import type { UserRole } from '@rezz/shared';
@@ -36,6 +37,7 @@ function useNavItems(): NavItem[] {
     SUPER_ADMIN: [
       { to: '/dashboard/venues', label: t('dashboard.menu_venues'), icon: Building2 },
       { to: '/dashboard/users', label: t('dashboard.menu_users'), icon: UsersRound },
+      { to: '/dashboard/zalbe', label: t('dashboard.menu_appeals'), icon: ShieldAlert },
       { to: '/dashboard/settings', label: t('dashboard.menu_settings'), icon: SlidersHorizontal },
       { to: '/dashboard/landing', label: t('dashboard.menu_landing'), icon: LayoutDashboard },
       { to: '/dashboard/profile', label: t('dashboard.menu_profile'), icon: User },

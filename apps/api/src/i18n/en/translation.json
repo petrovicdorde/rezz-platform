@@ -26,6 +26,13 @@
     "last_name_too_short": "Last name must be at least 2 characters."
   },
   "email": {
+    "blacklist_approved_subject": "Your account is active again – Table.ba",
+    "blacklist_approved_body": "Your unblock request has been approved. Your account is active again and you can book reservations just like before.",
+    "blacklist_approved_footer": "If you need anything else, feel free to contact us.",
+    "blacklist_rejected_subject": "Your appeal has been reviewed – Table.ba",
+    "blacklist_rejected_body": "Your unblock request has been reviewed, but it was not approved at this time.",
+    "blacklist_rejected_reason_label": "Reason",
+    "blacklist_rejected_footer": "You may submit a new request in 24 hours. If you have further questions, please contact support.",
     "contact_subject": "New contact form message – {fullName}",
     "contact_intro": "A new message has arrived from the Table.ba contact form.",
     "contact_from": "From",
@@ -124,7 +131,16 @@
     "reservation_confirmed": "Reservation from {firstName} {lastName} has been confirmed.",
     "reservation_rejected": "Reservation from {firstName} {lastName} has been rejected.",
     "reservation_cancelled": "{firstName} {lastName} cancelled their reservation for {date} at {time}.",
-    "reservation_reminder": "Reminder: Reservation for {firstName} {lastName} is at {time}."
+    "reservation_reminder": "Reminder: Reservation for {firstName} {lastName} is at {time}.",
+    "blacklist_appeal_new": "New unblock request from {guestFirstName} {guestLastName}."
+  },
+  "blacklist": {
+    "user_not_found": "User not found.",
+    "appeal_not_blacklisted": "Your account is not blacklisted.",
+    "appeal_pending_already": "You already have a pending appeal under review.",
+    "appeal_cooldown": "You can submit a new request 24 hours after the previous decision.",
+    "appeal_not_found": "Appeal not found.",
+    "appeal_already_decided": "This appeal has already been decided."
   },
   "employee": {
     "not_found": "Employee not found.",
