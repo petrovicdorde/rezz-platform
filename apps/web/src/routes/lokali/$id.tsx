@@ -45,9 +45,15 @@ function SectionHeading({
   children: React.ReactNode;
 }): React.JSX.Element {
   return (
-    <h2 className="mt-8 mb-4 border-b border-tertiary-200 pb-2 text-lg font-bold text-secondary-500 first:mt-0">
-      {children}
-    </h2>
+    <div className="relative mt-12 mb-6 first:mt-0">
+      <h2 className="font-serif text-[1.6rem] leading-none font-bold tracking-[-0.5px] text-primary-400">
+        {children}
+      </h2>
+      <div className="mt-4 flex items-center gap-3">
+        <span className="size-1.5 rounded-full bg-secondary-400" />
+        <div className="h-px flex-1 bg-[rgba(17,17,68,0.1)]" />
+      </div>
+    </div>
   );
 }
 
@@ -195,8 +201,12 @@ function VenueDetailPage(): React.JSX.Element {
       <div className="mx-auto max-w-3xl px-4 py-8 pb-12 md:px-8">
         {/* About */}
         <SectionHeading>{t("venue_detail.about")}</SectionHeading>
-        <p className="leading-relaxed text-tertiary-600">
-          {venue.description ?? t("venue_detail.no_description")}
+        <p className="text-base leading-[1.7] text-[rgba(20,11,0,0.7)]">
+          {venue.description ?? (
+            <span className="italic text-[rgba(20,11,0,0.42)]">
+              {t("venue_detail.no_description")}
+            </span>
+          )}
         </p>
 
         {/* Gallery */}
@@ -211,12 +221,12 @@ function VenueDetailPage(): React.JSX.Element {
         <SectionHeading>{t("venue_detail.payment_methods")}</SectionHeading>
         <div className="flex flex-wrap items-center gap-2">
           {venue.hasParking ? (
-            <span className="flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-xs text-green-700">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/8 px-3.5 py-1.5 text-xs font-medium text-emerald-700">
               <Car className="size-3.5" />
               {t("venue_detail.parking_available")}
             </span>
           ) : (
-            <span className="rounded-full bg-red-50 px-3 py-1 text-xs text-red-400">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(20,11,0,0.07)] bg-[rgba(20,11,0,0.03)] px-3.5 py-1.5 text-xs font-medium text-[rgba(20,11,0,0.4)] line-through">
               {t("venue_detail.no_parking")}
             </span>
           )}
@@ -224,7 +234,7 @@ function VenueDetailPage(): React.JSX.Element {
           {venue.paymentMethods.map((pm) => (
             <span
               key={pm}
-              className="rounded-full bg-tertiary-100 px-3 py-1 text-xs text-tertiary-600"
+              className="inline-flex items-center rounded-full border border-[rgba(17,17,68,0.12)] bg-[rgba(17,17,68,0.04)] px-3.5 py-1.5 text-xs font-medium text-primary-400"
             >
               {t(PAYMENT_KEYS[pm])}
             </span>
@@ -234,8 +244,8 @@ function VenueDetailPage(): React.JSX.Element {
         {/* Location */}
         <SectionHeading>{t("venue_detail.location")}</SectionHeading>
         <GoogleMapEmbed address={venue.address} venueName={venue.name} />
-        <div className="mt-3 flex items-center gap-1 text-sm text-tertiary-600">
-          <MapPin className="size-4" />
+        <div className="mt-4 flex items-center gap-2 text-sm text-[rgba(20,11,0,0.55)]">
+          <MapPin className="size-4 text-primary-400" />
           <span>{venue.address}</span>
         </div>
 
