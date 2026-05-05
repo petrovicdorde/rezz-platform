@@ -1,10 +1,7 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { format, parseISO } from 'date-fns';
 import { Loader2, ShieldAlert, ShieldCheck, ShieldX } from 'lucide-react';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
@@ -22,70 +19,55 @@ import type {
   BlacklistAppealStatus,
 } from '@/lib/api/blacklist-appeals.api';
 
-export const Route = createFileRoute('/dashboard/zalbe')({
-  component: AppealsPage,
-});
-
 const STATUSES: BlacklistAppealStatus[] = ['PENDING', 'APPROVED', 'REJECTED'];
 
-function AppealsPage(): React.JSX.Element {
+export function BlacklistAppealsSection(): React.JSX.Element {
   const { t } = useTranslation();
   const [filter, setFilter] = useState<BlacklistAppealStatus>('PENDING');
   const { data: appeals, isLoading } = useAdminBlacklistAppeals(filter);
 
   return (
-    <DashboardLayout>
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-6">
-          <h1 className="font-serif text-2xl font-bold tracking-[-0.4px] text-primary-400">
-            {t('appeals.title')}
-          </h1>
-          <p className="mt-1 text-sm text-[rgba(20,11,0,0.55)]">
-            {t('appeals.subtitle')}
+    <div>
+      <div className="mb-4 flex flex-wrap gap-2">
+        {STATUSES.map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => setFilter(s)}
+            className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              filter === s
+                ? 'bg-primary-400 text-white shadow-[0_2px_8px_rgba(17,17,68,0.25)]'
+                : 'border border-[rgba(20,11,0,0.08)] bg-white text-[rgba(20,11,0,0.6)] hover:border-[rgba(17,17,68,0.25)] hover:text-primary-400'
+            }`}
+          >
+            {t(`appeals.filter_${s.toLowerCase()}`)}
+          </button>
+        ))}
+      </div>
+
+      {isLoading && (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-6 w-6 animate-spin text-tertiary-400" />
+        </div>
+      )}
+
+      {!isLoading && (!appeals || appeals.length === 0) && (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-[rgba(20,11,0,0.06)] bg-white py-16 text-center">
+          <ShieldAlert className="size-10 text-tertiary-300" />
+          <p className="mt-3 text-sm text-tertiary-500">
+            {t(`appeals.empty_${filter.toLowerCase()}`)}
           </p>
         </div>
+      )}
 
-        <div className="mb-6 flex flex-wrap gap-2">
-          {STATUSES.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => setFilter(s)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                filter === s
-                  ? 'bg-primary-400 text-white shadow-[0_2px_8px_rgba(17,17,68,0.25)]'
-                  : 'border border-[rgba(20,11,0,0.08)] bg-white text-[rgba(20,11,0,0.6)] hover:border-[rgba(17,17,68,0.25)] hover:text-primary-400'
-              }`}
-            >
-              {t(`appeals.filter_${s.toLowerCase()}`)}
-            </button>
+      {!isLoading && appeals && appeals.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {appeals.map((a) => (
+            <AppealCard key={a.id} appeal={a} />
           ))}
         </div>
-
-        {isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-6 w-6 animate-spin text-tertiary-400" />
-          </div>
-        )}
-
-        {!isLoading && (!appeals || appeals.length === 0) && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-[rgba(20,11,0,0.06)] bg-white py-16 text-center">
-            <ShieldAlert className="size-10 text-tertiary-300" />
-            <p className="mt-3 text-sm text-tertiary-500">
-              {t(`appeals.empty_${filter.toLowerCase()}`)}
-            </p>
-          </div>
-        )}
-
-        {!isLoading && appeals && appeals.length > 0 && (
-          <div className="flex flex-col gap-3">
-            {appeals.map((a) => (
-              <AppealCard key={a.id} appeal={a} />
-            ))}
-          </div>
-        )}
-      </div>
-    </DashboardLayout>
+      )}
+    </div>
   );
 }
 
@@ -195,7 +177,7 @@ function AppealCard({ appeal }: AppealCardProps): React.JSX.Element {
             <button
               type="button"
               onClick={() => openConfirm('APPROVED')}
-              className="inline-flex items-center gap-1.5 rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.3)] transition-all hover:-translate-y-px hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-linear-to-br from-secondary-400 to-secondary-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(249,133,19,0.3)] transition-all hover:-translate-y-px hover:shadow-[0_4px_16px_rgba(249,133,19,0.4)]"
             >
               <ShieldCheck className="size-4" />
               {t('appeals.approve_cta')}
@@ -203,7 +185,7 @@ function AppealCard({ appeal }: AppealCardProps): React.JSX.Element {
             <button
               type="button"
               onClick={() => openConfirm('REJECTED')}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:-translate-y-px hover:bg-red-50"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:-translate-y-px hover:bg-red-50"
             >
               <ShieldX className="size-4" />
               {t('appeals.reject_cta')}

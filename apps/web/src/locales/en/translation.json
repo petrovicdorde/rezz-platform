@@ -601,6 +601,8 @@
     "filter_workers": "Workers",
     "filter_blacklisted": "Blacklisted",
     "filter_inactive": "Inactive",
+    "sub_filter_list": "List",
+    "sub_filter_appeals": "Appeals",
     "no_users": "No users found.",
     "details_title": "User details",
     "role_label": "Role",

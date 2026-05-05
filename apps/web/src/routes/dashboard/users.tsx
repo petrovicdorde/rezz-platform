@@ -7,6 +7,7 @@ import { SwiperFilterChips } from '@/components/ui/SwiperFilterChips';
 import { UserCard } from '@/components/users/UserCard';
 import { UserDetailModal } from '@/components/users/UserDetailModal';
 import { UserDetailDrawer } from '@/components/users/UserDetailDrawer';
+import { BlacklistAppealsSection } from '@/components/users/BlacklistAppealsSection';
 import { useAdminUsers } from '@/hooks/useUsersAdmin';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { requireRole } from '@/lib/route-guards';
@@ -32,6 +33,9 @@ function UsersPage(): React.JSX.Element {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
+  const [blacklistView, setBlacklistView] = useState<'list' | 'appeals'>(
+    'list',
+  );
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -82,40 +86,77 @@ function UsersPage(): React.JSX.Element {
         <SwiperFilterChips
           chips={filterChips}
           activeKey={activeFilter}
-          onChange={(key) => setActiveFilter(key)}
+          onChange={(key) => {
+            setActiveFilter(key);
+            if (key !== 'blacklisted') setBlacklistView('list');
+          }}
         />
       </div>
 
+      {/* Sub-filter — only visible under "Crna lista" */}
+      {activeFilter === 'blacklisted' && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setBlacklistView('list')}
+            className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+              blacklistView === 'list'
+                ? 'bg-primary-400 text-white shadow-[0_2px_8px_rgba(17,17,68,0.25)]'
+                : 'border border-[rgba(20,11,0,0.08)] bg-white text-[rgba(20,11,0,0.6)] hover:border-[rgba(17,17,68,0.25)] hover:text-primary-400'
+            }`}
+          >
+            {t('users.sub_filter_list')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setBlacklistView('appeals')}
+            className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+              blacklistView === 'appeals'
+                ? 'bg-primary-400 text-white shadow-[0_2px_8px_rgba(17,17,68,0.25)]'
+                : 'border border-[rgba(20,11,0,0.08)] bg-white text-[rgba(20,11,0,0.6)] hover:border-[rgba(17,17,68,0.25)] hover:text-primary-400'
+            }`}
+          >
+            {t('users.sub_filter_appeals')}
+          </button>
+        </div>
+      )}
+
       {/* Content */}
       <div className="mt-4">
-        {isLoading && (
-          <div className="flex flex-col gap-3">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-16 animate-pulse rounded-xl bg-tertiary-200"
-              />
-            ))}
-          </div>
-        )}
+        {activeFilter === 'blacklisted' && blacklistView === 'appeals' ? (
+          <BlacklistAppealsSection />
+        ) : (
+          <>
+            {isLoading && (
+              <div className="flex flex-col gap-3">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="h-16 animate-pulse rounded-xl bg-tertiary-200"
+                  />
+                ))}
+              </div>
+            )}
 
-        {!isLoading && (!users || users.length === 0) && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Users className="h-12 w-12 text-tertiary-300" />
-            <p className="mt-2 text-tertiary-500">{t('users.no_users')}</p>
-          </div>
-        )}
+            {!isLoading && (!users || users.length === 0) && (
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <Users className="h-12 w-12 text-tertiary-300" />
+                <p className="mt-2 text-tertiary-500">{t('users.no_users')}</p>
+              </div>
+            )}
 
-        {!isLoading && users && users.length > 0 && (
-          <div className="flex flex-col gap-3">
-            {users.map((user) => (
-              <UserCard
-                key={user.id}
-                user={user}
-                onClick={(u) => setSelectedUser(u)}
-              />
-            ))}
-          </div>
+            {!isLoading && users && users.length > 0 && (
+              <div className="flex flex-col gap-3">
+                {users.map((user) => (
+                  <UserCard
+                    key={user.id}
+                    user={user}
+                    onClick={(u) => setSelectedUser(u)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
