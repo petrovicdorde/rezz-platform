@@ -175,6 +175,7 @@
 
 .Toastify__toast-container {
   --toastify-font-family: var(--font-sans);
+  --toastify-toast-bd-radius: 16px;
   padding: 0;
 }
 
@@ -186,6 +187,7 @@
 .Toastify__toast {
   font-family: var(--font-sans);
   border-radius: 16px;
+  overflow: hidden;
   border: 1px solid rgba(20, 11, 0, 0.06);
   background: rgba(253, 249, 244, 0.98);
   color: #140b00;
