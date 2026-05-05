@@ -37,14 +37,17 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-full items-center justify-between gap-2 rounded-md border border-tertiary-400 bg-white px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-colors outline-none focus-visible:border-primary-400 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive data-placeholder:text-tertiary-600 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-tertiary-600",
+        "flex w-full items-center justify-between gap-2 rounded-xl border border-[rgba(20,11,0,0.07)] bg-[#F5F1EB] px-4 text-sm font-medium whitespace-nowrap text-[#140B00] outline-none transition-all hover:border-[rgba(249,133,19,0.35)] hover:bg-white hover:shadow-[0_2px_12px_rgba(249,133,19,0.08)] focus-visible:border-[rgba(249,133,19,0.55)] focus-visible:bg-white focus-visible:shadow-[0_2px_12px_rgba(249,133,19,0.12)] focus-visible:ring-0 data-[state=open]:border-[rgba(249,133,19,0.55)] data-[state=open]:bg-white data-[state=open]:shadow-[0_2px_12px_rgba(249,133,19,0.12)] disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive data-placeholder:font-normal data-placeholder:text-[rgba(20,11,0,0.42)] data-[size=default]:h-11 data-[size=sm]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-[rgba(20,11,0,0.45)]",
         className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <ChevronDownIcon
+          data-slot="select-chevron"
+          className="size-4 text-[rgba(20,11,0,0.45)]"
+        />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );

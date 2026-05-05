@@ -87,6 +87,14 @@
   transform-origin: var(--radix-select-content-transform-origin);
 }
 
+[data-slot="select-chevron"] {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-slot="select-trigger"][data-state="open"] [data-slot="select-chevron"] {
+  transform: rotate(180deg);
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);

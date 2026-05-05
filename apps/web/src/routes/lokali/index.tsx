@@ -114,9 +114,9 @@ function LokaliPage(): React.JSX.Element {
             <button
               type="button"
               onClick={clearFilters}
-              className="flex items-center gap-1 text-sm text-tertiary-500 hover:text-secondary-500"
+              className="group inline-flex h-11 cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(20,11,0,0.08)] bg-white/60 px-4 text-sm font-medium text-[rgba(20,11,0,0.55)] backdrop-blur-sm transition-all hover:-translate-y-px hover:border-[rgba(249,133,19,0.4)] hover:bg-[rgba(249,133,19,0.08)] hover:text-secondary-400 hover:shadow-[0_2px_12px_rgba(249,133,19,0.15)]"
             >
-              <X className="size-3.5" />
+              <X className="size-3.5 transition-transform duration-200 group-hover:rotate-90" />
               {t("venues_page.clear_filters")}
             </button>
           )}
