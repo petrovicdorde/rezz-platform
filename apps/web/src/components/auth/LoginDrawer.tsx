@@ -18,21 +18,21 @@ export function LoginDrawer(): React.JSX.Element {
 
   return (
     <Drawer open={isOpen} onOpenChange={(open) => !open && close()} direction="right">
-      <DrawerContent>
+      <DrawerContent className="bg-[rgba(253,249,244,0.98)]">
         <div className="relative p-6">
           <DrawerClose asChild>
             <button
-              className="absolute right-4 top-4 text-tertiary-600 hover:text-tertiary-800"
+              className="absolute right-4 top-4 rounded-md p-1 text-[rgba(20,11,0,0.45)] transition-colors hover:bg-[rgba(20,11,0,0.05)] hover:text-[#140B00]"
             >
               <X size={20} />
             </button>
           </DrawerClose>
 
           <DrawerHeader className="mb-6 p-0">
-            <DrawerTitle className="text-lg font-medium">
+            <DrawerTitle className="font-serif text-2xl font-bold tracking-[-0.4px] text-[#140B00]">
               {t('auth.login_title')}
             </DrawerTitle>
-            <DrawerDescription className="text-sm text-tertiary-600">
+            <DrawerDescription className="text-sm text-[rgba(20,11,0,0.55)]">
               {t('auth.login_subtitle')}
             </DrawerDescription>
           </DrawerHeader>
