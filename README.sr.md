@@ -246,3 +246,27 @@ Frontend kapija je za UX. Backend ponavlja istu provjeru prije čuvanja bilo koj
 ### Skica implementacije
 
 Entitet lokala dobija jednu jsonb kolonu koja sadrži niz parova `{ month, day }`. Oba puta upisivanja lokala prihvataju niz i pokreću normalizator u servisu: nevalidni unosi se odbacuju, duplikati se uklanjaju, a rezultat se sortira mjesec-pa-dan tako da je čuvana forma stabilna. Javni odgovor lokala uključuje niz tako da forma za rezervaciju ima ga bez dodatnog zahtjeva. Forma za rezervaciju računa jedan boolean iz izabranog datuma plus niza lokala; ništa drugo u formi se ne mijenja. Reservations servis izlaže mali helper koji ponovo pokreće isti boolean nasuprot sačuvanog lokala i baca lokalizovani 400 kada se podudari. Oba endpoint-a za kreiranje rezervacije pozivaju helper, tako da menadžerski-kreirane rezervacije podliježu istom pravilu kao i one koje pošalje gost. UI birača je posebna komponenta koja dijeli vizuelni jezik postojećeg date pickera projekta.
+
+## Zaboravljena lozinka / resetovanje lozinke
+
+### Šta radi
+
+Gost koji ne može da se sjeti svoje lozinke može zatražiti resetovanje direktno iz login modala: ispod dugmeta za prijavu nalazi se link "Zaboravili ste lozinku?" koji prebacuje modal na formu sa jednim poljem za email. Slanjem emaila dobija link za resetovanje na svoju adresu. Klikom na link otvara se stranica za novu lozinku gdje bira svježu lozinku, nakon čega se vraća u login modal da se prijavi.
+
+Tok je namjerno otporan na nabrajanje korisnika: bez obzira na to da li nalog za uneseni email postoji ili ne, korisnik vidi isti toast ("Ako nalog sa tom email adresom postoji, poslali smo link za resetovanje lozinke.") tako da napadač ne može da provjerava koje su adrese registrovane.
+
+### Login modal: prebacivanje login ↔ zaboravljena lozinka
+
+Isti modal/drawer koji prikazuje prijavu sada ima dva pogleda — `login` i `forgot` — koja se prebacuju kroz login UI store. Klik na "Zaboravili ste lozinku?" unutar login forme prebacuje modal na forgot-password pogled; naslov, opis, polja i submit dugme se prebacuju na tekst za zaboravljenu lozinku bez zatvaranja modala. Forgot pogled ima samo polje za email, isti narandžasti gradijentni submit i link "Nazad na prijavu" sa lijevom strelicom koji vraća na login pogled. Nakon uspješnog slanja modal se zatvara i korisnik vidi toast u uglu.
+
+### Stranica za resetovanje
+
+Email sadrži link u formi `/auth/reset-password?token=<hex>`. Stranica prikazuje malu karticu koja prati ostatak auth površine: serif naslov, dva polja za lozinku (nova lozinka + potvrda), narandžasti gradijentni submit i isti eye-toggle na svakom polju. Ako URL nema `token` query parametar, stranica prikazuje obavještenje "Link je nevažeći ili je istekao" umjesto forme. Po uspješnom resetovanju korisnik dobija toast, biva navigiran na početnu stranu i login modal se automatski otvara tako da može da se prijavi novom lozinkom u jednom kliku.
+
+### Provođenje na strani servera
+
+API ostaje isti kao i prije: `POST /auth/forgot-password` prima `{ email }`, generiše token za reset koji važi sat vremena, čuva ga na korisniku i šalje email kroz postojeći email servis; ako email ne odgovara nijednom korisniku, endpoint i dalje vraća generičku poruku o uspjehu. `POST /auth/reset-password` prima `{ token, newPassword }`, validira istek tokena, heširaš novu lozinku sa bcrypt-om i čisti kolone reset tokena. Kolone tokena i email šablon postojali su prije ove promjene; samo je web strana nedostajala.
+
+### Skica implementacije
+
+Novi `useForgotPassword` mutation hook poziva `POST /auth/forgot-password` i prikazuje lokalizovani toast po završetku. Novi `useResetPassword` mutation hook poziva `POST /auth/reset-password`, prikazuje toast, navigiraš na `/` i otvara login modal — korisnik je jedan klik od prijave. Login UI store dobija polje `view: 'login' | 'forgot'` plus akcije `showLogin` / `showForgot`; `open()` uvijek resetuje pogled na `'login'` tako da je ponovno otvaranje modala predvidljivo. Nova komponenta `ForgotPasswordForm` živi pored ostalih auth formi i dijeli stil cream-pill polja, narandžasti gradijentni CTA i rječnik "nazad" navigacije korišten kroz auth površinu. Nova `/auth/reset-password` ruta ponovo koristi pristup menadžerske `/auth/set-password` stranice (token iz query-a, nova-lozinka + potvrda forma, pravila jačine lozinke) ali komunicira sa reset endpoint-om umjesto sa set-password endpoint-om, tako da je tok menadžerske invitacije netaknut. Sav tekst živi u postojećem `auth` i18n namespace-u pod `forgot_password_*` i `reset_password_*` ključevima, na srpskom latiničnom i engleskom.

@@ -75,6 +75,35 @@ export function useSetPassword() {
   });
 }
 
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (email: string) => authApi.forgotPassword(email),
+    onSuccess: () => {
+      toast.success(i18n.t('auth.forgot_password_success'));
+    },
+    onError: (error) => {
+      handleApiError(error);
+    },
+  });
+}
+
+export function useResetPassword() {
+  const navigate = useNavigate();
+  const { open } = useLoginStore();
+
+  return useMutation({
+    mutationFn: authApi.resetPassword,
+    onSuccess: () => {
+      toast.success(i18n.t('auth.reset_password_success'));
+      navigate({ to: '/' });
+      open();
+    },
+    onError: (error) => {
+      handleApiError(error);
+    },
+  });
+}
+
 export function useLogin() {
   const { setAuth } = useAuthStore();
   const { close } = useLoginStore();

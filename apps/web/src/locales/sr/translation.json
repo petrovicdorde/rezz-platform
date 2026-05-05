@@ -113,6 +113,16 @@
     "set_password_subtitle": "Kreirajte lozinku za pristup vašem nalogu.",
     "set_password_button": "Postavi lozinku",
     "set_password_success": "Lozinka je postavljena. Dobrodošli na Table.ba!",
+    "forgot_password_title": "Zaboravljena lozinka",
+    "forgot_password_subtitle": "Unesite svoju email adresu i poslat ćemo vam link za resetovanje lozinke.",
+    "forgot_password_button": "Pošalji link",
+    "forgot_password_success": "Ako nalog sa tom email adresom postoji, poslali smo link za resetovanje lozinke.",
+    "forgot_password_back_to_login": "Nazad na prijavu",
+    "reset_password_title": "Nova lozinka",
+    "reset_password_subtitle": "Unesite novu lozinku za vaš nalog.",
+    "reset_password_button": "Postavi novu lozinku",
+    "reset_password_success": "Lozinka je uspješno promijenjena. Možete se prijaviti.",
+    "reset_password_invalid_token": "Link za resetovanje je nevažeći ili je istekao.",
     "venue_blocked": "Vaš lokal je blokiran, molimo vas da kontaktirate administratora."
   },
   "home": {

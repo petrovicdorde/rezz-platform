@@ -113,6 +113,16 @@
     "set_password_subtitle": "Create a password to access your account.",
     "set_password_button": "Set password",
     "set_password_success": "Password set. Welcome to Table.ba!",
+    "forgot_password_title": "Forgot password",
+    "forgot_password_subtitle": "Enter your email address and we'll send you a password reset link.",
+    "forgot_password_button": "Send link",
+    "forgot_password_success": "If an account with that email exists, we've sent a password reset link.",
+    "forgot_password_back_to_login": "Back to login",
+    "reset_password_title": "New password",
+    "reset_password_subtitle": "Enter a new password for your account.",
+    "reset_password_button": "Set new password",
+    "reset_password_success": "Password successfully changed. You can sign in now.",
+    "reset_password_invalid_token": "The reset link is invalid or has expired.",
     "venue_blocked": "Your venue has been deactivated. Please contact the platform administrator."
   },
   "home": {

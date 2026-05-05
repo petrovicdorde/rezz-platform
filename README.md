@@ -244,3 +244,27 @@ The frontend gate is for UX. The backend repeats the same check before persistin
 ### Implementation outline
 
 The venue entity gains a single jsonb column holding an array of `{ month, day }` pairs. Both venue write paths accept the array and run a normalizer in the service: invalid entries are dropped, duplicates are removed, and the result is sorted month-first then day-first so the persisted form is stable. The public venue response includes the array so the booking form has it without an extra request. The booking form computes a single boolean from the selected date plus the venue's array; nothing else in the form changes. The reservations service exposes a small helper that re-runs the same boolean against the stored venue and throws a localized 400 when it matches. Both reservation create endpoints call the helper, so manager-created reservations are held to the same rule as guest-submitted ones. The picker UI is its own component sharing the visual language of the project's existing date picker.
+
+## Forgot password / password reset
+
+### What it does
+
+A guest who can't remember their password can request a reset directly from the login modal: there's a "Forgot your password?" link under the login button that toggles the modal into a single-field email form. Submitting the email sends them a reset link by email. Clicking the link opens a new-password page where they choose a fresh password and are dropped back into the login modal to sign in.
+
+The flow is intentionally enumeration-safe: whether or not an account exists for the entered email, the user sees the same toast ("If an account with that email exists, we've sent a password reset link.") so an attacker can't probe which addresses are registered.
+
+### Login modal: login ↔ forgot toggle
+
+The same modal/drawer that hosts login now has two views — `login` and `forgot` — switched through the login UI store. Clicking "Forgot your password?" inside the login form switches the modal to the forgot-password view; the title, description, fields, and submit button all swap to the forgot-password copy without closing the modal. The forgot view has a single email field, the same orange gradient submit, and a "Back to login" link with a left-arrow that returns to the login view. After a successful submit the modal closes and the user sees the success toast in the corner.
+
+### Reset page
+
+The email contains a link in the form `/auth/reset-password?token=<hex>`. The page renders a small card matching the rest of the auth surface: serif title, two password fields (new password + confirm), an orange gradient submit, and the same eye-toggle on each password input. If the URL has no `token` query param, the page renders a "link is invalid or has expired" notice instead of the form. On successful reset, the user gets a success toast, is navigated to the home page, and the login modal opens automatically so they can sign in with the new password without one extra click.
+
+### Server-side enforcement
+
+The API is unchanged from what was already there: `POST /auth/forgot-password` accepts `{ email }`, generates a one-hour reset token, persists it on the user, and dispatches the email through the existing email service; if the email doesn't match a known user the endpoint still returns the generic success message. `POST /auth/reset-password` accepts `{ token, newPassword }`, validates the token's expiry, hashes the new password with bcrypt, and clears the reset-token columns. Token columns and email template existed before this change; only the web side was missing.
+
+### Implementation outline
+
+A new `useForgotPassword` mutation hook calls `POST /auth/forgot-password` and shows the localized success toast on completion. A new `useResetPassword` mutation hook calls `POST /auth/reset-password`, shows a success toast, navigates to `/`, and opens the login modal — the user lands one click away from signing in. The login UI store grew a `view: 'login' | 'forgot'` field plus `showLogin` / `showForgot` actions; `open()` always resets the view back to `'login'` so reopening the modal is predictable. The new `ForgotPasswordForm` component lives next to the other auth forms and shares the cream-pill input style, orange gradient CTA, and "back" affordance vocabulary used across the auth surface. The new `/auth/reset-password` route reuses the same approach as the manager `/auth/set-password` page (token from query, new-password + confirm form, password-strength rules) but talks to the reset endpoint rather than the set-password endpoint, so the manager invitation flow is untouched. All copy lives in the existing `auth` i18n namespace under `forgot_password_*` and `reset_password_*` keys, in Serbian Latin and English.
