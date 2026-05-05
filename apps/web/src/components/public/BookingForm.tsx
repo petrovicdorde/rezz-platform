@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -120,6 +120,14 @@ export function BookingForm({
 
   const minGuestAge = venue.minGuestAge;
 
+  // Disable submit after a failed attempt; re-enable as soon as the user
+  // edits any field, so they don't blindly resubmit the same broken payload.
+  const [lockSubmit, setLockSubmit] = useState(false);
+  useEffect(() => {
+    const sub = watch(() => setLockSubmit(false));
+    return () => sub.unsubscribe();
+  }, [watch]);
+
   const isClosedDay = (() => {
     if (!selectedDate) return false;
     const parsed = new Date(selectedDate);
@@ -165,7 +173,11 @@ export function BookingForm({
     };
 
     mutation.mutate(payload, {
-      onSuccess: (reservation) => onSuccess(reservation),
+      onSuccess: (reservation) => {
+        setLockSubmit(false);
+        onSuccess(reservation);
+      },
+      onError: () => setLockSubmit(true),
     });
   }
 
@@ -452,7 +464,9 @@ export function BookingForm({
 
       <button
         type="submit"
-        disabled={mutation.isPending || !hasTables || isClosedDay}
+        disabled={
+          mutation.isPending || !hasTables || isClosedDay || lockSubmit
+        }
         className={`${ORANGE_CTA} mt-2`}
       >
         <span

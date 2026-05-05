@@ -90,6 +90,10 @@ export function BookingDrawer({
 
   const [step, setStep] = useState<Step>(0);
   const [direction, setDirection] = useState<'forward' | 'back'>('forward');
+  // Disable submit after a failed attempt; reset on any field change so the
+  // user must edit something before retrying. Prevents blind resubmits of
+  // the same broken payload.
+  const [lockSubmit, setLockSubmit] = useState(false);
 
   const {
     register,
@@ -115,7 +119,6 @@ export function BookingDrawer({
     },
   });
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedDate = watch('date');
   const selectedTableType = watch('tableType');
   const numberOfGuests = watch('numberOfGuests');
@@ -149,8 +152,15 @@ export function BookingDrawer({
     if (open) {
       setStep(0);
       setDirection('forward');
+      setLockSubmit(false);
     }
   }, [open]);
+
+  // Re-enable submit on any field change after a failure.
+  useEffect(() => {
+    const sub = watch(() => setLockSubmit(false));
+    return () => sub.unsubscribe();
+  }, [watch]);
 
   // Hydrate from profile on first load.
   useEffect(() => {
@@ -210,10 +220,12 @@ export function BookingDrawer({
 
     mutation.mutate(payload, {
       onSuccess: (reservation) => {
+        setLockSubmit(false);
         onSuccess(reservation);
         onOpenChange(false);
         reset();
       },
+      onError: () => setLockSubmit(true),
     });
   }
 
@@ -626,7 +638,12 @@ export function BookingDrawer({
               <button
                 type="button"
                 onClick={handleSubmit(onSubmit)}
-                disabled={mutation.isPending || !hasTables || isClosedDay}
+                disabled={
+                  mutation.isPending ||
+                  !hasTables ||
+                  isClosedDay ||
+                  lockSubmit
+                }
                 className={ORANGE_CTA}
               >
                 <span
