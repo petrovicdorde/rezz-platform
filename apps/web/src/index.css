@@ -77,12 +77,12 @@
   }
 }
 
-[data-slot="select-content"][data-hero-dropdown="true"][data-state="open"] {
+[data-slot="select-content"][data-state="open"] {
   animation: hero-dropdown-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   transform-origin: var(--radix-select-content-transform-origin);
 }
 
-[data-slot="select-content"][data-hero-dropdown="true"][data-state="closed"] {
+[data-slot="select-content"][data-state="closed"] {
   animation: hero-dropdown-out 0.16s cubic-bezier(0.4, 0, 1, 1) both;
   transform-origin: var(--radix-select-content-transform-origin);
 }
