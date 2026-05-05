@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { PublicLayout } from "@/components/layout/PublicLayout";
@@ -34,12 +35,34 @@ function HomePage(): React.JSX.Element {
     });
   }
 
+  // Several mobile browsers don't respect the `svh` static-value contract
+  // during the address-bar collapse animation — the section ends up resizing
+  // anyway, which makes the `bg-cover` image stretch and look like it's
+  // zooming. Locking the height to a real pixel value once on mount is the
+  // only bulletproof fix. We refresh on orientation change (legitimate height
+  // change) but not on plain resize (the address-bar quirk).
+  useEffect(() => {
+    function lock(): void {
+      document.documentElement.style.setProperty(
+        "--hero-vh",
+        `${window.innerHeight}px`,
+      );
+    }
+    lock();
+    const mql = window.matchMedia("(orientation: portrait)");
+    mql.addEventListener("change", lock);
+    return () => mql.removeEventListener("change", lock);
+  }, []);
+
   return (
     <PublicLayout>
-      {/* Hero section — `h-svh` is the small-viewport unit: it's spec'd to be
-          static (doesn't change when the mobile address bar collapses), so the
-          background image never resizes mid-scroll. */}
-      <section className="relative -mt-17 flex h-svh flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16">
+      {/* Hero section — height is locked to a fixed pixel value via the
+          `--hero-vh` CSS variable set on mount. `h-svh` is the fallback before
+          the JS runs (and for browsers without modern viewport units). */}
+      <section
+        className="relative -mt-17 flex h-svh flex-col items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16"
+        style={{ height: "var(--hero-vh, 100svh)" }}
+      >
         {/* Background image */}
         <div
           aria-hidden
