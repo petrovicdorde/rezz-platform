@@ -13,10 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthStore } from "@/store/auth.store";
-import {
-  useCreateGuestReservation,
-  usePublicAvailableSlots,
-} from "@/hooks/useReservations";
+import { useCreateGuestReservation } from "@/hooks/useReservations";
 import { useMyProfile } from "@/hooks/useProfile";
 import { useSettingValueLabel } from "@/hooks/useSettings";
 import type { PublicVenue } from "@/lib/types/venue.types";
@@ -113,15 +110,8 @@ export function BookingForm({
   }, [profile, getValues, setValue]);
 
   const selectedDate = watch("date");
-  const selectedTableType = watch("tableType");
   const numberOfGuests = watch("numberOfGuests");
   const guestAges = watch("guestAges");
-
-  const { data: slots, isLoading: slotsLoading } = usePublicAvailableSlots(
-    venue.id,
-    selectedDate,
-    selectedTableType,
-  );
 
   const availableTableTypes = Array.from(
     new Set(venue.tables.map((tbl) => tbl.type)),
@@ -455,26 +445,6 @@ export function BookingForm({
           })}
         </div>
       </div>
-
-      {selectedDate && selectedTableType && (
-        <div className="text-sm">
-          {slotsLoading ? (
-            <span className="text-[rgba(20,11,0,0.55)]">
-              {t("booking.availability_checking")}
-            </span>
-          ) : slots && slots.available > 0 ? (
-            <span className="font-medium text-emerald-700">
-              {t("booking.availability_available", { count: slots.available })}
-            </span>
-          ) : (
-            slots && (
-              <span className="text-red-500">
-                {t("booking.availability_none")}
-              </span>
-            )
-          )}
-        </div>
-      )}
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-[#140B00]">
