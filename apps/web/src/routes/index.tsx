@@ -5,6 +5,7 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { SearchFilterWidget } from "@/components/public/SearchFilterWidget";
 import { VenueSlider } from "@/components/public/VenueSlider";
 import { EventSlider } from "@/components/public/EventSlider";
+import { ContactSection } from "@/components/public/ContactSection";
 import { useLandingData } from "@/hooks/useLanding";
 import type { SearchFilters } from "@/lib/api/landing.api";
 
@@ -191,6 +192,9 @@ function HomePage(): React.JSX.Element {
           </div>
         </section>
       )}
+
+      {/* Contact form — orange section, glass-card form on the right */}
+      <ContactSection />
     </PublicLayout>
   );
 }

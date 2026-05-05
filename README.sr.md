@@ -270,3 +270,22 @@ API ostaje isti kao i prije: `POST /auth/forgot-password` prima `{ email }`, gen
 ### Skica implementacije
 
 Novi `useForgotPassword` mutation hook poziva `POST /auth/forgot-password` i prikazuje lokalizovani toast po završetku. Novi `useResetPassword` mutation hook poziva `POST /auth/reset-password`, prikazuje toast, navigiraš na `/` i otvara login modal — korisnik je jedan klik od prijave. Login UI store dobija polje `view: 'login' | 'forgot'` plus akcije `showLogin` / `showForgot`; `open()` uvijek resetuje pogled na `'login'` tako da je ponovno otvaranje modala predvidljivo. Nova komponenta `ForgotPasswordForm` živi pored ostalih auth formi i dijeli stil cream-pill polja, narandžasti gradijentni CTA i rječnik "nazad" navigacije korišten kroz auth površinu. Nova `/auth/reset-password` ruta ponovo koristi pristup menadžerske `/auth/set-password` stranice (token iz query-a, nova-lozinka + potvrda forma, pravila jačine lozinke) ali komunicira sa reset endpoint-om umjesto sa set-password endpoint-om, tako da je tok menadžerske invitacije netaknut. Sav tekst živi u postojećem `auth` i18n namespace-u pod `forgot_password_*` i `reset_password_*` ključevima, na srpskom latiničnom i engleskom.
+
+## Javna kontakt forma
+
+### Šta radi
+
+Početna stranica ima kontakt sekciju (narandžasta brand pozadina, glass kartica sa formom desno) gdje svaki posjetilac — prijavljen ili ne — može poslati poruku super adminima platforme. Slanje forme šalje email svim aktivnim super admin nalozima. Forma ima četiri polja: ime i prezime, email, telefon (opcionalno) i poruka. Po uspjehu korisnik vidi lokalizovani toast da je poruka poslata; po grešci API poruka se prikazuje kroz standardni toast handler. Email pošiljaoca se postavlja kao `Reply-To`, tako da admin može direktno odgovoriti pošiljaocu iz svoje email aplikacije.
+
+### Gdje živi
+
+- **Frontend**: komponenta `ContactSection` se renderuje na dnu početne stranice ispod predstojećih događaja. Dvokolonsko rasporedjivanje na desktopu (naslov + tekst lijevo, forma kartica desno) koje se na telefonu kolapsira u jednu kolonu. Forma kartica koristi isti glass izgled kao hero search kartica — providna bijela pozadina, zamućeni backdrop, slojeviti shadow — sa bijelim inputima/labelama prilagođenim narandžastoj sekciji.
+- **Backend**: javni `POST /contact` endpoint bez autentikacije, koji validira `ContactFormDto` (ime 2-120, email, opcionalno telefon do 40, poruka 10-2000). Servis pretražuje sve aktivne `SUPER_ADMIN` korisnike, prikuplja njihove email adrese i šalje jedan email kroz postojeći email servis. Ako ne postoji super admin, zahtjev i dalje vraća uspjeh korisniku (na serveru se loguje upozorenje), tako da odsustvo primaoca ne curi javno.
+
+### Pouzdanost
+
+Slanje email-a koristi isti Resend wrapper koji koristi ostatak sistema; greške se hvataju i loguju, ne bacaju nazad u zahtjev, tako da prolazna nedostupnost mailera ne ostavlja korisnika sa nejasnim 5xx. Endpoint trenutno nema rate limiting; ako zloupotreba postane problem, dodavanje per-IP throttler-a ispred kontrolera je prirodan sljedeći korak.
+
+### Skica implementacije
+
+`apps/api/src/contact/` je samostalan modul (`ContactModule`, `ContactController`, `ContactService`, `ContactFormDto`) registrovan u `AppModule`-u. Servis injektuje postojeći `EmailService` plus `User` repozitorijum za pronalazak super-admin primalaca, a nova `EmailService.sendContactEmail()` metoda renderuje HTML email sa imenom, emailom (linkovan), opcionim telefonom i porukom u brand stilu projekta, pa ga šalje preko Resend-a sa `replyTo: payload.email` tako da je pošiljalac jedan klik dalje. Sav tekst (subject, intro, labele polja, footer, success toast) živi u API i18n fajlovima pod `email.contact_*` i `contact.success`. Na web strani, `apps/web/src/lib/api/contact.api.ts` dodaje jednu `submit()` metodu, a `ContactSection` komponenta koristi `react-hook-form` (`mode: 'onChange'`, dugme onemogućeno dok forma nije validna ili je u toku slanje) plus `useMutation` za poziv. Sav UI tekst je pod ključevima `contact.*` u srpskom latiničnom i engleskom locale-u.

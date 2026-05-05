@@ -441,4 +441,68 @@ export class EmailService {
       );
     }
   }
+
+  async sendContactEmail(
+    toEmails: string[],
+    payload: {
+      fullName: string;
+      email: string;
+      phone?: string;
+      message: string;
+    },
+    lang: string = 'sr',
+  ): Promise<void> {
+    if (toEmails.length === 0) return;
+
+    const subject = this.i18n.t('email.contact_subject', {
+      lang,
+      args: { fullName: payload.fullName },
+    });
+    const intro = this.i18n.t('email.contact_intro', { lang });
+    const fromLabel = this.i18n.t('email.contact_from', { lang });
+    const emailLabel = this.i18n.t('email.contact_email', { lang });
+    const phoneLabel = this.i18n.t('email.contact_phone', { lang });
+    const messageLabel = this.i18n.t('email.contact_message', { lang });
+    const footer = this.i18n.t('email.contact_footer', { lang });
+
+    const safe = (s: string): string =>
+      s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    const phoneRow = payload.phone
+      ? `<p style="margin:6px 0;"><strong>${phoneLabel}:</strong> ${safe(payload.phone)}</p>`
+      : '';
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#140B00;">
+      <h2 style="color:#F98513;margin:0 0 16px;">Table.ba — Contact</h2>
+      <p>${intro}</p>
+      <div style="background:#F5F1EB;border-radius:12px;padding:16px;margin:16px 0;">
+        <p style="margin:6px 0;"><strong>${fromLabel}:</strong> ${safe(payload.fullName)}</p>
+        <p style="margin:6px 0;"><strong>${emailLabel}:</strong> <a href="mailto:${safe(payload.email)}">${safe(payload.email)}</a></p>
+        ${phoneRow}
+      </div>
+      <p style="margin:6px 0;"><strong>${messageLabel}:</strong></p>
+      <p style="white-space:pre-wrap;background:#FFFFFF;border:1px solid rgba(20,11,0,0.08);border-radius:12px;padding:14px;">${safe(payload.message)}</p>
+      <p style="color:rgba(20,11,0,0.55);font-size:13px;margin-top:24px;">${footer}</p>
+    </body>
+    </html>
+    `;
+
+    try {
+      await this.resend.emails.send({
+        from: this.fromEmail,
+        to: toEmails,
+        replyTo: payload.email,
+        subject,
+        html,
+      });
+    } catch (error) {
+      this.logger.error(
+        `Failed to send contact email to ${toEmails.join(', ')}`,
+        error,
+      );
+    }
+  }
 }

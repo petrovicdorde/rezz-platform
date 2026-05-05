@@ -33,6 +33,7 @@ import { LandingConfig } from './landing/entities/landing-config.entity';
 import { ProfileModule } from './profile/profile.module';
 import { BlacklistModule } from './blacklist/blacklist.module';
 import { CronModule } from './cron/cron.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import { CronModule } from './cron/cron.module';
     ProfileModule,
     BlacklistModule,
     CronModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

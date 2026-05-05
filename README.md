@@ -268,3 +268,22 @@ The API is unchanged from what was already there: `POST /auth/forgot-password` a
 ### Implementation outline
 
 A new `useForgotPassword` mutation hook calls `POST /auth/forgot-password` and shows the localized success toast on completion. A new `useResetPassword` mutation hook calls `POST /auth/reset-password`, shows a success toast, navigates to `/`, and opens the login modal — the user lands one click away from signing in. The login UI store grew a `view: 'login' | 'forgot'` field plus `showLogin` / `showForgot` actions; `open()` always resets the view back to `'login'` so reopening the modal is predictable. The new `ForgotPasswordForm` component lives next to the other auth forms and shares the cream-pill input style, orange gradient CTA, and "back" affordance vocabulary used across the auth surface. The new `/auth/reset-password` route reuses the same approach as the manager `/auth/set-password` page (token from query, new-password + confirm form, password-strength rules) but talks to the reset endpoint rather than the set-password endpoint, so the manager invitation flow is untouched. All copy lives in the existing `auth` i18n namespace under `forgot_password_*` and `reset_password_*` keys, in Serbian Latin and English.
+
+## Public contact form
+
+### What it does
+
+The home page has a contact section (orange brand background, glass-card form on the right) where any visitor — logged in or not — can write a message to the platform's super admins. Submitting the form sends an email to every active super admin's address. The form has four fields: full name, email, phone (optional), and message. On success the user sees a localized toast confirming the message was sent; on failure the API error is surfaced through the standard toast handler. The user's email is set as the email's `Reply-To`, so an admin can reply directly to the sender from their inbox.
+
+### Where it lives
+
+- **Frontend**: `ContactSection` component rendered at the bottom of the home page below the featured events. Two-column layout on desktop (title + copy on the left, form card on the right) collapsing to a single stacked column on phones. The form card uses the same glass aesthetic as the hero search card — translucent white bg, blurred backdrop, layered shadow — with white inputs/labels tuned for the orange section background.
+- **Backend**: a public `POST /contact` endpoint with no auth, validating a `ContactFormDto` (name 2-120, email, optional phone up to 40, message 10-2000). The service queries every active `SUPER_ADMIN` user, collects their emails, and dispatches a single email through the existing email service. If no super admin exists, the request still succeeds toward the user (a warning is logged on the server) so the absence of a recipient isn't leaked publicly.
+
+### Reliability
+
+Email delivery uses the same Resend wrapper the rest of the system uses; failures are caught and logged, never thrown back to the request, so a transient mailer outage doesn't leave the user with an obscure 5xx. The endpoint has no rate limiting today; if abuse becomes an issue, layering a basic per-IP throttle in front of the controller is the natural next step (the project already uses class-based DTOs, so a NestJS `ThrottlerGuard` slots in cleanly).
+
+### Implementation outline
+
+`apps/api/src/contact/` is a standalone module (`ContactModule`, `ContactController`, `ContactService`, `ContactFormDto`) registered in `AppModule`. The service injects the existing `EmailService` plus the `User` repository to look up super-admin recipients, and a new `EmailService.sendContactEmail()` method renders an HTML email with the user's full name, email (linked), optional phone, and message in the project's brand styling, then dispatches it via Resend with `replyTo: payload.email` so the sender is one click away. All copy (subject, intro, field labels, footer, success toast) lives in the API i18n files under `email.contact_*` and `contact.success`. On the web side, `apps/web/src/lib/api/contact.api.ts` adds a single `submit()` method, and the `ContactSection` component uses `react-hook-form` (`mode: 'onChange'`, button disabled while invalid or pending) plus `useMutation` for the call. All UI copy is keyed under `contact.*` in both Serbian Latin and English locales.

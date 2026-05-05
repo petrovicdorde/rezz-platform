@@ -704,5 +704,26 @@
     "status_label": "Status",
     "special_request_label": "Poseban zahtjev",
     "member_since": "Član od {{date}}"
+  },
+  "contact": {
+    "label": "Kontakt",
+    "title_line_1": "Pišite",
+    "title_line_2": "nama",
+    "subtitle": "Imate pitanje, prijedlog ili želite da postanete dio platforme? Pošaljite nam poruku — javljamo se u najkraćem roku.",
+    "fullname_label": "Ime i prezime",
+    "fullname_placeholder": "Vaše ime",
+    "email_label": "Email adresa",
+    "email_placeholder": "vas@email.com",
+    "phone_label": "Telefon",
+    "phone_placeholder": "+387 ...",
+    "message_label": "Poruka",
+    "message_placeholder": "Recite nam šta vas zanima...",
+    "submit": "Pošalji poruku",
+    "sending": "Slanje...",
+    "required": "Ovo polje je obavezno",
+    "email_invalid": "Unesite ispravnu email adresu",
+    "min_length_2": "Minimalno 2 karaktera",
+    "min_length_10": "Poruka mora imati najmanje 10 karaktera",
+    "success": "Hvala! Vaša poruka je uspješno poslata."
   }
 }

@@ -704,5 +704,26 @@
     "status_label": "Status",
     "special_request_label": "Special request",
     "member_since": "Member since {{date}}"
+  },
+  "contact": {
+    "label": "Contact",
+    "title_line_1": "Get in",
+    "title_line_2": "touch",
+    "subtitle": "Have a question, suggestion, or want to join the platform? Send us a message — we'll get back to you shortly.",
+    "fullname_label": "Full name",
+    "fullname_placeholder": "Your name",
+    "email_label": "Email address",
+    "email_placeholder": "you@email.com",
+    "phone_label": "Phone",
+    "phone_placeholder": "+1 ...",
+    "message_label": "Message",
+    "message_placeholder": "Tell us what's on your mind...",
+    "submit": "Send message",
+    "sending": "Sending...",
+    "required": "This field is required",
+    "email_invalid": "Enter a valid email address",
+    "min_length_2": "Minimum 2 characters",
+    "min_length_10": "Message must be at least 10 characters",
+    "success": "Thanks! Your message has been sent."
   }
 }

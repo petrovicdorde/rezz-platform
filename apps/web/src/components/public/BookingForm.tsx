@@ -112,7 +112,6 @@ export function BookingForm({
     }
   }, [profile, getValues, setValue]);
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedDate = watch("date");
   const selectedTableType = watch("tableType");
   const numberOfGuests = watch("numberOfGuests");
@@ -148,6 +147,7 @@ export function BookingForm({
   // edits any field, so they don't blindly resubmit the same broken payload.
   const [lockSubmit, setLockSubmit] = useState(false);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/incompatible-library
     const sub = watch(() => setLockSubmit(false));
     return () => sub.unsubscribe();
   }, [watch]);
@@ -167,8 +167,9 @@ export function BookingForm({
     const desired = Math.max(1, Number(numberOfGuests) || 0);
     const current = guestAges ?? [];
     if (current.length === desired) return;
-    const next: (number | null)[] = Array.from({ length: desired }, (_, i) =>
-      current[i] ?? null,
+    const next: (number | null)[] = Array.from(
+      { length: desired },
+      (_, i) => current[i] ?? null,
     );
     setValue("guestAges", next, { shouldDirty: false, shouldValidate: false });
   }, [numberOfGuests, guestAges, setValue]);
@@ -416,7 +417,7 @@ export function BookingForm({
                   aria-invalid={belowMin || !!fieldError ? "true" : "false"}
                   className={
                     belowMin || fieldError
-                      ? `${FIELD_INPUT} !border-red-500 focus-visible:!border-red-500 focus-visible:!shadow-[0_2px_12px_rgba(239,68,68,0.18)]`
+                      ? `${FIELD_INPUT} border-red-500! focus-visible:border-red-500! focus-visible:shadow-[0_2px_12px_rgba(239,68,68,0.18)]!`
                       : FIELD_INPUT
                   }
                   {...register(`guestAges.${index}` as const, {
@@ -489,9 +490,7 @@ export function BookingForm({
 
       <button
         type="submit"
-        disabled={
-          mutation.isPending || !hasTables || isClosedDay || lockSubmit
-        }
+        disabled={mutation.isPending || !hasTables || isClosedDay || lockSubmit}
         className={`${ORANGE_CTA} mt-2`}
       >
         <span

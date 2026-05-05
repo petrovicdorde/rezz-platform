@@ -26,6 +26,13 @@
     "last_name_too_short": "Prezime mora imati najmanje 2 karaktera."
   },
   "email": {
+    "contact_subject": "Nova poruka sa kontakt forme – {fullName}",
+    "contact_intro": "Stigla je nova poruka sa kontakt forme na Table.ba.",
+    "contact_from": "Od",
+    "contact_email": "Email",
+    "contact_phone": "Telefon",
+    "contact_message": "Poruka",
+    "contact_footer": "Možete direktno odgovoriti na ovaj email — odgovor ide na adresu pošiljaoca.",
     "verification_subject": "Potvrdite vašu email adresu – Table.ba",
     "greeting": "Zdravo, {firstName}!",
     "verification_body": "Kliknite na dugme ispod da potvrdite vašu email adresu i aktivirate nalog.",
@@ -173,5 +180,8 @@
     "internal_error": "Došlo je do greške. Pokušajte ponovo.",
     "not_found": "Traženi resurs nije pronađen.",
     "too_many_requests": "Previše zahtjeva. Pokušajte ponovo za nekoliko minuta."
+  },
+  "contact": {
+    "success": "Hvala! Vaša poruka je uspješno poslata. Javićemo se uskoro."
   }
 }
