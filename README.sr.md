@@ -190,11 +190,11 @@ Reservations servis ima mali privatni helper koji se pokreće nakon uspješnog �
 
 ### Šta radi
 
-Svake tri sata automatizovani posao provjerava svakog aktivnog menadžera i šalje mu email podsjetnik ako postoje nove rezervacije na čekanju koje još nije obradio. Ako menadžer nema ništa novo, email se ne šalje — tišina je signal da je sve pod kontrolom. Posao je sigurnosna mreža za menadžere koji ne drže dashboard otvoren: nikada neće proći više od tri sata a da im se ne kaže da imaju posao.
+Jednom dnevno automatizovani posao provjerava svakog aktivnog menadžera i šalje mu email podsjetnik ako postoje nove rezervacije na čekanju koje još nije obradio. Ako menadžer nema ništa novo, email se ne šalje — tišina je signal da je sve pod kontrolom. Posao je sigurnosna mreža za menadžere koji ne drže dashboard otvoren: nikada neće proći više od jednog dana a da im se ne kaže da imaju posao. Frekvencija od jednom dnevno odgovara onome što Vercel-ov Hobby plan dozvoljava; ako je potreban gušći raspored, isti endpoint može da se aktivira eksternim scheduler-om (npr. GitHub Actions cron) bez izmjena u API-ju.
 
 ### Šta znači "novo"
 
-Rezervacija se računa kao nova za menadžera samo ako je kreirana nakon posljednjeg podsjetnika koji je taj menadžer primio. Prvi podsjetnik ikada poslat menadžeru pokriva sve njegove trenutno rezervacije na čekanju; kasniji podsjetnici pokrivaju samo one koje su stigle nakon prethodnog podsjetnika. Na taj način menadžer koji ignoriše jednu rezervaciju na čekanju ne dobija obavještenje o njoj svake tri sate zauvijek — kada mu je rečeno za nju, ona je njegova odgovornost.
+Rezervacija se računa kao nova za menadžera samo ako je kreirana nakon posljednjeg podsjetnika koji je taj menadžer primio. Prvi podsjetnik ikada poslat menadžeru pokriva sve njegove trenutno rezervacije na čekanju; kasniji podsjetnici pokrivaju samo one koje su stigle nakon prethodnog podsjetnika. Na taj način menadžer koji ignoriše jednu rezervaciju na čekanju ne dobija obavještenje o njoj na svakom pokretanju zauvijek — kada mu je rečeno za nju, ona je njegova odgovornost.
 
 ### Ko je uključen
 
@@ -210,12 +210,12 @@ Posao živi na `POST /cron/reservation-reminders`. Endpoint **nije** zaštićen 
 
 ### Podešavanje na Vercel-u
 
-Cron se konfiguriše deklarativno u `vercel.json` pod `crons` nizom na vrhu. Raspored je standardna cron sintaksa — `0 */3 * * *` znači "minut 0 svakog trećeg sata" (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC).
+Cron se konfiguriše deklarativno u `vercel.json` pod `crons` nizom na vrhu. Raspored je standardna cron sintaksa — `0 8 * * *` znači "minut 0 sata 8 svakog dana" (08:00 UTC). Vercel-ov Hobby plan ograničava cron poslove na jedanput dnevno; gušći raspored zahtijeva ili nadogradnju na Pro plan ili usmjeravanje eksternog scheduler-a (npr. GitHub Actions workflow sa `schedule` triger-om) ka istom endpoint-u sa header-om `Authorization: Bearer ${CRON_SECRET}`.
 
 Da bi ovo radilo nakon deploy-a, vlasnik projekta mora da uradi dva jednokratna koraka u Vercel dashboard-u za ovaj projekat:
 
 1. **Dodati env varijablu `CRON_SECRET`** na Production (i Preview okruženju, ako cron treba tu da se pokreće). Generiši nasumičnu vrijednost — na primjer komandom `openssl rand -hex 32` — i unesi je u "Environment Variables" panel u Vercel-u za API projekat. Ista vrijednost mora postojati i u `apps/api/.env` za lokalno testiranje.
-2. **Provjeriti da je cron registrovan** pod "Settings → Cron Jobs" u Vercel dashboard-u nakon sljedećeg deploy-a. Vercel automatski čita `crons` blok iz `vercel.json`; dashboard treba da pokaže jedan unos koji pokazuje na `/cron/reservation-reminders` sa rasporedom od 3 sata. Ako se unos ne pojavi, ponovo deploy-uj.
+2. **Provjeriti da je cron registrovan** pod "Settings → Cron Jobs" u Vercel dashboard-u nakon sljedećeg deploy-a. Vercel automatski čita `crons` blok iz `vercel.json`; dashboard treba da pokaže jedan unos koji pokazuje na `/cron/reservation-reminders` sa dnevnim rasporedom. Ako se unos ne pojavi, ponovo deploy-uj.
 
 Vercel automatski dodaje `Authorization: Bearer ${CRON_SECRET}` header kada pokrene posao, tako da guard vidi ispravnu tajnu bez ikakvog klijentskog koda. Da ručno testiraš endpoint sa svoje mašine, pokreni `curl -X POST -H "Authorization: Bearer <tajna>" https://<vaš-api-domen>/cron/reservation-reminders`.
 

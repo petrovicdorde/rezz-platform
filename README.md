@@ -188,11 +188,11 @@ The reservations service has a small private helper that runs after a successful
 
 ### What it does
 
-Every three hours an automated job checks every active manager and emails them a reminder if there are new pending reservations they have not yet acted on. If a manager has nothing new waiting, no email is sent — silence is the signal that they are caught up. The job is the safety net for managers who don't keep the dashboard open: they will never go more than three hours without being told they have work to do.
+Once a day an automated job checks every active manager and emails them a reminder if there are new pending reservations they have not yet acted on. If a manager has nothing new waiting, no email is sent — silence is the signal that they are caught up. The job is the safety net for managers who don't keep the dashboard open: they will never go more than a day without being told they have work to do. The single-daily-run cadence reflects what Vercel's Hobby plan permits; if a tighter cadence is needed, the same endpoint can be triggered by an external scheduler (e.g. a GitHub Actions cron) without changing the API.
 
 ### What "new" means
 
-A reservation counts as new for a manager only if it was created after the last reminder that manager received. The first reminder ever sent to a manager covers all of their currently pending reservations; later reminders cover only the ones that arrived since the previous reminder. This way a manager who ignores a single pending reservation does not get pinged about it every three hours forever — once they've been told about it, they own it.
+A reservation counts as new for a manager only if it was created after the last reminder that manager received. The first reminder ever sent to a manager covers all of their currently pending reservations; later reminders cover only the ones that arrived since the previous reminder. This way a manager who ignores a single pending reservation does not get pinged about it on every run forever — once they've been told about it, they own it.
 
 ### Who is included
 
@@ -208,12 +208,12 @@ The job lives at `POST /cron/reservation-reminders`. The endpoint is **not** pro
 
 ### Vercel setup
 
-Cron is configured declaratively in `vercel.json` under a top-level `crons` array. The schedule is standard cron syntax — `0 */3 * * *` means "minute 0 of every third hour" (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC).
+Cron is configured declaratively in `vercel.json` under a top-level `crons` array. The schedule is standard cron syntax — `0 8 * * *` means "minute 0 of hour 8 every day" (08:00 UTC). Vercel's Hobby plan caps cron jobs to once per day; a tighter cadence requires either upgrading to Pro or pointing an external scheduler (such as a GitHub Actions workflow on a `schedule` trigger) at the same endpoint with the `Authorization: Bearer ${CRON_SECRET}` header.
 
 To make this work after deploy, the project owner must perform two one-time steps in the Vercel dashboard for this project:
 
 1. **Add a `CRON_SECRET` environment variable** on the Production (and Preview, if cron should run there) environments. Generate a random value — for example with `openssl rand -hex 32` — and paste it into the Vercel "Environment Variables" panel for the API project. The same value must be present in `apps/api/.env` for local testing.
-2. **Verify the cron is registered** under "Settings → Cron Jobs" in the Vercel dashboard after the next deploy. Vercel reads the `crons` block from `vercel.json` automatically; the dashboard should show one entry pointing at `/cron/reservation-reminders` with a 3-hour schedule. If the entry does not appear, redeploy.
+2. **Verify the cron is registered** under "Settings → Cron Jobs" in the Vercel dashboard after the next deploy. Vercel reads the `crons` block from `vercel.json` automatically; the dashboard should show one entry pointing at `/cron/reservation-reminders` with a daily schedule. If the entry does not appear, redeploy.
 
 Vercel automatically attaches the `Authorization: Bearer ${CRON_SECRET}` header when it triggers the job, so the guard sees the right secret without any client code. To test the endpoint manually from your machine, run `curl -X POST -H "Authorization: Bearer <secret>" https://<your-api-domain>/cron/reservation-reminders`.
 
