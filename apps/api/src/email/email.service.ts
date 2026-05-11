@@ -64,17 +64,17 @@ export class EmailService {
 
   private renderButton(btn: EmailButton): string {
     const isPrimary = btn.variant !== 'secondary';
-    const bg = isPrimary ? COLORS.orange : COLORS.cream;
+    const bg = isPrimary ? COLORS.orange : COLORS.card;
     const color = isPrimary ? '#FFFFFF' : COLORS.text;
     const border = isPrimary
-      ? `2px solid ${COLORS.orange}`
-      : `2px solid ${COLORS.divider}`;
+      ? `1px solid ${COLORS.orangeDark}`
+      : `1px solid ${COLORS.divider}`;
     return `
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 8px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0;">
         <tr>
-          <td align="center" style="background:${bg};border-radius:12px;border:${border};">
+          <td align="center" style="background:${bg};border-radius:14px;border:${border};">
             <a href="${btn.href}"
-               style="display:inline-block;padding:13px 28px;font-family:inherit;font-size:15px;font-weight:600;color:${color};text-decoration:none;letter-spacing:0.2px;line-height:1;">
+               style="display:inline-block;padding:16px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;color:${color};text-decoration:none;letter-spacing:0.3px;line-height:1;">
               ${btn.label}
             </a>
           </td>
@@ -111,17 +111,22 @@ export class EmailService {
   }
 
   private renderEmail(opts: RenderOpts): string {
+    const serifStack =
+      "Fraunces,'Playfair Display',Georgia,'Times New Roman',serif";
+    const sansStack =
+      "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+
     const greeting = opts.greeting
-      ? `<p style="margin:0 0 16px;font-size:20px;font-weight:600;color:${COLORS.text};line-height:1.35;">${opts.greeting}</p>`
+      ? `<p style="margin:0 0 18px;font-family:${serifStack};font-style:italic;font-weight:600;font-size:26px;color:${COLORS.text};line-height:1.25;letter-spacing:-0.4px;">${opts.greeting}</p>`
       : '';
-    const body = `<p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:${COLORS.text};">${opts.body}</p>`;
+    const body = `<p style="margin:0 0 16px;font-family:${sansStack};font-size:15px;line-height:1.65;color:${COLORS.text};">${opts.body}</p>`;
     const callout = opts.callout ? this.renderCallout(opts.callout) : '';
     const extra = opts.extraHtml ?? '';
     const buttons = opts.buttons?.length
       ? this.renderButtonsRow(opts.buttons)
       : '';
     const footer = opts.footer
-      ? `<p style="margin:28px 0 0;color:${COLORS.textSubtle};font-size:13px;line-height:1.55;">${opts.footer}</p>`
+      ? `<p style="margin:28px 0 0;font-family:${sansStack};color:${COLORS.textSubtle};font-size:13px;line-height:1.6;">${opts.footer}</p>`
       : '';
 
     return `<!DOCTYPE html>
@@ -132,24 +137,28 @@ export class EmailService {
   <meta name="color-scheme" content="light only">
   <meta name="supported-color-schemes" content="light">
   <title>Table.ba</title>
+  <!-- Web font for clients that allow <link>; everyone else falls back to Georgia -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&display=swap">
 </head>
-<body style="margin:0;padding:0;background:${COLORS.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:${COLORS.text};">
+<body style="margin:0;padding:0;background:${COLORS.bg};font-family:${sansStack};color:${COLORS.text};">
   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:${COLORS.bg};">
     <tr>
-      <td align="center" style="padding:32px 16px;">
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;background:${COLORS.card};border-radius:20px;overflow:hidden;border:1px solid ${COLORS.divider};">
+      <td align="center" style="padding:36px 16px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;background:${COLORS.card};border-radius:24px;overflow:hidden;border:1px solid ${COLORS.divider};">
           <tr>
-            <td align="center" style="padding:36px 40px 24px;">
-              <span style="font-family:Georgia,'Times New Roman',serif;font-size:32px;font-weight:700;letter-spacing:-0.5px;color:${COLORS.text};">Table</span><span style="font-family:Georgia,'Times New Roman',serif;font-size:32px;font-weight:700;color:${COLORS.orange};">.ba</span>
+            <td align="center" style="padding:40px 40px 18px;">
+              <span style="font-family:${serifStack};font-size:38px;font-weight:700;letter-spacing:-0.8px;color:${COLORS.text};">Table</span><span style="font-family:${serifStack};font-size:38px;font-weight:700;letter-spacing:-0.8px;color:${COLORS.orange};">.ba</span>
             </td>
           </tr>
           <tr>
-            <td style="padding:0 40px 8px;">
-              <div style="height:1px;background:${COLORS.divider};"></div>
+            <td align="center" style="padding:0 40px 8px;">
+              <div style="width:42px;height:3px;background:${COLORS.orange};border-radius:2px;margin:0 auto;"></div>
             </td>
           </tr>
           <tr>
-            <td style="padding:24px 40px 36px;">
+            <td style="padding:28px 40px 36px;">
               ${greeting}
               ${body}
               ${callout}
@@ -164,9 +173,9 @@ export class EmailService {
             </td>
           </tr>
           <tr>
-            <td align="center" style="padding:20px 40px 28px;">
-              <p style="margin:0;color:${COLORS.textSubtle};font-size:12px;line-height:1.6;">© Table.ba</p>
-              <p style="margin:4px 0 0;color:${COLORS.textSubtle};font-size:11px;">team@table.ba</p>
+            <td align="center" style="padding:22px 40px 30px;">
+              <p style="margin:0;font-family:${serifStack};font-style:italic;color:${COLORS.textSubtle};font-size:13px;line-height:1.5;">Rezerviši lako.</p>
+              <p style="margin:8px 0 0;font-family:${sansStack};color:${COLORS.textSubtle};font-size:11px;line-height:1.6;">© Table.ba · <a href="mailto:team@table.ba" style="color:${COLORS.textSubtle};text-decoration:none;">team@table.ba</a></p>
             </td>
           </tr>
         </table>
