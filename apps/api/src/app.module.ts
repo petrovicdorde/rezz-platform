@@ -64,7 +64,7 @@ import { BlacklistAppeal } from './blacklist-appeals/entities/blacklist-appeal.e
           LandingConfig,
           BlacklistAppeal,
         ],
-        synchronize: configService.get('NODE_ENV') !== 'production',
+        synchronize: configService.get('DB_SYNC') === 'true',
         ssl:
           configService.get('DATABASE_SSL') === 'true'
             ? { rejectUnauthorized: false }
